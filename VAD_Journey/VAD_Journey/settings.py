@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'VAD_Journey',
@@ -84,7 +84,7 @@ DATABASES = {
         'HOST':'127.0.0.1',  # localhost también valdría
         'DATABASE_PORT':'5432'
     }
-}
+}'''
 
 
 # Password validation
