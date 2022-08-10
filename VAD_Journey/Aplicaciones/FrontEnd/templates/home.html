@@ -13,24 +13,27 @@
                         <a class="menu-item-nav" href="#">Registrate</a>
                         <a class="menu-item-nav" href="#">Inicia Sesión</a>
                         <a class="menu-item-nav" href="#">¿Cómo Funciona?</a>
+
         </nav>
-        <div id="Logo">
-            <img class="logo-nav" src='{% static "img/Logo.JPG" %}'/>
-        </div>
-        <!--<div class="lead-title" id="iygnk">Encuentra tu destino</div>-->
+    </div>
+    <div id="Logo">
+        <img class="logo-nav" src='{% static "img/Logo.JPG" %}' />
+    </div>
+    <div class="container-head-foto" id="iszv">
+       <img  src='{% static "img/Portada3.jpg" %}' style="width:100%;height:100%;"/>
     </div>
 </header>
-<section id="ikkhv">
-    <div class="contenedor"
-        <form   id="Buscador">
+<section id="buscar-publicar-viaje">
+    <div class="contenedor">
+        <form   id="buscador">
  <!--       class="flex flex-column flex-row-md" <div class="form-group" id="Buscador">
             <label class="label" id="irxbkj">Origen</label>
             <label class="label" id="ivcweq">Destino</label>
             <label class="label" id="irg0li">Fecha</label>
         </div> -->
             <div class="flex-1 mr0 mb3 mb0-md mr2-md relative">
-                <div class="inline-block">
-                    <input class="input" id="io10t9" name="Origen" placeholder="¿De dónde sales?" required type="text"/>
+                <div class="">
+                    <input class="input text-from" id="io10t9" name="Origen" placeholder="¿De dónde sales?" required type="text"/>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="absolute t3 l3 svg-blue-40">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M4.345 5.95836C7.79683 1.41204 14.1469 0.999725 18.3462 5.38157C19.4084 6.48998 20.8472 7.89551 21.4929 9.66649C22.263 11.7782 21.766 14.1394 20.7243 16.0879C19.6799 18.0414 17.995 19.7623 16.1021 20.5912C12.8954 21.9954 8.83152 22.6464 5.72244 19.7811C3.51072 17.7429 1.9704 14.4714 2.25773 11.434C2.43411 9.56935 3.17007 7.50582 4.345 5.95836ZM16.9022 6.76538C13.5296 3.24613 8.62536 3.62818 5.93789 7.16778C5.01031 8.38947 4.39376 10.0903 4.24884 11.6224C4.03123 13.9227 5.23326 16.6106 7.0778 18.3104C9.28747 20.3468 12.3223 20.063 15.2999 18.7592C16.7018 18.1452 18.0827 16.7869 18.9605 15.1449C19.8411 13.4979 20.123 11.7475 19.614 10.3516C19.1664 9.12435 18.1718 8.08818 17.0679 6.93813C17.0129 6.88084 16.9577 6.82327 16.9022 6.76538Z" fill="#1B2530"></path>
@@ -57,7 +60,7 @@
                 <div class="inline-block">
                     <input class="input" id="inyn7u" name="Fecha" placeholder="¿Cuándo?" required type="date"/>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 28 28" fill="none" class="absolute t3 l3 svg-blue-40">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 26 26" fill="none" class="absolute t3 l3 svg-blue-40">
                     <path d="M16.2296 11.8798C16.1957 11.7331 16.1619 11.5865 16.0604 11.5131C15.8575 9.31317 16.0266 7.03987 15.8913 4.83991C15.8236 3.81326 16.0942 2.16329 15.1809 1.50331C15.0118 1.39331 14.8088 1.35664 14.6059 1.39331C14.5382 1.39331 14.4706 1.35664 14.4029 1.35664H14.2338C14.1661 1.35664 14.1323 1.35664 14.0985 1.35664C13.3543 1.39331 12.6778 1.42997 11.9674 1.50331C12.0012 1.28331 12.0012 1.09998 12.0012 0.879984C12.0012 -0.293328 10.3099 -0.293328 10.3099 0.879984C10.3099 1.13665 10.3099 1.39331 10.2761 1.64997C9.46423 1.7233 8.65239 1.75997 7.84055 1.75997C6.99488 1.75997 6.14922 1.75997 5.30355 1.75997C5.30355 1.53997 5.26972 1.35664 5.26972 1.13665C5.26972 -0.036666 3.57839 -0.036666 3.57839 1.13665C3.57839 1.35664 3.57839 1.53997 3.61222 1.75997C2.93569 1.75997 2.25915 1.75997 1.58262 1.75997C1.10905 1.64997 0.567822 1.9433 0.567822 2.60329V2.63995C0.567822 5.27991 0.635475 7.91986 0.635475 10.5965C0.635475 11.6965 0.229555 13.6764 0.838435 14.7764C0.838435 15.0331 0.973741 15.2531 1.27818 15.3997C2.76655 16.0964 4.18727 16.0597 5.77712 15.913C7.70524 15.7297 9.56571 15.5097 11.4938 15.3997C12.7454 15.3264 14.5044 15.5831 15.6883 15.0331C16.9399 14.4097 16.4325 12.9798 16.2296 11.8798ZM3.74753 3.5566C3.74753 3.84993 3.78135 4.14326 3.78135 4.39992C3.74753 5.57323 5.43886 5.57323 5.47268 4.39992C5.47268 4.10659 5.47268 3.81327 5.43886 3.51994C6.2507 3.51994 7.06254 3.51994 7.87437 3.51994C8.75387 3.51994 9.59953 3.48327 10.4452 3.40994C10.5129 3.70327 10.5467 3.99659 10.5467 4.28992C10.479 5.46323 12.1704 5.46323 12.238 4.28992C12.238 3.95993 12.2042 3.59327 12.1365 3.26327C12.7792 3.18994 13.4558 3.15328 14.0985 3.11661C14.0646 3.40994 14.1661 4.03326 14.1661 4.21659C14.2 4.54659 14.2 4.87658 14.2 5.20657C13.9632 5.16991 13.7264 5.24324 13.5234 5.4999C13.3543 5.68323 11.3585 5.68323 11.0203 5.7199C10.0055 5.8299 9.02448 5.79323 8.00968 5.90323C6.85958 6.04989 5.67564 6.08656 4.52554 6.26989C3.78135 6.37989 3.03717 6.59988 2.25915 6.78321C2.25915 5.68323 2.22533 4.58325 2.22533 3.48327C2.73273 3.59327 3.24013 3.59327 3.74753 3.5566ZM13.8955 13.4198C12.6439 13.4931 11.3923 13.6031 10.1408 13.6398C7.73907 13.7131 4.52554 14.8864 2.22533 13.8964C2.1915 13.8231 2.12385 13.7498 2.05619 13.6764C2.49594 14.0431 2.32681 12.0998 2.32681 11.8065C2.32681 10.7798 2.32681 9.78982 2.32681 8.76318C4.62702 8.43318 6.85958 7.88319 9.19361 7.73653C10.3099 7.6632 11.3923 7.58986 12.4748 7.51653C13.0499 7.47987 13.6926 7.51653 14.2338 7.29654V7.3332C14.3014 9.0565 14.2676 10.8898 14.4706 12.5764C14.4706 12.6498 14.5044 12.7231 14.5044 12.8331C14.5382 13.0164 14.6059 13.1631 14.6735 13.2364C14.4029 13.2731 14.0308 13.3831 13.8955 13.4198Z" fill="black"></path>
                 </svg>
             </div>
@@ -65,78 +68,139 @@
             <button class="btn-lg btn-primary" id="b_publicar" type="button">Publicar</button>
         </form>
     </div>
+</section>
+<section id="Proximas-salidas">
     <div class="container-width" id="i9x4g">
-        <div class="flex-title" id="ibcnf">Próximas Salidas</div>
+        <div class="flex-title" id="ibcnf">PRÓXIMAS SALIDAS</div>
         <div class="cards" id="i1u9j">
             <div class="card">
-                <div class="card-header card-title"> Madrid - Zaragoza </div>
                 <div class="card-body">
-                    <div class="card-sub-title">24/07/2022 Hora:18:30</div>
-                    <div class="card-desc"> Punto de recogida: Atocha
+                    <div class="car-detalle">
+                        <img class="badge-avatar" src='{% static "img/avatar-mujer.jpg" %}'/>
+                        <div class="card-sub-name"><b>Chechu</b></div>
+                        <p>
+                            <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
+                            <b style="font-size:20px;margin-left: 10px; color:#000;">5.0</b> - <em style="color:#888;font-size:10px;">1 Opiniones</em></p>
                     </div>
-                    <div class="card-desc"> Punto de Llegada: Pilar
+                    <div class="car-detalle">
+                        <div class="card-sub-date"><b>Martes, 9 de Agosto  18:00hs</b></div>
+                        <div class="card-sub-city"><b>Madrid - Cuenca</b></div>
+                        <div class="card-desc">
+                            <p>
+                                <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
+                                Estación de Atocha
+                            </p>
+                            <p>
+                                <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
+                                Iglesia del pilar
+                            </p>
+                            <div class="card-car">
+                                <p><br>Coche: <b>Seat Ibiza</b>
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header ch2"></div>
-                <div class="card-body">
-                    <div class="card-title">Title two</div>
-                    <div class="card-sub-title">Subtitle two</div>
-                    <div class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header ch3"></div>
-                <div class="card-body">
-                    <div class="card-title">Title three</div>
-                    <div class="card-sub-title">Subtitle three</div>
-                    <div class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header ch4"></div>
-                <div class="card-body">
-                    <div class="card-title">Title four</div>
-                    <div class="card-sub-title">Subtitle four</div>
-                    <div class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore
+                    <div class="card-price">
+                        <div class="card-txt-price"><b>30€</b></div>
+                        <div class="card-txt-personas"><b>por persona</b></div>
+                        <div><b><br>3</b> plazas(s) disponible(s)</div>
                     </div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header ch5"></div>
                 <div class="card-body">
-                    <div class="card-title">Title five</div>
-                    <div class="card-sub-title">Subtitle five</div>
-                    <div class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore
+                    <div class="car-detalle">
+                        <img class="badge-avatar" src='{% static "img/avatar-mujer.jpg" %}'/>
+                        <div class="card-sub-name"><b>Chechu</b></div>
+                        <p>
+                            <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
+                            <b style="font-size:20px;margin-left: 10px; color:#000;">5.0</b> - <em style="color:#888;font-size:10px;">1 Opiniones</em></p>
+                    </div>
+                    <div class="car-detalle">
+                        <div class="card-sub-date"><b>Martes, 9 de Agosto  18:00hs</b></div>
+                        <div class="card-sub-city"><b>Madrid - Cuenca</b></div>
+                        <div class="card-desc">
+                            <p>
+                                <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
+                                Estación de Atocha
+                            </p>
+                            <p>
+                                <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
+                                Iglesia del pilar
+                            </p>
+                            <div class="card-car">
+                                <p><br>Coche: <b>Seat Ibiza</b>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-price">
+                        <div class="card-txt-price"><b>30€</b></div>
+                        <div class="card-txt-personas"><b>por persona</b></div>
+                        <div><b><br>3</b> plazas(s) disponible(s)</div>
                     </div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header ch6"></div>
                 <div class="card-body">
-                    <div class="card-title">Title six</div>
-                    <div class="card-sub-title">Subtitle six</div>
-                    <div class="card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore
+                    <div class="car-detalle">
+                        <img class="badge-avatar" src='{% static "img/avatar-mujer.jpg" %}'/>
+                        <div class="card-sub-name"><b>Chechu</b></div>
+                        <p>
+                            <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
+                            <b style="font-size:20px;margin-left: 10px; color:#000;">5.0</b> - <em style="color:#888;font-size:10px;">1 Opiniones</em></p>
+                    </div>
+                    <div class="car-detalle">
+                        <div class="card-sub-date"><b>Martes, 9 de Agosto  18:00hs</b></div>
+                        <div class="card-sub-city"><b>Madrid - Cuenca</b></div>
+                        <div class="card-desc">
+                            <p>
+                                <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
+                                Estación de Atocha
+                            </p>
+                            <p>
+                                <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
+                                Iglesia del pilar
+                            </p>
+                            <div class="card-car">
+                                <p><br>Coche: <b>Seat Ibiza</b>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-price">
+                        <div class="card-txt-price"><b>30€</b></div>
+                        <div class="card-txt-personas"><b>por persona</b></div>
+                        <div><b><br>3</b> plazas(s) disponible(s)</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<section class="blk-sect" id="ignrm">
+<section class="blk-sect" id="principales_destino">
     <div class="container-width" id="icu4j">
         <div class="blk-title" id="izqeq">PRINCIPALES DESTINOS</div>
         <div class="blk-desc" id="izxudw">Encuentra los mejores destinos acorde a tu plan de viaje</div>
         <div class="price-cards" id="ixw6cv">
-            <div class="price-card-cont" id="i2otnb">
+            <div class="card-destino">
+                <div class="card-img">
+                    <img src='{% static "img/Barcelona.jpg" %}' alt="fin" class="fmt-img">
+                </div>
+                <div>
+                    <p><b>Barcelona</b></p>
+                    <div class="card-destino-detalle">
+                        <div class="card-num-viajes">20 viajes</div>
+                        <div class="card-med-viajes">De media:<b>30€</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-destino">
+            </div>
+            <!--<div class="price-card-cont" id="i2otnb">
                 <div class="price-card" id="i4pnaf">
                     <div class="pc-title" id="i3f7ol">Fin de Semana</div>
                     <div class="pc-desc">Some random list</div>
@@ -168,11 +232,11 @@
                     <div class="pc-feature">+ Enterprise feature 4</div>
                     <div class="pc-amount odd-feat">$ 29,90/mo</div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </section>
-<section class="bdg-sect" id="iq942l">
+<!-- Sección de los fundadores <section class="bdg-sect" id="iq942l">
     <div class="container-width"><h1 class="bdg-title">The team</h1>
         <div class="badges" id="ism6pz">
             <div class="badge">
@@ -203,7 +267,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>-->
 <footer class="footer-under" id="ia0bds">
     <div class="container-width">
         <div class="footer-container">
@@ -227,26 +291,25 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+            <div id="redes">
+                <h4>REDES SOCIALES</h4>
+                <ul>
+                    <li><a href="https://www.facebook.com/" target="_blank" id="facebook"></a></li>
+                    <li><a href="https://www.twitter.com/" target="_blank" id="twitter"></a></li>
+                    <li><a href="https://www.instagram.com/" target="_blank" id="instagram"></a></li>
+                </ul>
+            </div>
             <div class="form-sub">
                 <div class="foot-form-cont">
                     <div class="foot-form-title">Subscribe</div>
                     <div class="foot-form-desc">Subscribe to our newsletter to receive exclusive offers and the latest
                         news
                     </div>
-                    <input class="sub-input" name="name" placeholder="Name"/><input class="sub-input" name="email"
-                                                                                    placeholder="Email"/>
+                    <input class="sub-input" name="name" placeholder="Name"/>
+                    <input class="sub-input" name="email" placeholder="Email"/>
                     <button class="sub-btn" type="button">Submit</button>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="copyright">
-        <div class="container-width">
-            <div class="made-with">
-                made with GrapesJS
-            </div>
-            <div class="foot-social-btns">facebook twitter linkedin mail</div>
-            <div class="clearfix"></div>
         </div>
     </div>
 </footer>
