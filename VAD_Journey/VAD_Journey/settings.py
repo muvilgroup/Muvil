@@ -86,6 +86,17 @@ WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
     }
 }'''
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd8cftt043bik3u',
+        'USER':'lopbijivkgztuh',
+        'PASSWORD':'38bd06b5a941cce0a8f4356555606a826af723c590d10a0cf9b03a6a2bbb4d3d',
+        'HOST':'ec2-52-212-228-71.eu-west-1.compute.amazonaws.com',
+        'DATABASE_PORT':'5432'
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
