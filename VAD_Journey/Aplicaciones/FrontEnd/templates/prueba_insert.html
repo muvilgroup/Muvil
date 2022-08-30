@@ -10,6 +10,18 @@
 
 </head>
 <body id="iywx">
+  <div class="btn-group">
+              <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                Bienvenid@ {{datos_persona.nombre}} {{datos_persona.apellido1}}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-lg-end">
+                <li><a class="dropdown-item" href="#">Mis Viajes</a></li>
+                <li><a class="dropdown-item" href="#">Mis Mensajes</a></li>
+                <li><a class="dropdown-item" href="#">Mis Pagos/Reembolsos</a></li>
+                <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                <li><a class="dropdown-item" href="#">Desconectar</a></li>
+              </ul>
+            </div>
     <h1>CARGAR IMAGEN</h1>
     <div class="custom-file">
         <label class="custom-file-label" for="customFileLang">Carga tu foto de perfil...</label>
@@ -28,6 +40,8 @@
     <h1>ID Persona: {{ID_Persona}}</h1>
     <h1>ID Viaje: {{ID_Viaje}}</h1>
     <h1>ID Vehiculo: {{ID_Vehiculo}}</h1>
+
+
 
 
     <!----- Boostrap ----->
