@@ -72,7 +72,7 @@ def guardar_usuario(request):
         password = Password_input,
         numero_telefono = Telefono_input,
         genero = Genero_input,
-        ruta_foto2 = ruta_foto_input
+        ruta_foto = ruta_foto_input
     )
 
     numalert = 3  #OK Nuevo usuario creado
