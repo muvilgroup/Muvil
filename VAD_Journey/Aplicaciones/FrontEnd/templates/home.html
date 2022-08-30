@@ -1,36 +1,88 @@
 {% load static %}
+{% load pwa %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% progressive_web_app_meta %}
     <meta charset="utf-8">
     <title>VAD</title>
     <link type='text/css' href='{% static "css/home.css" %}' rel='stylesheet' />
+    <!----- Boostrap ----->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 <body id="iywx">
-<header class="header-banner" id="iubc">
-    <div class="container-width" id="iszv">
-        <nav class="bar-nav">
-                        <a class="menu-item-nav" href="#">Registrate</a>
-                        <a class="menu-item-nav" href="#">Inicia Sesión</a>
-                        <a class="menu-item-nav" href="#">¿Cómo Funciona?</a>
 
+<header class="header-banner" id="iubc">
+    <div class="container-width px-4 pt-4" id="iszv">
+        <nav class="bar-nav">
+            {% if datos_persona.id is not None %}
+                        <svg xmlns="http://www.w3.org/2000/svg" href="/journey_register/{{datos_persona.id}}" width="30" height="30" fill="black" class="bi bi-car-front-fill" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189l.956-1.913A.5.5 0 0 1 4.309 3h7.382a.5.5 0 0 1 .447.276l.956 1.913a.51.51 0 0 1-.497.731c-.91-.073-3.35-.17-4.597-.17-1.247 0-3.688.097-4.597.17a.51.51 0 0 1-.497-.731Z"/>
+                        </svg>
+                        <a class="menu-item-nav text-dark text-end" href="/journey_register/{{datos_persona.id}}">Publicar Viaje</a>
+                        <a class="menu-item-nav text-dark" href="#">Bienvenid@ {{datos_persona.nombre}} {{datos_persona.apellido1}}</a>
+            {% else %}
+                        <a class="menu-item-nav" href="#" hidden></a>
+                        <svg xmlns="http://www.w3.org/2000/svg" data-toggle="modal" href="#userModal" width="40" height="40" fill="black" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                          <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        </svg>
+            {% endif %}
+
+                        <!-- <a class="menu-item-nav" href="#" hidden>¿Cómo Funciona?</a> -->
         </nav>
     </div>
+
+    <!-- Ventana emergente -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content text-dark">
+          <div class="modal-header border border-4 border-primary bg-primary text-white">
+            <h5 class="modal-title" id="userModalLabel">Introduce los datos de tu usuario...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body border border-4 border-primary">
+            <form method="POST" action="/main/"> {% csrf_token %}
+              <div class="form-group row d-flex justify-content-center">
+                <label for="txtEmail" class="col-form-label col-3">Email:</label>
+                <input type="text" class="form-control col-6" id="txtEmail" name="txtEmail">
+              </div>
+              <div class="form-group row d-flex justify-content-center">
+                <label for="txtPass" class="col-form-label col-3">Contraseña:</label>
+                <input type="text" class="form-control col-6" id="txtPass" name="txtPass">
+              </div>
+              <a class="form-group row d-flex justify-content-center" href="/user_register">¿No tienes cuenta? Regístrate</a>
+              <div class="modal-footer ">
+                <input type="submit" class="btn btn-primary col-3 text-white" value="Entrar"/>
+                <button type="button" class="btn btn-secondary col-3 text-white" data-dismiss="modal">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <div id="Logo">
         <img class="logo-nav" src='{% static "img/Logo.JPG" %}' />
     </div>
     <div class="container-head-foto" id="iszv">
        <img  src='{% static "img/Portada3.jpg" %}' style="width:100%;height:100%;"/>
     </div>
+
+    <!-------- variables escondidas -------->
+    <!-- Controla la aparicion de la sweet alert en home en funcion del valor (1:error log , 2:login OK, 3:nuevo user OK)-->
+    <input type="number" id="numAlert" name="numAlert" value="{{numAlert}}" default="0" hidden>
+
+
 </header>
 <section id="buscar-publicar-viaje">
     <div class="contenedor">
-        <form   id="buscador">
- <!--       class="flex flex-column flex-row-md" <div class="form-group" id="Buscador">
-            <label class="label" id="irxbkj">Origen</label>
-            <label class="label" id="ivcweq">Destino</label>
-            <label class="label" id="irg0li">Fecha</label>
-        </div> -->
+        <form   id="buscador" method="POST" action="/search_journey/"> {% csrf_token %}
             <div class="flex-1 mr0 mb3 mb0-md mr2-md relative">
                 <div class="">
                     <input class="input text-from" id="io10t9" name="Origen" placeholder="¿De dónde sales?" required type="text"/>
@@ -64,8 +116,8 @@
                     <path d="M16.2296 11.8798C16.1957 11.7331 16.1619 11.5865 16.0604 11.5131C15.8575 9.31317 16.0266 7.03987 15.8913 4.83991C15.8236 3.81326 16.0942 2.16329 15.1809 1.50331C15.0118 1.39331 14.8088 1.35664 14.6059 1.39331C14.5382 1.39331 14.4706 1.35664 14.4029 1.35664H14.2338C14.1661 1.35664 14.1323 1.35664 14.0985 1.35664C13.3543 1.39331 12.6778 1.42997 11.9674 1.50331C12.0012 1.28331 12.0012 1.09998 12.0012 0.879984C12.0012 -0.293328 10.3099 -0.293328 10.3099 0.879984C10.3099 1.13665 10.3099 1.39331 10.2761 1.64997C9.46423 1.7233 8.65239 1.75997 7.84055 1.75997C6.99488 1.75997 6.14922 1.75997 5.30355 1.75997C5.30355 1.53997 5.26972 1.35664 5.26972 1.13665C5.26972 -0.036666 3.57839 -0.036666 3.57839 1.13665C3.57839 1.35664 3.57839 1.53997 3.61222 1.75997C2.93569 1.75997 2.25915 1.75997 1.58262 1.75997C1.10905 1.64997 0.567822 1.9433 0.567822 2.60329V2.63995C0.567822 5.27991 0.635475 7.91986 0.635475 10.5965C0.635475 11.6965 0.229555 13.6764 0.838435 14.7764C0.838435 15.0331 0.973741 15.2531 1.27818 15.3997C2.76655 16.0964 4.18727 16.0597 5.77712 15.913C7.70524 15.7297 9.56571 15.5097 11.4938 15.3997C12.7454 15.3264 14.5044 15.5831 15.6883 15.0331C16.9399 14.4097 16.4325 12.9798 16.2296 11.8798ZM3.74753 3.5566C3.74753 3.84993 3.78135 4.14326 3.78135 4.39992C3.74753 5.57323 5.43886 5.57323 5.47268 4.39992C5.47268 4.10659 5.47268 3.81327 5.43886 3.51994C6.2507 3.51994 7.06254 3.51994 7.87437 3.51994C8.75387 3.51994 9.59953 3.48327 10.4452 3.40994C10.5129 3.70327 10.5467 3.99659 10.5467 4.28992C10.479 5.46323 12.1704 5.46323 12.238 4.28992C12.238 3.95993 12.2042 3.59327 12.1365 3.26327C12.7792 3.18994 13.4558 3.15328 14.0985 3.11661C14.0646 3.40994 14.1661 4.03326 14.1661 4.21659C14.2 4.54659 14.2 4.87658 14.2 5.20657C13.9632 5.16991 13.7264 5.24324 13.5234 5.4999C13.3543 5.68323 11.3585 5.68323 11.0203 5.7199C10.0055 5.8299 9.02448 5.79323 8.00968 5.90323C6.85958 6.04989 5.67564 6.08656 4.52554 6.26989C3.78135 6.37989 3.03717 6.59988 2.25915 6.78321C2.25915 5.68323 2.22533 4.58325 2.22533 3.48327C2.73273 3.59327 3.24013 3.59327 3.74753 3.5566ZM13.8955 13.4198C12.6439 13.4931 11.3923 13.6031 10.1408 13.6398C7.73907 13.7131 4.52554 14.8864 2.22533 13.8964C2.1915 13.8231 2.12385 13.7498 2.05619 13.6764C2.49594 14.0431 2.32681 12.0998 2.32681 11.8065C2.32681 10.7798 2.32681 9.78982 2.32681 8.76318C4.62702 8.43318 6.85958 7.88319 9.19361 7.73653C10.3099 7.6632 11.3923 7.58986 12.4748 7.51653C13.0499 7.47987 13.6926 7.51653 14.2338 7.29654V7.3332C14.3014 9.0565 14.2676 10.8898 14.4706 12.5764C14.4706 12.6498 14.5044 12.7231 14.5044 12.8331C14.5382 13.0164 14.6059 13.1631 14.6735 13.2364C14.4029 13.2731 14.0308 13.3831 13.8955 13.4198Z" fill="black"></path>
                 </svg>
             </div>
-            <button class="btn-lg btn-primary" id="b_buscar" type="button">Buscar</button>
-            <button class="btn-lg btn-primary" id="b_publicar" type="button">Publicar</button>
+            <input type="submit" class="btn btn-primary col-3 text-white" value="Buscar"/>
+            <a class="btn-lg btn-primary text-white" id="b_publicar" type="button" hidden>Publicar</a>
         </form>
     </div>
 </section>
@@ -73,6 +125,56 @@
     <div class="container-width" id="i9x4g">
         <div class="flex-title" id="ibcnf">PRÓXIMAS SALIDAS</div>
         <div class="cards" id="i1u9j">
+            {% for i in viajesProximos %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="car-detalle">
+                        <img class="badge-avatar" src="{% static i.id_persona.ruta_foto %}"/>
+                        <div class="card-sub-name"><b>{{i.id_persona.nombre}} {{i.id_persona.apellido1}}</b></div>
+                        <p>
+                            {% if i.id_persona.prestigio == "B" %}
+                                <img src='{% static "img/prestigio_bronce.jpg" %}' alt="start" width="25">
+                            {% elif i.id_persona.prestigio == "P" %}
+                                <img src='{% static "img/prestigio_plata.jpg" %}' alt="start" width="25">
+                            {% elif i.id_persona.prestigio == "Pl" %}
+                                <img src='{% static "img/prestigio_platino.jpg" %}' alt="start" width="22">
+                            {% elif i.id_persona.prestigio == "O" %}
+                                <img src='{% static "img/prestigio_oro.jpg" %}' alt="start" width="22">
+                            {% elif i.id_persona.prestigio == "D" %}
+                                <img src='{% static "img/prestigio_diamante.jpg" %}' alt="start" width="40">
+                            {% else %}
+                                <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
+                            {% endif %}
+                            <b style="font-size:20px;margin-left: 10px; color:#000;">{{i.id_persona.puntuacion}}</b> - <em style="color:#888;font-size:10px;">{{i.id_persona.numero_opiniones}} Opiniones</em></p>
+                    </div>
+                    <div class="car-detalle">
+                        <div class="card-sub-date"><b>{{i.fecha_ida}} {{i.hora_ida}}</b></div>
+                        <div class="card-sub-city"><b>{{i.ciudad_origen}} - {{i.ciudad_destino}}</b></div>
+                        <div class="card-desc">
+                            <p>
+                                <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
+                                Estación de Atocha
+                            </p>
+                            <p>
+                                <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
+                                Iglesia del pilar
+                            </p>
+                            <div class="card-car">
+                                <p><br>Coche: <b>Seat Ibiza</b>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-price">
+                        <div class="card-txt-price"><b>{{i.importe_total_asiento}}€</b></div>
+                        <div class="card-txt-personas"><b>por persona</b></div>
+                        <div><b><br>{{i.numero_asientos_libres}}</b> plazas(s) disponible(s)</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!--
             <div class="card">
                 <div class="card-body">
                     <div class="car-detalle">
@@ -143,41 +245,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="car-detalle">
-                        <img class="badge-avatar" src='{% static "img/avatar-mujer.jpg" %}'/>
-                        <div class="card-sub-name"><b>Chechu</b></div>
-                        <p>
-                            <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
-                            <b style="font-size:20px;margin-left: 10px; color:#000;">5.0</b> - <em style="color:#888;font-size:10px;">1 Opiniones</em></p>
-                    </div>
-                    <div class="car-detalle">
-                        <div class="card-sub-date"><b>Martes, 9 de Agosto  18:00hs</b></div>
-                        <div class="card-sub-city"><b>Madrid - Cuenca</b></div>
-                        <div class="card-desc">
-                            <p>
-                                <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
-                                Estación de Atocha
-                            </p>
-                            <p>
-                                <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
-                                Iglesia del pilar
-                            </p>
-                            <div class="card-car">
-                                <p><br>Coche: <b>Seat Ibiza</b>
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="card-price">
-                        <div class="card-txt-price"><b>30€</b></div>
-                        <div class="card-txt-personas"><b>por persona</b></div>
-                        <div><b><br>3</b> plazas(s) disponible(s)</div>
-                    </div>
-                </div>
-            </div>
+            -->
         </div>
     </div>
 </section>
@@ -314,9 +382,15 @@
     </div>
 </footer>
 
-<!----- Boostrap ----->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <!----- Boostrap ----->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!----- SweetAlert2 ----->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!----- JS custom ----->
+    <script src="{% static 'js/utils/notificacionSwal.js' %}"></script>
+    <script src="{% static 'js/home.js' %}"></script>
 
 </body>
 </html>

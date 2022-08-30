@@ -15,6 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/static/js', 'serviceworker.js')
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Aplicaciones.FrontEnd',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -89,10 +91,10 @@ WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd8cftt043bik3u',
-        'USER':'lopbijivkgztuh',
-        'PASSWORD':'38bd06b5a941cce0a8f4356555606a826af723c590d10a0cf9b03a6a2bbb4d3d',
-        'HOST':'ec2-52-212-228-71.eu-west-1.compute.amazonaws.com',
+        'NAME': 'd1jstk8c90jd9h',
+        'USER':'zdicfvfigleoon',
+        'PASSWORD':'e5d74c70c6a902b79b88297e6705941f8bd9d0848cd2c0d3d9da0451b61f7eb4',
+        'HOST':'ec2-34-249-161-200.eu-west-1.compute.amazonaws.com',
         'DATABASE_PORT':'5432'
     }
 }
@@ -142,8 +144,44 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/static'),)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
+#################################
+###  PWA  #######################
+#################################
+PWA_APP_NAME = 'vad_journey'
+PWA_APP_DESCRIPTION = "VAD Journey PWA"
+PWA_APP_THEME_COLOR = '#000000'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/img/Square150x150Logo.scale-100.png',
+        'sizes': '150x150',
+        'type': 'image/png',
+        'purpose': 'any'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/img/Square150x150Logo.scale-100.png',
+        'sizes': '150x150',
+        'type': 'image/png',
+        'purpose': 'any'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/img/Square150x150Logo.scale-100.png',
+        'sizes': '150x150',
+        'type': 'image/png',
+        'purpose': 'any'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
 
 
 

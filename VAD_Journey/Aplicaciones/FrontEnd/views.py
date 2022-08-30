@@ -1,6 +1,163 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.utils import timezone
+from datetime import datetime, date
 
+from .models import Personas, Viajes, Vehiculos
 
 # Create your views here.
 def v_home(request):
-    return render(request, "home.html", {})
+    dateNow = datetime.date(datetime.now())
+    timeNow = datetime.time(datetime.now())
+
+    ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
+    viajesProximos = Viajes.objects.all().filter(fecha_ida__gte=dateNow).order_by('fecha_ida')[0:4]
+    datos = {
+        'viajesProximos':viajesProximos
+    }
+
+    return render(request, "home.html", datos)
+
+def main(request):
+    email_input = request.POST.get('txtEmail', False)
+    pass_input = request.POST.get('txtPass', False)
+
+    existe_persona = Personas.objects.filter(email=email_input, password=pass_input)
+
+    if existe_persona:
+        numalert = 2  #OK Login
+        registro_persona = Personas.objects.get(email=email_input, password=pass_input)
+        return render(request, "home.html", {'datos_persona':registro_persona, 'numAlert':numalert})
+    else:
+        numalert = 1 #Error Login
+        return render(request, "home.html", {'numAlert':numalert})
+
+def buscar_viaje(request):
+    origen_input = request.POST.get('Origen')
+    destino_input = request.POST.get('Destino')
+    fecha_input = request.POST.get('Fecha')
+
+    viajesListados = Viajes.objects.filter(ciudad_origen=origen_input, ciudad_destino=destino_input, fecha_ida=fecha_input).order_by('fecha_ida')
+
+    datos = {
+        'viajes':viajesListados
+    }
+
+    return render(request, "main.html", datos)
+
+def panel_nuevo_usuario(request):
+    return render(request, "user_register.html", {})
+
+def guardar_usuario(request):
+    Email_input = request.POST['txtEmail']
+    Password_input = request.POST['txtPass']
+    nombre_input = request.POST['txtNombre']
+    Apellido1_input = request.POST['txtApe1']
+    Apellido2_input = request.POST['txtApe2']
+    FechaNacimiento_input = request.POST['datFechaNac']
+    TipoDoc_input = request.POST['txtTipoDoc']
+    NumeroDoc_input = request.POST['numDoc']
+    Telefono_input = request.POST['numTelefono']
+    Genero_input = request.POST['txtGenero']
+    ruta_foto_input = request.POST['userImg']
+
+    usuario = Personas.objects.create(
+        nombre = nombre_input,
+        apellido1 = Apellido1_input,
+        apellido2 = Apellido2_input,
+        fec_nacimiento = FechaNacimiento_input,
+        tipo_documento = TipoDoc_input,
+        numero_documento = NumeroDoc_input,
+        email = Email_input,
+        password = Password_input,
+        numero_telefono = Telefono_input,
+        genero = Genero_input,
+        ruta_foto2 = ruta_foto_input
+    )
+
+    numalert = 3  #OK Nuevo usuario creado
+    registro_persona = Personas.objects.get(email=Email_input, password=Password_input)
+
+    return render(request, "home.html", {'datos_persona': registro_persona, 'numAlert': numalert})
+
+
+def panel_nuevo_viaje(request, idP):
+    return render(request, "journey_register.html", {'ID_Persona':idP})
+
+def guardar_viaje(request):
+    idP_input = request.POST['numIdP']
+    ciudadO_input = request.POST['txtCiudadO']
+    ciudadD_input = request.POST['txtCiudadD']
+    idaVuelta_input = request.POST['flgIdaVuelta']
+    fechaIda_input = request.POST['datFechaIda']
+    fechaVuelta_input = request.POST['datFechaVuelta']
+    numeroAsientos_input = request.POST['numAsientos']
+    importeConductorAsiento_input = int(request.POST['numImporte'])
+    horaIda_input = request.POST['timHoraIda']
+    horaVuelta_input = request.POST['timHoraVuelta']
+
+    flg_solicitado = False
+    flg_reservado = False
+    flg_cancelado = False
+    flg_incidencia = False
+    numero_asientos_libres = numeroAsientos_input
+    importe_comision_asiento = importeConductorAsiento_input * 0.1
+    importe_total_asiento = importe_comision_asiento + importeConductorAsiento_input
+
+    viaje = Viajes.objects.create(
+        id_persona = idP_input,
+        ciudad_origen = ciudadO_input,
+        ciudad_destino = ciudadD_input,
+        flg_ida_vuelta = idaVuelta_input,
+        fecha_ida = fechaIda_input,
+        fecha_vuelta = fechaVuelta_input,
+        numero_asientos_viaje = numeroAsientos_input,
+        flg_solicitado = flg_solicitado,
+        flg_reservado = flg_reservado,
+        flg_cancelado = flg_cancelado,
+        flg_incidencia = flg_incidencia,
+        importe_total_asiento = importe_total_asiento,
+        importe_comision_asiento = importe_comision_asiento,
+        importe_conductor_asiento = importeConductorAsiento_input,
+        numero_asientos_libres = numero_asientos_libres,
+        hora_ida = horaIda_input,
+        hora_vuelta = horaVuelta_input
+    )
+
+    numalert = 4  # OK viaje nuevo publicado
+
+    return render(request, "home.html", {'numAlert': numalert})
+
+
+
+def panel_nuevo_vehiculo(request, idP):
+    return render(request, "vehicle_register.html", {'ID_Persona':idP})
+
+def guardar_vehiculo(request):
+    idP_input = request.POST['numIdP']
+    tipoVehiculo_input = request.POST['txtTipoVehiculo']
+    marca_input = request.POST['txtMarca']
+    modelo_input = request.POST['txtModelo']
+    color_input = request.POST['txtColor']
+    anosAnt_input = request.POST['numAnosAnt']
+    numeroAsientos_input = request.POST['numAsientos']
+    flagFumador_input = request.POST['flgFumador']
+    flagMascotas_input = request.POST['flgMascotas']
+
+    vehiculo = Vehiculos.objects.create(
+        id_persona = idP_input,
+        tipo_vehiculo = tipoVehiculo_input,
+        marca = marca_input,
+        modelo = modelo_input,
+        color = color_input,
+        años_antiguedad = anosAnt_input,
+        numero_asientos = numeroAsientos_input,
+        flag_acepta_fumador = flagFumador_input,
+        flag_acepta_mascota = flagMascotas_input
+    )
+
+    return redirect('/prueba_insert/')
+
+
+def prueba_insert(request):
+    return render(request, "prueba_insert.html", {'ID_Persona':'111','ID_Viaje':'222','ID_Vehiculo':'333'})
