@@ -161,3 +161,6 @@ def guardar_vehiculo(request):
 
 def prueba_insert(request):
     return render(request, "prueba_insert.html", {'ID_Persona':'111','ID_Viaje':'222','ID_Vehiculo':'333'})
+
+def panel_mi_perfil(request):
+    return render(request, "index.html", {})

@@ -1,5 +1,5 @@
 from django.urls import path
-from Aplicaciones.FrontEnd.views import v_home, buscar_viaje, main, panel_nuevo_usuario, guardar_usuario, panel_nuevo_viaje, guardar_viaje, panel_nuevo_vehiculo, guardar_vehiculo, prueba_insert
+from Aplicaciones.FrontEnd.views import v_home, buscar_viaje, panel_mi_perfil, main, panel_nuevo_usuario, guardar_usuario, panel_nuevo_viaje, guardar_viaje, panel_nuevo_vehiculo, guardar_vehiculo, prueba_insert
 
 urlpatterns = [
     path('', v_home),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('save_vehicle/', guardar_vehiculo),
     path('prueba_insert/', prueba_insert),
     path('search_journey/', buscar_viaje),
+    path('mi_profile/', panel_mi_perfil),
 ]

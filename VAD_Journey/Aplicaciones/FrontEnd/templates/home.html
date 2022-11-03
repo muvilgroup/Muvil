@@ -19,25 +19,55 @@
         <nav class="bar-nav">
             {% if datos_persona.id is not None %}
                         <svg xmlns="http://www.w3.org/2000/svg" href="/journey_register/{{datos_persona.id}}" width="30" height="30" fill="black" class="bi bi-car-front-fill" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189l.956-1.913A.5.5 0 0 1 4.309 3h7.382a.5.5 0 0 1 .447.276l.956 1.913a.51.51 0 0 1-.497.731c-.91-.073-3.35-.17-4.597-.17-1.247 0-3.688.097-4.597.17a.51.51 0 0 1-.497-.731Z"/>
+                          <path d="M4 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM4.862 4.276 3.906 6.19a.51.51 0 0 0 .497.731c.91-.073 2.35-.17 3.597-.17 1.247 0 2.688.097 3.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 10.691 4H5.309a.5.5 0 0 0-.447.276Z"/>
+                          <path fill-rule="evenodd" d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM4.82 3a1.5 1.5 0 0 0-1.379.91l-.792 1.847a1.8 1.8 0 0 1-.853.904.807.807 0 0 0-.43.564L1.03 8.904a1.5 1.5 0 0 0-.03.294v.413c0 .796.62 1.448 1.408 1.484 1.555.07 3.786.155 5.592.155 1.806 0 4.037-.084 5.592-.155A1.479 1.479 0 0 0 15 9.611v-.413c0-.099-.01-.197-.03-.294l-.335-1.68a.807.807 0 0 0-.43-.563 1.807 1.807 0 0 1-.853-.904l-.792-1.848A1.5 1.5 0 0 0 11.18 3H4.82Z"/>
                         </svg>
                         <a class="menu-item-nav text-dark text-end" href="/journey_register/{{datos_persona.id}}">Publicar Viaje</a>
                         <!--<a class="menu-item-nav text-dark" href="#">Bienvenid@ {{datos_persona.nombre}} {{datos_persona.apellido1}}</a>-->
                         <div class="btn-group">
-                          <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                          <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             Bienvenid@ {{datos_persona.nombre}} {{datos_persona.apellido1}}
                           </button>
-                          <ul class="dropdown-menu dropdown-menu-lg-end">
-                            <li><a class="dropdown-item" href="#">Mis Viajes</a></li>
-                            <li><a class="dropdown-item" href="#">Mis Mensajes</a></li>
-                            <li><a class="dropdown-item" href="#">Mis Pagos/Reembolsos</a></li>
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Desconectar</a></li>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="d-flex flex-row px-3 mb-3 align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-signpost-2" viewBox="0 0 16 16">
+                                  <path d="M7 1.414V2H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h5v1H2.5a1 1 0 0 0-.8.4L.725 8.7a.5.5 0 0 0 0 .6l.975 1.3a1 1 0 0 0 .8.4H7v5h2v-5h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H9V6h4.5a1 1 0 0 0 .8-.4l.975-1.3a.5.5 0 0 0 0-.6L14.3 2.4a1 1 0 0 0-.8-.4H9v-.586a1 1 0 0 0-2 0zM13.5 3l.75 1-.75 1H2V3h11.5zm.5 5v2H2.5l-.75-1 .75-1H14z"/>
+                                </svg>
+                                <a class="dropdown-item" href="#">Mis Viajes</a>
+                            </li>
+                            <li class="d-flex flex-row px-3 mb-3 align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-signpost-2" viewBox="0 0 16 16">
+                                  <path d="M4 0a2 2 0 0 0-2 2v1.133l-.941.502A2 2 0 0 0 0 5.4V14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.4a2 2 0 0 0-1.059-1.765L14 3.133V2a2 2 0 0 0-2-2H4Zm10 4.267.47.25A1 1 0 0 1 15 5.4v.817l-1 .6v-2.55Zm-1 3.15-3.75 2.25L8 8.917l-1.25.75L3 7.417V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v5.417Zm-11-.6-1-.6V5.4a1 1 0 0 1 .53-.882L2 4.267v2.55Zm13 .566v5.734l-4.778-2.867L15 7.383Zm-.035 6.88A1 1 0 0 1 14 15H2a1 1 0 0 1-.965-.738L8 10.083l6.965 4.18ZM1 13.116V7.383l4.778 2.867L1 13.117Z"/>
+                                </svg>
+                                <a class="dropdown-item" href="#">Mis Mensajes</a>
+                            </li>
+                            <li class="d-flex flex-row px-3 mb-3 align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-signpost-2" viewBox="0 0 16 16">
+                                  <path d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z"/>
+                                  <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                                </svg>
+                                <a class="dropdown-item" href="#">Mis Pagos/Reembolsos</a>
+                            </li>
+                            <li class="d-flex flex-row px-3 mb-3 align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-signpost-2" viewBox="0 0 16 16">
+                                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                                <a class="dropdown-item" href="/mi_profile/">Mi Perfil</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="d-flex flex-row px-3 mb-3 align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-signpost-2" viewBox="0 0 16 16">
+                                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                                <a class="dropdown-item text-danger" href="/">Desconectar</a>
+                            </li>
                           </ul>
                         </div>
             {% else %}
                         <a class="menu-item-nav" href="#" hidden></a>
-                        <svg xmlns="http://www.w3.org/2000/svg" data-toggle="modal" href="#userModal" width="40" height="40" fill="black" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" data-toggle="modal" href="#userModal" width="45" height="45" fill="black" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
                           <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
                           <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                         </svg>
@@ -82,8 +112,54 @@
     <div id="Logo">
         <img class="logo-nav" src='{% static "img/Logo.JPG" %}' />
     </div>
-    <div class="container-head-foto" id="iszv">
+   <!-- <div class="container-head-foto" id="iszv">
        <img  src='{% static "img/Portada3.jpg" %}' style="width:100%;height:100%;"/>
+    </div> -->
+
+   <!-- Carrusel-->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" data-interval="100" style="height: 400px;">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+      </div>
+      <div class="carousel-inner" style="height: 400px;">
+        <div class="carousel-item active">
+          <img src='{% static "img/Portada3.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
+           <div class="carousel-caption d-none d-md-block">
+               <h2>VIAJA...</h2>
+               <p>a cualquier lugar!!!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+          <img src='{% static "img/paisaje3.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
+            <div class="carousel-caption d-none d-md-block">
+               <h2>AHORRA...</h2>
+               <p>aprovechando los viajes de los demás!!!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+          <img src='{% static "img/paisaje1.jpg" %}' class="img-fluid d-block w-100" alt="Barcelona">
+            <div class="carousel-caption d-none d-md-block">
+               <h3>DISFRUTA...</h3>
+               <p>conociendo otras personas con vidas interesantes!!!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+          <img src='{% static "img/paisaje2.jpg" %}' class="img-fluid d-block w-100" alt="Cantabria">
+            <div class="carousel-caption d-none d-md-block">
+               <h2>DESCUBRE...</h2>
+               <p>una nueva forma de moverte por el mundo!!!</p>
+            </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
     </div>
 
     <!-------- variables escondidas -------->
@@ -138,52 +214,52 @@
         <div class="flex-title" id="ibcnf">PRÓXIMAS SALIDAS</div>
         <div class="cards" id="i1u9j">
             {% for i in viajesProximos %}
-            <div class="card">
-                <div class="card-body">
-                    <div class="car-detalle">
-                        <img class="badge-avatar" src="{% static i.id_persona.ruta_foto %}"/>
-                        <div class="card-sub-name"><b>{{i.id_persona.nombre}} {{i.id_persona.apellido1}}</b></div>
-                        <p>
-                            {% if i.id_persona.prestigio == "B" %}
-                                <img src='{% static "img/prestigio_bronce.jpg" %}' alt="start" width="25">
-                            {% elif i.id_persona.prestigio == "P" %}
-                                <img src='{% static "img/prestigio_plata.jpg" %}' alt="start" width="25">
-                            {% elif i.id_persona.prestigio == "Pl" %}
-                                <img src='{% static "img/prestigio_platino.jpg" %}' alt="start" width="22">
-                            {% elif i.id_persona.prestigio == "O" %}
-                                <img src='{% static "img/prestigio_oro.jpg" %}' alt="start" width="22">
-                            {% elif i.id_persona.prestigio == "D" %}
-                                <img src='{% static "img/prestigio_diamante.jpg" %}' alt="start" width="40">
-                            {% else %}
-                                <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
-                            {% endif %}
-                            <b style="font-size:20px;margin-left: 10px; color:#000;">{{i.id_persona.puntuacion}}</b> - <em style="color:#888;font-size:10px;">{{i.id_persona.numero_opiniones}} Opiniones</em></p>
-                    </div>
-                    <div class="car-detalle">
-                        <div class="card-sub-date"><b>{{i.fecha_ida}} {{i.hora_ida}}</b></div>
-                        <div class="card-sub-city"><b>{{i.ciudad_origen}} - {{i.ciudad_destino}}</b></div>
-                        <div class="card-desc">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="car-detalle">
+                            <img class="badge-avatar" src="{% static i.id_persona.ruta_foto %}"/>
+                            <div class="card-sub-name"><b>{{i.id_persona.nombre}} {{i.id_persona.apellido1}}</b></div>
                             <p>
-                                <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
-                                Estación de Atocha
-                            </p>
-                            <p>
-                                <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
-                                Iglesia del pilar
-                            </p>
-                            <div class="card-car">
-                                <p><br>Coche: <b>Seat Ibiza</b>
+                                {% if i.id_persona.prestigio == "B" %}
+                                    <img src='{% static "img/prestigio_bronce.jpg" %}' alt="start" width="25">
+                                {% elif i.id_persona.prestigio == "P" %}
+                                    <img src='{% static "img/prestigio_plata.jpg" %}' alt="start" width="25">
+                                {% elif i.id_persona.prestigio == "Pl" %}
+                                    <img src='{% static "img/prestigio_platino.jpg" %}' alt="start" width="22">
+                                {% elif i.id_persona.prestigio == "O" %}
+                                    <img src='{% static "img/prestigio_oro.jpg" %}' alt="start" width="22">
+                                {% elif i.id_persona.prestigio == "D" %}
+                                    <img src='{% static "img/prestigio_diamante.jpg" %}' alt="start" width="40">
+                                {% else %}
+                                    <img src='{% static "img/estrella.jpg" %}' alt="start" width="15">
+                                {% endif %}
+                                <b style="font-size:20px;margin-left: 10px; color:#000;">{{i.id_persona.puntuacion}}</b> - <em style="color:#888;font-size:10px;">{{i.id_persona.numero_opiniones}} Opiniones</em></p>
+                        </div>
+                        <div class="car-detalle">
+                            <div class="card-sub-date"><b>{{i.fecha_ida}} {{i.hora_ida}}</b></div>
+                            <div class="card-sub-city"><b>{{i.ciudad_origen}} - {{i.ciudad_destino}}</b></div>
+                            <div class="card-desc">
+                                <p>
+                                    <img src='{% static "img/punto_inicial.png" %}' alt="inicio" width="15" height="15">
+                                    Estación de Atocha
                                 </p>
-                            </div>
+                                <p>
+                                    <img src='{% static "img/punto_final.png" %}' alt="fin" width="15" height="15">
+                                    Iglesia del pilar
+                                </p>
+                                <div class="card-car">
+                                    <p><br>Coche: <b>Seat Ibiza</b>
+                                    </p>
+                                </div>
 
+                            </div>
+                        </div>
+                        <div class="card-price">
+                            <div class="card-txt-price"><b>{{i.importe_total_asiento}}€</b></div>
+                            <div class="card-txt-personas"><b>por persona</b></div>
+                            <div><b><br>{{i.numero_asientos_libres}}</b> plazas(s) disponible(s)</div>
                         </div>
                     </div>
-                    <div class="card-price">
-                        <div class="card-txt-price"><b>{{i.importe_total_asiento}}€</b></div>
-                        <div class="card-txt-personas"><b>por persona</b></div>
-                        <div><b><br>{{i.numero_asientos_libres}}</b> plazas(s) disponible(s)</div>
-                    </div>
-                </div>
             </div>
             {% endfor %}
             <!--
@@ -395,9 +471,9 @@
 </footer>
 
     <!----- Boostrap ----->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <!----- SweetAlert2 ----->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!----- JS custom ----->
