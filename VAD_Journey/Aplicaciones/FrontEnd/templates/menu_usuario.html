@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bootstrap 5</title>
 	<link rel="stylesheet" href="../static/css/bootstrap5/bootstrap.min.css">
+	<link rel="stylesheet" href="../static/css/index.css">
 	<style>
 		.cabecera {
 			height: 140px;
@@ -18,10 +19,6 @@
 			border-bottom-style: solid;
 			border-bottom-width: medium;
 			border-bottom-color: #FAFAD2;
-		}
-		.sticky{
-			position: sticky;
-			top: 195px;
 		}
 		.scrollbar-sunny-morning::-webkit-scrollbar-track {
 			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
@@ -74,28 +71,25 @@
 		  	background-color: #CACACA;
 		  	font-weight: 900;
 		}
+		#car-card {
+        	background-color: #F9F4F4
+      	}
+      	#car-card label{
+        	color: #B1ACAC;
+        	font-weight: bold;
+      	}
+		.img-container{
+		  	width:300px;
+		  	height:200px;
+		  	overflow:hidden;
+		}
+		.img-container img{
+		  	width:100%;
+		  	height:auto
+		}
 	</style>
 </head>
 <body>
-	<!--
-	<script>
-		document.addEventListener("click", (evt) => {
-			const flyoutEl = document.getElementById("v-pills-datos-tab");
-			let targetEl = evt.target; // clicked element
-			do {
-			  if(targetEl == flyoutEl) {
-				// This is a click inside, does nothing, just return.
-			  }
-			  // Go up the DOM
-			  targetEl = targetEl.parentNode;
-			} while (targetEl);
-			// This is a click outside.
-			document.getElementById("v-pills-datos-tab").style.backgroundColor="#A9A9A9";
-			document.getElementById("v-pills-datos-tab").style.Color="black";
-			document.getElementById("v-pills-datos-tab").style.fontWeight="900";
-		  });
-	</script>
-	-->
 	<div class="container-fluid text-center border-bottom border-5 border-warning sticky-top">
 		<div class="row cabecera align-items-center">
 			<div class="col align-self-end">
@@ -122,7 +116,7 @@
 		<div class="row">
 			<!-- Nav tabs -->
 			<div class="d-flex align-items-start ms-3">
-			  <div class="nav nav-pills flex-column me-3 col-2 sticky" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			  <div class="nav nav-pills flex-column me-3 col-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 				<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill pe-1" viewBox="0 0 16 16">
 					  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -188,7 +182,7 @@
 				<div class="tab-pane fade" id="v-pills-infopersonal" role="tabpanel" aria-labelledby="v-pills-infopersonal-tab">
 				</div>
 				<div class="tab-pane fade show active" id="v-pills-datos" role="tabpanel" aria-labelledby="v-pills-datos-tab">
-					<!-- Datos Personales -->
+					<!-- INICIO Datos Personales -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Datos Personales</h3>
@@ -198,8 +192,10 @@
 						  <div class="col-8 d-flex justify-content-center align-items-center py-3">
 							  <button class="btn btn-warning border-light border-3 fw-bold"> Ver Perfil Público </button>
 						  </div>
-						  <div class="col-3 mb-3 ps-5">
+						  <div class="col-3 mb-3 ps-5 button-container">
 							  <img class="img-thumbnail rounded-circle" src="../static/img/personas/6.jpg">
+							  <!--<embed src="../static/icon/pencil-fill.svg" />-->
+							  <a href="" alt="Editar"><embed src="../static/icon/pencil-fill.svg" alt="Editar"/></a>
 						  </div>
 						  <div class="col-md-4 py-2">
 							<label for="inputNombre" class="form-label">Nombre</label>
@@ -259,43 +255,162 @@
 							  <button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
 						  </div>
 					</form>
+					<!-- FIN Datos Personales -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-coches" role="tabpanel" aria-labelledby="v-pills-coches-tab">
-					<div class="row">
-						<div class="col-12 px-3 pt-2">
+					<!-- INICIO Mis Coches -->
+					<div class="row px-2 pt-2">
+						<div class="col-12">
 							<h3 class="border-bottom border-5 border-warning">Mis Coches</h3>
 						</div>
 					</div>
+					<div class="row px-3 pt-2 pb-3">
+						<div class="col-12 d-flex justify-content-end">
+							<button class="btn btn-warning col-2" data-bs-toggle="collapse" href="#collapseAddCar" role="button" aria-expanded="false" aria-controls="collapseAddCar">
+								<a href="" alt="Añadir"><embed src="../static/icon/plus-circle.svg" alt="Añadir"/></a>
+								<b>Añadir Coche</b>
+							</button>
+						</div>
+						<div class="collapse" id="collapseAddCar">
+							<div class="card card-body col-6 mx-auto">
+									<h3 class="border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</h3>
+									<form class="row px-2 pt-2" id="form-newcar">
+										<div class="col-12 ">
+											<label for="inputMarca" class="form-label">Marca</label>
+											<input type="text" class="form-control" id="inputMarca">
+										</div>
+										<div class="col-12 ">
+											<label for="inputModelo" class="form-label">Modelo</label>
+											<input type="text" class="form-control" id="inputModelo">
+										</div>
+										<div class="col-12 ">
+											<label for="inputAnio" class="form-label">Año</label>
+											<input type="text" class="form-control" id="inputAnio">
+										</div>
+										<div class="col-12 ">
+											<label for="inputMatricula" class="form-label">Matrícula</label>
+											<input type="text" class="form-control" id="inputMatricula">
+										</div>
+										<div class="col-12 ">
+											<label for="inputColor" class="form-label">Color</label>
+											<input type="text" class="form-control" id="inputColor">
+										</div>
+										<div class="col-12">
+											<label for="inputNumPlazas" class="form-label">Nº Plazas</label>
+											<input type="text" class="form-control" id="inputNumPlazas">
+										</div>
+										<div class="col-12 d-flex justify-content-center py-1">
+											<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+										</div>
+									</form>
+									<div class="row px-2 pt-2">
+										<div class="col-12">
+											<h3 class="border-bottom border-5 border-warning"></h3>
+										</div>
+									</div>
+						  	</div>
+						</div>
+					</div>
+					<div class="card col-8 mx-auto" id="car-card">
+						<div class="row no-gutters">
+							<div class="col">
+								<div class="card-block px-2">
+									<div class="card-body">
+										<div class="card-title fw-bold fs-3 pb-1" id="car-title">
+											KIA Rio
+										</div>
+										<div class="card-subtitle row pb-1 ps-5" id="car-year">
+											<div class="col" id="car-year-icon">
+												 <img src="../static/icon/pin.svg" alt="Año de Matriculación" height="25px" width="25px" id="car-year-icon"/>
+											</div>
+											<div class="col-9" id="car-year-text">
+												<label for="car-year-icon" class="fs-5">2017</label>
+											</div>
+										</div>
+										<div class="card-subtitle row pb-1 ps-5" id="car-plate">
+											<div class="col" id="car-plate-icon">
+												 <img src="../static/icon/tag.svg" alt="Matrícula" height="25px" width="25px" id="car-plate-icon"/>
+											</div>
+											<div class="col-9" id="car-plate-text">
+												<label for="car-plate-icon" class="fs-5">1234ABC</label>
+											</div>
+										</div>
+										<div class="card-subtitle row pb-1 ps-5" id="car-color">
+											<div class="col" id="car-color-icon">
+												 <img src="../static/icon/brush.svg" alt="Color" height="25px" width="25px" id="car-color-icon"/>
+											</div>
+											<div class="col-9" id="car-color-text">
+												<label for="car-color-icon" class="fs-5">Amarillo Múvil</label>
+											</div>
+										</div>
+										<div class="card-subtitle row pb-1 ps-5" id="car-seats">
+											<div class="col" id="car-seats-icon">
+												 <img src="../static/icon/vector.svg" alt="Número de asientos" height="25px" width="25px" id="car-seats-icon"/>
+											</div>
+											<div class="col-9" id="car-seats-text">
+												<label for="car-seats-icon" class="fs-5">5 plazas</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-auto img-container img-responsive pe-4 pt-1">
+								<img src="../static/img/coche_prueba2.jpg" class="mx-auto d-block" alt="">
+							</div>
+						  </div>
+						</div>
+						<div class="card-footer pt-1 text-center">
+							<button class="btn btn-outline-dark col-2">
+								<a href="" alt="Editar"><embed src="../static/icon/pencil-fill.svg" alt="Editar"/></a>
+								<b>Editar</b>
+							</button>
+							<button class="btn btn-outline-danger col-2">
+								<a href="" alt="Eliminar"><embed src="../static/icon/trash-fill.svg" alt="Eliminar"/></a>
+								<b>Eliminar</b>
+							</button>
+						</div>
+				  	</div>
+
+					<!-- FIN Mis Coches -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-preferencias" role="tabpanel" aria-labelledby="v-pills-preferencias-tab">
+					<!-- INICIO Mis Preferencias -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Mis Preferencias</h3>
 						</div>
 					</div>
+					<!-- FIN Mis Preferencias -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-opiniones" role="tabpanel" aria-labelledby="v-pills-opiniones-tab">
+					<!-- INICIO Opiniones -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Opiniones</h3>
 						</div>
 					</div>
+					<!-- FIN Opiniones -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-notificaciones" role="tabpanel" aria-labelledby="v-pills-notificaciones-tab">
+					<!-- INICIO Notificaciones -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Notificaciones</h3>
 						</div>
 					</div>
+					<!-- FIN Notificaciones -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-pagoscobros" role="tabpanel" aria-labelledby="v-pills-pagoscobros-tab">
+					<!-- INICIO Pagos/Cobros -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Pagos/Cobros</h3>
 						</div>
 					</div>
+					<!-- FIN Pagos/Cobros -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-contrasena" role="tabpanel" aria-labelledby="v-pills-contrasena-tab">
+					<!-- INICIO Cambiar Contraseña -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
@@ -356,6 +471,7 @@ Al venir al mundo fueron delicadamente mecidas por las manos de la lustral Donia
 Yo os las entrego tales como son, en su frescor de carne y de rosa. Sólo existe un método honrado y lógico de traducción: la «literalidad», una literalidad impersonal, apenas atenuada por un leve parpadeo y una ligera sonrisa del traductor. Ella crea, sugestiva, la más grande potencia literaria. Ella produce el placer de la evocación. Ella es la garantía de la verdad. Ella es firme e inmutable, en su desnudez de piedra. Ella cautiva el aroma primitivo y lo cristaliza. Ella separa y desata... Ella fija.
 
 La literalidad encadena el espíritu divagador y lo doma, al mismo tiempo que detiene la infernal facilidad de la pluma. Yo me felicito de que así sea; porque ¿dónde encontrar un traductor de genio simple, anónimo, libre de la necia manía de su renombre?...
+					<!-- FIN Cambiar Contraseña -->
 				</div>
 			  </div>
 			</div>
