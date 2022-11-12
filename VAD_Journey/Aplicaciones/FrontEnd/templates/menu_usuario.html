@@ -116,71 +116,68 @@
 		<div class="row">
 			<!-- Nav tabs -->
 			<div class="d-flex align-items-start ms-3">
-			  <div class="nav nav-pills flex-column me-3 col-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-				<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill pe-1" viewBox="0 0 16 16">
-					  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-					</svg>
-					Datos Personales
-				</button>
-				<button class="nav-link text-start active col-11 align-self-end" id="v-pills-datos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-datos" type="button" role="tab" aria-controls="v-pills-datos" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-check-fill pe-1" viewBox="0 0 16 16">
-					  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-					  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-					</svg>
-					Mi Perfil
-				</button>
-				<button class="nav-link text-start col-11 align-self-end" id="v-pills-coches-tab" data-bs-toggle="pill" data-bs-target="#v-pills-coches" type="button" role="tab" aria-controls="v-pills-coches" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-car-front-fill pe-1" viewBox="0 0 16 16">
-					  <path fill-rule="evenodd" d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189l.956-1.913A.5.5 0 0 1 4.309 3h7.382a.5.5 0 0 1 .447.276l.956 1.913a.51.51 0 0 1-.497.731c-.91-.073-3.35-.17-4.597-.17-1.247 0-3.688.097-4.597.17a.51.51 0 0 1-.497-.731Z"/>
-					</svg>
-					Mis Coches
-				</button>
-				<button class="nav-link text-start col-11 align-self-end" id="v-pills-preferencias-tab" data-bs-toggle="pill" data-bs-target="#v-pills-preferencias" type="button" role="tab" aria-controls="v-pills-preferencias" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-palette-fill pe-1" viewBox="0 0 16 16">
-					  <path d="M12.433 10.07C14.133 10.585 16 11.15 16 8a8 8 0 1 0-8 8c1.996 0 1.826-1.504 1.649-3.08-.124-1.101-.252-2.237.351-2.92.465-.527 1.42-.237 2.433.07zM8 5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-					</svg>
-					Mis Preferencias
-				</button>
-				<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cuenta" type="button" role="tab" aria-controls="v-pills-cuenta" aria-selected="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-seam pe-1" viewBox="0 0 16 16">
-					  <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
-					</svg>
-					Cuenta
-				</button>
-				<button class="nav-link text-start col-11 align-self-end" id="v-pills-opiniones-tab" data-bs-toggle="pill" data-bs-target="#v-pills-opiniones" type="button" role="tab" aria-controls="v-pills-opiniones" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chat-left-text pe-1" viewBox="0 0 16 16">
-					  <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-					  <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-					</svg>
-					Opiniones
-				</button>
-				<button class="nav-link text-start col-11 align-self-end" id="v-pills-notificaciones-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notificaciones" type="button" role="tab" aria-controls="v-pills-notificaciones" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell pe-1" viewBox="0 0 16 16">
-					  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-					</svg>
-					Notificaciones
-				</button>
-				<button class="nav-link text-start col-11 align-self-end" id="v-pills-pagoscobros-tab" data-bs-toggle="pill" data-bs-target="#v-pills-pagoscobros" type="button" role="tab" aria-controls="v-pills-pagoscobros" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bank pe-1" viewBox="0 0 16 16">
-					  <path d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.501.501 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89L8 0ZM3.777 3h8.447L8 1 3.777 3ZM2 6v7h1V6H2Zm2 0v7h2.5V6H4Zm3.5 0v7h1V6h-1Zm2 0v7H12V6H9.5ZM13 6v7h1V6h-1Zm2-1V4H1v1h14Zm-.39 9H1.39l-.25 1h13.72l-.25-1Z"/>
-					</svg>
-					Pagos/Cobros
-				</button>
-				<button class="nav-link text-start col-11 align-self-end" id="v-pills-contrasena-tab" data-bs-toggle="pill" data-bs-target="#v-pills-contrasena" type="button" role="tab" aria-controls="v-pills-contrasena" aria-selected="false">
-					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-shield-lock pe-1" viewBox="0 0 16 16">
-					  <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
-					  <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"/>
-					</svg>
-					Contraseña
-				</button>
-			  </div>
+			  	<div class="nav nav-pills flex-column me-3 col-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				  	<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill pe-1" viewBox="0 0 16 16">
+						  	<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+					  	</svg>
+					  	Datos Personales
+				  	</button>
+					<button class="nav-link text-start active col-11 align-self-end" id="v-pills-datos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-datos" type="button" role="tab" aria-controls="v-pills-datos" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-check-fill pe-1" viewBox="0 0 16 16">
+						  	<path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+						  	<path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+					  	</svg>
+					  	Mi Perfil
+				  	</button>
+				  	<button class="nav-link text-start col-11 align-self-end" id="v-pills-coches-tab" data-bs-toggle="pill" data-bs-target="#v-pills-coches" type="button" role="tab" aria-controls="v-pills-coches" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-car-front-fill pe-1" viewBox="0 0 16 16">
+						  	<path fill-rule="evenodd" d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189l.956-1.913A.5.5 0 0 1 4.309 3h7.382a.5.5 0 0 1 .447.276l.956 1.913a.51.51 0 0 1-.497.731c-.91-.073-3.35-.17-4.597-.17-1.247 0-3.688.097-4.597.17a.51.51 0 0 1-.497-.731Z"/>
+					  	</svg>
+					  	Mis Coches
+				  	</button>
+				  	<button class="nav-link text-start col-11 align-self-end" id="v-pills-preferencias-tab" data-bs-toggle="pill" data-bs-target="#v-pills-preferencias" type="button" role="tab" aria-controls="v-pills-preferencias" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-palette-fill pe-1" viewBox="0 0 16 16">
+						  	<path d="M12.433 10.07C14.133 10.585 16 11.15 16 8a8 8 0 1 0-8 8c1.996 0 1.826-1.504 1.649-3.08-.124-1.101-.252-2.237.351-2.92.465-.527 1.42-.237 2.433.07zM8 5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+					  	</svg>
+					  	Mis Preferencias
+				  	</button>
+				  	<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cuenta" type="button" role="tab" aria-controls="v-pills-cuenta" aria-selected="true">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-seam pe-1" viewBox="0 0 16 16">
+						  	<path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+					  	</svg>
+					  	Cuenta
+				  	</button>
+				  	<button class="nav-link text-start col-11 align-self-end" id="v-pills-opiniones-tab" data-bs-toggle="pill" data-bs-target="#v-pills-opiniones" type="button" role="tab" aria-controls="v-pills-opiniones" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chat-left-text pe-1" viewBox="0 0 16 16">
+						  	<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+						  	<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+					  	</svg>
+					  	Opiniones
+				  	</button>
+				  	<button class="nav-link text-start col-11 align-self-end" id="v-pills-notificaciones-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notificaciones" type="button" role="tab" aria-controls="v-pills-notificaciones" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell pe-1" viewBox="0 0 16 16">
+						  	<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+					  	</svg>
+					  	Notificaciones
+				  	</button>
+				  	<button class="nav-link text-start col-11 align-self-end" id="v-pills-pagoscobros-tab" data-bs-toggle="pill" data-bs-target="#v-pills-pagoscobros" type="button" role="tab" aria-controls="v-pills-pagoscobros" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bank pe-1" viewBox="0 0 16 16">
+						  	<path d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.501.501 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89L8 0ZM3.777 3h8.447L8 1 3.777 3ZM2 6v7h1V6H2Zm2 0v7h2.5V6H4Zm3.5 0v7h1V6h-1Zm2 0v7H12V6H9.5ZM13 6v7h1V6h-1Zm2-1V4H1v1h14Zm-.39 9H1.39l-.25 1h13.72l-.25-1Z"/>
+					  	</svg>
+					  	Pagos/Cobros
+				  	</button>
+				  	<button class="nav-link text-start col-11 align-self-end" id="v-pills-contrasena-tab" data-bs-toggle="pill" data-bs-target="#v-pills-contrasena" type="button" role="tab" aria-controls="v-pills-contrasena" aria-selected="false">
+					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-shield-lock pe-1" viewBox="0 0 16 16">
+						  	<path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+						  	<path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"/>
+					  	</svg>
+					  	Contraseña
+				  	</button>
+			  	</div>
 
 			<!-- Tab panes -->
-				<div class="tab-content border col-10 navpane my-custom-scrollbar scrollbar-sunny-morning" id="v-pills-tabContent">
-			<!--<div class="tab-content col-10 border-3 navpane" id="v-pills-tabContent"> -->
-				<div class="tab-pane fade" id="v-pills-infopersonal" role="tabpanel" aria-labelledby="v-pills-infopersonal-tab">
-				</div>
+			<div class="tab-content border col-10 navpane my-custom-scrollbar scrollbar-sunny-morning" id="v-pills-tabContent">
 				<div class="tab-pane fade show active" id="v-pills-datos" role="tabpanel" aria-labelledby="v-pills-datos-tab">
 					<!-- INICIO Datos Personales -->
 					<div class="row">
@@ -189,71 +186,71 @@
 						</div>
 					</div>
 					<form class="row px-2 pt-2" id="form-datospersonales">
-						  <div class="col-8 d-flex justify-content-center align-items-center py-3">
-							  <button class="btn btn-warning border-light border-3 fw-bold"> Ver Perfil Público </button>
-						  </div>
-						  <div class="col-3 mb-3 ps-5 button-container">
-							  <img class="img-thumbnail rounded-circle" src="../static/img/personas/6.jpg">
-							  <!--<embed src="../static/icon/pencil-fill.svg" />-->
-							  <a href="" alt="Editar"><embed src="../static/icon/pencil-fill.svg" alt="Editar"/></a>
-						  </div>
-						  <div class="col-md-4 py-2">
+						<div class="col-8 d-flex justify-content-center align-items-center py-3">
+							<button class="btn btn-warning border-light border-3 fw-bold"> Ver Perfil Público </button>
+						</div>
+						<div class="col-3 mb-3 ps-5 button-container">
+							<img class="img-thumbnail rounded-circle" src="../static/img/personas/6.jpg">
+							<!--<embed src="../static/icon/pencil-fill.svg" />-->
+							<a href="" alt="Editar"><embed src="../static/icon/pencil-fill.svg" alt="Editar"/></a>
+						</div>
+						<div class="col-md-4 py-2">
 							<label for="inputNombre" class="form-label">Nombre</label>
 							<input type="text" class="form-control" id="inputNombre">
-						  </div>
-						  <div class="col-md-4 py-2">
+						</div>
+						<div class="col-md-4 py-2">
 							<label for="inputPApellido" class="form-label">Primer Apellido</label>
 							<input type="text" class="form-control" id="inputPApellido">
-						  </div>
-						  <div class="col-md-4 py-2">
+						</div>
+						<div class="col-md-4 py-2">
 							<label for="inputSapellido" class="form-label">Segundo Apellido</label>
 							<input type="text" class="form-control" id="inputSapellido">
-						  </div>
-						  <div class="col-md-4 d-flex align-self-center py-2">
-							  <div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="DNI" checked>
-									<label class="form-check-label" for="inlineRadio1">DNI</label>
-							  </div>
-							  <div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="NIE">
-									<label class="form-check-label" for="inlineRadio2">NIE</label>
-							  </div>
-							  <div class="form-check form-check-inline">
-								  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Pasaporte">
-								  <label class="form-check-label" for="inlineRadio3">Pasaporte</label>
-							  </div>
-						  </div>
-						  <div class="col-md-4 py-2">
+						</div>
+						<div class="col-md-4 d-flex align-self-center py-2">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="DNI" checked>
+								<label class="form-check-label" for="inlineRadio1">DNI</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="NIE">
+								<label class="form-check-label" for="inlineRadio2">NIE</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Pasaporte">
+								<label class="form-check-label" for="inlineRadio3">Pasaporte</label>
+							</div>
+						</div>
+						<div class="col-md-4 py-2">
 							<label for="inputDocumento" class="form-label">Número Documento</label>
 							<input type="text" class="form-control" id="inputDocumento">
-						  </div>
-						  <div class="col-md-4 py-2">
+						</div>
+						<div class="col-md-4 py-2">
 							<label for="inputNacimiento" class="form-label">Fecha de Nacimiento</label>
 							<input type="date" class="form-control" id="inputNacimiento">
-						  </div>
-						  <div class="col-md-7 py-2">
+						</div>
+						<div class="col-md-7 py-2">
 							<label for="inputEmail" class="form-label">Email</label>
 							<input type="email" class="form-control" id="inputEmail" placeholder="">
-						  </div>
-						  <div class="col-md-2 py-2">
+						</div>
+						<div class="col-md-2 py-2">
 							<label for="inputState" class="form-label">Prefijo</label>
 							<select id="inputState" class="form-select">
 								<option selected>+34 España</option>
 								<option>+95 Inglaterra</option>
 								<option>+21 USA</option>
 							</select>
-						  </div>
-						  <div class="col-md-3 py-2">
+						</div>
+						<div class="col-md-3 py-2">
 							<label for="inputTelefono" class="form-label">Teléfono</label>
 							<input type="text" class="form-control" id="inputTelefono" placeholder="">
-						  </div>
-						  <div class="col-12 py-2">
+						</div>
+						<div class="col-12 py-2">
 							<label for="exampleFormControlTextarea1" class="form-label">Déjanos conocerte</label>
 							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Descríbete en pocas palabras y encuentra gente como tú..."></textarea>
-						  </div>
-						  <div class="col-12 d-flex justify-content-center py-3">
-							  <button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
-						  </div>
+						</div>
+						<div class="col-12 d-flex justify-content-center py-3">
+							<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+						</div>
 					</form>
 					<!-- FIN Datos Personales -->
 				</div>
@@ -272,9 +269,10 @@
 							</button>
 						</div>
 						<div class="collapse" id="collapseAddCar">
-							<div class="card card-body col-6 mx-auto">
-									<h3 class="border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</h3>
-									<form class="row px-2 pt-2" id="form-newcar">
+							<div class="card card-body col-8 mx-auto">
+								<h3 class="border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</h3>
+								<form class="row px-2 pt-2" id="form-newcar">
+									<div class="col-6">
 										<div class="col-12 ">
 											<label for="inputMarca" class="form-label">Marca</label>
 											<input type="text" class="form-control" id="inputMarca">
@@ -299,15 +297,21 @@
 											<label for="inputNumPlazas" class="form-label">Nº Plazas</label>
 											<input type="text" class="form-control" id="inputNumPlazas">
 										</div>
-										<div class="col-12 d-flex justify-content-center py-1">
-											<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
-										</div>
-									</form>
-									<div class="row px-2 pt-2">
-										<div class="col-12">
-											<h3 class="border-bottom border-5 border-warning"></h3>
-										</div>
 									</div>
+									<div class="col-6 col-auto img-container img-responsive pe-4 pt-1">
+										<label for="userImg" class="form-label btn btn-outline-light">Carga una foto del coche...</label>
+										<input class="form-control" type="file" id="userImg" name="userImg" onchange="preview()">
+										<button onclick="clearImage()" class="btn btn-danger mt-3">Cancelar imagen</button>
+									</div>
+									<div class="col-12 d-flex justify-content-center py-1">
+										<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+									</div>
+								</form>
+								<div class="row px-2 pt-2">
+									<div class="col-12">
+										<h3 class="border-bottom border-5 border-warning"></h3>
+									</div>
+								</div>
 						  	</div>
 						</div>
 					</div>
@@ -357,7 +361,6 @@
 							<div class="col-auto img-container img-responsive pe-4 pt-1">
 								<img src="../static/img/coche_prueba2.jpg" class="mx-auto d-block" alt="">
 							</div>
-						  </div>
 						</div>
 						<div class="card-footer pt-1 text-center">
 							<button class="btn btn-outline-dark col-2">
@@ -370,13 +373,12 @@
 							</button>
 						</div>
 				  	</div>
-
 					<!-- FIN Mis Coches -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-preferencias" role="tabpanel" aria-labelledby="v-pills-preferencias-tab">
 					<!-- INICIO Mis Preferencias -->
-					<div class="row">
-						<div class="col-12 px-3 pt-2">
+					<div class="row px-2 pt-2">
+						<div class="col-12">
 							<h3 class="border-bottom border-5 border-warning">Mis Preferencias</h3>
 						</div>
 					</div>
@@ -416,67 +418,10 @@
 							<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
 						</div>
 					</div>
-					Yo ofrezco
-para mis delicias y el placer de mis amigos,
-estas noches árabes vividas, soñadas y traducidas sobre su tierra natal y sobre el agua
-Ellas me fueron dulces durante los ocios en remotos mares, bajo un cielo ahora lejano.
-Por eso las doy.
-
-Sencillas, sonrientes y llenas de ingenuidad, como la musulmana Schehrazada, su madre suculenta que las dió a luz en el misterio; fermentando con emoción en los brazos de un príncipe sublime —lúbrico y feroz—, bajo la mirada enternecida de Alah, clemente y misericordioso.
-
-Al venir al mundo fueron delicadamente mecidas por las manos de la lustral Doniazada, su buena tía, que grabó sus nombres sobre hojas de oro coloreadas de húmedas pedrerías y las cuidó bajo el terciopelo de sus pupilas hasta la adolescencia dura, para esparcirlas después, voluptuosas y libres, sobre el mundo oriental, eternizado por su sonrisa.
-
-Yo os las entrego tales como son, en su frescor de carne y de rosa. Sólo existe un método honrado y lógico de traducción: la «literalidad», una literalidad impersonal, apenas atenuada por un leve parpadeo y una ligera sonrisa del traductor. Ella crea, sugestiva, la más grande potencia literaria. Ella produce el placer de la evocación. Ella es la garantía de la verdad. Ella es firme e inmutable, en su desnudez de piedra. Ella cautiva el aroma primitivo y lo cristaliza. Ella separa y desata... Ella fija.
-
-La literalidad encadena el espíritu divagador y lo doma, al mismo tiempo que detiene la infernal facilidad de la pluma. Yo me felicito de que así sea; porque ¿dónde encontrar un traductor de genio simple, anónimo, libre de la necia manía de su renombre?...
-					Yo ofrezco
-desnudas, vírgenes, intactas y sencillas,
-para mis delicias y el placer de mis amigos,
-estas noches árabes vividas, soñadas y traducidas sobre su tierra natal y sobre el agua
-Ellas me fueron dulces durante los ocios en remotos mares, bajo un cielo ahora lejano.
-Por eso las doy.
-
-Sencillas, sonrientes y llenas de ingenuidad, como la musulmana Schehrazada, su madre suculenta que las dió a luz en el misterio; fermentando con emoción en los brazos de un príncipe sublime —lúbrico y feroz—, bajo la mirada enternecida de Alah, clemente y misericordioso.
-
-Al venir al mundo fueron delicadamente mecidas por las manos de la lustral Doniazada, su buena tía, que grabó sus nombres sobre hojas de oro coloreadas de húmedas pedrerías y las cuidó bajo el terciopelo de sus pupilas hasta la adolescencia dura, para esparcirlas después, voluptuosas y libres, sobre el mundo oriental, eternizado por su sonrisa.
-
-Yo os las entrego tales como son, en su frescor de carne y de rosa. Sólo existe un método honrado y lógico de traducción: la «literalidad», una literalidad impersonal, apenas atenuada por un leve parpadeo y una ligera sonrisa del traductor. Ella crea, sugestiva, la más grande potencia literaria. Ella produce el placer de la evocación. Ella es la garantía de la verdad. Ella es firme e inmutable, en su desnudez de piedra. Ella cautiva el aroma primitivo y lo cristaliza. Ella separa y desata... Ella fija.
-
-La literalidad encadena el espíritu divagador y lo doma, al mismo tiempo que detiene la infernal facilidad de la pluma. Yo me felicito de que así sea; porque ¿dónde encontrar un traductor de genio simple, anónimo, libre de la necia manía de su renombre?...
-					Yo ofrezco
-desnudas, vírgenes, intactas y sencillas,
-para mis delicias y el placer de mis amigos,
-estas noches árabes vividas, soñadas y traducidas sobre su tierra natal y sobre el agua
-Ellas me fueron dulces durante los ocios en remotos mares, bajo un cielo ahora lejano.
-Por eso las doy.
-
-Sencillas, sonrientes y llenas de ingenuidad, como la musulmana Schehrazada, su madre suculenta que las dió a luz en el misterio; fermentando con emoción en los brazos de un príncipe sublime —lúbrico y feroz—, bajo la mirada enternecida de Alah, clemente y misericordioso.
-
-Al venir al mundo fueron delicadamente mecidas por las manos de la lustral Doniazada, su buena tía, que grabó sus nombres sobre hojas de oro coloreadas de húmedas pedrerías y las cuidó bajo el terciopelo de sus pupilas hasta la adolescencia dura, para esparcirlas después, voluptuosas y libres, sobre el mundo oriental, eternizado por su sonrisa.
-
-Yo os las entrego tales como son, en su frescor de carne y de rosa. Sólo existe un método honrado y lógico de traducción: la «literalidad», una literalidad impersonal, apenas atenuada por un leve parpadeo y una ligera sonrisa del traductor. Ella crea, sugestiva, la más grande potencia literaria. Ella produce el placer de la evocación. Ella es la garantía de la verdad. Ella es firme e inmutable, en su desnudez de piedra. Ella cautiva el aroma primitivo y lo cristaliza. Ella separa y desata... Ella fija.
-
-La literalidad encadena el espíritu divagador y lo doma, al mismo tiempo que detiene la infernal facilidad de la pluma. Yo me felicito de que así sea; porque ¿dónde encontrar un traductor de genio simple, anónimo, libre de la necia manía de su renombre?...
-					Yo ofrezco
-desnudas, vírgenes, intactas y sencillas,
-para mis delicias y el placer de mis amigos,
-estas noches árabes vividas, soñadas y traducidas sobre su tierra natal y sobre el agua
-Ellas me fueron dulces durante los ocios en remotos mares, bajo un cielo ahora lejano.
-Por eso las doy.
-
-Sencillas, sonrientes y llenas de ingenuidad, como la musulmana Schehrazada, su madre suculenta que las dió a luz en el misterio; fermentando con emoción en los brazos de un príncipe sublime —lúbrico y feroz—, bajo la mirada enternecida de Alah, clemente y misericordioso.
-
-Al venir al mundo fueron delicadamente mecidas por las manos de la lustral Doniazada, su buena tía, que grabó sus nombres sobre hojas de oro coloreadas de húmedas pedrerías y las cuidó bajo el terciopelo de sus pupilas hasta la adolescencia dura, para esparcirlas después, voluptuosas y libres, sobre el mundo oriental, eternizado por su sonrisa.
-
-Yo os las entrego tales como son, en su frescor de carne y de rosa. Sólo existe un método honrado y lógico de traducción: la «literalidad», una literalidad impersonal, apenas atenuada por un leve parpadeo y una ligera sonrisa del traductor. Ella crea, sugestiva, la más grande potencia literaria. Ella produce el placer de la evocación. Ella es la garantía de la verdad. Ella es firme e inmutable, en su desnudez de piedra. Ella cautiva el aroma primitivo y lo cristaliza. Ella separa y desata... Ella fija.
-
-La literalidad encadena el espíritu divagador y lo doma, al mismo tiempo que detiene la infernal facilidad de la pluma. Yo me felicito de que así sea; porque ¿dónde encontrar un traductor de genio simple, anónimo, libre de la necia manía de su renombre?...
 					<!-- FIN Cambiar Contraseña -->
 				</div>
-			  </div>
 			</div>
 		</div>
-
 	</div>
 
 	<script src="../static/js/bootstrap5/bootstrap.bundle.min.js"></script>
