@@ -45,4 +45,15 @@ html * {
 }
 }
 
+}
 
+/* clases para color fuente segun colores muvil */
+.font0-muvil{
+    color:#CACACA;
+}
+.font1-muvil{
+    color:#FFC700;
+}
+.font2-muvil{
+    color:#CACACA;
+}
