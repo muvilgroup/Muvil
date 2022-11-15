@@ -48,6 +48,9 @@ def buscar_viaje(request):
 def panel_nuevo_usuario(request):
     return render(request, "user_register.html", {})
 
+def adm_perfil(request):
+    return render(request, "adm_datospersonales.html", {})
+
 def guardar_usuario(request):
     Email_input = request.POST['txtEmail']
     Password_input = request.POST['txtPass']
