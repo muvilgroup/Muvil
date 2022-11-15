@@ -623,7 +623,7 @@
 												</div>
 												<div class="row pt-2" id="opinion-answer">
 													<div class="col d-flex justify-content-center">
-														<button class="btn">
+														<button class="btn d-flex">
 															<a href="" alt="Responder"><embed src="../static/icon/reply.svg" alt="Eliminar"/></a>
 															<b class="ps-1 fs-6">Responder</b>
 														</button>
@@ -669,7 +669,7 @@
 												</div>
 												<div class="row pt-2" id="opinion-answer">
 													<div class="col d-flex justify-content-center">
-														<button class="btn">
+														<button class="btn d-flex">
 															<a href="" alt="Responder"><embed src="../static/icon/reply.svg" alt="Eliminar"/></a>
 															<b class="ps-1 fs-6">Responder</b>
 														</button>
@@ -833,9 +833,74 @@
 				</div>
 				<div class="tab-pane fade" id="v-pills-notificaciones" role="tabpanel" aria-labelledby="v-pills-notificaciones-tab">
 					<!-- INICIO Notificaciones -->
-					<div class="row">
-						<div class="col-12 px-3 pt-2">
+					<div class="row px-2 pt-2">
+						<div class="col-12">
 							<h3 class="border-bottom border-5 border-warning">Notificaciones</h3>
+						</div>
+					</div>
+					<div class="row col-7 mx-auto mt-4" id="notificaciones-header">
+						<div class="col-6 d-flex justify-content-center">
+						</div>
+						<div class="col-3 d-flex justify-content-center" id="header-email">
+							<p class="fs-5 fw-bold mb-0">
+								Email
+							</p>
+						</div>
+						<div class="col-3 d-flex justify-content-center"  id="header-sms">
+							<p class="fs-5 fw-bold mb-0">
+								SMS
+							</p>
+						</div>
+					</div>
+					<div class="row col-7 mx-auto mt-3" id="notificaciones-news">
+						<div class="col-6 d-flex justify-content-center">
+							<p class="fs-5 fw-bold mb-0">
+								Noticias y Ofertas
+							</p>
+						</div>
+						<div class="col-3 d-flex justify-content-center" id="news-email">
+							<div class="form-check form-switch form-switch-md">
+							  <input class="form-check-input" type="checkbox" id="notificaciones-news-mail" checked>
+							</div>
+						</div>
+						<div class="col-3 d-flex justify-content-center"  id="news-sms">
+							<div class="form-check form-switch form-switch-md">
+							  <input class="form-check-input" type="checkbox" id="notificaciones-news-sms" checked>
+							</div>
+						</div>
+					</div>
+					<div class="row col-7 mx-auto mt-3" id="notificaciones-reviews">
+						<div class="col-6 d-flex justify-content-center">
+							<p class="fs-5 fw-bold mb-0">
+								Nuevas Opiniones
+							</p>
+						</div>
+						<div class="col-3 d-flex justify-content-center" id="reviews-email">
+							<div class="form-check form-switch form-switch-md">
+							  <input class="form-check-input" type="checkbox" id="notificaciones-reviews-mail" checked>
+							</div>
+						</div>
+						<div class="col-3 d-flex justify-content-center"  id="reviews-sms">
+							<div class="form-check form-switch form-switch-md">
+							  <input class="form-check-input" type="checkbox" id="notificaciones-reviews-sms" checked>
+							</div>
+						</div>
+					</div>
+					<div class="row col-7 mx-auto mt-3" id="notificaciones-books">
+						<div class="col-6 d-flex justify-content-center">
+							<p class="fs-5 fw-bold mb-0">
+								Cambios en Reservas
+							</p>
+						</div>
+						<div class="col-3 d-flex justify-content-center" id="books-email">
+							<div class="form-check form-switch form-switch-md">
+							  <input class="form-check-input" type="checkbox" id="notificaciones-books-mail" checked>
+							</div>
+						</div>
+						<div class="col-3 d-flex justify-content-center"  id="books-sms">
+							<div class="form-check form-switch form-switch-md">
+							  <input class="form-check-input" type="checkbox" id="notificaciones-books-sms" checked>
+							</div>
 						</div>
 					</div>
 					<!-- FIN Notificaciones -->
