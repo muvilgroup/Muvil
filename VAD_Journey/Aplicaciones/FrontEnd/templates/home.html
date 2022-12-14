@@ -173,20 +173,23 @@
         <form   id="buscador" method="POST" action="/search_journey/"> {% csrf_token %}
             <div class="flex-1 mr0 mb3 mb0-md mr2-md relative">
                 <div class="">
-                    <input class="input text-from" id="io10t9" name="Origen" placeholder="¿De dónde sales?" required type="text"/>
+                    <a href="/adm_datospersonales">
+                        <input class="input text-from" id="io10t9" name="Origen" placeholder="¿De dónde sales?" required type="button">
+                    </a>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="absolute t3 l3 svg-blue-40">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M4.345 5.95836C7.79683 1.41204 14.1469 0.999725 18.3462 5.38157C19.4084 6.48998 20.8472 7.89551 21.4929 9.66649C22.263 11.7782 21.766 14.1394 20.7243 16.0879C19.6799 18.0414 17.995 19.7623 16.1021 20.5912C12.8954 21.9954 8.83152 22.6464 5.72244 19.7811C3.51072 17.7429 1.9704 14.4714 2.25773 11.434C2.43411 9.56935 3.17007 7.50582 4.345 5.95836ZM16.9022 6.76538C13.5296 3.24613 8.62536 3.62818 5.93789 7.16778C5.01031 8.38947 4.39376 10.0903 4.24884 11.6224C4.03123 13.9227 5.23326 16.6106 7.0778 18.3104C9.28747 20.3468 12.3223 20.063 15.2999 18.7592C16.7018 18.1452 18.0827 16.7869 18.9605 15.1449C19.8411 13.4979 20.123 11.7475 19.614 10.3516C19.1664 9.12435 18.1718 8.08818 17.0679 6.93813C17.0129 6.88084 16.9577 6.82327 16.9022 6.76538Z" fill="#1B2530"></path>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1515 8.52107C13.0288 8.00603 12.5221 7.6725 11.9958 7.77049C10.7785 7.99717 9.51086 8.84191 8.72761 9.93315C7.92244 11.0549 7.5142 12.6333 8.47443 14.1423C9.99099 16.5254 13.6524 17.2109 15.1985 14.4722C15.7437 13.5064 15.7765 12.3988 15.5246 11.4378C15.2735 10.4797 14.7159 9.56892 13.9354 8.96189C13.6928 8.77323 13.4277 8.62864 13.1515 8.52107ZM10.3524 11.0994C9.85899 11.7868 9.77432 12.4597 10.1617 13.0685C10.5608 13.6955 11.2621 14.1618 11.9238 14.2689C12.5088 14.3635 13.0599 14.192 13.4568 13.489C13.6903 13.0753 13.7421 12.5252 13.59 11.9449C13.1616 10.3105 11.4025 9.6364 10.3524 11.0994Z" fill="#1B2530"></path></svg>
                 </svg>
             </div>
-            <button class="btn-lg btn-primary ph3 flex-align-center" id="b_intercambio" type="button">
+            <button class="btn-lg btn-primary ph3 flex-align-center" id="b_intercambio" type="button" >
             <!--<button type="button" id="js-swap-btn" class="btn btn-lg btn-default bg-gray-10 ph3 flex flex-align-center" title="Elegir sentido inverso">-->
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="svg-gray-90">
                     <path d="M13 4L4 4M13 4L10.0435 1M13 4L10.0435 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M3 12L12 12M3 12L6 15M3 12L6 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </button>
+
             <div class="flex-1 mr0 mb3 mb0-md mr2-md relative">
                 <div class="inline-block">
                     <input class="input" id="iiawma" name="Destino" placeholder="¿Dónde vas?" required type="text"/>

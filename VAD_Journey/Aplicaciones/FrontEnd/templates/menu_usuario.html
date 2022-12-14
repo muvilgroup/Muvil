@@ -506,7 +506,7 @@
 					<!-- FIN Mis Preferencias -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-opiniones" role="tabpanel" aria-labelledby="v-pills-opiniones-tab">
-					<!-- INICIO Opiniones -->
+
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Opiniones</h3>
@@ -931,7 +931,43 @@
 							<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
 						</div>
 					</div>
-					<!-- FIN Cambiar Contraseña -->
+					<form class="row px-2 pt-2 align-items-center" id="form-contraseñas">
+						<div class="row mb-2">
+						  <div class="col justify-content-center" >
+							  <img class="rounded mx-auto d-block" src="../static/img/key.png">
+						  </div>
+						  <div class="col-6">
+						  <div class="row mb-3 align-items-center">
+						  	<div class="col-5">
+								<label for="inputcontrasenaactual" class="form-label">Contraseña Actual: </label>
+						  	</div>
+						  	<div class="col-6">
+								<input type="text" class="form-control" id="inputcontrasenaactual">
+						  	</div>
+						  </div>
+						  <div class="row mb-3 align-items-center">
+						  	<div class="col-5">
+								<label for="inputcontrasenanueva" class="form-label">Nueva Contraseña: </label>
+						  	</div>
+						  	<div class="col-6">
+								<input type="text" class="form-control" id="inputcontrasenanueva">
+						  	</div>
+						  </div>
+						  <div class="row mb-3 align-items-center">
+						  	<div class="col-5">
+								<label for="inputcontrasenaconf" class="form-label">Confirmar Contraseña: </label>
+						  	</div>
+						  	<div class="col-6">
+								<input type="text" class="form-control" id="inputcontrasenaconf">
+						  	</div>
+						  </div>
+						  <div class="d-flex justify-content-center align-items-center py-3">
+							  <button class="btn btn-warning border-light border-3 fw-bold"> Guardar </button>
+						  </div>
+						  </div>
+						</div>
+					</form>
+					<!-- FIN Contraseña -->
 				</div>
 			</div>
 		</div>
