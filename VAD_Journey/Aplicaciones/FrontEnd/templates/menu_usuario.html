@@ -8,10 +8,6 @@
 	<link rel="stylesheet" href="../static/css/bootstrap5/bootstrap.min.css">
 	<link rel="stylesheet" href="../static/css/index.css">
 	<style>
-		.cabecera {
-			height: 140px;
-			background: linear-gradient(to right, #FFFFFF, #FFFFFF);
-		}
 		.navpane {
 			background: linear-gradient(to right, #FFFFFF, #FFFFFF);
 		}
@@ -99,36 +95,23 @@
 		  	width:100%;
 		  	height:auto
 		}
+		.custom-nav-pills {
+			min-width: 180px;
+		}
+
+		.ivanxi img {
+			width: 200px;
+			height: 200px;
+		}
+
 	</style>
 </head>
 <body>
-	<div class="container-fluid text-center border-bottom border-5 border-warning sticky-top">
-		<div class="row cabecera align-items-center">
-			<div class="col align-self-end">
-				<img src='../static/img/Logo3.png' class="img-fluid" alt="MÚVIL">
-			</div>
-			<div class="col-7">
-				<img src='../static/img/TextoLogo.png' class="img-fluid" alt="MÚVIL">
-			</div>
-			<div class="col-1">
-			</div>
-			<div class="col-1">
-			</div>
-			<div class="col-1">
-				<svg xmlns="http://www.w3.org/2000/svg" data-toggle="modal" href="#userModal" width="45" height="45" fill="black" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
-                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
-                	<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-				</svg>
-			</div>
-		</div>
-	</div>
-
-
 	<div class="container mt-5">
 		<div class="row">
 			<!-- Nav tabs -->
 			<div class="d-flex align-items-start ms-3">
-			  	<div class="nav nav-pills flex-column me-3 col-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			  	<div class="nav nav-pills flex-column me-3 col-2 custom-nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 				  	<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
 					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill pe-1" viewBox="0 0 16 16">
 						  	<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -189,7 +172,7 @@
 			  	</div>
 
 			<!-- Tab panes -->
-			<div class="tab-content border col-10 navpane my-custom-scrollbar scrollbar-sunny-morning" id="v-pills-tabContent">
+			<div class="tab-content col-9 navpane" id="v-pills-tabContent">
 				<div class="tab-pane fade show active" id="v-pills-datos" role="tabpanel" aria-labelledby="v-pills-datos-tab">
 					<!-- INICIO Datos Personales -->
 					<div class="row">
@@ -198,10 +181,10 @@
 						</div>
 					</div>
 					<form class="row px-2 pt-2" id="form-datospersonales">
-						<div class="col-8 d-flex justify-content-center align-items-center py-3">
+						<div class="col-lg-8 col-6 d-flex justify-content-center align-items-center py-3">
 							<button class="btn btn-warning border-light border-3 fw-bold"> Ver Perfil Público </button>
 						</div>
-						<div class="col-3 mb-3 ps-5 button-container">
+						<div class="col-lg-3 col-6 mb-3 ps-5 button-container">
 							<img class="img-thumbnail rounded-circle" src="../static/img/personas/6.jpg">
 							<!--<embed src="../static/icon/pencil-fill.svg" />-->
 							<a href="" alt="Editar"><embed src="../static/icon/pencil-fill.svg" alt="Editar"/></a>
@@ -506,7 +489,7 @@
 					<!-- FIN Mis Preferencias -->
 				</div>
 				<div class="tab-pane fade" id="v-pills-opiniones" role="tabpanel" aria-labelledby="v-pills-opiniones-tab">
-
+					<!-- INICIO Opiniones -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Opiniones</h3>
@@ -914,13 +897,34 @@
 					</div>
 					<nav class="row">
 					  	<div class="nav nav-tabs justify-content-center col-12" id="money-nav-tab" role="tablist">
-							<button class="nav-link active fw-bold col-4" id="nav-expenses-tab" data-bs-toggle="tab" data-bs-target="#nav-expenses" type="button" role="tab" aria-controls="nav-expenses" aria-selected="true">Pagos</button>
-							<button class="nav-link fw-bold col-4" id="nav-charges-tab" data-bs-toggle="tab" data-bs-target="#nav-charges" type="button" role="tab" aria-controls="nav-charges" aria-selected="false">Cobros</button>
+							<button class="nav-link active fw-bold col-4 fs-3 bg-light" id="nav-expenses-tab" data-bs-toggle="tab" data-bs-target="#nav-expenses" type="button" role="tab" aria-controls="nav-expenses" aria-selected="true">Pagos</button>
+							<button class="nav-link fw-bold col-4 fs-3 bg-light" id="nav-charges-tab" data-bs-toggle="tab" data-bs-target="#nav-charges" type="button" role="tab" aria-controls="nav-charges" aria-selected="false">Cobros</button>
 					  	</div>
 					</nav>
 					<div class="row tab-content" id="money-nav-tabContent">
-					  	<div class="tab-pane fade show active" id="nav-expenses" role="tabpanel" aria-labelledby="nav-expenses-tab">expenses content</div>
-					  	<div class="tab-pane fade" id="nav-charges" role="tabpanel" aria-labelledby="nav-charges-tab">charges content</div>
+					  	<!-- INICIO Pagos-->
+						<div class="tab-pane fade show active" id="nav-expenses" role="tabpanel" aria-labelledby="nav-expenses-tab">
+							<nav class="row">
+								<div class="nav nav-tabs justify-content-center col-12" id="money-nav-tab" role="tablist">
+									<button class="nav-link active fw-bold col-4" id="nav-expenses-conf-tab" data-bs-toggle="tab" data-bs-target="#nav-expenses-conf" type="button" role="tab" aria-controls="nav-expenses-conf" aria-selected="true">Medios de Gastos</button>
+								  	<button class="nav-link fw-bold col-4" id="nav-expenses-hist-tab" data-bs-toggle="tab" data-bs-target="#nav-expenses-hist" type="button" role="tab" aria-controls="nav-expenses-hist" aria-selected="false">Historial de Gastos</button>
+								</div>
+						  	</nav>
+						  	<div class="row tab-content" id="money-nav-tabContent">
+								<div class="tab-pane fade show active" id="nav-expenses-conf" role="tabpanel" aria-labelledby="nav-expenses-conf-tab">
+									Medios de Gastos (Contenido)
+							  	</div>
+								<div class="tab-pane fade" id="nav-expenses-hist" role="tabpanel" aria-labelledby="nav-expenses-hist-tab">
+									Historial de Gastos (Contenido)
+							  	</div>
+						  	</div>
+						</div>
+						<!-- FIN Pagos-->
+						<!-- INICIO Cobros-->
+					  	<div class="tab-pane fade" id="nav-charges" role="tabpanel" aria-labelledby="nav-charges-tab">
+							  charges content
+						</div>
+						<!-- FIN Cobros-->
 					</div>
 					<!-- FIN Pagos/Cobros -->
 				</div>
@@ -931,14 +935,14 @@
 							<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
 						</div>
 					</div>
-					<form class="row px-2 pt-2 align-items-center" id="form-contraseñas">
+					<form class="row px-2 pt-2 align-items-start border" id="form-contraseñas">
 						<div class="row mb-2">
-						  <div class="col justify-content-center" >
+						  <div class="col justify-content-center d-lg-block d-none" >
 							  <img class="rounded mx-auto d-block" src="../static/img/key.png">
 						  </div>
-						  <div class="col-6">
+						  <div class="col-12 col-lg-6">
 						  <div class="row mb-3 align-items-center">
-						  	<div class="col-5">
+						  	<div class="col-5 text-end">
 								<label for="inputcontrasenaactual" class="form-label">Contraseña Actual: </label>
 						  	</div>
 						  	<div class="col-6">
@@ -946,7 +950,7 @@
 						  	</div>
 						  </div>
 						  <div class="row mb-3 align-items-center">
-						  	<div class="col-5">
+						  	<div class="col-5 text-end">
 								<label for="inputcontrasenanueva" class="form-label">Nueva Contraseña: </label>
 						  	</div>
 						  	<div class="col-6">
@@ -954,7 +958,7 @@
 						  	</div>
 						  </div>
 						  <div class="row mb-3 align-items-center">
-						  	<div class="col-5">
+						  	<div class="col-5 text-end">
 								<label for="inputcontrasenaconf" class="form-label">Confirmar Contraseña: </label>
 						  	</div>
 						  	<div class="col-6">
