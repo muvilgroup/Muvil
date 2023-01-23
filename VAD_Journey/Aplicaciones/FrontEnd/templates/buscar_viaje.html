@@ -22,6 +22,7 @@
 		  	width:100%;
 		  	height:auto
 		}
+
 	</style>
 </head>
 <body>
@@ -80,21 +81,21 @@
 
 
 	<!-- INICIO Barra Busqueda -->
-	<div class="container mt-5 d-flex justify-content-center contenedor-barra-busqueda">
+	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda">
-			<div class="col-3 form-floating p-0 m-0" id="origen">
+			<div class="col-6 col-md-3 form-floating p-0 m-0" id="origen">
 				<input type="text" class="form-select rounded-0 rounded-start border border-warning" nombre="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?">
 				<label for="inputOrigen" class="form-label">Origen</label>
 			</div>
-			<div class="col-3 form-floating p-0 m-0" id="destino">
+			<div class="col-6 col-md-3 form-floating p-0 m-0" id="destino">
 				<input type="text" class="form-select rounded-0 border border-warning" nombre="inputDestino" id="inputDestino" placeholder="¿A donde quieres ir?">
 				<label for="inputDestino" class="form-label">Destino</label>
 			</div>
-			<div class="col-2 form-floating p-0 m-0" id="fecha">
+			<div class="col-6 col-md-2 form-floating p-0 m-0" id="fecha">
 				<input type="date" class="form-control rounded-0 border border-warning" nombre="inputFecha" id="inputFecha" placeholder="Fecha">
 				<label for="inputFecha" class="form-label">¿Cuando?</label>
 			</div>
-			<div class="col-2 form-floating p-0 m-0 row-auto" nombre="inputPlazas" id="inputPlazas">
+			<div class="col-6 col-md-2 form-floating p-0 m-0 row-auto" nombre="inputPlazas" id="inputPlazas">
 				<select data-trigger="" class="form-select rounded-0 border border-warning h-100">
 				  	<option placeholder="">1 plaza</option>
 				  	<option>2 plazas</option>
@@ -103,7 +104,7 @@
 				</select>
 				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
 			</div>
-			<div class="col-2 p-0 m-0 row-auto" id="boton-buscar">
+			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
 				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning" type="button">
 					Buscar
 				</button>
@@ -112,9 +113,128 @@
 	</div>
 	<!-- FIN Barra Busqueda -->
 
-	<div class="container contenedor busqueda-viajes mt-4">
+	<div class="container-md contenedor busqueda-viajes mt-4">
 		<div class="row">
-			<aside class="col-3 filtros-viajes">
+
+			<div class="col-12 d-flex justify-content-center mb-2">
+				<button type="button" class="btn btn-warning col-10 fw-bold d-block d-md-none" data-bs-toggle="modal" data-bs-target="#ventana-filtros-viajes-modal">
+					Filtros
+				</button>
+			</div>
+
+			<!-- INICIO Modal Filtros -->
+			<div class="modal fade" id="ventana-filtros-viajes-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtros</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						  <aside class="col-12 filtros-viajes modal-fade" id="contenedor-filtros-viajes-modal">
+							  <div class="filtro-hora-salida my-1">
+								  <label class="fw-bold">
+									  Hora de salida...
+								  </label>
+							  <div class="px-2 py-1">
+								  <div class="form-check">
+									  <input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
+									  <label for="checkbox-1" class="form-check-label">Mañana (6am - 12pm)</label>
+								  </div>
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+										<label for="checkbox-2" class="form-check-label">Tarde (12pm - 20pm)</label>
+									</div>
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+										<label for="checkbox-2" class="form-check-label">Noche (20pm - 6am)</label>
+									</div>
+								</div>
+							</div>
+							<div class="filtro-precio my-1">
+								<label class="fw-bold">
+									Precio...
+								</label>
+								<div class="d-flex px-1 py-1">
+									<label class="col-3 text-end pe-1" for="filtro-desde">mínimo </label>
+									<input class="col-3" type="number" id="filtro-desde">
+									<label class="col-3 text-end pe-1" for="filtro-hasta">máximo </label>
+									<input class="col-3" type="number" id="filtro-hasta">
+								</div>
+							</div>
+							<div class="filtro-rating my-1">
+								<label class="fw-bold">
+									Calificación mínima...
+								</label>
+								<div class="px-3 py-1">
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
+										<label for="checkbox-1" class="form-check-label">Diamante</label>
+									</div>
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
+										<label for="checkbox-1" class="form-check-label">Platino</label>
+									</div>
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+										<label for="checkbox-2" class="form-check-label">Oro</label>
+									</div>
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+										<label for="checkbox-2" class="form-check-label">Plata</label>
+									</div>
+									<div class="form-check">
+										<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+										<label for="checkbox-2" class="form-check-label">Bronce</label>
+									</div>
+								</div>
+							</div>
+							<div class="filtro-preferencias my-1">
+								<label class="fw-bold">
+									Preferencias...
+								</label>
+								<div class="px-2 py-1 d-flex align-items-center" id="filtro-conversacion">
+									<label for="conversacion" class="col-4">Conversación</label>
+									<select class="form-select col" id="conversacion">
+										<option value="mucha">Mucha</option>
+										<option value="suficiente">Suficiente</option>
+										<option value="poca">Poca</option>
+									</select>
+								</div>
+								<div class="px-2 py-1 d-flex align-items-center" id="filtro-musica">
+									<label for="musica" class="col-4">Música</label>
+									<select class="form-select col" id="musica">
+										<option value="si">Si, por favor</option>
+										<option value="no">No, gracias</option>
+									</select>
+								</div>
+								<div class="px-2 py-1 d-flex align-items-center" id="filtro-fumar">
+									<label for="fumar" class="col-4">Fumar</label>
+									<select class="form-select col" id="fumar">
+										<option value="no">No</option>
+										<option value="si">Si</option>
+									</select>
+								</div>
+								<div class="px-2 py-1 d-flex align-items-center" id="filtro-mascota">
+									<label for="mascota" class="col-4">Acepta mascotas</label>
+									<select class="form-select col" id="mascota">
+										<option value="no">No</option>
+										<option value="si">Si</option>
+									</select>
+								</div>
+							</div>
+						  </aside>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary">Aplicar Filtros</button>
+					  </div>
+					</div>
+				  </div>
+			</div>
+			<!-- FIN Modal Filtros -->
+
+			<aside class="col-3 filtros-viajes d-none d-md-block" id="contenedor-filtros-viajes">
 				<h4 class="fw-bold border-bottom border-3 border-warning">
 					Filtrar por...
 				</h4>
@@ -211,46 +331,45 @@
 				</div>
 
 			</aside>
-			<div class="col-9 contenedor-tarjetas-viajes border">
-				<div class="row tarjeta-pago mx-3 my-2 px-2 py-2 d-flex align-items-center tarjeta-viaje rounded shadow">
+			<div class="col-12 col-md-9 contenedor-tarjetas-viajes">
+				<div class="row tarjeta-pago m-2 p-2 d-flex align-items-center tarjeta-viaje rounded shadow">
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
-							<div class="col-2 ps-3">
+							<div class="col-1 ps-3">
 								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
 							</div>
-							<div class="col-10 fw-bold fs-5">
+							<div class="col-11 fw-bold fs-md-5">
 								<p>
 									07:00 - Madrid - Estación de Chanmartín
 								</p>
 							</div>
-							<div class="col-2 ps-4">
-								<img src="../static/icon/vertical-line.svg" alt="" height="25px" id="location"/>
+							<div class="col-1 ps-4">
 							</div>
-							<div class="col-10">
-								<p class="duracion-km fw-bold">
+							<div class="col-12 ps-5">
+								<p class="duracion-km fw-md-bold">
 									3:10 horas (320km)
 								</p>
 							</div>
-							<div class="col-2 ps-3">
+							<div class="col-1 ps-3">
 								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
 							</div>
-							<div class="col-10 fw-bold fs-5">
+							<div class="col-11 fw-bold fs-md-5">
 								<p>
 									10:15 - Zaragoza - Iglesia del Pilar
 								</p>
 							</div>
 						</div>
 						<div class="row align-items-center contenedor-conductor">
-							<div class="col-2 ps-3 img-container-journey border">
+							<div class="col-2 col-md-2 ps-3 img-container-journey">
 								<img src="../static/img/personas/11.jpg">
 							</div>
-							<div class="col-1 fw-bold fs-3">
+							<div class="col-1 col-md-1 fw-bold fs-3">
 								4.7
 							</div>
-							<div class="col-1">
+							<div class="col-1 col-md-1">
 								<img src="../static/img/Star.png">
 							</div>
-							<div class="col-3">
+							<div class="col-4 col-md-3">
 								<a class="link-primary fw-bold">
 									(21 opiniones)
 								</a>
@@ -267,8 +386,8 @@
 							</div>
 							<div class="col-12 plazas-viaje d-flex justify-content-center">
 								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
-								<div class="ps-1">
-									2 plazas disponibles
+								<div class="ps-md-1">
+									2 plazas
 								</div>
 							</div>
 							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
@@ -280,251 +399,46 @@
 						</div>
 					</div>
 				</div>
-				<div class="row tarjeta-pago mx-3 my-2 px-2 py-2 d-flex align-items-center tarjeta-viaje rounded shadow">
+				<div class="row tarjeta-pago m-2 p-2 d-flex align-items-center tarjeta-viaje rounded shadow">
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
-							<div class="col-2 ps-3">
+							<div class="col-1 ps-3">
 								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
 							</div>
-							<div class="col-10 fw-bold fs-5">
+							<div class="col-11 fw-bold fs-md-5">
 								<p>
-									11:00 - Murcia - Plaza Circular
+									07:00 - Madrid - Estación de Chanmartín
 								</p>
 							</div>
-							<div class="col-2 ps-4">
-								<img src="../static/icon/vertical-line.svg" alt="" height="25px" id="location"/>
+							<div class="col-1 ps-4">
 							</div>
-							<div class="col-10">
-								<p class="duracion-km fw-bold">
-									2:35 horas (245km)
+							<div class="col-12 ps-5">
+								<p class="duracion-km fw-md-bold">
+									3:10 horas (320km)
 								</p>
 							</div>
-							<div class="col-2 ps-3">
+							<div class="col-1 ps-3">
 								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
 							</div>
-							<div class="col-10 fw-bold fs-5">
+							<div class="col-11 fw-bold fs-md-5">
 								<p>
-									13:50 - Valencia - Ciudad de las Artes
+									10:15 - Zaragoza - Iglesia del Pilar
 								</p>
 							</div>
 						</div>
 						<div class="row align-items-center contenedor-conductor">
-							<div class="col-2 ps-3 img-container-journey border">
-								<img src="../static/img/personas/5.jpg">
-							</div>
-							<div class="col-1 fw-bold fs-3">
-								5.0
-							</div>
-							<div class="col-1">
-								<img src="../static/img/Star.png">
-							</div>
-							<div class="col-3">
-								<a class="link-primary fw-bold">
-									(4 opiniones)
-								</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-3 contenedor-precio">
-						<div class="row align-items-center text-center">
-							<div class="col-12 fw-bold fs-1 precio-viaje">
-								25€
-							</div>
-							<div class="col-12 pb-2">
-								por pasajero
-							</div>
-							<div class="col-12 plazas-viaje d-flex justify-content-center">
-								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
-								<div class="ps-1">
-									1 plaza disponible
-								</div>
-							</div>
-							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
-								<img src="../static/icon/group.svg" height="25px" width="25px" id="group-icon"
-									alt="Me gusta conversar" title="Me gusta conversar"/>
-								<img src="../static/icon/smoking.svg" height="25px" width="25px" id="smoke-icon"
-									alt="Se puede fumar" title="Se puede fumar"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row tarjeta-pago mx-3 my-2 px-2 py-2 d-flex align-items-center tarjeta-viaje rounded shadow">
-					<div class="col-9 contenedor-ruta-conductor">
-						<div class="row contenedor-ruta">
-							<div class="col-2 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-10 fw-bold fs-5">
-								<p>
-									18:20 - Argentina - Casa de Ceci
-								</p>
-							</div>
-							<div class="col-2 ps-4">
-								<img src="../static/icon/vertical-line.svg" alt="" height="25px" id="location"/>
-							</div>
-							<div class="col-10">
-								<p class="duracion-km fw-bold">
-									3:10 horas (2489km)
-								</p>
-							</div>
-							<div class="col-2 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-10 fw-bold fs-5">
-								<p>
-									16:10 - Albacete - Calle de la Felicidad
-								</p>
-							</div>
-						</div>
-						<div class="row align-items-center contenedor-conductor">
-							<div class="col-2 ps-3 img-container-journey border">
-								<img src="../static/img/personas/6.jpg">
-							</div>
-							<div class="col-1 fw-bold fs-3">
-								4.3
-							</div>
-							<div class="col-1">
-								<img src="../static/img/Star.png">
-							</div>
-							<div class="col-3">
-								<a class="link-primary fw-bold">
-									(872 opiniones)
-								</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-3 contenedor-precio">
-						<div class="row align-items-center text-center">
-							<div class="col-12 fw-bold fs-1 precio-viaje">
-								99€
-							</div>
-							<div class="col-12 pb-2">
-								por pasajero
-							</div>
-							<div class="col-12 plazas-viaje d-flex justify-content-center">
-								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
-								<div class="ps-1">
-									4 plazas disponibles
-								</div>
-							</div>
-							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
-								<img src="../static/icon/group.svg" height="25px" width="25px" id="group-icon"
-									alt="Me gusta conversar" title="Me gusta conversar"/>
-								<img src="../static/icon/smoking.svg" height="25px" width="25px" id="smoke-icon"
-									alt="Se puede fumar" title="Se puede fumar"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row tarjeta-pago mx-3 my-2 px-2 py-2 d-flex align-items-center tarjeta-viaje rounded shadow">
-					<div class="col-9 contenedor-ruta-conductor">
-						<div class="row contenedor-ruta">
-							<div class="col-2 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-10 fw-bold fs-5">
-								<p>
-									12:05 - Asturias - Palacio de las Tortugas
-								</p>
-							</div>
-							<div class="col-2 ps-4">
-								<img src="../static/icon/vertical-line.svg" alt="" height="25px" id="location"/>
-							</div>
-							<div class="col-10">
-								<p class="duracion-km fw-bold">
-									0:50 horas (77km)
-								</p>
-							</div>
-							<div class="col-2 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-10 fw-bold fs-5">
-								<p>
-									12:55 - Vigo - Avenida de VAD
-								</p>
-							</div>
-						</div>
-						<div class="row align-items-center contenedor-conductor">
-							<div class="col-2 ps-3 img-container-journey border">
-								<img src="../static/img/personas/10.jpg">
-							</div>
-							<div class="col-1 fw-bold fs-3">
-								3.2
-							</div>
-							<div class="col-1">
-								<img src="../static/img/Star.png">
-							</div>
-							<div class="col-3">
-								<a class="link-primary fw-bold">
-									(62 opiniones)
-								</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-3 contenedor-precio">
-						<div class="row align-items-center text-center">
-							<div class="col-12 fw-bold fs-1 precio-viaje">
-								9€
-							</div>
-							<div class="col-12 pb-2">
-								por pasajero
-							</div>
-							<div class="col-12 plazas-viaje d-flex justify-content-center">
-								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
-								<div class="ps-1">
-									2 plazas disponibles
-								</div>
-							</div>
-							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
-								<img src="../static/icon/group.svg" height="25px" width="25px" id="group-icon"
-									alt="Me gusta conversar" title="Me gusta conversar"/>
-								<img src="../static/icon/smoking.svg" height="25px" width="25px" id="smoke-icon"
-									alt="Se puede fumar" title="Se puede fumar"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row tarjeta-pago mx-3 my-2 px-2 py-2 d-flex align-items-center tarjeta-viaje rounded shadow">
-					<div class="col-9 contenedor-ruta-conductor">
-						<div class="row contenedor-ruta">
-							<div class="col-2 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-10 fw-bold fs-5">
-								<p>
-									17:40 - Portugal - Ciudad de Oporto
-								</p>
-							</div>
-							<div class="col-2 ps-4">
-								<img src="../static/icon/vertical-line.svg" alt="" height="25px" id="location"/>
-							</div>
-							<div class="col-10">
-								<p class="duracion-km fw-bold">
-									8:15 horas (720km)
-								</p>
-							</div>
-							<div class="col-2 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-10 fw-bold fs-5">
-								<p>
-									23:30 - Barcelona - Estadio Camp Nou
-								</p>
-							</div>
-						</div>
-						<div class="row align-items-center contenedor-conductor">
-							<div class="col-2 ps-3 img-container-journey border">
+							<div class="col-2 col-md-2 ps-3 img-container-journey">
 								<img src="../static/img/personas/11.jpg">
 							</div>
-							<div class="col-1 fw-bold fs-3">
-								4.0
+							<div class="col-1 col-md-1 fw-bold fs-3">
+								4.7
 							</div>
-							<div class="col-1">
+							<div class="col-1 col-md-1">
 								<img src="../static/img/Star.png">
 							</div>
-							<div class="col-3">
+							<div class="col-4 col-md-3">
 								<a class="link-primary fw-bold">
-									(144 opiniones)
+									(21 opiniones)
 								</a>
 							</div>
 						</div>
@@ -532,15 +446,216 @@
 					<div class="col-3 contenedor-precio">
 						<div class="row align-items-center text-center">
 							<div class="col-12 fw-bold fs-1 precio-viaje">
-								58€
+								16€
 							</div>
 							<div class="col-12 pb-2">
 								por pasajero
 							</div>
 							<div class="col-12 plazas-viaje d-flex justify-content-center">
 								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
-								<div class="ps-1">
-									3 plazas disponibles
+								<div class="ps-md-1">
+									2 plazas
+								</div>
+							</div>
+							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
+								<img src="../static/icon/group.svg" height="25px" width="25px" id="group-icon"
+									alt="Me gusta conversar" title="Me gusta conversar"/>
+								<img src="../static/icon/smoking.svg" height="25px" width="25px" id="smoke-icon"
+									alt="Se puede fumar" title="Se puede fumar"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row tarjeta-pago m-2 p-2 d-flex align-items-center tarjeta-viaje rounded shadow">
+					<div class="col-9 contenedor-ruta-conductor">
+						<div class="row contenedor-ruta">
+							<div class="col-1 ps-3">
+								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+							</div>
+							<div class="col-11 fw-bold fs-md-5">
+								<p>
+									07:00 - Madrid - Estación de Chanmartín
+								</p>
+							</div>
+							<div class="col-1 ps-4">
+							</div>
+							<div class="col-12 ps-5">
+								<p class="duracion-km fw-md-bold">
+									3:10 horas (320km)
+								</p>
+							</div>
+							<div class="col-1 ps-3">
+								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+							</div>
+							<div class="col-11 fw-bold fs-md-5">
+								<p>
+									10:15 - Zaragoza - Iglesia del Pilar
+								</p>
+							</div>
+						</div>
+						<div class="row align-items-center contenedor-conductor">
+							<div class="col-2 col-md-2 ps-3 img-container-journey">
+								<img src="../static/img/personas/11.jpg">
+							</div>
+							<div class="col-1 col-md-1 fw-bold fs-3">
+								4.7
+							</div>
+							<div class="col-1 col-md-1">
+								<img src="../static/img/Star.png">
+							</div>
+							<div class="col-4 col-md-3">
+								<a class="link-primary fw-bold">
+									(21 opiniones)
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 contenedor-precio">
+						<div class="row align-items-center text-center">
+							<div class="col-12 fw-bold fs-1 precio-viaje">
+								16€
+							</div>
+							<div class="col-12 pb-2">
+								por pasajero
+							</div>
+							<div class="col-12 plazas-viaje d-flex justify-content-center">
+								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
+								<div class="ps-md-1">
+									2 plazas
+								</div>
+							</div>
+							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
+								<img src="../static/icon/group.svg" height="25px" width="25px" id="group-icon"
+									alt="Me gusta conversar" title="Me gusta conversar"/>
+								<img src="../static/icon/smoking.svg" height="25px" width="25px" id="smoke-icon"
+									alt="Se puede fumar" title="Se puede fumar"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row tarjeta-pago m-2 p-2 d-flex align-items-center tarjeta-viaje rounded shadow">
+					<div class="col-9 contenedor-ruta-conductor">
+						<div class="row contenedor-ruta">
+							<div class="col-1 ps-3">
+								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+							</div>
+							<div class="col-11 fw-bold fs-md-5">
+								<p>
+									07:00 - Madrid - Estación de Chanmartín
+								</p>
+							</div>
+							<div class="col-1 ps-4">
+							</div>
+							<div class="col-12 ps-5">
+								<p class="duracion-km fw-md-bold">
+									3:10 horas (320km)
+								</p>
+							</div>
+							<div class="col-1 ps-3">
+								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+							</div>
+							<div class="col-11 fw-bold fs-md-5">
+								<p>
+									10:15 - Zaragoza - Iglesia del Pilar
+								</p>
+							</div>
+						</div>
+						<div class="row align-items-center contenedor-conductor">
+							<div class="col-2 col-md-2 ps-3 img-container-journey">
+								<img src="../static/img/personas/11.jpg">
+							</div>
+							<div class="col-1 col-md-1 fw-bold fs-3">
+								4.7
+							</div>
+							<div class="col-1 col-md-1">
+								<img src="../static/img/Star.png">
+							</div>
+							<div class="col-4 col-md-3">
+								<a class="link-primary fw-bold">
+									(21 opiniones)
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 contenedor-precio">
+						<div class="row align-items-center text-center">
+							<div class="col-12 fw-bold fs-1 precio-viaje">
+								16€
+							</div>
+							<div class="col-12 pb-2">
+								por pasajero
+							</div>
+							<div class="col-12 plazas-viaje d-flex justify-content-center">
+								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
+								<div class="ps-md-1">
+									2 plazas
+								</div>
+							</div>
+							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
+								<img src="../static/icon/group.svg" height="25px" width="25px" id="group-icon"
+									alt="Me gusta conversar" title="Me gusta conversar"/>
+								<img src="../static/icon/smoking.svg" height="25px" width="25px" id="smoke-icon"
+									alt="Se puede fumar" title="Se puede fumar"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row tarjeta-pago m-2 p-2 d-flex align-items-center tarjeta-viaje rounded shadow">
+					<div class="col-9 contenedor-ruta-conductor">
+						<div class="row contenedor-ruta">
+							<div class="col-1 ps-3">
+								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+							</div>
+							<div class="col-11 fw-bold fs-md-5">
+								<p>
+									07:00 - Madrid - Estación de Chanmartín
+								</p>
+							</div>
+							<div class="col-1 ps-4">
+							</div>
+							<div class="col-12 ps-5">
+								<p class="duracion-km fw-md-bold">
+									3:10 horas (320km)
+								</p>
+							</div>
+							<div class="col-1 ps-3">
+								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+							</div>
+							<div class="col-11 fw-bold fs-md-5">
+								<p>
+									10:15 - Zaragoza - Iglesia del Pilar
+								</p>
+							</div>
+						</div>
+						<div class="row align-items-center contenedor-conductor">
+							<div class="col-2 col-md-2 ps-3 img-container-journey">
+								<img src="../static/img/personas/11.jpg">
+							</div>
+							<div class="col-1 col-md-1 fw-bold fs-3">
+								4.7
+							</div>
+							<div class="col-1 col-md-1">
+								<img src="../static/img/Star.png">
+							</div>
+							<div class="col-4 col-md-3">
+								<a class="link-primary fw-bold">
+									(21 opiniones)
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 contenedor-precio">
+						<div class="row align-items-center text-center">
+							<div class="col-12 fw-bold fs-1 precio-viaje">
+								16€
+							</div>
+							<div class="col-12 pb-2">
+								por pasajero
+							</div>
+							<div class="col-12 plazas-viaje d-flex justify-content-center">
+								<img src="../static/icon/passengers.svg" alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
+								<div class="ps-md-1">
+									2 plazas
 								</div>
 							</div>
 							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
