@@ -12,12 +12,12 @@ html * {
 .button-container embed{
     position: absolute;
     bottom:0.7em;
-    right:2em;
+    right:0.7em;
     background-color:#FFC700;
-    border-radius:1.7em;
+    border-radius:1.2em;
     color:white;
     text-transform:uppercase;
-    padding:1em 1.4em;
+    padding:1em 1em;
 }
 
 .button-container embed:hover{
@@ -28,20 +28,18 @@ html * {
 
 @media only screen and (max-width:600px) {
     .button-container{
-    display:inline-block;
-    margin-bottom:2em;
-}
+        display:inline-block;
+        position:relative;
+    }
 .button-container embed{
-    position:relative;
+    position: absolute;
     bottom:0em;
-    right:-2em;
-    background-color:#8F0005;
+    right:0em;
+    background-color:#FFC700;
+    border-radius:1.2em;
     color:white;
-    font-size:1em;
-    padding:1em 1.5em;
     text-transform:uppercase;
-    border-color:white;
-    border-radius:1.5em;
+    padding:1em 1em;
 }
 }
 
