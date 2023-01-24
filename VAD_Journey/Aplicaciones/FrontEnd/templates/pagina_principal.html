@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Página Principal</title>
+	<link rel="stylesheet" href="../static/css/bootstrap5/bootstrap.min.css">
+	<link rel="stylesheet" href="../static/css/index.css">
+	<style>
+		.contenedor-pestanas-eventos a{
+			color: #CACACA;
+		}
+		.contenedor-mes-evento {
+			background-color: #F9F4F4;
+		}
+		.imagen-evento {
+    		width: 400px;
+    		height: 300px;
+		}
+		.texto-evento {
+    		background-color: #F9F4F4;
+    		color: black;
+    		font-size: 25px;
+		}
+		.carousel-inner > .carousel-item > img {
+			width:640px;
+			height:300px;
+		}
+	</style>
+</head>
+<body>
+
+
+	<!-- INICIO Carrusel-->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+		<div class="carousel-indicators">
+        	<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        	<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+		</div>
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src='../static/img/Portada3.jpg' class="img-fluid d-block w-100 overflow-hidden" alt="Mallorca">
+				<div class="carousel-caption">
+					<h2>VIAJA...</h2>
+					<p>a cualquier lugar!!!</p>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src='../static/img/paisaje3.jpg' class="img-fluid d-block w-100" alt="Mallorca">
+				<div class="carousel-caption">
+					<h2>AHORRA...</h2>
+					<p>aprovechando los viajes de los demás!!!</p>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src='../static/img/paisaje1.jpg' class="img-fluid d-block w-100" alt="Barcelona">
+				<div class="carousel-caption">
+					<h3>DISFRUTA...</h3>
+					<p>conociendo otras personas con vidas interesantes!!!</p>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src='../static/img/paisaje2.jpg' class="img-fluid d-block w-100" alt="Cantabria">
+				<div class="carousel-caption">
+					<h2>DESCUBRE...</h2>
+					<p>una nueva forma de moverte por el mundo!!!</p>
+				</div>
+			</div>
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		</button>
+	</div>
+	<!-- FIN Carrusel-->
+
+	<!-- INICIO Barra Busqueda -->
+	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
+		<form class="row barra-busqueda">
+			<div class="col-6 col-md-3 form-floating p-0 m-0" id="origen">
+				<input type="text" class="form-select rounded-0 rounded-start border border-warning" nombre="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?">
+				<label for="inputOrigen" class="form-label">Origen</label>
+			</div>
+			<div class="col-6 col-md-3 form-floating p-0 m-0" id="destino">
+				<input type="text" class="form-select rounded-0 border border-warning" nombre="inputDestino" id="inputDestino" placeholder="¿A donde quieres ir?">
+				<label for="inputDestino" class="form-label">Destino</label>
+			</div>
+			<div class="col-6 col-md-2 form-floating p-0 m-0" id="fecha">
+				<input type="date" class="form-control rounded-0 border border-warning" nombre="inputFecha" id="inputFecha" placeholder="Fecha">
+				<label for="inputFecha" class="form-label">¿Cuando?</label>
+			</div>
+			<div class="col-6 col-md-2 form-floating p-0 m-0 row-auto" nombre="inputPlazas" id="inputPlazas">
+				<select data-trigger="" class="form-select rounded-0 border border-warning h-100">
+				  	<option placeholder="">1 plaza</option>
+				  	<option>2 plazas</option>
+				  	<option>3 plazas</option>
+				  	<option>4 plazas</option>
+				</select>
+				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
+			</div>
+			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning" type="button">
+					Buscar
+				</button>
+			</div>
+		</form>
+	</div>
+	<!-- FIN Barra Busqueda -->
+
+	<!-- INICIO Eventos -->
+	<nav class="container-md mt-4">
+		<div class="nav nav-tabs contenedor-pestanas-eventos">
+			<button class="nav-link active" id="nav-mes-1-tab" data-bs-toggle="tab" data-bs-target="#nav-mes-1" type="button" role="tab" aria-controls="nav-mes-1" aria-selected="true">
+				Enero
+			</button>
+			<button class="nav-link" id="nav-mes-2-tab" data-bs-toggle="tab" data-bs-target="#nav-mes-2" type="button" role="tab" aria-controls="nav-mes-2" aria-selected="false">
+				Febrero
+			</button>
+			<button class="nav-link" id="nav-mes-3-tab" data-bs-toggle="tab" data-bs-target="#nav-mes-3" type="button" role="tab" aria-controls="nav-mes-3" aria-selected="false">
+				Marzo
+			</button>
+		</div>
+	</nav>
+	<div class="tab-content" id="nav-tabContent">
+		  <div class="tab-pane fade show active contenedor-mes-evento" id="nav-mes-1" role="tabpanel" aria-labelledby="nav-mes-1-tab">
+			  <div class="row d-flex justify-content-evenly">
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Cantabria.jpg); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Cantabria: Ruta del Barranco
+					  </p>
+				  </div>
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Mallorca.jpg); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Mallorca: Concierto de Rosalía
+					  </p>
+				  </div>
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Barcelona.jpg); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Barcelona: Fiestas del Vino
+					  </p>
+				  </div>
+			</div>
+		  </div>
+		  <div class="tab-pane fade show contenedor-mes-evento" id="nav-mes-2" role="tabpanel" aria-labelledby="nav-mes-1-tab">
+			  <div class="row d-flex justify-content-evenly">
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Madrid.png); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Madrid: Mercadillo Navideño
+					  </p>
+				  </div>
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Granada.png); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Granada: Pistas de Nieve
+					  </p>
+				  </div>
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Murcia.png); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Murcia: Festival de Hielo
+					  </p>
+				  </div>
+			</div>
+		  </div>
+		  <div class="tab-pane fade show contenedor-mes-evento" id="nav-mes-3" role="tabpanel" aria-labelledby="nav-mes-1-tab">
+			  <div class="row d-flex justify-content-evenly">
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Cantabria.jpg); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Cantabria: Ruta del Barranco
+					  </p>
+				  </div>
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Mallorca.jpg); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Mallorca: Concierto de Rosalía
+					  </p>
+				  </div>
+				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+					   style="background-image: url(../static/img/Barcelona.jpg); background-size: cover;">
+					  <p class="texto-evento p-1 fw-bold">
+						  Barcelona: Fiestas del Vino
+					  </p>
+				  </div>
+			</div>
+		  </div>
+	</div>
+	<!-- FIN Eventos -->
+
+
+	<script src="../static/js/bootstrap5/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
