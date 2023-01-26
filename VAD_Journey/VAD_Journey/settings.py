@@ -91,10 +91,10 @@ WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd1jstk8c90jd9h',
-        'USER':'zdicfvfigleoon',
-        'PASSWORD':'e5d74c70c6a902b79b88297e6705941f8bd9d0848cd2c0d3d9da0451b61f7eb4',
-        'HOST':'ec2-34-249-161-200.eu-west-1.compute.amazonaws.com',
+        'NAME': 'rsxkoykr',
+        'USER':'rsxkoykr',
+        'PASSWORD':'rhruYV5osl80to7a-Aca7eui-QMZk7Wy',
+        'HOST':'kandula.db.elephantsql.com',
         'DATABASE_PORT':'5432'
     }
 }
