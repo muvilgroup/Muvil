@@ -16,7 +16,7 @@ def v_home(request):
         'viajesProximos':viajesProximos
     }
 
-    return render(request, "home.html", datos)
+    return render(request, "pagina_principal.html", datos)
 
 def main(request):
     email_input = request.POST.get('txtEmail', False)
@@ -27,10 +27,10 @@ def main(request):
     if existe_persona:
         numalert = 2  #OK Login
         registro_persona = Personas.objects.get(email=email_input, password=pass_input)
-        return render(request, "home.html", {'datos_persona':registro_persona, 'numAlert':numalert})
+        return render(request, "pagina_principal.html", {'datos_persona':registro_persona, 'numAlert':numalert})
     else:
         numalert = 1 #Error Login
-        return render(request, "home.html", {'numAlert':numalert})
+        return render(request, "pagina_principal.html", {'numAlert':numalert})
 
 def buscar_viaje(request):
     origen_input = request.POST.get('Origen')

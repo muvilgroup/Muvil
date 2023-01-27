@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +7,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Página Principal</title>
-	<link rel="stylesheet" href="../static/css/bootstrap5/bootstrap.min.css">
-	<link rel="stylesheet" href="../static/css/index.css">
+	<link rel="stylesheet" href='{% static "css/bootstrap5/bootstrap.min.css" %}'>
+	<link rel="stylesheet" href='{% static "css/index.css" %}'>
 	<style>
 		.contenedor-pestanas-eventos a{
 			color: #CACACA;
@@ -42,9 +44,11 @@
 		  	height:auto
 		}
 	</style>
+
 </head>
 <body>
 
+	{% include "cabecera_grande.html" %}
 
 	<!-- INICIO Carrusel-->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -56,28 +60,28 @@
 		</div>
 		<div class="carousel-inner">
 			<div class="carousel-item active">
-				<img src='../static/img/Portada3.jpg' class="img-fluid d-block w-100 overflow-hidden" alt="Mallorca">
+				<img src='{% static "img/Portada3.jpg" %}' class="img-fluid d-block w-100 overflow-hidden" alt="Mallorca">
 				<div class="carousel-caption">
 					<h2>VIAJA...</h2>
 					<p>a cualquier lugar!!!</p>
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src='../static/img/paisaje3.jpg' class="img-fluid d-block w-100" alt="Mallorca">
+				<img src='{% static "img/paisaje3.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
 				<div class="carousel-caption">
 					<h2>AHORRA...</h2>
 					<p>aprovechando los viajes de los demás!!!</p>
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src='../static/img/paisaje1.jpg' class="img-fluid d-block w-100" alt="Barcelona">
+				<img src='{% static "img/paisaje1.jpg" %}' class="img-fluid d-block w-100" alt="Barcelona">
 				<div class="carousel-caption">
 					<h3>DISFRUTA...</h3>
 					<p>conociendo otras personas con vidas interesantes!!!</p>
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src='../static/img/paisaje2.jpg' class="img-fluid d-block w-100" alt="Cantabria">
+				<img src='{% static "img/paisaje2.jpg" %}' class="img-fluid d-block w-100" alt="Cantabria">
 				<div class="carousel-caption">
 					<h2>DESCUBRE...</h2>
 					<p>una nueva forma de moverte por el mundo!!!</p>
@@ -95,7 +99,7 @@
 
 	<!-- INICIO Barra Busqueda -->
 	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
-		<form class="row barra-busqueda">
+		<form class="row barra-busqueda"> {% csrf_token %}
 			<div class="col-6 col-md-3 form-floating p-0 m-0" id="origen">
 				<input type="text" class="form-select rounded-0 rounded-start border border-warning" nombre="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?">
 				<label for="inputOrigen" class="form-label">Origen</label>
@@ -148,19 +152,19 @@
 	<div class="tab-content" id="nav-tabContent">
 		  <div class="tab-pane fade show active contenedor-mes-evento" id="nav-mes-1" role="tabpanel" aria-labelledby="nav-mes-1-tab">
 			  <div class="row d-flex justify-content-evenly">
-				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+				  <div class="col-12 col-md-3 my-3 imagen-evento border d-flex justify-content-end align-items-end"
 					   style="background-image: url(../static/img/Cantabria.jpg); background-size: cover;">
 					  <p class="texto-evento p-1 fw-bold">
 						  Cantabria: Ruta del Barranco
 					  </p>
 				  </div>
-				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+				  <div class="col-12 col-md-3 my-3 imagen-evento border d-flex justify-content-end align-items-end"
 					   style="background-image: url(../static/img/Mallorca.jpg); background-size: cover;">
 					  <p class="texto-evento p-1 fw-bold">
 						  Mallorca: Concierto de Rosalía
 					  </p>
 				  </div>
-				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+				  <div class="col-12 col-md-3 my-3 imagen-evento border d-flex justify-content-end align-items-end"
 					   style="background-image: url(../static/img/Barcelona.jpg); background-size: cover;">
 					  <p class="texto-evento p-1 fw-bold">
 						  Barcelona: Fiestas del Vino
@@ -170,19 +174,19 @@
 		  </div>
 		  <div class="tab-pane fade show contenedor-mes-evento" id="nav-mes-2" role="tabpanel" aria-labelledby="nav-mes-1-tab">
 			  <div class="row d-flex justify-content-evenly">
-				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+				  <div class="col-12 col-md-3 my-3 imagen-evento border d-flex justify-content-end align-items-end"
 					   style="background-image: url(../static/img/Madrid.png); background-size: cover;">
 					  <p class="texto-evento p-1 fw-bold">
 						  Madrid: Mercadillo Navideño
 					  </p>
 				  </div>
-				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+				  <div class="col-12 col-md-3 my-3 imagen-evento border d-flex justify-content-end align-items-end"
 					   style="background-image: url(../static/img/Granada.png); background-size: cover;">
 					  <p class="texto-evento p-1 fw-bold">
 						  Granada: Pistas de Nieve
 					  </p>
 				  </div>
-				  <div class="col-4 my-3 imagen-evento border d-flex justify-content-end align-items-end"
+				  <div class="col-12 col-md-3 my-3 imagen-evento border d-flex justify-content-end align-items-end"
 					   style="background-image: url(../static/img/Murcia.png); background-size: cover;">
 					  <p class="texto-evento p-1 fw-bold">
 						  Murcia: Festival de Hielo
@@ -227,7 +231,7 @@
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -242,7 +246,7 @@
 								</p>
 							</div>
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -252,13 +256,13 @@
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-2 col-md-2 ps-3 img-container-journey">
-								<img src="../static/img/personas/11.jpg">
+								<img src='{% static "img/personas/11.jpg" %}'>
 							</div>
 							<div class="col-1 col-md-1 fw-bold fs-3">
 								4.7
 							</div>
 							<div class="col-1 col-md-1">
-								<img src="../static/img/Star.png">
+								<img src='{% static "img/Star.png" %}'>
 							</div>
 							<div class="col-4 col-md-3">
 								<a class="link-primary fw-bold">
@@ -294,7 +298,7 @@
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -309,7 +313,7 @@
 								</p>
 							</div>
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -319,13 +323,13 @@
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-2 col-md-2 ps-3 img-container-journey">
-								<img src="../static/img/personas/11.jpg">
+								<img src='{% static "img/personas/10.jpg" %}'>
 							</div>
 							<div class="col-1 col-md-1 fw-bold fs-3">
 								4.7
 							</div>
 							<div class="col-1 col-md-1">
-								<img src="../static/img/Star.png">
+								<img src='{% static "img/Star.png" %}'>
 							</div>
 							<div class="col-4 col-md-3">
 								<a class="link-primary fw-bold">
@@ -361,7 +365,7 @@
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -376,7 +380,7 @@
 								</p>
 							</div>
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -386,13 +390,13 @@
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-2 col-md-2 ps-3 img-container-journey">
-								<img src="../static/img/personas/11.jpg">
+								<img src='{% static "img/personas/6.jpg" %}'>
 							</div>
 							<div class="col-1 col-md-1 fw-bold fs-3">
 								4.7
 							</div>
 							<div class="col-1 col-md-1">
-								<img src="../static/img/Star.png">
+								<img src='{% static "img/Star.png" %}'>
 							</div>
 							<div class="col-4 col-md-3">
 								<a class="link-primary fw-bold">
@@ -428,7 +432,7 @@
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -443,7 +447,7 @@
 								</p>
 							</div>
 							<div class="col-1 ps-3">
-								<img src="../static/icon/location.svg" alt="" width="15px" id="location"/>
+								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p>
@@ -453,13 +457,13 @@
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-2 col-md-2 ps-3 img-container-journey">
-								<img src="../static/img/personas/11.jpg">
+								<img src='{% static "img/personas/5.jpg" %}'>
 							</div>
 							<div class="col-1 col-md-1 fw-bold fs-3">
 								4.7
 							</div>
 							<div class="col-1 col-md-1">
-								<img src="../static/img/Star.png">
+								<img src='{% static "img/Star.png" %}'>
 							</div>
 							<div class="col-4 col-md-3">
 								<a class="link-primary fw-bold">
@@ -496,7 +500,7 @@
 	<!-- FIN Próximas Salidas -->
 
 
-	<script src="../static/js/bootstrap5/bootstrap.bundle.min.js"></script>
+	<script src='{% static "js/bootstrap5/bootstrap.bundle.min.js" %}'></script>
 
 </body>
 </html>
