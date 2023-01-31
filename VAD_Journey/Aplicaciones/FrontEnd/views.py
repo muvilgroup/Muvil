@@ -6,17 +6,36 @@ from datetime import datetime, date
 from .models import Personas, Viajes, Vehiculos
 
 # Create your views here.
-def v_home(request):
+def v_pagina_principal(request):
     dateNow = datetime.date(datetime.now())
-    timeNow = datetime.time(datetime.now())
+    #timeNow = datetime.time(datetime.now())
 
+    # Se comprueba si se ha introducido el user/pass
+    email_input = request.POST.get('txtEmail', False)
+    pass_input = request.POST.get('txtPass', False)
+    existe_persona = Personas.objects.filter(email=email_input, password=pass_input)
+
+    if not email_input and not pass_input:
+        numalert = 1 #Primera vez
+        registro_persona = None
+    elif existe_persona:
+        numalert = 2  # OK Login
+        registro_persona = Personas.objects.get(email=email_input, password=pass_input)
+    else:
+        numalert = 3  # Error Login
+        registro_persona = None
+
+    # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
     viajesProximos = Viajes.objects.all().filter(fecha_ida__gte=dateNow).order_by('fecha_ida')[0:4]
-    datos = {
-        'viajesProximos':viajesProximos
-    }
 
+    datos = {
+        'viajesProximos':viajesProximos,
+        'datos_persona': registro_persona,
+        'numAlert': numalert
+    }
     return render(request, "pagina_principal.html", datos)
+
 
 def main(request):
     email_input = request.POST.get('txtEmail', False)
@@ -27,12 +46,12 @@ def main(request):
     if existe_persona:
         numalert = 2  #OK Login
         registro_persona = Personas.objects.get(email=email_input, password=pass_input)
-        return render(request, "pagina_principal.html", {'datos_persona':registro_persona, 'numAlert':numalert})
+        return render(request, "main.html", {'datos_persona':registro_persona, 'numAlert':numalert})
     else:
         numalert = 1 #Error Login
-        return render(request, "pagina_principal.html", {'numAlert':numalert})
+        return render(request, "main.html", {'numAlert':numalert})
 
-def buscar_viaje(request):
+def search_journey(request):
     origen_input = request.POST.get('Origen')
     destino_input = request.POST.get('Destino')
     fecha_input = request.POST.get('Fecha')
@@ -45,8 +64,33 @@ def buscar_viaje(request):
 
     return render(request, "main.html", datos)
 
-def panel_nuevo_usuario(request):
+def v_buscar_viaje(request, idP):
+    origen = request.POST.get('inputOrigen')
+    destino = request.POST.get('inputDestino')
+    fecha = request.POST.get('inputFecha')
+    plazas = request.POST.get('inputPlazas')
+    #print(plazas)
+
+    viajesListados = Viajes.objects.filter(ciudad_origen=origen, ciudad_destino=destino, fecha_ida=fecha).order_by('fecha_ida')
+
+    datos = {
+        'viajes': viajesListados,
+        'ciudad_origen': origen,
+        'ciudad_destino': destino,
+        'fecha_viaje': fecha,
+        'nro_plazas': plazas
+    }
+
+    return render(request, "buscar_viaje.html", datos)
+
+def v_nuevo_usuario(request):
     return render(request, "user_register.html", {})
+
+def v_nuevo_viaje(request, idP):
+    return render(request, "journey_register.html", {'ID_Persona':idP})
+
+def v_menu_usuario(request, idP):
+    return render(request, "journey_register.html", {'ID_Persona':idP})
 
 def adm_perfil(request):
     return render(request, "adm_datospersonales.html", {})
@@ -82,10 +126,6 @@ def guardar_usuario(request):
     registro_persona = Personas.objects.get(email=Email_input, password=Password_input)
 
     return render(request, "home.html", {'datos_persona': registro_persona, 'numAlert': numalert})
-
-
-def panel_nuevo_viaje(request, idP):
-    return render(request, "journey_register.html", {'ID_Persona':idP})
 
 def guardar_viaje(request):
     idP_input = request.POST['numIdP']
