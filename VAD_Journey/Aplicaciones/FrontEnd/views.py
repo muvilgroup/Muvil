@@ -93,7 +93,7 @@ def v_nuevo_viaje(request, idP):
     return render(request, "journey_register.html", {'ID_Persona':idP})
 
 def v_menu_usuario(request, idP):
-    return render(request, "menu_usuario.html", {'ID_Persona':idP})
+    return render(request, "menu_usuario.html", {'idP':idP})
 
 def adm_perfil(request):
     return render(request, "adm_datospersonales.html", {})
