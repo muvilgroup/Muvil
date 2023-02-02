@@ -18,24 +18,27 @@ def v_pagina_principal(request):
     if not email_input and not pass_input:
         numalert = 1 #Primera vez
         registro_persona = None
+        idP = None
     elif existe_persona:
         numalert = 2  # OK Login
         registro_persona = Personas.objects.get(email=email_input, password=pass_input)
+        idP = registro_persona.id
     else:
         numalert = 3  # Error Login
         registro_persona = None
+        idP = None
 
     # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
     viajesProximos = Viajes.objects.all().filter(fecha_ida__gte=dateNow).order_by('fecha_ida')[0:4]
 
     datos = {
-        'viajesProximos':viajesProximos,
+        'idP': idP,
         'datos_persona': registro_persona,
+        'viajesProximos':viajesProximos,
         'numAlert': numalert
     }
     return render(request, "pagina_principal.html", datos)
-
 
 def main(request):
     email_input = request.POST.get('txtEmail', False)
@@ -74,13 +77,13 @@ def v_buscar_viaje(request, idP):
     viajesListados = Viajes.objects.filter(ciudad_origen=origen, ciudad_destino=destino, fecha_ida=fecha).order_by('fecha_ida')
 
     datos = {
+        'idP': idP,
         'viajes': viajesListados,
         'ciudad_origen': origen,
         'ciudad_destino': destino,
         'fecha_viaje': fecha,
         'nro_plazas': plazas
     }
-
     return render(request, "buscar_viaje.html", datos)
 
 def v_nuevo_usuario(request):
@@ -90,7 +93,7 @@ def v_nuevo_viaje(request, idP):
     return render(request, "journey_register.html", {'ID_Persona':idP})
 
 def v_menu_usuario(request, idP):
-    return render(request, "journey_register.html", {'ID_Persona':idP})
+    return render(request, "menu_usuario.html", {'ID_Persona':idP})
 
 def adm_perfil(request):
     return render(request, "adm_datospersonales.html", {})

@@ -6,7 +6,7 @@ urlpatterns = [
     path('buscar_viaje/<int:idP>', v_buscar_viaje),
     path('nuevo_usuario/', v_nuevo_usuario),
     path('nuevo_viaje/<int:idP>', v_nuevo_viaje),
-    path('menu_usuario/', v_menu_usuario),
+    path('menu_usuario/<int:idP>', v_menu_usuario),
     path('save_user/', guardar_usuario),
     path('save_journey/', guardar_viaje),
     path('vehicle_register/<int:idP>', panel_nuevo_vehiculo),

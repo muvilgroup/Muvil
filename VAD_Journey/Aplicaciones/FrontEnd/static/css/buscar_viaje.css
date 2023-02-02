@@ -1,0 +1,14 @@
+.barra-busqueda {
+	width: 80%;
+}
+.duracion-km {
+	color: #CACACA;
+}
+.img-container-journey{
+  	width:80px;
+  	overflow:hidden;
+}
+.img-container-journey img{
+  	width:100%;
+  	height:auto
+}

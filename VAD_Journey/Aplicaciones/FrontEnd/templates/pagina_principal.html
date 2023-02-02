@@ -64,7 +64,7 @@
 
 	<!-- INICIO Barra Busqueda -->
 	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
-		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
+		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/{{datos_persona.id}}"> {% csrf_token %}
 			<div class="col-6 col-md-3 form-floating p-0 m-0">
 				<input type="text" class="form-select rounded-0 rounded-start border border-warning" name="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?">
 				<label for="inputOrigen" class="form-label">Origen</label>
@@ -87,11 +87,17 @@
 				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
 			</div>
 			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
-				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning" type="submit">
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning"
+						{% if numAlert == 1 or numAlert == 3 %}
+							type="button" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+						{% elif numAlert == 2 %}
+							type="submit"
+						{% endif %} >
 					Buscar
 				</button>
 			</div>
 		</form>
+
 	</div>
 	<!-- FIN Barra Busqueda -->
 
@@ -464,6 +470,7 @@
 	</div>
 	<!-- FIN Próximas Salidas -->
 
+	{% include "pie_pagina.html" %}
 
 	<script src="{% static 'js/pagina_principal.js' %}"></script>
 
