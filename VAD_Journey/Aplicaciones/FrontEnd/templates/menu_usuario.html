@@ -18,7 +18,7 @@
 
 	<div class="container-md mt-5">
 		<div class="row">
-			<div class="col-12 d-flex justify-content-center my-2 d-block d-md-none">
+			<div class="col-12 d-flex justify-content-center my-2 d-block d-lg-none">
 				<button type="button" class="btn btn-warning col-10 fw-bold" data-bs-toggle="modal" data-bs-target="#ventana-opciones-menu-usuario">
 					Opciones
 				</button>
@@ -30,7 +30,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtros</h5>
+							<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Elige una opción</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					  	</div>
 					  	<div class="modal-body">
@@ -108,7 +108,7 @@
 
 			<!-- Nav tabs -->
 			<div class="d-flex align-items-start ms-3">
-			  	<div class="nav nav-pills flex-column me-3 col-2 custom-nav-pills d-none d-md-block" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			  	<div class="nav nav-pills flex-column me-3 col-2 custom-nav-pills d-none d-lg-block" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 				  	<button class="nav-link text-start col-12 align-self-end disabled" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
 					  	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill pe-1" viewBox="0 0 16 16">
 						  	<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -249,23 +249,23 @@
 				</div>
 				<div class="tab-pane fade" id="v-pills-coches" role="tabpanel" aria-labelledby="v-pills-coches-tab">
 					<!-- INICIO Mis Coches -->
-					<div class="row px-2 pt-2">
-						<div class="col-12">
+					<div class="row">
+						<div class="col-12 px-3 pt-2">
 							<h3 class="border-bottom border-5 border-warning">Mis Coches</h3>
 						</div>
 					</div>
 					<div class="row px-3 pt-2 pb-3">
-						<div class="col-12 d-flex justify-content-end">
-							<button class="btn btn-warning col-2" data-bs-toggle="collapse" href="#collapseAddCar" role="button" aria-expanded="false" aria-controls="collapseAddCar">
+						<div class="col-12 mb-2 d-flex justify-content-end">
+							<button class="btn btn-warning col-6 col-lg-3" data-bs-toggle="collapse" href="#collapseAddCar" role="button" aria-expanded="false" aria-controls="collapseAddCar">
 								<a href="" alt="Añadir"><embed src='{% static "icon/plus-circle.svg" %}' alt="Añadir"/></a>
 								<b>Añadir Coche</b>
 							</button>
 						</div>
 						<div class="collapse" id="collapseAddCar">
-							<div class="card card-body col-8 mx-auto">
+							<div class="card card-body">
 								<h3 class="border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</h3>
 								<form class="row px-2 pt-2" id="form-newcar">
-									<div class="col-6">
+									<div class="col-12 col-lg-6">
 										<div class="col-12 ">
 											<label for="inputMarca" class="form-label">Marca</label>
 											<input type="text" class="form-control" id="inputMarca">
@@ -291,8 +291,8 @@
 											<input type="text" class="form-control" id="inputNumPlazas">
 										</div>
 									</div>
-									<div class="col-6 col-auto img-container img-responsive pe-4 pt-1">
-										<label for="userImg" class="form-label btn btn-outline-light">Carga una foto del coche...</label>
+									<div class="col col-auto img-container img-responsive pe-4 pt-1">
+										<label for="userImg" class="form-label">Carga una imagen del coche...</label>
 										<input class="form-control" type="file" id="userImg" name="userImg" onchange="preview()">
 										<button onclick="clearImage()" class="btn btn-danger mt-3">Cancelar imagen</button>
 									</div>
@@ -308,59 +308,59 @@
 						  	</div>
 						</div>
 					</div>
-					<div class="card col-8 mx-auto" id="car-card">
+					<div class="card col-10 mx-auto" id="car-card">
 						<div class="row no-gutters">
-							<div class="col">
+							<div class="col-12 col-lg-7">
 								<div class="card-block px-2">
 									<div class="card-body">
 										<div class="card-title fw-bold fs-3 pb-1" id="car-title">
 											KIA Rio
 										</div>
-										<div class="card-subtitle row pb-1 ps-5" id="car-year">
-											<div class="col" id="car-year-icon">
+										<div class="card-subtitle row pb-1 ps-3" id="car-year">
+											<div class="col-2 border text-center" id="car-year-icon">
 												 <img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="25px" width="25px" id="car-year-icon"/>
 											</div>
-											<div class="col-9" id="car-year-text">
+											<div class="col-10" id="car-year-text">
 												<label for="car-year-icon" class="fs-5">2017</label>
 											</div>
 										</div>
-										<div class="card-subtitle row pb-1 ps-5" id="car-plate">
-											<div class="col" id="car-plate-icon">
+										<div class="card-subtitle row pb-1 ps-3" id="car-plate">
+											<div class="col-2 text-center" id="car-plate-icon">
 												 <img src='{% static "icon/tag.svg" %}' alt="Matrícula" height="25px" width="25px" id="car-plate-icon"/>
 											</div>
-											<div class="col-9" id="car-plate-text">
+											<div class="col-10" id="car-plate-text">
 												<label for="car-plate-icon" class="fs-5">1234ABC</label>
 											</div>
 										</div>
-										<div class="card-subtitle row pb-1 ps-5" id="car-color">
-											<div class="col" id="car-color-icon">
+										<div class="card-subtitle row pb-1 ps-3" id="car-color">
+											<div class="col-2 text-center" id="car-color-icon">
 												 <img src='{% static "icon/brush.svg" %}' alt="Color" height="25px" width="25px" id="car-color-icon"/>
 											</div>
-											<div class="col-9" id="car-color-text">
+											<div class="col-10" id="car-color-text">
 												<label for="car-color-icon" class="fs-5">Amarillo Múvil</label>
 											</div>
 										</div>
-										<div class="card-subtitle row pb-1 ps-5" id="car-seats">
-											<div class="col" id="car-seats-icon">
+										<div class="card-subtitle row pb-1 ps-3" id="car-seats">
+											<div class="col-2 text-center" id="car-seats-icon">
 												 <img src='{% static "icon/vector.svg" %}' alt="Número de asientos" height="25px" width="25px" id="car-seats-icon"/>
 											</div>
-											<div class="col-9" id="car-seats-text">
+											<div class="col-10" id="car-seats-text">
 												<label for="car-seats-icon" class="fs-5">5 plazas</label>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-auto img-container img-responsive pe-4 pt-1">
-								<img src='{% static "img/coche_prueba2.jpg" %}' class="mx-auto d-block" alt="">
+							<div class="col-12 col-lg-5 img-container border d-flex align-items-center">
+								<img src='{% static "img/coche_prueba.jpg" %}' class="mx-auto d-block" alt="">
 							</div>
 						</div>
 						<div class="card-footer pt-1 text-center bg-white">
-							<button class="btn btn-outline-dark col-2">
+							<button class="btn btn-outline-dark col-5 col-lg-3">
 								<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>
 								<b>Editar</b>
 							</button>
-							<button class="btn btn-outline-danger col-2">
+							<button class="btn btn-outline-danger col-6 col-lg-3">
 								<a href="" alt="Eliminar"><embed src='{% static "icon/trash-fill.svg" %}' alt="Eliminar"/></a>
 								<b>Eliminar</b>
 							</button>
@@ -481,7 +481,7 @@
 							<hr>
 						</div>
 						<div class="col-12 d-flex justify-content-center py-1">
-							<button type="submit" class="btn btn-warning btn-guardar col-3"><b>Guardar</b></button>
+							<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
 						</div>
 					</div>
 					<!-- FIN Mis Preferencias -->
