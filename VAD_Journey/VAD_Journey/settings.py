@@ -144,6 +144,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/static'),)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MEDIA_URL = '/Aplicaciones/FrontEnd/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/media')
+
 #################################
 ###  PWA  #######################
 #################################

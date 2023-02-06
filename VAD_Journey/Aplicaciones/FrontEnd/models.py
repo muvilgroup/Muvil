@@ -6,18 +6,20 @@ from .choices import genero, tipo_vehiculo, prestigio
 class Personas (models.Model):
     nombre = models.CharField(max_length=64)
     apellido1 = models.CharField(max_length=64)
-    apellido2 = models.CharField(max_length=64)
-    fec_nacimiento = models.DateField()
-    tipo_documento = models.CharField(max_length=8)
+    apellido2 = models.CharField(max_length=64, blank=True, null=True)
+    fec_nacimiento = models.DateField(blank=True, null=True)
+    tipo_documento = models.CharField (max_length=8)
     numero_documento = models.CharField(max_length=32)
     email = models.CharField(max_length=320)
     numero_telefono = models.PositiveIntegerField()
-    genero = models.CharField(max_length=1, choices=genero, default='F')
+    genero = models.CharField(max_length=1, choices=genero, default='F', blank=True, null=True)
     password = models.CharField(max_length=30, default='<NO_PASSWORD>')
-    puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5)
-    prestigio = models.CharField(max_length=2, choices=prestigio, default='B')
-    numero_opiniones = models.PositiveIntegerField(default = '0')
-    ruta_foto = models.CharField(max_length=32,default='img/avatar-mujer.jpg')
+    puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5, blank=True, null=True)
+    prestigio = models.CharField(max_length=2, choices=prestigio, default='B', blank=True, null=True)
+    numero_opiniones = models.PositiveIntegerField(default = '0', blank=True, null=True)
+    ruta_foto = models.CharField(max_length=32,default='img/avatar-mujer.jpg', blank=True, null=True)
+    descripcion = models.CharField(max_length=3000, blank=True, null=True)
+    imagen = models.ImageField(upload_to='images/users_profile', blank=True, null=True)
 
 
 

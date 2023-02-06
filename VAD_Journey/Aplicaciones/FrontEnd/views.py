@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import datetime, date
+from .forms import PersonasForm
 
 from .models import Personas, Viajes, Vehiculos
 
@@ -87,6 +88,24 @@ def v_buscar_viaje(request, idP):
     return render(request, "buscar_viaje.html", datos)
 
 def v_nuevo_usuario(request):
+    if request.method == "POST":
+        form = PersonasForm(request.POST, request.FILES)
+        if form.is_valid():
+            persona = form.save()
+            persona.save()
+            return redirect('n_pagina_principal')
+    else:
+        form = PersonasForm()
+        return render(request, 'nuevo_usuario.html', {'form': form})
+
+def v_listado_usuarios(request):
+    usuariosListados = Personas.objects.all()
+
+    datos = {"usuarios": usuariosListados}
+
+    return render(request, "listado_usuarios.html", datos)
+
+def v_nuevo_usuario2(request):
     return render(request, "user_register.html", {})
 
 def v_nuevo_viaje(request, idP):

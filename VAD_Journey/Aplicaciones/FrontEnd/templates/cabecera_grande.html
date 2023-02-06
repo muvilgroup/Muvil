@@ -133,7 +133,7 @@
 						<label for="txtPass" class="col-form-label col-3">Contraseña:</label>
 						<input type="text" class="form-control col" id="txtPass" name="txtPass" required>
 					  </div>
-					  <a class="form-group row d-flex justify-content-center fw-bold" href="/nuevo_usuario">¿No tienes cuenta? Regístrate</a>
+					  <a class="form-group row d-flex justify-content-center fw-bold" href="{% url 'n_nuevo_usuario' %}">¿No tienes cuenta? Regístrate</a>
 					  <div class="modal-footer ">
 						<input type="submit" class="btn btn-warning col-3 text-white" value="Entrar"/>
 						<button type="button" class="btn btn-secondary col-3 text-white" data-dismiss="modal">Cancelar</button>

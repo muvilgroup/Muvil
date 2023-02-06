@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuevo Usuario</title>
+
+</head>
+
+<body>
+
+	{% include "cabecera.html" %}
+
+	<div class="container mt-5">
+		<div class="row">
+			<h2 class="border-bottom border-warning border-4">Introduce tus datos...</h2>
+			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+				<div class="col-md-4 py-2">
+					<label for="inputEmail" class="form-label">Email</label>
+					{{ form.email }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputPass" class="form-label">Password</label>
+					{{ form.password }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputImagen" class="form-label">Sube tu foto de perfil</label>
+					{{ form.imagen }}
+				</div>
+				<h3 class="border-bottom border-3 border-warning my-2"></h3>
+				<div class="col-md-4 py-2">
+					<label for="inputNombre" class="form-label">Nombre</label>
+					{{ form.nombre }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputPApellido" class="form-label">Primer Apellido</label>
+					{{ form.apellido1 }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputSapellido" class="form-label">Segundo Apellido</label>
+					{{ form.apellido2 }}
+				</div>
+				<div class="col-md-4 py-2">
+					{{ form.tipo_documento }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="numeroDoc" class="form-label">Número documento</label>
+					{{ form.numero_documento }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputNacimiento" class="form-label">Fecha de Nacimiento</label>
+					{{ form.fec_nacimiento }}
+				</div>
+				<!--<div class="col-md-2 py-2">
+					<label for="inputState" class="form-label">Prefijo</label>
+					<select id="inputState" class="form-select" disabled>
+						<option selected>+34 España</option>
+						<option>+95 Inglaterra</option>
+						<option>+21 USA</option>
+					</select>
+				</div>-->
+				<div class="col-md-3 py-2">
+					<label for="inputTelefono" class="form-label">Teléfono</label>
+					{{ form.numero_telefono }}
+				</div>
+				<div class="col-12 py-2">
+					<label for="exampleFormControlTextarea1" class="form-label">Déjanos conocerte</label>
+					{{ form.descripcion }}
+				</div>
+				<div class="col-12 d-flex justify-content-center py-3">
+					<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>
