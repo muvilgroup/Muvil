@@ -46,9 +46,15 @@
 					<ul class="navbar-nav justify-content-end order-3 order-lg-3">
 						<li class="nav-item">
 							<div class="menu-item-nav dropdown" href="#" role="button">
-								<div class="img-container-journey dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-									<img class="rounded-circle" src='{% static "img/personas/6.jpg" %}'>
+								{% if usuario.imagen %}
+                                <div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="rounded-circle" src="{{ usuario.imagen.url }}">
+                                </div>
+								{% else %}
+								<div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+									<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
 								</div>
+                            	{% endif %}
 								<!-- INICIO DropdownMenu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
 									<li class="d-flex flex-row px-3 mb-3 align-items-center">

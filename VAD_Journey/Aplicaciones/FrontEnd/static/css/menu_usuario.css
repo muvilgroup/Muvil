@@ -67,11 +67,19 @@
       	#opiniones-list {
         	background-color: #F9F4F4;
       	}
-		.img-container{
+      	.img-container-user{
 		  	width:100px;
 		  	overflow:hidden;
 		}
-		.img-container img{
+		.img-container-user img{
+		  	width:100%;
+		  	height:auto;
+		}
+		.img-container-car{
+		  	width:100px;
+		  	overflow:hidden;
+		}
+		.img-container-car img{
 		  	width:100%;
 		  	height:auto
 		}

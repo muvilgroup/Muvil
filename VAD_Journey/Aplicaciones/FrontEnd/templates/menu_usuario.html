@@ -16,6 +16,17 @@
 
 	{% include "cabecera.html" %}
 
+	{% if messages %}
+		<div class="alert alert-success alert-dismissible fade show text-center fs-4 mb-0" role="alert">
+			{% for message in messages %}
+			<p {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+				<strong>{{ message }}</strong>
+			</p>
+			{% endfor %}
+		  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	{% endif %}
+
 	<div class="container-md mt-5">
 		<div class="row">
 			<div class="col-12 d-flex justify-content-center my-2 d-block d-lg-none">
@@ -178,68 +189,69 @@
 							<h3 class="border-bottom border-5 border-warning">Datos Personales</h3>
 						</div>
 					</div>
-					<form class="row px-2 pt-2" id="form-datospersonales">
+					<form method="POST" class="row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 						<div class="col-lg-8 col-6 d-flex justify-content-center align-items-center py-3">
 							<button class="btn btn-warning border-light border-3 fw-bold"> Ver Perfil Público </button>
 						</div>
-						<div class="col-lg-3 col-6 mb-3 ps-5 button-container">
-							<img class="img-thumbnail rounded-circle" src='{% static "img/personas/6.jpg" %}' width="170px">
-							<!--<embed src="../static/icon/pencil-fill.svg" />-->
-							<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>
+						<div class="col-lg-3 col-6 mb-3 ps-5 button-container img-container-user">
+						{% if form.instance.imagen %}
+							<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
+							<input type="file" id="id_image" name="imagen" hidden>
+							<label for="id_image">
+								<img class="rounded-circle"
+									 style="cursor: pointer;"
+									 src="{{ form.instance.imagen.url }}"
+									 title="Sube una nueva imagen">
+							</label>
+						{% else %}
+							<input type="file" id="id_image" name="imagen" hidden>
+							<label for="id_image">
+								<img class="rounded-circle"
+									 style="cursor: pointer;"
+									 src='{% static "img/avatar-mujer.jpg" %}'
+									 title="Sube una nueva imagen">
+							</label>
+						{% endif %}
+							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
 						</div>
 						<div class="col-md-4 py-2">
 							<label for="inputNombre" class="form-label">Nombre</label>
-							<input type="text" class="form-control" id="inputNombre">
+							{{ form.nombre }}
+						</div>
+						<div class="col-md-4 py-2 d-none">
+							<label for="inputPass" class="form-label">Nombre</label>
+							{{ form.password }}
 						</div>
 						<div class="col-md-4 py-2">
 							<label for="inputPApellido" class="form-label">Primer Apellido</label>
-							<input type="text" class="form-control" id="inputPApellido">
+							{{ form.apellido1 }}
 						</div>
 						<div class="col-md-4 py-2">
 							<label for="inputSapellido" class="form-label">Segundo Apellido</label>
-							<input type="text" class="form-control" id="inputSapellido">
+							{{ form.apellido2 }}
 						</div>
 						<div class="col-md-4 d-flex align-self-center py-2">
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="DNI" checked>
-								<label class="form-check-label" for="inlineRadio1">DNI</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="NIE">
-								<label class="form-check-label" for="inlineRadio2">NIE</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Pasaporte">
-								<label class="form-check-label" for="inlineRadio3">Pasaporte</label>
-							</div>
+							{{ form.tipo_documento }}
 						</div>
 						<div class="col-md-4 py-2">
 							<label for="inputDocumento" class="form-label">Número Documento</label>
-							<input type="text" class="form-control" id="inputDocumento">
+							{{ form.numero_documento }}
 						</div>
 						<div class="col-md-4 py-2">
 							<label for="inputNacimiento" class="form-label">Fecha de Nacimiento</label>
-							<input type="date" class="form-control" id="inputNacimiento">
+							{{ form.fec_nacimiento }}
 						</div>
 						<div class="col-md-7 py-2">
 							<label for="inputEmail" class="form-label">Email</label>
-							<input type="email" class="form-control" id="inputEmail" placeholder="">
-						</div>
-						<div class="col-md-2 py-2">
-							<label for="inputState" class="form-label">Prefijo</label>
-							<select id="inputState" class="form-select">
-								<option selected>+34 España</option>
-								<option>+95 Inglaterra</option>
-								<option>+21 USA</option>
-							</select>
+							{{ form.email }}
 						</div>
 						<div class="col-md-3 py-2">
 							<label for="inputTelefono" class="form-label">Teléfono</label>
-							<input type="text" class="form-control" id="inputTelefono" placeholder="">
+							{{ form.numero_telefono }}
 						</div>
 						<div class="col-12 py-2">
 							<label for="exampleFormControlTextarea1" class="form-label">Déjanos conocerte</label>
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Descríbete en pocas palabras y encuentra gente como tú..."></textarea>
+							{{ form.descripcion }}
 						</div>
 						<div class="col-12 d-flex justify-content-center py-3">
 							<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
@@ -267,7 +279,11 @@
 								<form class="row px-2 pt-2" id="form-newcar">
 									<div class="col-12 col-lg-6">
 										<div class="col-12 ">
-											<label for="inputMarca" class="form-label">Marca</label>
+											<label for="inputTipo" class="form-label">Tipo</label>
+											<input type="text" class="form-control" id="inputTipo">
+										</div>
+										<div class="col-12 ">
+											<label for="inputTipo" class="form-label">Marca</label>
 											<input type="text" class="form-control" id="inputMarca">
 										</div>
 										<div class="col-12 ">
@@ -291,7 +307,7 @@
 											<input type="text" class="form-control" id="inputNumPlazas">
 										</div>
 									</div>
-									<div class="col col-auto img-container img-responsive pe-4 pt-1">
+									<div class="col col-auto img-container-car img-responsive pe-4 pt-1">
 										<label for="userImg" class="form-label">Carga una imagen del coche...</label>
 										<input class="form-control" type="file" id="userImg" name="userImg" onchange="preview()">
 										<button onclick="clearImage()" class="btn btn-danger mt-3">Cancelar imagen</button>
@@ -351,7 +367,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-12 col-lg-5 img-container d-flex align-items-center">
+							<div class="col-12 col-lg-5 img-container-car d-flex align-items-center">
 								<img src='{% static "img/coche_prueba.jpg" %}' class="mx-auto d-block" alt="">
 							</div>
 						</div>

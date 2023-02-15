@@ -42,7 +42,7 @@
 									{% if numAlert == 1 or numAlert == 3 %}
 									   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
 									{% elif numAlert == 2 %}
-									   href="/nuevo_viaje/{{idP}}"
+									   href="{% url 'n_nuevo_viaje' idP=idP %}"
 									{% endif %} >
 										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFC700" class="bi bi-plus-square" viewBox="0 0 16 16">
   											<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -64,9 +64,15 @@
 							</a>
 							{% elif numAlert == 2 %}
 							<div class="menu-item-nav dropdown" href="#" role="button">
-								<div class="img-container-journey dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-									<img class="rounded-circle" src='{% static "img/personas/6.jpg" %}'>
+								{% if usuario.imagen %}
+                                <div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="rounded-circle" src="{{ usuario.imagen.url }}">
+                                </div>
+								{% else %}
+								<div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+									<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
 								</div>
+                            	{% endif %}
 								<!-- INICIO DropdownMenu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
 									<li class="d-flex flex-row px-3 mb-3 align-items-center">
