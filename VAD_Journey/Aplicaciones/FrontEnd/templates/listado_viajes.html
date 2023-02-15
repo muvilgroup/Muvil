@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Listado Viajes</title>
+
+    <style>
+    .img-container{
+        width:55px;
+        overflow:hidden;
+    }
+    .img-container img{
+        width:100%;
+        height:auto
+    }
+    </style>
+</head>
+
+<body>
+
+	{% include "index.html" %}
+
+	<div class="container mt-5">
+		<div class="row">
+			<h2 class="border-bottom border-warning border-4">Listado Viajes</h2>
+			<div class="table-responsive">
+                <form method="POST" role="form" class="form-inline" enctype="multipart/form-data">
+                <table class="table table-striped">
+            	      <thead>
+                      <tr>
+                          <th>#</th>
+						  <th>ID</th>
+                          <th>ID Persona</th>
+                          <th>Usuario</th>
+                          <th>Foto</th>
+                          <th>Origen</th>
+                          <th>Destino</th>
+                          <th>Ida/Vuelta</th>
+                          <th>Fecha Ida</th>
+                          <th>Hora Ida</th>
+                          <th>Fecha-Hora Ida</th>
+                          <th>Fecha Vuelta</th>
+                          <th>Hora Vuelta</th>
+                          <th>Fecha-Hora Vuelta</th>
+                          <th>Plazas</th>
+                          <th>€ total plaza</th>
+                          <th>€ comision plaza</th>
+						  <th>€ conductor plaza</th>
+                      </tr>
+					 </thead>
+					 <tbody>
+                        {% for c in viajes %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+							<td>{{c.id}}</td>
+                            <td>{{c.id_persona}}</td>
+                            <td>{{c.id_persona.nombre}}</td>
+                            <td>
+                            {% if c.id_persona.imagen %}
+                                <div class="img-container">
+                                    <img class="rounded" src="{{ c.id_persona.imagen.url }}">
+                                </div>
+                            {% endif %}
+                            </td>
+                            <td>{{c.ciudad_origen}}</td>
+                            <td>{{c.ciudad_vuelta}}</td>
+                            <td>{{c.flg_ida_vuelta}}</td>
+                            <td>{{c.fecha_ida}}</td>
+                            <td>{{c.hora_ida}}</td>
+                            <td>{{c.fechor_ida}}</td>
+                            <td>{{c.fecha_vuelta}}</td>
+                            <td>{{c.hora_vuelta}}</td>
+                            <td>{{c.fechor_vuelta}}</td>
+                            <td>{{c.numero_asientos_viaje}}</td>
+                            <td>{{c.importe_total_asiento}}</td>
+                            <td>{{c.importe_comision_asiento}}</td>
+                            <td>{{c.importe_conductor_asiento}}</td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                 </table>
+                </form>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

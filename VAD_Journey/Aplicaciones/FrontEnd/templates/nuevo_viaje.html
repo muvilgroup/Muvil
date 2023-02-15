@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuevo Viaje</title>
+
+</head>
+
+<body>
+
+	{% include "cabecera.html" %}
+
+	<div class="container mt-5">
+		<div class="row">
+			<h2 class="border-bottom border-warning border-4">Introduce los datos de tu viaje...</h2>
+			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Ciudad Origen</label>
+					{{ form.ciudad_origen }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Ciudad Destino</label>
+					{{ form.ciudad_destino }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Fecha Viaje</label>
+					{{ form.fecha_ida }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Hora Salida</label>
+					{{ form.hora_ida }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Ida y Vuelta</label>
+					{{ form.flg_ida_vuelta }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Fecha Vuelta</label>
+					{{ form.fecha_vuelta }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Hora Vuelta</label>
+					{{ form.hora_vuelta }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Plazas</label>
+					{{ form.numero_asientos_viaje }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Precio por plaza</label>
+					{{ form.importe_conductor_asiento }}
+				</div>
+				<div class="col-12 d-flex justify-content-center py-3">
+					<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Publicar Viaje</b></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>

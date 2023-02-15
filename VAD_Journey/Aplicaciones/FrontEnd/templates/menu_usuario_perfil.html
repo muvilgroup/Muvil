@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+				<div class="tab-pane fade show active" id="v-pills-datos" role="tabpanel" aria-labelledby="v-pills-datos-tab">
+					<!-- INICIO Datos Personales -->
+					<div class="row">
+						<div class="col-12 px-3 pt-2">
+							<h3 class="border-bottom border-5 border-warning">Datos Personales</h3>
+						</div>
+					</div>
+					<form method="POST" class="row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+						<div class="col-lg-8 col-6 d-flex justify-content-center align-items-center py-3">
+							<button class="btn btn-warning border-light border-3 fw-bold"> Ver Perfil Público </button>
+						</div>
+						<div class="col-lg-3 col-6 mb-3 ps-5 button-container img-container-user">
+						{% if form.instance.imagen %}
+							<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
+							<input type="file" id="id_image" name="imagen" hidden>
+							<label for="id_image">
+								<img class="rounded-circle"
+									 style="cursor: pointer;"
+									 src="{{ form.instance.imagen.url }}"
+									 title="Sube una nueva imagen">
+							</label>
+						{% else %}
+							<input type="file" id="id_image" name="imagen" hidden>
+							<label for="id_image">
+								<img class="rounded-circle"
+									 style="cursor: pointer;"
+									 src='{% static "img/avatar-mujer.jpg" %}'
+									 title="Sube una nueva imagen">
+							</label>
+						{% endif %}
+							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
+						</div>
+						<div class="col-md-4 py-2">
+							<label for="inputNombre" class="form-label">Nombre</label>
+							{{ form.nombre }}
+						</div>
+						<div class="col-md-4 py-2 d-none">
+							<label for="inputPass" class="form-label">Nombre</label>
+							{{ form.password }}
+						</div>
+						<div class="col-md-4 py-2">
+							<label for="inputPApellido" class="form-label">Primer Apellido</label>
+							{{ form.apellido1 }}
+						</div>
+						<div class="col-md-4 py-2">
+							<label for="inputSapellido" class="form-label">Segundo Apellido</label>
+							{{ form.apellido2 }}
+						</div>
+						<div class="col-md-4 d-flex align-self-center py-2">
+							{{ form.tipo_documento }}
+						</div>
+						<div class="col-md-4 py-2">
+							<label for="inputDocumento" class="form-label">Número Documento</label>
+							{{ form.numero_documento }}
+						</div>
+						<div class="col-md-4 py-2">
+							<label for="inputNacimiento" class="form-label">Fecha de Nacimiento</label>
+							{{ form.fec_nacimiento }}
+						</div>
+						<div class="col-md-7 py-2">
+							<label for="inputEmail" class="form-label">Email</label>
+							{{ form.email }}
+						</div>
+						<div class="col-md-3 py-2">
+							<label for="inputTelefono" class="form-label">Teléfono</label>
+							{{ form.numero_telefono }}
+						</div>
+						<div class="col-12 py-2">
+							<label for="exampleFormControlTextarea1" class="form-label">Déjanos conocerte</label>
+							{{ form.descripcion }}
+						</div>
+						<div class="col-12 d-flex justify-content-center py-3">
+							<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+						</div>
+					</form>
+					<!-- FIN Datos Personales -->
+				</div>
+
+</body>
+
+</html>
