@@ -93,6 +93,10 @@ def v_nuevo_viaje(request, idP):
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
             viaje.fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
             viaje.save()
+            messages.success(request, "¡¡¡Viaje publicado correctamente!!!.")
+            return redirect('n_pagina_principal')
+        else:
+            messages.error(request, "¡¡¡ERROR. Viaje no publicado!!!.")
             return redirect('n_pagina_principal')
     else:
         form = ViajesForm()
@@ -151,6 +155,65 @@ def v_menu_usuario_perfil(request, idP):
         args.update({"form": form})
         return render(request, 'menu_usuario_perfil.html', args)
 
+def v_menu_usuario_coches(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": datos_usuario
+            }
+
+    return render(request, 'menu_usuario_coches.html', args)
+
+def v_menu_usuario_preferencias(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": datos_usuario
+            }
+
+    return render(request, 'menu_usuario_preferencias.html', args)
+
+def v_menu_usuario_opiniones(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": datos_usuario
+            }
+
+    return render(request, 'menu_usuario_opiniones.html', args)
+
+def v_menu_usuario_notificaciones(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": datos_usuario
+            }
+
+    return render(request, 'menu_usuario_notificaciones.html', args)
+
+def v_menu_usuario_pagoscobros(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": datos_usuario
+            }
+
+    return render(request, 'menu_usuario_pagoscobros.html', args)
+
+def v_menu_usuario_contrasenya(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": datos_usuario
+            }
+
+    return render(request, 'menu_usuario_contrasenya.html', args)
 
 def main(request):
     email_input = request.POST.get('txtEmail', False)

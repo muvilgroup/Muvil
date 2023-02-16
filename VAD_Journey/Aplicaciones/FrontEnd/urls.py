@@ -1,6 +1,8 @@
 from django.urls import path
 from Aplicaciones.FrontEnd.views import v_pagina_principal, v_buscar_viaje, v_nuevo_usuario, v_listado_usuarios, v_nuevo_viaje, \
-    v_listado_viajes, v_menu_usuario_perfil, v_nuevo_usuario2, v_nuevo_viaje2, v_menu_usuario, guardar_usuario, \
+    v_listado_viajes, v_menu_usuario_perfil, v_menu_usuario_coches, v_menu_usuario_contrasenya, v_menu_usuario_pagoscobros,\
+    v_menu_usuario_notificaciones, v_menu_usuario_opiniones, v_menu_usuario_preferencias, \
+    v_nuevo_usuario2, v_nuevo_viaje2, v_menu_usuario, guardar_usuario, \
     panel_nuevo_vehiculo, guardar_vehiculo, guardar_viaje
 from django.conf import settings #add this
 from django.conf.urls.static import static #add this
@@ -14,6 +16,12 @@ urlpatterns = [
     path('listado_viajes/', v_listado_viajes, name='n_listado_viajes'),
     path('menu_usuario/<int:idP>', v_menu_usuario, name='n_menu_usuario'),
     path('menu_usuario/miperfil/<int:idP>', v_menu_usuario_perfil, name='n_menu_usuario_perfil'),
+    path('menu_usuario/miscoches/<int:idP>', v_menu_usuario_coches, name='n_menu_usuario_coches'),
+    path('menu_usuario/preferencias/<int:idP>', v_menu_usuario_preferencias, name='n_menu_usuario_preferencias'),
+    path('menu_usuario/opiniones/<int:idP>', v_menu_usuario_opiniones, name='n_menu_usuario_opiniones'),
+    path('menu_usuario/notificaciones/<int:idP>', v_menu_usuario_notificaciones, name='n_menu_usuario_notificaciones'),
+    path('menu_usuario/pagoscobros/<int:idP>', v_menu_usuario_pagoscobros, name='n_menu_usuario_pagoscobros'),
+    path('menu_usuario/contraseña/<int:idP>', v_menu_usuario_contrasenya, name='n_menu_usuario_contrasenya'),
 
     path('nuevo_usuario2/', v_nuevo_usuario2),
     path('nuevo_viaje2/<int:idP>', v_nuevo_viaje2),
