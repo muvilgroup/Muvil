@@ -1,15 +1,11 @@
 from django.urls import path
-from Aplicaciones.FrontEnd.views import v_pagina_principal, v_buscar_viaje, v_nuevo_usuario, v_listado_usuarios, v_nuevo_viaje, \
-    v_listado_viajes, v_menu_usuario_perfil, v_menu_usuario_coches, v_menu_usuario_contrasenya, v_menu_usuario_pagoscobros,\
-    v_menu_usuario_notificaciones, v_menu_usuario_opiniones, v_menu_usuario_preferencias, \
-    v_nuevo_usuario2, v_nuevo_viaje2, v_menu_usuario, guardar_usuario, \
-    panel_nuevo_vehiculo, guardar_vehiculo, guardar_viaje
-from django.conf import settings #add this
-from django.conf.urls.static import static #add this
+from Aplicaciones.FrontEnd.views import *
+from django.conf import settings #add this for images
+from django.conf.urls.static import static #add this for images
 
 urlpatterns = [
     path('', v_pagina_principal, name='n_pagina_principal'),
-    path('buscar_viaje/<int:idP>', v_buscar_viaje),
+    path('buscar_viaje/<int:idP>', v_buscar_viaje, name='n_buscar_viaje'),
     path('nuevo_usuario/', v_nuevo_usuario, name='n_nuevo_usuario'),
     path('listado_usuarios/', v_listado_usuarios, name='n_listado_usuarios'),
     path('nuevo_viaje/<int:idP>', v_nuevo_viaje, name='n_nuevo_viaje'),
@@ -22,6 +18,9 @@ urlpatterns = [
     path('menu_usuario/notificaciones/<int:idP>', v_menu_usuario_notificaciones, name='n_menu_usuario_notificaciones'),
     path('menu_usuario/pagoscobros/<int:idP>', v_menu_usuario_pagoscobros, name='n_menu_usuario_pagoscobros'),
     path('menu_usuario/contraseña/<int:idP>', v_menu_usuario_contrasenya, name='n_menu_usuario_contrasenya'),
+    path('menu_usuario/miscoches/<int:idP>/eliminar/<int:idVe>', v_menu_usuario_coches_eliminar, name='n_menu_usuario_coches_eliminar'),
+    path('menu_usuario/miscoches/<int:idP>/editar/<int:idVe>', v_menu_usuario_coches_editar, name='n_menu_usuario_coches_editar'),
+    path('registrar_opinion/<int:idPp>-<int:idPr>-<int:idVi>', v_registrar_opinion, name='n_registrar_opinion'),
 
     path('nuevo_usuario2/', v_nuevo_usuario2),
     path('nuevo_viaje2/<int:idP>', v_nuevo_viaje2),
@@ -30,16 +29,3 @@ urlpatterns = [
     path('vehicle_register/<int:idP>', panel_nuevo_vehiculo),
     path('save_vehicle/', guardar_vehiculo),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-'''
-## Antiguos
-path('main/', main),
-path('user_register/', panel_nuevo_usuario),
-path('save_user/', guardar_usuario),
-path('journey_register/<int:idP>', panel_nuevo_viaje),
-path('save_journey/', guardar_viaje),
-path('vehicle_register/<int:idP>', panel_nuevo_vehiculo),
-path('save_vehicle/', guardar_vehiculo),
-path('prueba_insert/', prueba_insert),
-path('search_journey/', search_journey),
-'''

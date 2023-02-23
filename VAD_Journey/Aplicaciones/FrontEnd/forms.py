@@ -1,6 +1,6 @@
 from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput
-from .models import Personas, Viajes, Vehiculos
-from .choices import genero, tipo_vehiculo, prestigio
+from .models import Personas, Viajes, Vehiculos, Opiniones
+from .choices import genero, tipo_vehiculo, prestigio, categoria_puntuacion
 
 class PersonasForm(ModelForm):
 
@@ -157,5 +157,30 @@ class VehiculosForm(ModelForm):
             'matricula': TextInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;'
+            })
+        }
+
+class OpinionesForm(ModelForm):
+
+    class Meta:
+        model = Opiniones
+        fields = ('puntuacion','mensaje_opinion','mensaje_respuesta')
+
+        widgets = {
+            'puntuacion': RadioSelect(
+                attrs={
+                    'class': "form-check-inline",
+                },
+                choices=categoria_puntuacion,
+            ),
+            'mensaje_opinion': Textarea(attrs={
+                'class': "form-control",
+                'rows': '3',
+                'placeholder': 'Descríbete en pocas palabras y encuentra gente como tú...'
+            }),
+            'mensaje_respuesta': Textarea(attrs={
+                'class': "form-control",
+                'rows': '3',
+                'placeholder': 'Descríbete en pocas palabras y encuentra gente como tú...'
             })
         }

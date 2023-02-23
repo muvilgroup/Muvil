@@ -156,24 +156,81 @@ def v_menu_usuario_perfil(request, idP):
         return render(request, 'menu_usuario_perfil.html', args)
 
 def v_menu_usuario_coches(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+    usuario = Personas.objects.get(id=idP)
+    try:
+        vehiculos = Vehiculos.objects.all().filter(id_persona=usuario)
+    except Vehiculos.DoesNotExist:
+        vehiculos = None
 
     args = {
             "idP": idP,
-            "usuario": datos_usuario
+            "usuario": usuario,
+            "vehiculos": vehiculos
             }
 
-    return render(request, 'menu_usuario_coches.html', args)
+    if request.method == "POST":
+        form = VehiculosForm(request.POST, request.FILES)
+        if form.is_valid():
+            vehiculo = form.save(commit=False)
+            vehiculo.id_persona = usuario
+            vehiculo.save()
+            messages.success(request, "¡¡¡Vehiculo registrado correctamente!!!")
+            return redirect('n_menu_usuario_coches', idP=idP)
+        else:
+            messages.error(request, "¡¡¡ERROR. El vehículo no se ha podido registrar!!!")
+            return redirect('n_menu_usuario_coches', idP=idP)
+    else:
+        # Se crea un form con la información del usuario logueado
+        form = VehiculosForm()
+        args.update({"form": form})
+        return render(request, 'menu_usuario_coches.html', args)
+
+def v_menu_usuario_coches_eliminar(request, idP, idVe):
+    vehiculo=Vehiculos.objects.get(id=idVe)
+    vehiculo.delete()
+
+    return redirect('n_menu_usuario_coches', idP=idP)
+
+def v_menu_usuario_coches_editar(request, idP, idVe):
+    vehiculo=Vehiculos.objects.get(id=idVe)
+    args = {
+        "idP": idP,
+        "vehiculo": vehiculo
+    }
+    if request.method == "POST":
+        form = VehiculosForm(request.POST, request.FILES, instance=vehiculo)
+        if form.is_valid():
+            vehiculoform = form.save()
+            vehiculoform.save()
+            messages.success(request, "¡¡¡Datos de vehiculo actualizados correctamente!!!")
+            return redirect('n_menu_usuario_coches', idP=idP)
+        else:
+            messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!! Prueba de nuevo!!!")
+            return redirect('n_menu_usuario_coches', idP=idP)
+    else:
+        # Se crea un form con la información del usuario logueado
+        form = VehiculosForm(instance=vehiculo)
+        args.update({"form": form})
+        return render(request, 'editar_coche.html', args)
 
 def v_menu_usuario_preferencias(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
 
     args = {
-            "idP": idP,
-            "usuario": datos_usuario
-            }
-
-    return render(request, 'menu_usuario_preferencias.html', args)
+        "idP": idP,
+        "usuario": datos_usuario
+    }
+    if request.method == "POST":
+        datos_usuario.pref_conversacion = request.POST['pref_conversacion']
+        datos_usuario.pref_musica = request.POST['pref_musica']
+        datos_usuario.pref_mascota = request.POST['pref_mascota']
+        datos_usuario.pref_fumar = request.POST['pref_fumar']
+        datos_usuario.pref_comida = request.POST['pref_comida']
+        datos_usuario.save()
+        messages.success(request, "¡¡¡Preferencias actualizadas correctamente!!!")
+        return redirect('n_menu_usuario_preferencias', idP=idP)
+    else:
+        return render(request, 'menu_usuario_preferencias.html', args)
 
 def v_menu_usuario_opiniones(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
@@ -185,15 +242,87 @@ def v_menu_usuario_opiniones(request, idP):
 
     return render(request, 'menu_usuario_opiniones.html', args)
 
+def v_registrar_opinion(request, idPp, idPr, idVi):
+
+    args = {
+        "idP": idP,
+        "usuario": datos_usuario
+    }
+    if request.method == "POST":
+        form = PersonasForm(request.POST, request.FILES, instance=datos_usuario)
+        if form.is_valid():
+            persona = form.save()
+            persona.save()
+            messages.success(request, "¡¡¡Datos de Usuario actualizados correctamente!!!")
+            return redirect('n_menu_usuario_perfil', idP=idP)
+        else:
+            messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!!")
+            return redirect('n_menu_usuario_perfil', idP=idP)
+    else:
+        # Se crea un form con la información del usuario logueado
+        form = OpinionesForm(instance=datos_usuario)
+        args.update({"form": form})
+        return render(request, 'menu_usuario_perfil.html', args)
+
+
 def v_menu_usuario_notificaciones(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
 
     args = {
-            "idP": idP,
-            "usuario": datos_usuario
-            }
+        "idP": idP,
+        "usuario": datos_usuario
+    }
+    if request.method == "POST":
+        notif_noticiasofertas_email = request.POST.get('notif_noticiasofertas_email')
+        notif_noticiasofertas_sms = request.POST.get('notif_noticiasofertas_sms')
+        notif_noticiasofertas = 0
+        if(notif_noticiasofertas_email):
+            if(notif_noticiasofertas_sms):
+                notif_noticiasofertas = 3
+            else:
+                notif_noticiasofertas = 1
+        else:
+            if (notif_noticiasofertas_sms):
+                notif_noticiasofertas = 2
+            else:
+                notif_noticiasofertas = 0
 
-    return render(request, 'menu_usuario_notificaciones.html', args)
+        notif_opiniones_email = request.POST.get('notif_opiniones_email')
+        notif_opiniones_sms = request.POST.get('notif_opiniones_sms')
+        notif_opiniones = 0
+        if (notif_opiniones_email):
+            if (notif_opiniones_sms):
+                notif_opiniones = 3
+            else:
+                notif_opiniones = 1
+        else:
+            if (notif_opiniones_sms):
+                notif_opiniones = 2
+            else:
+                notif_opiniones = 0
+
+        notif_reservas_email = request.POST.get('notif_reservas_email')
+        notif_reservas_sms = request.POST.get('notif_reservas_sms')
+        notif_reservas = 0
+        if (notif_reservas_email):
+            if (notif_reservas_sms):
+                notif_reservas = 3
+            else:
+                notif_reservas = 1
+        else:
+            if (notif_reservas_sms):
+                notif_reservas = 2
+            else:
+                notif_reservas = 0
+
+        datos_usuario.notif_noticiasofertas = notif_noticiasofertas
+        datos_usuario.notif_opiniones = notif_opiniones
+        datos_usuario.notif_reservas = notif_reservas
+        datos_usuario.save()
+        messages.success(request, "¡¡¡Notificaciones actualizadas correctamente!!!")
+        return redirect('n_menu_usuario_notificaciones', idP=idP)
+    else:
+        return render(request, 'menu_usuario_notificaciones.html', args)
 
 def v_menu_usuario_pagoscobros(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
@@ -209,11 +338,17 @@ def v_menu_usuario_contrasenya(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
 
     args = {
-            "idP": idP,
-            "usuario": datos_usuario
-            }
-
-    return render(request, 'menu_usuario_contrasenya.html', args)
+        "idP": idP,
+        "usuario": datos_usuario
+    }
+    if request.method == "POST":
+        print(request.POST['nueva_password'])
+        datos_usuario.password = request.POST['nueva_password']
+        datos_usuario.save()
+        messages.success(request, "¡¡¡Tu contraseña ha sido actualizada correctamente!!!")
+        return redirect('n_menu_usuario_contrasenya', idP=idP)
+    else:
+        return render(request, 'menu_usuario_contrasenya.html', args)
 
 def main(request):
     email_input = request.POST.get('txtEmail', False)

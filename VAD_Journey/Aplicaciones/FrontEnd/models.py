@@ -1,5 +1,5 @@
 from django.db import models
-from .choices import genero, tipo_vehiculo, prestigio
+from .choices import genero, tipo_vehiculo, prestigio, categoria_puntuacion
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
@@ -23,6 +23,14 @@ class Personas (models.Model):
     ruta_foto = models.CharField(max_length=32,default='img/avatar-mujer.jpg', blank=True, null=True)
     descripcion = models.CharField(max_length=3000, blank=True, null=True)
     imagen = models.ImageField(upload_to='images/users_profile', default="images/users_profile/avatar-mujer.jpg")
+    pref_conversacion = models.PositiveIntegerField(default='1')
+    pref_musica = models.PositiveIntegerField(default='1')
+    pref_mascota = models.PositiveIntegerField(default='1')
+    pref_fumar = models.PositiveIntegerField(default='1')
+    pref_comida = models.PositiveIntegerField(default='1')
+    notif_noticiasofertas = models.PositiveIntegerField(default='3')
+    notif_opiniones = models.PositiveIntegerField(default='3')
+    notif_reservas = models.PositiveIntegerField(default='3')
 
 
 
@@ -60,3 +68,22 @@ class Viajes(models.Model):
     hora_vuelta = models.TimeField(blank=True, null=True)
     fechor_ida = models.DateTimeField(default="1990-01-01 00:00")
     fechor_vuelta = models.DateTimeField(blank=True, null=True)
+    id_vehiculo = models.ForeignKey(Vehiculos, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+
+class Opiniones (models.Model):
+    id_persona_publicador = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_publicador')
+    id_persona_receptor = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_receptor')
+    id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5)
+    categoria_puntuacion = models.PositiveIntegerField(choices=categoria_puntuacion, default=3)
+    mensaje_opinion = models.CharField(max_length=3000, blank=True, null=True)
+    flg_respuesta = models.BooleanField(default=False)
+    mensaje_respuesta = models.CharField(max_length=3000, blank=True, null=True)
+
+class Reservas (models.Model):
+    id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
+    id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+
+class Transferencias (models.Model):
+    id_persona_origen = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_persona_origen')
+    id_persona_destino = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_persona_destino')
