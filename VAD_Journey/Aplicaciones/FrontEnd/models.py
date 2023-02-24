@@ -1,6 +1,7 @@
 from django.db import models
 from .choices import genero, tipo_vehiculo, prestigio, categoria_puntuacion
 from django.core.validators import MaxValueValidator, MinValueValidator
+import datetime
 
 # Create your models here.
 
@@ -20,7 +21,6 @@ class Personas (models.Model):
     puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5, blank=True, null=True)
     prestigio = models.CharField(max_length=2, choices=prestigio, default='B', blank=True, null=True)
     numero_opiniones = models.PositiveIntegerField(default = '0', blank=True, null=True)
-    ruta_foto = models.CharField(max_length=32,default='img/avatar-mujer.jpg', blank=True, null=True)
     descripcion = models.CharField(max_length=3000, blank=True, null=True)
     imagen = models.ImageField(upload_to='images/users_profile', default="images/users_profile/avatar-mujer.jpg")
     pref_conversacion = models.PositiveIntegerField(default='1')
@@ -31,7 +31,8 @@ class Personas (models.Model):
     notif_noticiasofertas = models.PositiveIntegerField(default='3')
     notif_opiniones = models.PositiveIntegerField(default='3')
     notif_reservas = models.PositiveIntegerField(default='3')
-
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
 
 
 class Vehiculos (models.Model):
@@ -46,6 +47,8 @@ class Vehiculos (models.Model):
     flag_acepta_mascota = models.BooleanField(default=False)
     matricula = models.CharField(max_length=8, default='0000XXXX')
     imagen_vehiculo = models.ImageField(upload_to='images/vehicles', default="images/vehicles/default-car.jpeg")
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
 
 
 class Viajes(models.Model):
@@ -69,6 +72,8 @@ class Viajes(models.Model):
     fechor_ida = models.DateTimeField(default="1990-01-01 00:00")
     fechor_vuelta = models.DateTimeField(blank=True, null=True)
     id_vehiculo = models.ForeignKey(Vehiculos, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
 
 class Opiniones (models.Model):
     id_persona_publicador = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_publicador')
@@ -79,11 +84,17 @@ class Opiniones (models.Model):
     mensaje_opinion = models.CharField(max_length=3000, blank=True, null=True)
     flg_respuesta = models.BooleanField(default=False)
     mensaje_respuesta = models.CharField(max_length=3000, blank=True, null=True)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
 
 class Reservas (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
 
 class Transferencias (models.Model):
     id_persona_origen = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_persona_origen')
     id_persona_destino = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_persona_destino')
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
