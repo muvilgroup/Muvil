@@ -1,5 +1,5 @@
 from django.db import models
-from .choices import genero, tipo_vehiculo, prestigio, categoria_puntuacion
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 
@@ -34,6 +34,12 @@ class Personas (models.Model):
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = 'personas'
+        verbose_name_plural = 'personas'
+    def __str__(self):
+        return str(self.id) + ' - ' + self.email
+
 
 class Vehiculos (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id',null=True,blank=True,on_delete=models.CASCADE)
@@ -50,8 +56,13 @@ class Vehiculos (models.Model):
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = 'vehiculos'
+        verbose_name_plural = 'vehiculos'
+    def __str__(self):
+        return str(self.id) + ' - ' + self.marca + ' ' + self.modelo
 
-class Viajes(models.Model):
+class Viajes (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id',on_delete=models.CASCADE, default="0")
     ciudad_origen = models.CharField(max_length=64)
     ciudad_destino = models.CharField(max_length=64)
@@ -75,17 +86,27 @@ class Viajes(models.Model):
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = 'viajes'
+        verbose_name_plural = 'viajes'
+
+
 class Opiniones (models.Model):
     id_persona_publicador = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_publicador')
     id_persona_receptor = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_receptor')
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5)
-    categoria_puntuacion = models.PositiveIntegerField(choices=categoria_puntuacion, default=3)
+    categoria_puntuacion = models.PositiveIntegerField(choices=categorias_puntuacion, default=3)
     mensaje_opinion = models.CharField(max_length=3000, blank=True, null=True)
     flg_respuesta = models.BooleanField(default=False)
     mensaje_respuesta = models.CharField(max_length=3000, blank=True, null=True)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'opiniones'
+        verbose_name_plural = 'opiniones'
+
 
 class Reservas (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
@@ -93,8 +114,31 @@ class Reservas (models.Model):
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = 'reservas'
+        verbose_name_plural = 'reservas'
+
+
 class Transferencias (models.Model):
-    id_persona_origen = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_persona_origen')
-    id_persona_destino = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_persona_destino')
+    id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
+    id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    importe = models.DecimalField(max_digits = 5,decimal_places = 2, default=0.0)
+    estado = models.PositiveIntegerField(choices=estados_transferencias, default=1)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'transferencias'
+        verbose_name_plural = 'transferencias'
+
+class MetodosPago (models.Model):
+    id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
+    id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    importe = models.DecimalField(max_digits = 5,decimal_places = 2, default=0.0)
+    estado = models.PositiveIntegerField(choices=estados_transferencias, default=1)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'transferencias'
+        verbose_name_plural = 'transferencias'

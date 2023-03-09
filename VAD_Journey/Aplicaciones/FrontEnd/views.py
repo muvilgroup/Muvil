@@ -4,8 +4,11 @@ from django.utils import timezone
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
+from django.db.models import Sum, Count, Avg
+from .choices import categorias_puntuacion
 
-from .models import Personas, Viajes, Vehiculos
+
+from .models import Personas, Viajes, Vehiculos, Opiniones
 
 # Create your views here.
 def v_pagina_principal(request):
@@ -43,6 +46,7 @@ def v_pagina_principal(request):
     return render(request, "pagina_principal.html", args)
 
 def v_buscar_viaje(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
     origen = request.POST.get('inputOrigen')
     destino = request.POST.get('inputDestino')
     fecha = request.POST.get('inputFecha')
@@ -53,6 +57,7 @@ def v_buscar_viaje(request, idP):
 
     args = {
         'idP': idP,
+        'usuario': datos_usuario,
         'viajes': viajesListados,
         'ciudad_origen': origen,
         'ciudad_destino': destino,
@@ -84,6 +89,13 @@ def v_listado_usuarios(request):
     return render(request, "listado_usuarios.html", args)
 
 def v_nuevo_viaje(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+        "idP": idP,
+        "usuario": datos_usuario
+    }
+
     if request.method == "POST":
         form = ViajesForm(request.POST)
         if form.is_valid():
@@ -100,7 +112,8 @@ def v_nuevo_viaje(request, idP):
             return redirect('n_pagina_principal')
     else:
         form = ViajesForm()
-        return render(request, 'nuevo_viaje.html', {'form': form})
+        args.update({'form': form})
+        return render(request, 'nuevo_viaje.html', args)
 
 def v_listado_viajes(request):
     viajesListados = Viajes.objects.all()
@@ -233,37 +246,30 @@ def v_menu_usuario_preferencias(request, idP):
         return render(request, 'menu_usuario_preferencias.html', args)
 
 def v_menu_usuario_opiniones(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+    usuario = Personas.objects.get(id=idP)
+    opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
+    opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=usuario)
+
+    # Se crea un diccionario con las categorias de opiniones y su valor
+    opiniones_cat_dict = dict()
+    for x in reversed(range(len(categorias_puntuacion))):  # de 0 a 4 (5 iteraciones)
+        categoria = categorias_puntuacion[x][1]
+        count_opiniones = opiniones_recibidas.filter(categoria_puntuacion=(x+1)).count()
+        opiniones_cat_dict.update({categoria: count_opiniones})
+
+    avg_puntuacion = opiniones_recibidas.aggregate(avg_punt=Avg('puntuacion'))
+    total_opiniones = opiniones_recibidas.count()
 
     args = {
             "idP": idP,
-            "usuario": datos_usuario
-            }
-
-    return render(request, 'menu_usuario_opiniones.html', args)
-
-def v_registrar_opinion(request, idPp, idPr, idVi):
-
-    args = {
-        "idP": idP,
-        "usuario": datos_usuario
+            "usuario": usuario,
+            "opiniones_recibidas": opiniones_recibidas,
+            "opiniones_publicadas": opiniones_publicadas,
+            "avg_puntuacion": avg_puntuacion,
+            "total_opiniones": total_opiniones,
+            "opiniones_cat_dict": opiniones_cat_dict
     }
-    if request.method == "POST":
-        form = PersonasForm(request.POST, request.FILES, instance=datos_usuario)
-        if form.is_valid():
-            persona = form.save()
-            persona.save()
-            messages.success(request, "¡¡¡Datos de Usuario actualizados correctamente!!!")
-            return redirect('n_menu_usuario_perfil', idP=idP)
-        else:
-            messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!!")
-            return redirect('n_menu_usuario_perfil', idP=idP)
-    else:
-        # Se crea un form con la información del usuario logueado
-        form = OpinionesForm(instance=datos_usuario)
-        args.update({"form": form})
-        return render(request, 'menu_usuario_perfil.html', args)
-
+    return render(request, 'menu_usuario_opiniones.html', args)
 
 def v_menu_usuario_notificaciones(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
@@ -349,6 +355,17 @@ def v_menu_usuario_contrasenya(request, idP):
         return redirect('n_menu_usuario_contrasenya', idP=idP)
     else:
         return render(request, 'menu_usuario_contrasenya.html', args)
+
+def v_perfil_publico(request, idP):
+    datos_usuario = Personas.objects.get(id=idP)
+
+    args = {
+        "idP": idP,
+        "usuario": datos_usuario
+    }
+
+    return render(request, 'perfil_publico.html', args)
+
 
 def main(request):
     email_input = request.POST.get('txtEmail', False)

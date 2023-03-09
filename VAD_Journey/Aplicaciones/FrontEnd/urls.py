@@ -20,7 +20,7 @@ urlpatterns = [
     path('menu_usuario/contraseña/<int:idP>', v_menu_usuario_contrasenya, name='n_menu_usuario_contrasenya'),
     path('menu_usuario/miscoches/<int:idP>/eliminar/<int:idVe>', v_menu_usuario_coches_eliminar, name='n_menu_usuario_coches_eliminar'),
     path('menu_usuario/miscoches/<int:idP>/editar/<int:idVe>', v_menu_usuario_coches_editar, name='n_menu_usuario_coches_editar'),
-    path('registrar_opinion/<int:idPp>-<int:idPr>-<int:idVi>', v_registrar_opinion, name='n_registrar_opinion'),
+    path('perfil_publico/<int:idP>', v_perfil_publico, name='n_perfil_publico'),
 
     path('nuevo_usuario2/', v_nuevo_usuario2),
     path('nuevo_viaje2/<int:idP>', v_nuevo_viaje2),

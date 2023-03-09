@@ -27,7 +27,7 @@
 										<div class="row" id="puntuacion">
 											<div class="col d-flex justify-content-center">
 												<p class="display-3 fw-bold mb-0">
-													4,8
+													{{ avg_puntuacion.avg_punt|floatformat:2 }}
 												</p>
 											</div>
 										</div>
@@ -38,73 +38,46 @@
 										</div>
 										<div class="row" id="numero_opiniones">
 											<div class="col d-flex justify-content-center fw-bold">
-												39 opiniones
+												{{ total_opiniones }} opiniones
 											</div>
 										</div>
 									</div>
 									<div class="col-7 col-lg-6" id="opiniones-categorias">
-										<div class="row" id="opiniones_excelente">
+										{% for key, values in opiniones_cat_dict.items %}
+										<div class="row" id="opiniones_cat">
 											<div class="col-6 col-lg-4 font2-muvil">
-												Excelente
+												{{ key }}
 											</div>
 											<div class="col-4 fw-bold font2-muvil">
-												30
+												{{ values }}
 											</div>
 										</div>
-										<div class="row" id="opiniones_muybien">
-											<div class="col-6 col-lg-4 font2-muvil">
-												Muy bien
-											</div>
-											<div class="col-4 fw-bold font2-muvil">
-												14
-											</div>
-										</div>
-										<div class="row" id="opiniones_correcto">
-											<div class="col-6 col-lg-4 font2-muvil">
-												Correcto
-											</div>
-											<div class="col-4 fw-bold font2-muvil">
-												7
-											</div>
-										</div>
-										<div class="row" id="opiniones_mal">
-											<div class="col-6 col-lg-4 font2-muvil">
-												Mal
-											</div>
-											<div class="col-4 fw-bold font2-muvil">
-												0
-											</div>
-										</div>
-										<div class="row" id="opiniones_muymal">
-											<div class="col-6 col-lg-4 font2-muvil">
-												Muy mal
-											</div>
-											<div class="col-4 fw-bold font2-muvil">
-												1
-											</div>
-										</div>
+										{% endfor %}
 									</div>
 								</div>
 								<div class="row mt-3 py-2" id="opiniones-list">
+									{% for or in opiniones_recibidas %}
 									<div class="card mx-auto col-11 mb-1" id="opinion-card">
 										<div class="row no-gutters card-body pb-1">
 											<div class="col-6 col-lg-2 card-block order-1 order-lg-1 opinion-photo" id="opinion-photo">
 												<div class="img-container-opinion mx-auto">
-													<img src='{% static "img/personas/11.jpg" %}' alt="">
+													{% if or.id_persona_publicador.imagen %}
+														<img class="mx-auto d-block" src="{{ or.id_persona_publicador.imagen.url }}">
+													{% endif %}
 												</div>
 												<p class="fs-6 fw-bold mb-0 text-center opinion-photo">
-													Manuel
+													{{or.id_persona_publicador.nombre}}
 												</p>
 											</div>
 											<div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
 												<div class="row card-title" id="opinion-header">
 													<div class="col fw-bold fs-6">
-														11/07/2022 - Madrid-Sevilla
+														{{ or.id_viaje.fecha_ida|date:"d/m/Y" }} - de {{or.id_viaje.ciudad_origen}} a {{or.id_viaje.ciudad_destino}}
 													</div>
 												</div>
 												<div class="row" id="opinion-comment">
 													<div class="col fs-6">
-														Viajar con Cecilia fue encontrar puntualidad, seguridad y tener tres horas de muy buena conversación. Esto justifica mi puntuación tan positiva.
+														{{or.mensaje_opinion}}
 													</div>
 												</div>
 											</div>
@@ -112,7 +85,7 @@
 												<div class="row mt-2" id="opinion-score">
 													<div class="col d-flex justify-content-center">
 														<p class="fs-2 fw-bold mb-0">
-															4,8
+															{{or.puntuacion}}
 														</p>
 													</div>
 												</div>
@@ -123,61 +96,23 @@
 												</div>
 												<div class="row pt-2" id="opinion-answer">
 													<div class="col d-flex justify-content-center">
+														{% if or.flg_respuesta %}
 														<button class="btn d-flex">
-															<a href="" alt="Responder"><embed src='{% static "icon/reply.svg" %}' alt="Eliminar"/></a>
+															<a href="" alt="Respondido"><embed src='{% static "icon/tag.svg" %}' alt="Respondido"/></a>
+															<b class="ps-1 fs-6">Respondido</b>
+														</button>
+														{% else %}
+														<button class="btn d-flex">
+															<a href="" alt="Responder"><embed src='{% static "icon/reply.svg" %}' alt="Responder"/></a>
 															<b class="ps-1 fs-6">Responder</b>
 														</button>
+														{% endif %}
 													</div>
 												</div>
 											</div>
 										</div>
 								</div>
-									<div class="card mx-auto col-11 mb-1" id="opinion-card">
-										<div class="row no-gutters card-body pb-1">
-											<div class="col-6 col-lg-2 card-block order-1 order-lg-1 opinion-photo" id="opinion-photo">
-												<div class="img-container-opinion mx-auto">
-													<img src='{% static "img/personas/11.jpg" %}' alt="">
-												</div>
-												<p class="fs-6 fw-bold mb-0 text-center opinion-photo">
-													Manuel
-												</p>
-											</div>
-											<div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
-												<div class="row card-title" id="opinion-header">
-													<div class="col fw-bold fs-6">
-														11/07/2022 - Madrid-Sevilla
-													</div>
-												</div>
-												<div class="row" id="opinion-comment">
-													<div class="col fs-6">
-														Viajar con Cecilia fue encontrar puntualidad, seguridad y tener tres horas de muy buena conversación. Esto justifica mi puntuación tan positiva.
-													</div>
-												</div>
-											</div>
-											<div class="col-6 col-lg-2 card-block order-2 order-lg-3" id="opinion-score">
-												<div class="row mt-2" id="opinion-score">
-													<div class="col d-flex justify-content-center">
-														<p class="fs-2 fw-bold mb-0">
-															4,8
-														</p>
-													</div>
-												</div>
-												<div class="row" id="opinion-rating">
-													<div class="col d-flex justify-content-center">
-														<img class="img-fluid" src='{% static "img/rating_stars.jpg" %}' height="20px" width="100px">
-													</div>
-												</div>
-												<div class="row pt-2" id="opinion-answer">
-													<div class="col d-flex justify-content-center">
-														<button class="btn d-flex">
-															<a href="" alt="Responder"><embed src='{% static "icon/reply.svg" %}' alt="Eliminar"/></a>
-															<b class="ps-1 fs-6">Responder</b>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-								</div>
+									{% endfor %}
 								</div>
 							</div>
 							<!-- FIN Opiniones Recibidas-->
@@ -186,25 +121,28 @@
 							<!-- INICIO Opiniones Publicadas-->
 							<div class="container-fluid mx-2 my-4" id="opiniones-publicadas">
 								<div class="row mt-3 py-2" id="opiniones-list">
+									{% for op in opiniones_publicadas %}
 									<div class="card mx-auto col-11 mb-1" id="opinion-card">
 										<div class="row no-gutters card-body pb-1">
 											<div class="col-6 col-lg-2 card-block order-1 order-lg-1 opinion-photo" id="opinion-photo">
 												<div class="img-container-opinion mx-auto">
-													<img src='{% static "img/personas/11.jpg" %}' alt="">
+													{% if op.id_persona_publicador.imagen %}
+														<img class="mx-auto d-block" src="{{ op.id_persona_publicador.imagen.url }}">
+													{% endif %}
 												</div>
 												<p class="fs-6 fw-bold mb-0 text-center opinion-photo">
-													Manuel
+													{{ op.id_persona_publicador.nombre }}
 												</p>
 											</div>
 											<div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
 												<div class="row card-title" id="opinion-header">
 													<div class="col fw-bold fs-6">
-														11/07/2022 - Madrid-Sevilla
+														{{ op.id_viaje.fecha_ida|date:"d/m/Y" }} - de {{op.id_viaje.ciudad_origen}} a {{op.id_viaje.ciudad_destino}}
 													</div>
 												</div>
 												<div class="row" id="opinion-comment">
 													<div class="col fs-6">
-														Viajar con Cecilia fue encontrar puntualidad, seguridad y tener tres horas de muy buena conversación. Esto justifica mi puntuación tan positiva.
+														{{op.mensaje_opinion}}
 													</div>
 												</div>
 											</div>
@@ -212,7 +150,7 @@
 												<div class="row mt-2" id="opinion-score">
 													<div class="col d-flex justify-content-center">
 														<p class="fs-2 fw-bold mb-0">
-															4,8
+															{{op.puntuacion}}
 														</p>
 													</div>
 												</div>
@@ -232,98 +170,7 @@
 											</div>
 										</div>
 								</div>
-									<div class="card mx-auto col-11 mb-1" id="opinion-card">
-										<div class="row no-gutters card-body pb-1">
-											<div class="col-6 col-lg-2 card-block order-1 order-lg-1 opinion-photo" id="opinion-photo">
-												<div class="img-container-opinion mx-auto">
-													<img src='{% static "img/personas/11.jpg" %}' alt="">
-												</div>
-												<p class="fs-6 fw-bold mb-0 text-center opinion-photo">
-													Manuel
-												</p>
-											</div>
-											<div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
-												<div class="row card-title" id="opinion-header">
-													<div class="col fw-bold fs-6">
-														11/07/2022 - Madrid-Sevilla
-													</div>
-												</div>
-												<div class="row" id="opinion-comment">
-													<div class="col fs-6">
-														Viajar con Cecilia fue encontrar puntualidad, seguridad y tener tres horas de muy buena conversación. Esto justifica mi puntuación tan positiva.
-													</div>
-												</div>
-											</div>
-											<div class="col-6 col-lg-2 card-block order-2 order-lg-3" id="opinion-score">
-												<div class="row mt-2" id="opinion-score">
-													<div class="col d-flex justify-content-center">
-														<p class="fs-2 fw-bold mb-0">
-															4,8
-														</p>
-													</div>
-												</div>
-												<div class="row" id="opinion-rating">
-													<div class="col d-flex justify-content-center">
-														<img class="img-fluid" src='{% static "img/rating_stars.jpg" %}' height="20px" width="100px">
-													</div>
-												</div>
-												<div class="row pt-2" id="opinion-answer">
-													<div class="col d-flex justify-content-center">
-														<button class="btn">
-															<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>
-															<b class="ps-1 fs-6">Editar</b>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-								</div>
-									<div class="card mx-auto col-11 mb-1" id="opinion-card">
-										<div class="row no-gutters card-body pb-1">
-											<div class="col-6 col-lg-2 card-block order-1 order-lg-1 opinion-photo" id="opinion-photo">
-												<div class="img-container-opinion mx-auto">
-													<img src='{% static "img/personas/11.jpg" %}' alt="">
-												</div>
-												<p class="fs-6 fw-bold mb-0 text-center opinion-photo">
-													Manuel
-												</p>
-											</div>
-											<div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
-												<div class="row card-title" id="opinion-header">
-													<div class="col fw-bold fs-6">
-														11/07/2022 - Madrid-Sevilla
-													</div>
-												</div>
-												<div class="row" id="opinion-comment">
-													<div class="col fs-6">
-														Viajar con Cecilia fue encontrar puntualidad, seguridad y tener tres horas de muy buena conversación. Esto justifica mi puntuación tan positiva.
-													</div>
-												</div>
-											</div>
-											<div class="col-6 col-lg-2 card-block order-2 order-lg-3" id="opinion-score">
-												<div class="row mt-2" id="opinion-score">
-													<div class="col d-flex justify-content-center">
-														<p class="fs-2 fw-bold mb-0">
-															4,8
-														</p>
-													</div>
-												</div>
-												<div class="row" id="opinion-rating">
-													<div class="col d-flex justify-content-center">
-														<img class="img-fluid" src='{% static "img/rating_stars.jpg" %}' height="20px" width="100px">
-													</div>
-												</div>
-												<div class="row pt-2" id="opinion-answer">
-													<div class="col d-flex justify-content-center">
-														<button class="btn">
-															<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>
-															<b class="ps-1 fs-6">Editar</b>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-								</div>
+									{% endfor %}
 								</div>
 							</div>
 							<!-- FIN Opiniones Publicadas-->

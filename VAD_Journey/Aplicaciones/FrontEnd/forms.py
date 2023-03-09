@@ -1,6 +1,6 @@
 from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput
 from .models import Personas, Viajes, Vehiculos, Opiniones
-from .choices import genero, tipo_vehiculo, prestigio, categoria_puntuacion
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion
 
 class PersonasForm(ModelForm):
 
@@ -171,7 +171,7 @@ class OpinionesForm(ModelForm):
                 attrs={
                     'class': "form-check-inline",
                 },
-                choices=categoria_puntuacion,
+                choices=categorias_puntuacion,
             ),
             'mensaje_opinion': Textarea(attrs={
                 'class': "form-control",
