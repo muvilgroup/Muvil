@@ -15,7 +15,15 @@
         }
         .img-container-car img{
             width:100%;
-            height:auto
+            height:auto;
+        }
+        .img-container-profile{
+            width:150px;
+            overflow:hidden;
+        }
+        .img-container-profile img{
+            width:100%;
+            height:auto;
         }
     </style>
 
@@ -34,10 +42,10 @@
 					<div class="row tarjeta-stats border border-2 order-2 order-lg-1 rounded shadow m-0 p-0">
 						<div class="col m-0 p-0">
 							<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center">RESUMEN ACTIVIDAD</p>
-							<p class="m-0 px-4 pt-2"> <strong>0</strong> viajes publicados </p>
-							<p class="m-0 px-4"> <strong>4</strong> viajes realizados </p>
-							<p class="m-0 px-4"> <strong>1</strong> reservas canceladas como pasajero </p>
-							<p class="m-0 px-4 pb-2"> <strong>2</strong> reservas canceladas como conductor </p>
+							<p class="m-0 px-4 pt-2"> <strong>{{total_viajesConductor}}</strong> viajes publicados </p>
+							<p class="m-0 px-4"> <strong>{{total_viajesPasajero}}</strong> viajes realizados </p>
+							<p class="m-0 px-4"> <strong>{{total_viajesPasajero_Canc}}</strong> reservas canceladas como pasajero </p>
+							<p class="m-0 px-4 pb-2"> <strong>{{total_viajesConductor_Canc}}</strong> reservas canceladas como conductor </p>
 							<p class="m-0 text-center py-3"> Última conexión: <strong>07/03/2023</strong> </p>
 						</div>
 					</div>
@@ -45,7 +53,7 @@
 						<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center">COCHE</p>
 						<div class="row m-0 py-3">
 							<div class="col-12 fw-bold fs-3 m-0 " id="car-title">
-								c.marca c.modelo
+								{{vehiculo.marca}} {{vehiculo.modelo}}
 							</div>
 							<div class="col-7">
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -53,7 +61,7 @@
 										<img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-10" id="car-year-text">
-										<label for="car-year-icon">c.anyo_antiguedad</label>
+										<label for="car-year-icon">{{vehiculo.anyo_antiguedad}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -61,7 +69,7 @@
 										<img src='{% static "icon/tag.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-10" id="car-year-text">
-										<label for="car-year-icon">c.matricula</label>
+										<label for="car-year-icon">{{vehiculo.matricula}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -69,7 +77,7 @@
 										<img src='{% static "icon/brush.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-10" id="car-year-text">
-										<label for="car-year-icon">c.color</label>
+										<label for="car-year-icon">{{vehiculo.color}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -77,14 +85,19 @@
 										<img src='{% static "icon/vector.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-10" id="car-year-text">
-										<label for="car-year-icon">c.numero_asientos</label>
+										<label for="car-year-icon">{{vehiculo.numero_asientos}}</label>
 									</div>
 								</div>
 							</div>
 							<div class="col-5 align-self-center">
 								<div class="img-container-car img-responsive">
+									{% if vehiculo.imagen_vehiculo %}
 									<img style="cursor: pointer;"
-										 src='{% static "img/coche_prueba.jpg" %}'>
+										 src="{{ vehiculo.imagen_vehiculo.url }}">
+									{% else %}
+									<img style="cursor: pointer;"
+										 src='{% static "img/default-car.jpeg" %}'>
+									{% endif %}
 								</div>
 							</div>
 						</div>
@@ -100,28 +113,30 @@
 				<div class="row" id="foto-scoring">
 					<div class="col-6 px-3 pt-2" id="foto">
 						<div class="col-12 mb-3 d-flex justify-content-center">
-						{% if form.instance.imagen %}
-							<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
-							<input type="file" id="id_image" name="imagen" hidden>
-							<label for="id_image">
-								<img class="rounded-circle"
-									 style="cursor: pointer;"
-									 src="{{ form.instance.imagen.url }}"
-									 title="Sube una nueva imagen">
-							</label>
-						{% else %}
-							<input type="file" id="id_image" name="imagen" hidden>
-							<label for="id_image">
-								<img class="rounded-circle"
-									 style="cursor: pointer;"
-									 src='{% static "img/avatar-mujer.jpg" %}'
-									 title="Sube una nueva imagen">
-							</label>
-						{% endif %}
+							<div class="img-container-profile">
+								{% if usuario.imagen %}
+								<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
+								<input type="file" id="id_image" name="imagen" hidden>
+								<label for="id_image">
+									<img class="rounded-circle"
+										 style="cursor: pointer;"
+										 src="{{ usuario.imagen.url }}"
+										 title="Sube una nueva imagen">
+								</label>
+								{% else %}
+								<input type="file" id="id_image" name="imagen" hidden>
+								<label for="id_image">
+									<img class="rounded-circle"
+										 style="cursor: pointer;"
+										 src='{% static "img/avatar-mujer.jpg" %}'
+										 title="Sube una nueva imagen">
+								</label>
+								{% endif %}
 							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
+							</div>
 						</div>
 						<div class="col-12 text-center fs-4">
-							c.nombre c.apellido
+							<strong>{{usuario.nombre}} {{usuario.apellido}}</strong>
 						</div>
 						<div class="col-12 text-center">
 							Experiencia: Principiante
@@ -135,8 +150,7 @@
 							<div class="row" id="puntuacion">
 								<div class="col d-flex justify-content-center">
 									<p class="display-3 fw-bold mb-0">
-										<!--{{ avg_puntuacion.avg_punt|floatformat:2 }}-->
-										4,7
+										{{ avg_puntuacion.avg_punt|floatformat:2 }}
 									</p>
 								</div>
 							</div>
@@ -147,57 +161,23 @@
 							</div>
 							<div class="row" id="numero_opiniones">
 								<div class="col d-flex justify-content-center fw-bold">
-									<!--{{ total_opiniones }}--> 239 opiniones
+									{{ total_opiniones }} opiniones
 								</div>
 							</div>
 						</div>
 						<div class="col-12" id="opiniones-categoria">
 							<div class="row justify-content-center" id="opiniones_cat">
+								{% for key, values in opiniones_cat_dict.items %}
 								<div class="col-7 col-lg-3 font2-muvil">
-									Excelente
+									{{ key }}
 								</div>
 								<div class="col-4 font2-muvil d-none d-lg-block">
 									<img class="img-fluid" src='{% static "img/prog-bar.png" %}' height="20px" width="180px">
 								</div>
 								<div class="col-3 fw-bold font2-muvil">
-									4
+									{{ values }}
 								</div>
-								<div class="col-7 col-lg-3 font2-muvil">
-									Muy bien
-								</div>
-								<div class="col-4 font2-muvil d-none d-lg-block">
-									<img class="img-fluid" src='{% static "img/prog-bar.png" %}' height="20px" width="180px">
-								</div>
-								<div class="col-3 fw-bold font2-muvil">
-									23
-								</div>
-								<div class="col-7 col-lg-3 font2-muvil">
-									Correcto
-								</div>
-								<div class="col-4 font2-muvil d-none d-lg-block">
-									<img class="img-fluid" src='{% static "img/prog-bar.png" %}' height="20px" width="180px">
-								</div>
-								<div class="col-3 fw-bold font2-muvil">
-									7
-								</div>
-								<div class="col-7 col-lg-3 font2-muvil">
-									Mal
-								</div>
-								<div class="col-4 font2-muvil d-none d-lg-block">
-									<img class="img-fluid" src='{% static "img/prog-bar.png" %}' height="20px" width="180px">
-								</div>
-								<div class="col-3 fw-bold font2-muvil">
-									0
-								</div>
-								<div class="col-7 col-lg-3 font2-muvil">
-									Muy mal
-								</div>
-								<div class="col-4 font2-muvil d-none d-lg-block">
-									<img class="img-fluid" src='{% static "img/prog-bar.png" %}' height="20px" width="180px">
-								</div>
-								<div class="col-3 fw-bold font2-muvil">
-									11
-								</div>
+								{% endfor %}
 							</div>
 						</div>
 					</div>
@@ -234,7 +214,7 @@
 						<h5 class="border-bottom border-3 border-warning">Más sobre mi...</h5>
 					</div>
 					<div class="col-12 px-5 pt-2">
-						<textarea class="w-100" rows="10" placeholder="Aqui está mi introducción">Una alternativa para el reciclaje de los residuos plásticos es la producción de agregados livianos, pero en la bibliografía consultada se detectó una carencia de datos sobre su caracterización física y mecánica. En este trabajo se obtuvieron ocho muestras de plásticos asimilables a agregados en industrias locales (Mendoza, Argentina), se caracterizaron y se presentaron sus procesos de obtención. También se estudiaron los requisitos normativos vigentes en Argentina para considerar las muestras como agregados livianos, concluyendo que sólo dos de ellas cumplieron los estándares exigidos. Sin embargo, leves modificaciones en los procesos de reciclaje, clasificación por tamaños o mezcla entre distintas muestras, permitiría utilizar todas ellas.
+						<textarea class="w-100" rows="10" placeholder="Aqui está mi introducción">{{usuario.descripcion}}
 						</textarea>
 					</div>
 				</div>

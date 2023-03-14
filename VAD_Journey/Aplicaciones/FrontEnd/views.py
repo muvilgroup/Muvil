@@ -8,7 +8,7 @@ from django.db.models import Sum, Count, Avg
 from .choices import categorias_puntuacion
 
 
-from .models import Personas, Viajes, Vehiculos, Opiniones
+from .models import Personas, Viajes, Vehiculos, Opiniones, Reservas
 
 # Create your views here.
 def v_pagina_principal(request):
@@ -357,14 +357,66 @@ def v_menu_usuario_contrasenya(request, idP):
         return render(request, 'menu_usuario_contrasenya.html', args)
 
 def v_perfil_publico(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+    usuario = Personas.objects.get(id=idP)
+    try:
+        vehiculo = Vehiculos.objects.filter(id_persona=usuario).first()
+    except vehiculo.DoesNotExist:
+        vehiculo = None
+
+    try:
+        viajesConductor = Viajes.objects.all().filter(id_persona=usuario)
+    except viajesConductor.DoesNotExist:
+        viajesConductor = None
+
+    try:
+        viajesPasajero = Reservas.objects.all().filter(id_persona=usuario)
+    except viajesPasajero.DoesNotExist:
+        vehiculo = None
+
+    try:
+        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
+    except opiniones_recibidas.DoesNotExist:
+        opiniones_recibidas = None
+
+    total_viajesConductor = viajesConductor.count()
+    total_viajesConductor_Canc = viajesConductor.filter(flg_cancelado=True).count()
+    total_viajesPasajero = viajesPasajero.count()
+    total_viajesPasajero_Canc = viajesPasajero.filter(flg_cancelado=True).count()
+    avg_puntuacion = opiniones_recibidas.aggregate(avg_punt=Avg('puntuacion'))
+    total_opiniones = opiniones_recibidas.count()
+
+    # Se crea un diccionario con las categorias de opiniones y su valor
+    opiniones_cat_dict = dict()
+    for x in reversed(range(len(categorias_puntuacion))):  # de 0 a 4 (5 iteraciones)
+        categoria = categorias_puntuacion[x][1]
+        count_opiniones = opiniones_recibidas.filter(categoria_puntuacion=(x+1)).count()
+        opiniones_cat_dict.update({categoria: count_opiniones})
 
     args = {
         "idP": idP,
-        "usuario": datos_usuario
+        "usuario": usuario,
+        "vehiculo": vehiculo,
+        "total_viajesConductor": total_viajesConductor,
+        "total_viajesConductor_Canc": total_viajesConductor_Canc,
+        "total_viajesPasajero": total_viajesPasajero,
+        "total_viajesPasajero_Canc": total_viajesPasajero_Canc,
+        "avg_puntuacion": avg_puntuacion,
+        "total_opiniones": total_opiniones,
+        "opiniones_cat_dict": opiniones_cat_dict
     }
 
     return render(request, 'perfil_publico.html', args)
+
+
+def v_mis_viajes(request, idP):
+    usuario = Personas.objects.get(id=idP)
+
+    args = {
+        "idP": idP,
+        "usuario": usuario
+    }
+
+    return render(request, 'mis_viajes.html', args)
 
 
 def main(request):

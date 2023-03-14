@@ -111,6 +111,10 @@ class Opiniones (models.Model):
 class Reservas (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    flg_solicitado = models.BooleanField(default=False)
+    flg_reservado = models.BooleanField(default=False)
+    flg_cancelado = models.BooleanField(default=False)
+    flg_incidencia = models.BooleanField(default=False)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 

@@ -1,0 +1,217 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mis Viajes</title>
+
+	<style>
+		.img-container-driver{
+            width:75px;
+            height:75px;
+            overflow:hidden;
+        }
+        .img-container-driver img{
+            width:100%;
+            height:auto;
+        }
+    </style>
+
+	<link type='text/css' href='{% static "css/mis_viajes.css" %}' rel='stylesheet' />
+
+</head>
+
+<body>
+
+	{% include "cabecera.html" %}
+
+	<div class="container-lg mt-5">
+		<div class="row justify-content-around">
+			<aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-misviajes border">
+				<h4 class="fw-bold border-bottom border-3 border-warning">
+					Filtrar por...
+				</h4>
+				<div class="filtro-fecha-viaje mt-3 mb-1">
+					<label class="fw-bold">
+						Fecha de Viaje
+					</label>
+					<div class="d-flex px-1 py-1">
+						<label class="col-3" for="filtro-desde">desde </label>
+						<input class="col-9" type="date" id="filtro-desde">
+					</div>
+					<div class="d-flex px-1 py-1">
+						<label class="col-3" for="filtro-hasta">hasta </label>
+						<input class="col-9" type="date" id="filtro-hasta">
+					</div>
+				</div>
+				<div class="filtro-origen-destino my-1">
+					<label class="fw-bold">
+						Ciudades
+					</label>
+					<div class="d-flex px-1 py-1">
+						<label class="col-3" for="filtro-origen">origen</label>
+						<input class="col-9" type="text" id="filtro-origen">
+					</div>
+					<div class="d-flex px-1 py-1">
+						<label class="col-3" for="filtro-destino">destino</label>
+						<input class="col-9" type="text" id="filtro-destino">
+					</div>
+				</div>
+				<div class="filtro-estado-viaje my-1">
+					<label class="fw-bold">
+						Estado del Viaje
+					</label>
+					<div class="px-2 py-1">
+						<div class="form-check">
+							<input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
+							<label for="checkbox-1" class="form-check-label">Pendiente</label>
+						</div>
+						<div class="form-check">
+							<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+							<label for="checkbox-2" class="form-check-label">Finalizado</label>
+						</div>
+						<div class="form-check">
+							<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+							<label for="checkbox-2" class="form-check-label">Cancelado</label>
+						</div>
+					</div>
+				</div>
+				<div class="filtro-participacion my-1">
+					<label class="fw-bold">
+						Viajes en los que participo como...
+					</label>
+					<div class="px-2 py-1">
+						<div class="form-check">
+							<input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
+							<label for="checkbox-1" class="form-check-label">Conductor</label>
+						</div>
+						<div class="form-check">
+							<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
+							<label for="checkbox-2" class="form-check-label">Pasajero</label>
+						</div>
+					</div>
+				</div>
+
+			</aside>
+			<div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
+				<div class="row">
+					<div class="col-12 px-3 pt-2">
+						<h3 class="border-bottom border-5 border-warning">Mis viajes</h3>
+					</div>
+				</div>
+				<div class="row border-start border-5 border-danger my-3 ms-1 justify-content-between" id="card-viaje">
+					<div class="col-7">
+						<div class="row" id="fecha-viaje">
+							<p class="fs-5">
+								<strong>30/01/2022 15:00hs</strong> de Madrid a Zaragoza
+							</p>
+						</div>
+						<div class="row" id="listado-pasajeros">
+							<div class="col-2" id="usuario-viaje">
+								<div class="col-12 align-self-center">
+									<div class="img-responsive img-container-driver">
+										<img style="cursor: pointer;"
+											 class="rounded-circle"
+											 src='{% static "img/personas/10.jpg" %}'>
+									</div>
+								</div>
+								<div class="col-12 fw-bold text-center">
+									Iván
+								</div>
+								<div class="col-12 text-center">
+									Conductor
+								</div>
+							</div>
+							<div class="col-2" id="usuario-viaje">
+								<div class="col-12 align-self-center">
+									<div class="img-container-driver img-responsive">
+										<img style="cursor: pointer;"
+											 class="rounded-circle"
+											 src='{% static "img/personas/5.jpg" %}'>
+									</div>
+								</div>
+								<div class="col-12 fw-bold text-center">
+									Cecilia
+								</div>
+								<div class="col-12 text-center">
+									Pasajero
+								</div>
+							</div>
+							<div class="col-2" id="usuario-viaje">
+								<div class="col-12 align-self-center">
+									<div class="img-container-driver img-responsive">
+										<img style="cursor: pointer;"
+											 class="rounded-circle"
+											 src='{% static "img/personas/6.jpg" %}'>
+									</div>
+								</div>
+								<div class="col-12 fw-bold text-center">
+									Lola
+								</div>
+								<div class="col-12 text-center">
+									Pasajero
+								</div>
+							</div>
+							<div class="col-2" id="usuario-viaje">
+								<div class="col-12 align-self-center">
+									<div class="img-container-driver img-responsive">
+										<img style="cursor: pointer;"
+											 class="rounded-circle"
+											 src='{% static "img/personas/11.jpg" %}'>
+									</div>
+								</div>
+								<div class="col-12 fw-bold text-center">
+									Manuel
+								</div>
+								<div class="col-12 text-center">
+									Pasajero
+								</div>
+							</div>
+							<div class="col-2" id="usuario-viaje">
+								<div class="col-12 align-self-center">
+									<div class="img-container-driver img-responsive">
+										<img style="cursor: pointer;"
+											 class="rounded-circle"
+											 src='{% static "img/personas/11.jpg" %}'>
+									</div>
+								</div>
+								<div class="col-12 fw-bold text-center">
+									Manuel
+								</div>
+								<div class="col-12 text-center">
+									Pasajero
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-4 me-3 align-self-center">
+						<div class="row mt-2" id="estado-viaje">
+							<div class="bg-danger text-white rounded-pill text-center">
+								CANCELADO
+							</div>
+						</div>
+						<div class="row" id="precio-viaje">
+							<div class="col-12 fw-bold fs-1 text-center">
+								16€
+							</div>
+							<div class="col-12 pb-2 text-center">
+								por pasajero
+							</div>
+							<div class="col-12 pb-2 text-center">
+								<a href="#">
+									Ver Opiniones
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
