@@ -18,6 +18,10 @@
             width:100%;
             height:auto;
         }
+        .border-card {
+        	border: solid 0.4em;
+        	border-style: none none none solid; /* top | right | bottom | left */
+		}
     </style>
 
 	<link type='text/css' href='{% static "css/mis_viajes.css" %}' rel='stylesheet' />
@@ -34,67 +38,10 @@
 				<h4 class="fw-bold border-bottom border-3 border-warning">
 					Filtrar por...
 				</h4>
-				<div class="filtro-fecha-viaje mt-3 mb-1">
-					<label class="fw-bold">
-						Fecha de Viaje
-					</label>
-					<div class="d-flex px-1 py-1">
-						<label class="col-3" for="filtro-desde">desde </label>
-						<input class="col-9" type="date" id="filtro-desde">
-					</div>
-					<div class="d-flex px-1 py-1">
-						<label class="col-3" for="filtro-hasta">hasta </label>
-						<input class="col-9" type="date" id="filtro-hasta">
-					</div>
-				</div>
-				<div class="filtro-origen-destino my-1">
-					<label class="fw-bold">
-						Ciudades
-					</label>
-					<div class="d-flex px-1 py-1">
-						<label class="col-3" for="filtro-origen">origen</label>
-						<input class="col-9" type="text" id="filtro-origen">
-					</div>
-					<div class="d-flex px-1 py-1">
-						<label class="col-3" for="filtro-destino">destino</label>
-						<input class="col-9" type="text" id="filtro-destino">
-					</div>
-				</div>
-				<div class="filtro-estado-viaje my-1">
-					<label class="fw-bold">
-						Estado del Viaje
-					</label>
-					<div class="px-2 py-1">
-						<div class="form-check">
-							<input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
-							<label for="checkbox-1" class="form-check-label">Pendiente</label>
-						</div>
-						<div class="form-check">
-							<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
-							<label for="checkbox-2" class="form-check-label">Finalizado</label>
-						</div>
-						<div class="form-check">
-							<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
-							<label for="checkbox-2" class="form-check-label">Cancelado</label>
-						</div>
-					</div>
-				</div>
-				<div class="filtro-participacion my-1">
-					<label class="fw-bold">
-						Viajes en los que participo como...
-					</label>
-					<div class="px-2 py-1">
-						<div class="form-check">
-							<input type="checkbox" name="checkbox-1" class="form-check-input" id="checkbox-1">
-							<label for="checkbox-1" class="form-check-label">Conductor</label>
-						</div>
-						<div class="form-check">
-							<input type="checkbox" name="checkbox-2" class="form-check-input" id="checkbox-2">
-							<label for="checkbox-2" class="form-check-label">Pasajero</label>
-						</div>
-					</div>
-				</div>
-
+				<form method="get">
+					{{ filter.form.as_p }}
+					<input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+				</form>
 			</aside>
 			<div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
 				<div class="row">
@@ -102,11 +49,21 @@
 						<h3 class="border-bottom border-5 border-warning">Mis viajes</h3>
 					</div>
 				</div>
-				<div class="row border-start border-5 border-danger my-3 ms-1 justify-content-between" id="card-viaje">
+				{% for v in filter.qs %}
+				<div class="row border-card my-3 py-2 mx-1 justify-content-between shadow" id="card-viaje"
+					 style="border-left-color:
+					 				{% if v.flg_cancelado %}
+										#991C1C
+									{% elif v.flg_reservado %}
+										#8C8F8B
+									{% elif v.flg_solicitado %}
+										#1CAB04
+									{% endif %}
+									;">
 					<div class="col-7">
 						<div class="row" id="fecha-viaje">
 							<p class="fs-5">
-								<strong>30/01/2022 15:00hs</strong> de Madrid a Zaragoza
+								<strong>{{v.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> de {{v.ciudad_origen}} a {{v.ciudad_destino}}
 							</p>
 						</div>
 						<div class="row" id="listado-pasajeros">
@@ -189,13 +146,28 @@
 					</div>
 					<div class="col-4 me-3 align-self-center">
 						<div class="row mt-2" id="estado-viaje">
-							<div class="bg-danger text-white rounded-pill text-center">
+							<div class="text-white rounded-pill text-center"
+								 style="background-color: {% if v.flg_cancelado %}
+										#991C1C
+									{% elif v.flg_reservado %}
+										#8C8F8B
+									{% elif v.flg_solicitado %}
+										#1CAB04
+									{% endif %}
+									;">
+
+							{% if v.flg_cancelado %}
 								CANCELADO
+							{% elif v.flg_reservado %}
+								FINALIZADO
+							{% elif v.flg_solicitado %}
+								ACTIVO
+							{% endif %}
 							</div>
 						</div>
 						<div class="row" id="precio-viaje">
 							<div class="col-12 fw-bold fs-1 text-center">
-								16€
+								{{ v.importe_total_asiento }}
 							</div>
 							<div class="col-12 pb-2 text-center">
 								por pasajero
@@ -208,6 +180,7 @@
 						</div>
 					</div>
 				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

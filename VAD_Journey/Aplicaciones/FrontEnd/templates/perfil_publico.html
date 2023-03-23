@@ -25,6 +25,18 @@
             width:100%;
             height:auto;
         }
+		.rating .star {
+			width: 20px;
+			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
+		}
+
+
+
+
+
+
+
+
     </style>
 
 	<link type='text/css' href='{% static "css/perfil_publico.css" %}' rel='stylesheet' />
@@ -139,10 +151,10 @@
 							<strong>{{usuario.nombre}} {{usuario.apellido}}</strong>
 						</div>
 						<div class="col-12 text-center">
-							Experiencia: Principiante
+							Prestigio: {{usuario.get_prestigio_display}}
 						</div>
 						<div class="col-12 text-center">
-							Valoracion como conductor: 4/5
+							Valoracion como conductor: {{avg_puntuacion_Conductor.avg_punt|floatformat:2}}
 						</div>
 					</div>
 					<div class="col-6 px-3 pt-2 align-self-center">
@@ -156,10 +168,26 @@
 							</div>
 							<div class="row" id="estrellas">
 								<div class="col d-flex justify-content-center">
-									<img class="img-fluid" src='{% static "img/rating_stars.jpg" %}' height="20px" width="120px">
+									<div class="rating" style="color: #FFC700;">
+										<img class="star" {% if avg_puntuacion.avg_punt > 0.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 0.75 and avg_puntuacion.avg_punt >= 0.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 1.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 1.75 and avg_puntuacion.avg_punt >= 1.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 2.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 2.75 and avg_puntuacion.avg_punt >= 2.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 3.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 3.75 and avg_puntuacion.avg_punt >= 3.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 4.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 4.75 and avg_puntuacion.avg_punt >= 4.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+									</div>
 								</div>
 							</div>
-							<div class="row" id="numero_opiniones">
+							<div class="row mb-1" id="numero_opiniones">
 								<div class="col d-flex justify-content-center fw-bold">
 									{{ total_opiniones }} opiniones
 								</div>
@@ -172,7 +200,13 @@
 									{{ key }}
 								</div>
 								<div class="col-4 font2-muvil d-none d-lg-block">
-									<img class="img-fluid" src='{% static "img/prog-bar.png" %}' height="20px" width="180px">
+									<div class="progress">
+										<div class="progress-bar bg-warning" role="progressbar"
+											 style="width: {% widthratio values total_opiniones 100 %}%"
+											 aria-valuenow="{% widthratio values total_opiniones 100 %}"
+											 aria-valuemin="0"
+											 aria-valuemax="{{total_opiniones}}"></div>
+									</div>
 								</div>
 								<div class="col-3 fw-bold font2-muvil">
 									{{ values }}
@@ -188,23 +222,73 @@
 					</div>
 					<div class="col px-5 pt-2">
 						<label class="btn btn-white">
-							<img src='{% static "icon/group.svg" %}' alt="Hablo poco" height="30px" width="30px" id="group-icon"
+							<img src='{% static "icon/group.svg" %}' alt="Hablo poco"
+								 {% if usuario.pref_conversacion == 1 %}
+								 height="25px" width="25px"
+								 {% elif usuario.pref_conversacion == 2 %}
+								 height="30px" width="30px"
+								 {% elif usuario.pref_conversacion == 3 %}
+								 height="35px" width="35px"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="group-icon"
 								 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
 						</label>
 						<label class="btn btn-white">
-							<img src='{% static "icon/music.svg" %}' alt="Hablo poco" height="30px" width="30px" id="music-icon"
+							<img src='{% static "icon/music.svg" %}' alt="Hablo poco"
+								 {% if usuario.pref_musica == 1 %}
+								 height="25px" width="25px"
+								 {% elif usuario.pref_musica == 2 %}
+								 height="30px" width="30px"
+								 {% elif usuario.pref_musica == 3 %}
+								 height="35px" width="35px"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="music-icon"
 								 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
 						</label>
 						<label class="btn btn-white">
-							<img src='{% static "icon/footprint.svg" %}' alt="Hablo poco" height="30px" width="30px" id="footprint-icon"
+							<img src='{% static "icon/footprint.svg" %}' alt="Hablo poco"
+								 {% if usuario.pref_mascota == 1 %}
+								 height="25px" width="25px"
+								 {% elif usuario.pref_mascota == 2 %}
+								 height="30px" width="30px"
+								 {% elif usuario.pref_mascota == 3 %}
+								 height="35px" width="35px"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="footprint-icon"
 								 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
 						</label>
 						<label class="btn btn-white">
-							<img src='{% static "icon/smoking.svg" %}' alt="Hablo poco" height="30px" width="30px" id="smoking-icon"
+							<img src='{% static "icon/smoking.svg" %}' alt="Hablo poco"
+								 {% if usuario.pref_fumar == 1 %}
+								 height="25px" width="25px"
+								 {% elif usuario.pref_fumar == 2 %}
+								 height="30px" width="30px"
+								 {% elif usuario.pref_fumar == 3 %}
+								 height="35px" width="35px"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="smoking-icon"
 								 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
 						</label>
 						<label class="btn btn-white">
-							<img src='{% static "icon/nutrition.svg" %}' alt="Hablo poco" height="30px" width="30px" id="nutrition-icon"
+							<img src='{% static "icon/nutrition.svg" %}' alt="Hablo poco"
+								 {% if usuario.pref_comida == 1 %}
+								 height="25px" width="25px"
+								 {% elif usuario.pref_comida == 2 %}
+								 height="30px" width="30px"
+								 {% elif usuario.pref_comida == 3 %}
+								 height="35px" width="35px"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="nutrition-icon"
 								 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
 						</label>
 					</div>

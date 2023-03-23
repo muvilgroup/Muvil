@@ -4,15 +4,17 @@ from django.utils import timezone
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
-from django.db.models import Sum, Count, Avg
+from django.db.models import Sum, Count, Avg, CharField, Value, F
 from .choices import categorias_puntuacion
+from .templatetags.filters import ViajesFilter
+
 
 
 from .models import Personas, Viajes, Vehiculos, Opiniones, Reservas
 
 # Create your views here.
 def v_pagina_principal(request):
-    dateNow = datetime.date(datetime.now())
+    dateNow = datetime.now()
     #timeNow = datetime.time(datetime.now())
 
     # Se comprueba si se ha introducido el user/pass
@@ -35,7 +37,7 @@ def v_pagina_principal(request):
 
     # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
-    viajesProximos = Viajes.objects.all().filter(fecha_ida__gte=dateNow).order_by('fecha_ida')[0:4]
+    viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
 
     args = {
         'idP': idP,
@@ -369,9 +371,9 @@ def v_perfil_publico(request, idP):
         viajesConductor = None
 
     try:
-        viajesPasajero = Reservas.objects.all().filter(id_persona=usuario)
-    except viajesPasajero.DoesNotExist:
-        vehiculo = None
+        reservasPasajero = Reservas.objects.all().filter(id_persona=usuario)
+    except reservasPasajero.DoesNotExist:
+        reservasPasajero = None
 
     try:
         opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
@@ -380,9 +382,10 @@ def v_perfil_publico(request, idP):
 
     total_viajesConductor = viajesConductor.count()
     total_viajesConductor_Canc = viajesConductor.filter(flg_cancelado=True).count()
-    total_viajesPasajero = viajesPasajero.count()
-    total_viajesPasajero_Canc = viajesPasajero.filter(flg_cancelado=True).count()
+    total_viajesPasajero = reservasPasajero.count()
+    total_viajesPasajero_Canc = reservasPasajero.filter(flg_cancelado=True).count()
     avg_puntuacion = opiniones_recibidas.aggregate(avg_punt=Avg('puntuacion'))
+    avg_puntuacion_Conductor = opiniones_recibidas.filter(id_viaje__in = viajesConductor).aggregate(avg_punt=Avg('puntuacion'))
     total_opiniones = opiniones_recibidas.count()
 
     # Se crea un diccionario con las categorias de opiniones y su valor
@@ -401,6 +404,7 @@ def v_perfil_publico(request, idP):
         "total_viajesPasajero": total_viajesPasajero,
         "total_viajesPasajero_Canc": total_viajesPasajero_Canc,
         "avg_puntuacion": avg_puntuacion,
+        "avg_puntuacion_Conductor": avg_puntuacion_Conductor,
         "total_opiniones": total_opiniones,
         "opiniones_cat_dict": opiniones_cat_dict
     }
@@ -411,9 +415,29 @@ def v_perfil_publico(request, idP):
 def v_mis_viajes(request, idP):
     usuario = Personas.objects.get(id=idP)
 
+    try:
+        reservasPasajero = Reservas.objects.all().filter(id_persona=usuario)
+        viajesPasajero = Viajes.objects.all().filter(id__in=reservasPasajero.values_list('id_viaje').distinct())
+        viajesConductor = Viajes.objects.all().filter(id_persona=usuario)
+
+        # Añadir campos
+        '''
+        for obj in viajesPasajero:
+            obj.tipo = 'P'
+
+        for obj in viajesConductor:
+            obj.tipo = 'C'
+        '''
+        listado_viajes = viajesConductor | viajesPasajero
+
+    except viajesPasajero.DoesNotExist:
+        listado_viajes = None
+
+    fV = ViajesFilter(request.GET, queryset=listado_viajes)
     args = {
         "idP": idP,
-        "usuario": usuario
+        "usuario": usuario,
+        "filter": fV
     }
 
     return render(request, 'mis_viajes.html', args)

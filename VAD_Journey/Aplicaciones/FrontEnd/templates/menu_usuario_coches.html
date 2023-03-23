@@ -1,6 +1,7 @@
 {% extends "menu_usuario_navbar.html" %}
 
 {% load static %}
+{% load templatetags %}
 
 {% block titulo %} Mis Coches {% endblock %}
 
@@ -87,8 +88,8 @@
 							<div class="col-12 col-lg-7">
 								<div class="card-block px-2">
 									<div class="card-body">
-										<div class="card-title fw-bold fs-3 pb-1" id="car-title">
-											{{ c.marca }} {{ c.modelo }}
+										<div class="card-title fs-3 pb-1" id="car-title">
+											{{ c.marca | resaltar_texto }} {{ c.modelo | resaltar_texto}}
 										</div>
 										<div class="card-subtitle row pb-1 ps-3" id="car-year">
 											<div class="col-2 text-center" id="car-year-icon">

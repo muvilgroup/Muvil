@@ -63,11 +63,11 @@ class Vehiculos (models.Model):
         return str(self.id) + ' - ' + self.marca + ' ' + self.modelo
 
 class Viajes (models.Model):
-    id_persona = models.ForeignKey(Personas,to_field='id',on_delete=models.CASCADE, default="0")
+    id_persona = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE)
     ciudad_origen = models.CharField(max_length=64)
     ciudad_destino = models.CharField(max_length=64)
     flg_ida_vuelta = models.BooleanField(default=False)
-    fecha_ida = models.DateField()
+    fecha_ida = models.DateField(blank=True, null=True)
     fecha_vuelta = models.DateField(blank=True, null=True)
     numero_asientos_viaje = models.PositiveSmallIntegerField()
     flg_solicitado = models.BooleanField(default=False)
@@ -78,9 +78,9 @@ class Viajes (models.Model):
     importe_comision_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
     importe_conductor_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
     numero_asientos_libres = models.PositiveIntegerField(default=0)
-    hora_ida = models.TimeField(default="00:00")
+    hora_ida = models.TimeField()
     hora_vuelta = models.TimeField(blank=True, null=True)
-    fechor_ida = models.DateTimeField(default="1990-01-01 00:00")
+    fechor_ida = models.DateTimeField()
     fechor_vuelta = models.DateTimeField(blank=True, null=True)
     id_vehiculo = models.ForeignKey(Vehiculos, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     fec_created = models.DateTimeField(auto_now_add=True)
