@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
+import pytz
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
@@ -14,7 +15,7 @@ from .models import Personas, Viajes, Vehiculos, Opiniones, Reservas
 
 # Create your views here.
 def v_pagina_principal(request):
-    dateNow = datetime.now()
+    dateNow = timezone.now()
     #timeNow = datetime.time(datetime.now())
 
     # Se comprueba si se ha introducido el user/pass
@@ -77,6 +78,7 @@ def v_nuevo_usuario(request):
             messages.success(request, "¡¡¡Usuario creado correctamente!!!.")
             return redirect('n_pagina_principal')
         else:
+            #print(form.errors)
             messages.error(request, "¡¡¡ERROR. Usuario no creado!!!.")
             return redirect('n_pagina_principal')
     else:

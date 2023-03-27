@@ -25,7 +25,7 @@ PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/static/j
 SECRET_KEY = 'django-insecure-_u7d(jjmsy0n79)@v0d)n#w^odr@_*eenkj4agmn8nq5=ewt2%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['vadjourney.pythonanywhere.com', '127.0.0.1', 'localhost']
 
@@ -87,15 +87,23 @@ WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
         'DATABASE_PORT':'5432'
     }
 }'''
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'rsxkoykr',
-        'USER':'rsxkoykr',
-        'PASSWORD':'rhruYV5osl80to7a-Aca7eui-QMZk7Wy',
-        'HOST':'kandula.db.elephantsql.com',
-        'DATABASE_PORT':'5432'
+        'USER': 'rsxkoykr',
+        'PASSWORD': 'rhruYV5osl80to7a-Aca7eui-QMZk7Wy',
+        'HOST': 'kandula.db.elephantsql.com',
+        'DATABASE_PORT': '5432'
+    }
+}
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'VAD_Journey.sqlite3',
     }
 }
 
