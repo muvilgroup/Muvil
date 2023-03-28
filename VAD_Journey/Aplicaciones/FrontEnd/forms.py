@@ -45,12 +45,14 @@ class PersonasForm(ModelForm):
             }),
             'fec_nacimiento': DateInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
-                'type': 'date'
+                'type': 'date',
+                'format': '%d-%m-%Y',
+                'style': 'max-width: 300px;'
             }),
             'numero_telefono': NumberInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
+                'max': '999999999'
             }),
             'descripcion': Textarea(attrs={
                 'class': "form-control",

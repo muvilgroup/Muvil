@@ -13,9 +13,7 @@ class Personas (models.Model):
     tipo_documento = models.CharField (max_length=8)
     numero_documento = models.CharField(max_length=32)
     email = models.CharField(max_length=320)
-    numero_telefono = models.PositiveIntegerField(validators=[
-            MaxValueValidator(999999999)
-        ])
+    numero_telefono = models.PositiveIntegerField(validators=[MaxValueValidator(999999999)])
     genero = models.CharField(max_length=1, choices=genero, default='F', blank=True, null=True)
     password = models.CharField(max_length=30, default='<NO_PASSWORD>')
     puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5, blank=True, null=True)

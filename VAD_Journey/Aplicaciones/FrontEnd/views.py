@@ -39,11 +39,18 @@ def v_pagina_principal(request):
     # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
     viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
+    Usuario_Viajes_Opiniones = Opiniones.objects.values('id_persona_receptor__nombre', 'id_viaje__ciudad_origen'
+                                                        , 'id_viaje__ciudad_destino', 'id_viaje__fechor_ida'
+                                                        , 'id_viaje__importe_total_asiento', 'id_viaje__numero_asientos_libres'
+                                                        , 'id_persona_receptor__pref_conversacion','id_persona_receptor__pref_fumar')\
+        .annotate(avg_puntuacion=Avg('puntuacion'),
+                  count_opiniones=Count('mensaje_opinion'))\
+        .filter(id_viaje__in=viajesProximos).order_by('id_viaje__fechor_ida')
 
     args = {
         'idP': idP,
         'usuario': datos_usuario,
-        'viajesProximos':viajesProximos,
+        'Usuario_Viajes_Opiniones':Usuario_Viajes_Opiniones,
         'numAlert': numalert
     }
     return render(request, "pagina_principal.html", args)
@@ -443,6 +450,16 @@ def v_mis_viajes(request, idP):
     }
 
     return render(request, 'mis_viajes.html', args)
+
+def v_mis_mensajes(request, idP):
+    usuario = Personas.objects.get(id=idP)
+
+    args = {
+            "idP": idP,
+            "usuario": usuario
+            }
+
+    return render(request, "mis_mensajes.html", args)
 
 
 def main(request):
