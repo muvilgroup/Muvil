@@ -246,13 +246,17 @@
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-lg-2 col-3 ps-3 img-container-journey">
-								<img src='{% static "img/personas/11.jpg" %}'>
+							{% if uvo.id_persona_receptor__imagen %}
+								{{uvo.id_persona_receptor__imagen}}
+                                <img src="{{uvo.id_persona_receptor__imagen.url}}">
+							{% else %}
+								<img src='{% static "img/avatar-mujer.jpg" %}'>
+                            {% endif %}
 							</div>
 							<div class="col-2 col-md-2 fw-bold fs-3 d-flex">
 								{{uvo.avg_puntuacion|floatformat:2}}
 								<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 							</div>
-
 							<div class="col-2 col-md-3">
 								<a class="link-primary fw-bold">
 									({{uvo.count_opiniones}} opiniones)

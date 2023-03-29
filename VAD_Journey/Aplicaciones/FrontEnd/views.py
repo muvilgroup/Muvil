@@ -42,7 +42,8 @@ def v_pagina_principal(request):
     Usuario_Viajes_Opiniones = Opiniones.objects.values('id_persona_receptor__nombre', 'id_viaje__ciudad_origen'
                                                         , 'id_viaje__ciudad_destino', 'id_viaje__fechor_ida'
                                                         , 'id_viaje__importe_total_asiento', 'id_viaje__numero_asientos_libres'
-                                                        , 'id_persona_receptor__pref_conversacion','id_persona_receptor__pref_fumar')\
+                                                        , 'id_persona_receptor__pref_conversacion','id_persona_receptor__pref_fumar'
+                                                        , 'id_persona_receptor__imagen')\
         .annotate(avg_puntuacion=Avg('puntuacion'),
                   count_opiniones=Count('mensaje_opinion'))\
         .filter(id_viaje__in=viajesProximos).order_by('id_viaje__fechor_ida')
