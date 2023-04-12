@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Personas, Vehiculos, Viajes, Reservas, Transferencias, Opiniones
+from .models import Personas, Vehiculos, Viajes, Plazas, Transferencias, Opiniones
 
 # Register your models here.
 
@@ -19,10 +19,10 @@ class ViajesAdmin (admin.ModelAdmin):
 
 admin.site.register(Viajes, ViajesAdmin)
 
-class ReservasAdmin (admin.ModelAdmin):
+class PlazasAdmin (admin.ModelAdmin):
     readonly_fields = ('fec_created', 'fec_updated')
 
-admin.site.register(Reservas, ReservasAdmin)
+admin.site.register(Plazas, PlazasAdmin)
 
 class TransferenciasAdmin (admin.ModelAdmin):
     readonly_fields = ('fec_created', 'fec_updated')

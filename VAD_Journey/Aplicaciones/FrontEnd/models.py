@@ -1,5 +1,5 @@
 from django.db import models
-from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias, estados_viajes, estados_plazas
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 
@@ -68,10 +68,11 @@ class Viajes (models.Model):
     fecha_ida = models.DateField(blank=True, null=True)
     fecha_vuelta = models.DateField(blank=True, null=True)
     numero_asientos_viaje = models.PositiveSmallIntegerField()
-    flg_solicitado = models.BooleanField(default=False)
+    '''flg_solicitado = models.BooleanField(default=False)
     flg_reservado = models.BooleanField(default=False)
     flg_cancelado = models.BooleanField(default=False)
-    flg_incidencia = models.BooleanField(default=False)
+    flg_incidencia = models.BooleanField(default=False)'''
+    estado = models.PositiveIntegerField(choices=estados_viajes, default=1)
     importe_total_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
     importe_comision_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
     importe_conductor_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
@@ -106,19 +107,21 @@ class Opiniones (models.Model):
         verbose_name_plural = 'opiniones'
 
 
-class Reservas (models.Model):
+class Plazas (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
-    flg_solicitado = models.BooleanField(default=False)
+    '''flg_solicitado = models.BooleanField(default=False)
     flg_reservado = models.BooleanField(default=False)
     flg_cancelado = models.BooleanField(default=False)
-    flg_incidencia = models.BooleanField(default=False)
+    flg_incidencia = models.BooleanField(default=False)'''
+    flg_conductor = models.BooleanField(default=False)
+    estado = models.PositiveIntegerField(choices=estados_plazas, default=1)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'reservas'
-        verbose_name_plural = 'reservas'
+        verbose_name = 'plazas'
+        verbose_name_plural = 'plazas'
 
 
 class Transferencias (models.Model):

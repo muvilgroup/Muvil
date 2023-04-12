@@ -52,12 +52,12 @@
 				{% for v in filter.qs %}
 				<div class="row border-card my-3 py-2 mx-1 justify-content-between shadow" id="card-viaje"
 					 style="border-left-color:
-					 				{% if v.flg_cancelado %}
-										#991C1C
-									{% elif v.flg_reservado %}
+					 				{% if v.estado == 1 %}
 										#8C8F8B
-									{% elif v.flg_solicitado %}
+									{% elif v.estado == 2 %}
 										#1CAB04
+									{% elif v.estado == 3 %}
+										#991C1C
 									{% endif %}
 									;">
 					<div class="col-7">
@@ -67,21 +67,36 @@
 							</p>
 						</div>
 						<div class="row" id="listado-pasajeros">
+							{% for p in listado_plazas_viajes %}
+							{% if p.id_viaje.id == v.id %}
 							<div class="col-2" id="usuario-viaje">
 								<div class="col-12 align-self-center">
 									<div class="img-responsive img-container-driver">
+										{% if p.id_persona.imagen %}
 										<img style="cursor: pointer;"
 											 class="rounded-circle"
-											 src='{% static "img/personas/10.jpg" %}'>
+											 src="{{ p.id_persona.imagen.url }}">
+										{% else %}
+										<img style="cursor: pointer;"
+											 class="rounded-circle"
+											 src='{% static "img/avatar-mujer.jpg" %}'>
+										{% endif %}
 									</div>
 								</div>
 								<div class="col-12 fw-bold text-center">
-									Iván
+									{{p.id_persona.nombre}}
 								</div>
 								<div class="col-12 text-center">
+									{% if p.flg_conductor %}
 									Conductor
+									{% else %}
+									Pasajero
+									{% endif %}
 								</div>
 							</div>
+							{% endif %}
+							{% endfor %}
+							<!--
 							<div class="col-2" id="usuario-viaje">
 								<div class="col-12 align-self-center">
 									<div class="img-container-driver img-responsive">
@@ -142,27 +157,22 @@
 									Pasajero
 								</div>
 							</div>
+							-->
 						</div>
 					</div>
 					<div class="col-4 me-3 align-self-center">
 						<div class="row mt-2" id="estado-viaje">
 							<div class="text-white rounded-pill text-center"
-								 style="background-color: {% if v.flg_cancelado %}
-										#991C1C
-									{% elif v.flg_reservado %}
+								 style="background-color:
+								 	{% if v.estado == 1 %}
 										#8C8F8B
-									{% elif v.flg_solicitado %}
+									{% elif v.estado == 2 %}
 										#1CAB04
+									{% elif v.estado == 3 %}
+										#991C1C
 									{% endif %}
 									;">
-
-							{% if v.flg_cancelado %}
-								CANCELADO
-							{% elif v.flg_reservado %}
-								FINALIZADO
-							{% elif v.flg_solicitado %}
-								ACTIVO
-							{% endif %}
+								{{v.get_estado_display|upper}}
 							</div>
 						</div>
 						<div class="row" id="precio-viaje">

@@ -32,3 +32,15 @@ estados_transferencias = (
     (4,'Denegado'),
     (5,'Error')
 )
+
+estados_viajes = (
+    (1,'Pendiente'),
+    (2,'Realizado'),
+    (3,'Cancelado')
+)
+
+estados_plazas = (
+    (1,'Pendiente'),
+    (2,'Confirmado'),
+    (3,'Cancelado')
+)

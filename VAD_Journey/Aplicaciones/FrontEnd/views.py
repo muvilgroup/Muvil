@@ -9,9 +9,7 @@ from django.db.models import Sum, Count, Avg, CharField, Value, F
 from .choices import categorias_puntuacion
 from .templatetags.filters import ViajesFilter
 
-
-
-from .models import Personas, Viajes, Vehiculos, Opiniones, Reservas
+from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas
 
 # Create your views here.
 def v_pagina_principal(request):
@@ -117,6 +115,9 @@ def v_nuevo_viaje(request, idP):
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
             viaje.fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
             viaje.save()
+            #Insertamos la plaza del conductor
+            plaza_conductor = Plazas(id_persona=datos_usuario, id_viaje=viaje, flg_conductor=True, estado=2)
+            plaza_conductor.save()
             messages.success(request, "¡¡¡Viaje publicado correctamente!!!.")
             return redirect('n_pagina_principal')
         else:
@@ -381,7 +382,7 @@ def v_perfil_publico(request, idP):
         viajesConductor = None
 
     try:
-        reservasPasajero = Reservas.objects.all().filter(id_persona=usuario)
+        reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
     except reservasPasajero.DoesNotExist:
         reservasPasajero = None
 
@@ -426,28 +427,26 @@ def v_mis_viajes(request, idP):
     usuario = Personas.objects.get(id=idP)
 
     try:
-        reservasPasajero = Reservas.objects.all().filter(id_persona=usuario)
-        viajesPasajero = Viajes.objects.all().filter(id__in=reservasPasajero.values_list('id_viaje').distinct())
-        viajesConductor = Viajes.objects.all().filter(id_persona=usuario)
+        #reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
+        #viajesPasajero = Viajes.objects.all().filter(id__in=reservasPasajero.values_list('id_viaje').distinct())
+        #viajesConductor = Viajes.objects.all().filter(id_persona=usuario)
+        #listado_viajes = viajesConductor | viajesPasajero
+        #listado_plazas_viajes = Plazas.objects.all().filter(id_viaje__in=listado_viajes)
 
-        # Añadir campos
-        '''
-        for obj in viajesPasajero:
-            obj.tipo = 'P'
+        plazas = Plazas.objects.all().filter(id_persona=usuario)
+        listado_viajes = Viajes.objects.all().filter(id__in=plazas.values_list('id_viaje').distinct())
+        listado_plazas_viajes = Plazas.objects.all().filter(id_viaje__in=listado_viajes).order_by('-flg_conductor')
 
-        for obj in viajesConductor:
-            obj.tipo = 'C'
-        '''
-        listado_viajes = viajesConductor | viajesPasajero
-
-    except viajesPasajero.DoesNotExist:
+    except plazas.DoesNotExist:
         listado_viajes = None
+        listado_plazas_viajes = None
 
     fV = ViajesFilter(request.GET, queryset=listado_viajes)
     args = {
         "idP": idP,
         "usuario": usuario,
-        "filter": fV
+        "filter": fV,
+        "listado_plazas_viajes": listado_plazas_viajes
     }
 
     return render(request, 'mis_viajes.html', args)
