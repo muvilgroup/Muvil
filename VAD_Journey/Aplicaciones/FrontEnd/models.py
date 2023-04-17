@@ -38,7 +38,6 @@ class Personas (models.Model):
     def __str__(self):
         return str(self.id) + ' - ' + self.email
 
-
 class Vehiculos (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id',null=True,blank=True,on_delete=models.CASCADE)
     tipo_vehiculo =  models.CharField(max_length=1, choices=tipo_vehiculo, default='C')
@@ -89,7 +88,6 @@ class Viajes (models.Model):
         verbose_name = 'viajes'
         verbose_name_plural = 'viajes'
 
-
 class Opiniones (models.Model):
     id_persona_publicador = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_publicador')
     id_persona_receptor = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_receptor')
@@ -106,7 +104,6 @@ class Opiniones (models.Model):
         verbose_name = 'opiniones'
         verbose_name_plural = 'opiniones'
 
-
 class Plazas (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
@@ -122,7 +119,6 @@ class Plazas (models.Model):
     class Meta:
         verbose_name = 'plazas'
         verbose_name_plural = 'plazas'
-
 
 class Transferencias (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
@@ -147,3 +143,17 @@ class MetodosPago (models.Model):
     class Meta:
         verbose_name = 'transferencias'
         verbose_name_plural = 'transferencias'
+
+class Mensajes (models.Model):
+    id_persona_publicador = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE, related_name='id_publicador_m')
+    id_persona_receptor = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE, related_name='id_receptor_m')
+    #id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=3000, blank=True, null=True)
+    flg_leido = models.BooleanField(default=False)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'mensajes'
+        verbose_name_plural = 'mensajes'
+

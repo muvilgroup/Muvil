@@ -16,9 +16,10 @@
 		  Twitter: @xsgames_
 		---------------------------------------------- */
 		.scale-up-left{animation:scale-up-left 0.6s; } @keyframes scale-up-left{0%{transform:scale(.5);transform-origin:left center}100%{transform:scale(1);transform-origin:left center}}
-		.blur-in-expand{animation:blur-in-expand 0.4s linear both} @keyframes blur-in-expand{0%{transform:scale(0);filter:blur(12px);opacity:0}100%{transform:scale(1);filter:blur(0);opacity:1}}	</style>
+		.blur-in-expand{animation:blur-in-expand 0.4s linear both} @keyframes blur-in-expand{0%{transform:scale(0);filter:blur(12px);opacity:0}100%{transform:scale(1);filter:blur(0);opacity:1}}
+	</style>
 
-	<link type='text/css' href='{% static "css/mis_mensajes.css" %}' rel='stylesheet' />
+	<!--<link type='text/css' href='{% static "css/mis_mensajes.css" %}' rel='stylesheet' />-->
 
 </head>
 
@@ -26,47 +27,69 @@
 
 	{% include "cabecera.html" %}
 
-	<div class="container-lg mt-5 scale-up-left">
-		<h1>Mis mensajes</h1>
-		<form>
-			<label for="filtro">Filtrar por:</label>
-			<select name="filtro" id="filtro">
-				<option value="todos">Todos</option>
-				<option value="leidos">Leídos</option>
-				<option value="no-leidos">No leídos</option>
-				<option value="importante">Importante</option>
-			</select>
-			<input type="submit" value="Filtrar">
-		</form>
-		<table>
-			<thead>
-				<tr>
-					<th>Remitente</th>
-					<th>Asunto</th>
-					<th>Fecha</th>
-					<th>Leído</th>
-					<th>Importante</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Juan Pérez</td>
-					<td>Recordatorio de reunión</td>
-					<td>25/03/2023</td>
-					<td>Si</td>
-					<td>No</td>
-				</tr>
-				<tr>
-					<td>María Gómez</td>
-					<td>Información sobre el proyecto</td>
-					<td>23/03/2023</td>
-					<td>No</td>
-					<td>Si</td>
-				</tr>
-				<!-- Aquí se mostrarían más mensajes -->
-			</tbody>
-		</table>
-	</div>
+<div class="container">
+  <div class="row">
+    <aside class="col-12 col-md-4 mt-5">
+      <form>
+        <div class="mb-3">
+          <label for="filtro-fecha" class="form-label">Filtrar por Fecha:</label>
+          <input type="date" class="form-control" id="filtro-fecha">
+        </div>
+        <div class="mb-3">
+          <label for="filtro-usuario" class="form-label">Filtrar por Usuario:</label>
+          <select class="form-select" id="filtro-usuario">
+            <option value="">Seleccionar Usuario</option>
+            <option value="juan">Juan Pérez</option>
+            <option value="maria">María García</option>
+            <option value="pedro">Pedro Sánchez</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+      </form>
+    </aside>
+    <div class="col-12 col-md-8 mt-5">
+      <ul class="list-group">
+        <li class="list-group-item bg-primary text-white">Conversaciones con Usuarios</li>
+        <li class="list-group-item">
+          <a href="{% url 'n_conversacion' idP=idP idPc=idP %}">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0"><img src="https://via.placeholder.com/50" alt="Juan Pérez"></div>
+              <div class="ms-3">
+                <div class="fw-bold">Juan Pérez</div>
+                <div class="text-secondary">Hola, ¿cómo estás?</div>
+              </div>
+              <div class="ms-auto text-secondary">2022-01-01 12:00:00</div>
+            </div>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="{% url 'n_conversacion' idP=idP idPc=idP %}">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0"><img src="https://via.placeholder.com/50" alt="María García"></div>
+              <div class="ms-3">
+                <div class="fw-bold">María García</div>
+                <div class="text-secondary">Buenos días, ¿puedo hablar contigo?</div>
+              </div>
+              <div class="ms-auto text-secondary">2022-01-02 10:30:00</div>
+            </div>
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="{% url 'n_conversacion' idP=idP idPc=idP %}">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0"><img src="https://via.placeholder.com/50" alt="Pedro Sánchez"></div>
+              <div class="ms-3">
+                <div class="fw-bold">Pedro Sánchez</div>
+                <div class="text-secondary">Hola, ¿cómo van las cosas?</div>
+              </div>
+              <div class="ms-auto text-secondary">2022-01-03 15:45:00</div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 </body>
 

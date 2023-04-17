@@ -23,6 +23,7 @@ urlpatterns = [
     path('perfil_publico/<int:idP>', v_perfil_publico, name='n_perfil_publico'),
     path('mis_viajes/<int:idP>', v_mis_viajes, name='n_mis_viajes'),
     path('mis_mensajes/<int:idP>', v_mis_mensajes, name='n_mis_mensajes'),
+    path('conversacion/<int:idP><int:idPc>', v_conversacion, name='n_conversacion'),
 
     path('nuevo_usuario2/', v_nuevo_usuario2),
     path('nuevo_viaje2/<int:idP>', v_nuevo_viaje2),

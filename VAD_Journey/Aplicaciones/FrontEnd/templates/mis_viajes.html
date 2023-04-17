@@ -10,7 +10,7 @@
 
 	<style>
 		.img-container-driver{
-            width:75px;
+            width:60px;
             height:75px;
             overflow:hidden;
         }
@@ -69,7 +69,7 @@
 						<div class="row" id="listado-pasajeros">
 							{% for p in listado_plazas_viajes %}
 							{% if p.id_viaje.id == v.id %}
-							<div class="col-2" id="usuario-viaje">
+							<div class="col-auto" id="usuario-viaje">
 								<div class="col-12 align-self-center">
 									<div class="img-responsive img-container-driver">
 										{% if p.id_persona.imagen %}
@@ -88,7 +88,7 @@
 								</div>
 								<div class="col-12 text-center">
 									{% if p.flg_conductor %}
-									Conductor
+									<strong class="border border-3">Conductor</strong>
 									{% else %}
 									Pasajero
 									{% endif %}
@@ -183,10 +183,18 @@
 								por pasajero
 							</div>
 							<div class="col-12 pb-2 text-center">
-								<a href="#">
+								<a href="{% url 'n_menu_usuario_opiniones' idP=idP %}">
 									Ver Opiniones
 								</a>
 							</div>
+							{% if v.id_persona_id != idP %}
+							<div class="col text-center">
+								<a class="btn btn-warning" href="{% url 'n_conversacion' idP=idP idPc=v.id_persona_id %}">
+									<img alt="Añadir" src='{% static "icon/send-plus.svg" %}'>
+									<b>Enviar Mensaje al Conductor</b>
+								</a>
+							</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>

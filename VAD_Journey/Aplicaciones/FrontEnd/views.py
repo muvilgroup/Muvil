@@ -5,11 +5,11 @@ import pytz
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
-from django.db.models import Sum, Count, Avg, CharField, Value, F
+from django.db.models import Sum, Count, Avg, CharField, Value, F, Q
 from .choices import categorias_puntuacion
 from .templatetags.filters import ViajesFilter
 
-from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas
+from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes
 
 # Create your views here.
 def v_pagina_principal(request):
@@ -460,6 +460,28 @@ def v_mis_mensajes(request, idP):
             }
 
     return render(request, "mis_mensajes.html", args)
+
+
+def v_conversacion(request, idP, idPc):
+    usuario = Personas.objects.get(id=idP)
+    usuario_receptor = Personas.objects.get(id=idPc)
+    listado_mensajes = Mensajes.objects.filter(Q(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor) | Q(id_persona_publicador=usuario_receptor, id_persona_receptor=usuario)).order_by('fec_created')
+    args = {
+            "idP": idP,
+            "usuario": usuario,
+            "usuario_receptor": usuario,
+            "listado_mensajes": listado_mensajes
+            }
+    if request.method == "POST":
+        # Insertamos el mensaje
+        mensaje = request.POST.get('mensaje', False)
+        nuevo_mensaje = Mensajes(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor, flg_leido=False, mensaje=mensaje)
+        nuevo_mensaje.save()
+        return render(request, "conversacion.html", args)
+    else:
+        return render(request, "conversacion.html", args)
+
+
 
 
 def main(request):
