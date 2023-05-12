@@ -14,6 +14,24 @@
 			width: 20px;
 			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
 		}
+		.tarjeta-viaje:hover {
+			transform: scale(1.02); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+		}
+		.boton-buscar:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px 0 0 black;
+		}
+		.boton-buscar:is(:hover, :focus) {
+		  outline-offset: 3px;
+		}
+		#welcome-loader {
+			background: #000 url({% static "gif/welcome.gif" %}) no-repeat center center;
+			background-size: 50%;
+			height: 100vh;
+			width: 100%;
+			position: fixed;
+			z-index: 100;
+		}
 	</style>
 </head>
 <body>
@@ -30,6 +48,17 @@
 		  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 		{% endif %}
+
+	<!-- INICIO WELCOME LOADER -->
+	<div id="welcome-loader">
+	</div>
+	<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
+	<div hidden>
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+	</div>
+	<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
+	<!-- FIN WELCOME LOADER -->
 
 
 	<!-- INICIO Carrusel-->
@@ -83,15 +112,15 @@
 	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/{{usuario.id}}"> {% csrf_token %}
 			<div class="col-6 col-md-3 form-floating p-0 m-0">
-				<input type="text" class="form-select rounded-0 rounded-start border border-warning" name="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?">
+				<input type="text" class="form-select rounded-0 rounded-start border border-warning" name="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?" required>
 				<label for="inputOrigen" class="form-label">Origen</label>
 			</div>
 			<div class="col-6 col-md-3 form-floating p-0 m-0" id="destino">
-				<input type="text" class="form-select rounded-0 border border-warning" name="inputDestino" id="inputDestino" placeholder="¿A donde quieres ir?">
+				<input type="text" class="form-select rounded-0 border border-warning" name="inputDestino" id="inputDestino" placeholder="¿A donde quieres ir?" required>
 				<label for="inputDestino" class="form-label">Destino</label>
 			</div>
 			<div class="col-6 col-md-2 form-floating p-0 m-0" id="fecha">
-				<input type="date" class="form-control rounded-0 border border-warning" name="inputFecha" id="inputFecha" placeholder="Fecha">
+				<input type="date" class="form-control rounded-0 border border-warning" name="inputFecha" id="inputFecha" placeholder="Fecha" required>
 				<label for="inputFecha" class="form-label">¿Cuando?</label>
 			</div>
 			<div class="col-6 col-md-2 form-floating p-0 m-0 row-auto" id="plazas">
@@ -104,7 +133,7 @@
 				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
 			</div>
 			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
-				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning"
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning boton-buscar"
 						{% if numAlert == 1 or numAlert == 3 %}
 							type="button" data-bs-toggle="modal" data-bs-target="#needLoginModal"
 						{% elif numAlert == 2 %}
@@ -208,7 +237,7 @@
 	<!-- FIN Eventos -->
 
 	<!-- INICIO Próximas Salidas -->
-	{% if Usuario_Viajes_Opiniones %}
+	{% if viajesProximos %}
 	<div class="container-md mt-4">
 		<div class="row contenedor-tarjetas-viajes">
 			<div class="col-12 d-flex justify-content-center">
@@ -216,8 +245,8 @@
 					Próximas Salidas
 				</p>
 			</div>
-			{% for uvo in Usuario_Viajes_Opiniones %}
-			<div class="col-12 col-md-6 tarjeta-pago p-2 my-3 d-flex align-items-center tarjeta-viaje rounded shadow">
+			{% for uvo in viajesProximos %}
+			<div class="col-12 col-md-6 p-2 my-3 d-flex align-items-center tarjeta-viaje rounded shadow">
 					<div class="col-9 contenedor-ruta-conductor">
 						<div class="row contenedor-ruta">
 							<div class="col-1 ps-3">
@@ -225,7 +254,7 @@
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p class="fs-5">
-									{{uvo.id_viaje__fechor_ida|date:"SHORT_DATE_FORMAT"}} {{ uvo.id_viaje__fechor_ida|time:"H:i" }} - {{uvo.id_viaje__ciudad_origen}}
+									{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}} {{ uvo.fechor_ida|time:"H:i" }} - {{uvo.ciudad_origen}}
 								</p>
 							</div>
 							<div class="col-1 ps-4">
@@ -240,33 +269,41 @@
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p class="fs-5">
-									{{uvo.id_viaje__fechor_ida|date:"SHORT_DATE_FORMAT"}} {{ uvo.id_viaje__fechor_ida|time:"H:i" }} - {{uvo.id_viaje__ciudad_destino}}
+									{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}} {{ uvo.fechor_ida|time:"H:i" }} - {{uvo.ciudad_destino}}
 								</p>
 							</div>
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-lg-2 col-3 ps-3 img-container-journey">
-							{% if uvo.id_persona_receptor__imagen %}
-                                <img src="{{media_url}}{{uvo.id_persona_receptor__imagen}}">
+							{% if uvo.id_persona_id__imagen %}
+                                <img src="{{MEDIA_URL}}{{uvo.id_persona_id__imagen}}">
 							{% else %}
 								<img src='{% static "img/avatar-mujer.jpg" %}'>
                             {% endif %}
 							</div>
+							{% if uvo.avg_puntuacion %}
 							<div class="col-2 col-md-2 fw-bold fs-3 d-flex">
 								{{uvo.avg_puntuacion|floatformat:2}}
 								<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 							</div>
 							<div class="col-2 col-md-3">
-								<a class="link-primary fw-bold">
+								<a class="link-secondary fw-bold" href="{% url 'n_opiniones_recibidas_main' idP=uvo.id_persona_id %}">
 									({{uvo.count_opiniones}} opiniones)
 								</a>
 							</div>
+							{% else %}
+							<div class="col-4 col-md-5">
+								<a class="link-secondary fw-bold">
+									(Sin opiniones todavía)
+								</a>
+							</div>
+							{% endif %}
 						</div>
 					</div>
 					<div class="col-3 contenedor-precio">
 						<div class="row align-items-center text-center">
 							<div class="col-12 fw-bold fs-1 precio-viaje">
-								{{uvo.id_viaje__importe_total_asiento}}€
+								{{uvo.importe_total_asiento}}€
 							</div>
 							<div class="col-12 pb-2">
 								por pasajero
@@ -274,17 +311,17 @@
 							<div class="col-12 plazas-viaje d-flex justify-content-center">
 								<img src='{% static "icon/passengers.svg" %}' alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
 								<div class="ps-md-1">
-									{{uvo.id_viaje__numero_asientos_libres}} plazas
+									{{uvo.numero_asientos_libres}} plazas
 								</div>
 							</div>
 							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
 								<label class="btn btn-white">
 									<img src='{% static "icon/group.svg" %}' alt="Hablo poco"
-										 {% if uvo.id_persona_receptor__pref_conversacion == 1 %}
+										 {% if uvo.id_persona_id__pref_conversacion == 1 %}
 										 height="25px" width="25px"
-										 {% elif uvo.id_persona_receptor__pref_conversacion == 2 %}
+										 {% elif uvo.id_persona_id__pref_conversacion == 2 %}
 										 height="30px" width="30px"
-										 {% elif uvo.id_persona_receptor__pref_conversacion == 3 %}
+										 {% elif uvo.id_persona_id__pref_conversacion == 3 %}
 										 height="35px" width="35px"
 										 {% else %}
 										 height="0px" width="0px"
@@ -294,11 +331,11 @@
 								</label>
 								<label class="btn btn-white">
 									<img src='{% static "icon/smoking.svg" %}' alt="Hablo poco"
-										 {% if uvo.id_persona_receptor__pref_fumar == 1 %}
+										 {% if uvo.id_persona_id__pref_fumar == 1 %}
 										 height="25px" width="25px"
-										 {% elif uvo.id_persona_receptor__pref_fumar == 2 %}
+										 {% elif uvo.id_persona_id__pref_fumar == 2 %}
 										 height="30px" width="30px"
-										 {% elif uvo.id_persona_receptor__pref_fumar == 3 %}
+										 {% elif uvo.id_persona_id__pref_fumar == 3 %}
 										 height="35px" width="35px"
 										 {% else %}
 										 height="0px" width="0px"
@@ -319,6 +356,12 @@
 	{% include "pie_pagina.html" %}
 
 	<script src="{% static 'js/pagina_principal.js' %}"></script>
+	<script>
+		var loader = document.getElementById("welcome-loader");
 
+		window.addEventListener("load", function(){
+			loader.style.display = "none";
+		})
+	</script>
 </body>
 </html>

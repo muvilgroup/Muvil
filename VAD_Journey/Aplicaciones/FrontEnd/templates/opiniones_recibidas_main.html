@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Opiniones</title>
+	<style>
+		.rating .star {
+			width: 20px;
+			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
+		}
+		.img-container-opinion{
+		  	width:115px;
+		  	height:115px;
+		  	overflow:hidden;
+		}
+		.img-container-opinion img{
+		  	width:100%;
+		  	height:auto
+		}
+	</style>
+
+</head>
+
+<body>
+
+	{% include "index.html" %}
+	<button type=button value="Previous Page" onClick="javascript:history.go(-1);" class="bg-white border-0 pt-2 ps-2">
+		<img alt="Eliminar" src='{% static "icon/arrow-left-circle.svg" %}' width="75px">
+	</button>
+	<div class="row">
+		<div class="col-12 px-3 pt-2">
+			<h3 class="border-bottom border-5 border-warning text-center mt-1">Resumen de opiniones sobre <strong>{{usuario.nombre}} {{usuario.apellido1}}</strong></h3>
+		</div>
+	</div>
+
+	{% include "opiniones_recibidas.html" %}
+
+</body>
+
+</html>

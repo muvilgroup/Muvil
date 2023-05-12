@@ -7,7 +7,21 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block titulo %} {% endblock %}</title>
-
+	<style>
+		.rating .star {
+			width: 20px;
+			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
+		}
+		.img-container-opinion{
+		  	width:115px;
+		  	height:115px;
+		  	overflow:hidden;
+		}
+		.img-container-opinion img{
+		  	width:100%;
+		  	height:auto
+		}
+	</style>
 	<link type='text/css' href='{% static "css/menu_usuario.css" %}' rel='stylesheet' />
 
 </head>

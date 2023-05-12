@@ -17,7 +17,18 @@
 		---------------------------------------------- */
 		.scale-up-left{animation:scale-up-left 0.6s; } @keyframes scale-up-left{0%{transform:scale(.5);transform-origin:left center}100%{transform:scale(1);transform-origin:left center}}
 		.blur-in-expand{animation:blur-in-expand 0.4s linear both} @keyframes blur-in-expand{0%{transform:scale(0);filter:blur(12px);opacity:0}100%{transform:scale(1);filter:blur(0);opacity:1}}
-	</style>
+
+		.img-container-message-user{
+            width:50px;
+            height:50px;
+            overflow:hidden;
+        }
+        .img-container-message-user img{
+            width:100%;
+            height:auto;
+        }
+
+    </style>
 
 	<!--<link type='text/css' href='{% static "css/mis_mensajes.css" %}' rel='stylesheet' />-->
 
@@ -27,65 +38,45 @@
 
 	{% include "cabecera.html" %}
 
-<div class="container">
-  <div class="row">
-    <aside class="col-12 col-md-4 mt-5">
-      <form>
-        <div class="mb-3">
-          <label for="filtro-fecha" class="form-label">Filtrar por Fecha:</label>
-          <input type="date" class="form-control" id="filtro-fecha">
-        </div>
-        <div class="mb-3">
-          <label for="filtro-usuario" class="form-label">Filtrar por Usuario:</label>
-          <select class="form-select" id="filtro-usuario">
-            <option value="">Seleccionar Usuario</option>
-            <option value="juan">Juan Pérez</option>
-            <option value="maria">María García</option>
-            <option value="pedro">Pedro Sánchez</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-      </form>
-    </aside>
-    <div class="col-12 col-md-8 mt-5">
+<div class="container-lg mt-5">
+    <div class="row justify-content-around">
+      <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-mismensajes border">
+          <h4 class="fw-bold border-bottom border-3 border-warning">
+              Filtrar por...
+          </h4>
+          <form method="get">
+              {{ filter.form.as_p }}
+              <input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+          </form>
+      </aside>
+    <div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
       <ul class="list-group">
         <li class="list-group-item bg-primary text-white">Conversaciones con Usuarios</li>
+        {% for v in filter.qs %}
         <li class="list-group-item">
-          <a href="{% url 'n_conversacion' idP=idP idPc=idP %}">
+          <a {% if idP == v.id_persona_publicador__id %}
+             href="{% url 'n_conversacion' idP=idP  idPc=v.id_persona_receptor__id %}"
+             {% else %}
+             href="{% url 'n_conversacion' idP=idP  idPc=v.id_persona_publicador__id %}"
+             {% endif %}
+          >
             <div class="d-flex align-items-center">
-              <div class="flex-shrink-0"><img src="https://via.placeholder.com/50" alt="Juan Pérez"></div>
+              <div class="flex-shrink-0 img-container-message-user"><img {% if idP == v.id_persona_publicador__id %} src="{{MEDIA_URL}}{{v.id_persona_receptor__imagen}}" {% else %} src="{{MEDIA_URL}}{{v.id_persona_publicador__imagen}}" {% endif %} alt="{{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}"></div>
               <div class="ms-3">
-                <div class="fw-bold">Juan Pérez</div>
-                <div class="text-secondary">Hola, ¿cómo estás?</div>
+                <div class="fw-bold">
+                    {% if idP == v.id_persona_publicador__id %}
+                    {{v.id_persona_receptor__nombre}} {{v.id_persona_receptor__apellido1}}
+                    {% else %}
+                    {{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}
+                    {% endif %}
+                </div>
+                <div class="text-secondary"></div>
               </div>
-              <div class="ms-auto text-secondary">2022-01-01 12:00:00</div>
+              <div class="ms-auto text-secondary">Último mensaje: <strong>{{v.max_fec_created}}</strong></div>
             </div>
           </a>
         </li>
-        <li class="list-group-item">
-          <a href="{% url 'n_conversacion' idP=idP idPc=idP %}">
-            <div class="d-flex align-items-center">
-              <div class="flex-shrink-0"><img src="https://via.placeholder.com/50" alt="María García"></div>
-              <div class="ms-3">
-                <div class="fw-bold">María García</div>
-                <div class="text-secondary">Buenos días, ¿puedo hablar contigo?</div>
-              </div>
-              <div class="ms-auto text-secondary">2022-01-02 10:30:00</div>
-            </div>
-          </a>
-        </li>
-        <li class="list-group-item">
-          <a href="{% url 'n_conversacion' idP=idP idPc=idP %}">
-            <div class="d-flex align-items-center">
-              <div class="flex-shrink-0"><img src="https://via.placeholder.com/50" alt="Pedro Sánchez"></div>
-              <div class="ms-3">
-                <div class="fw-bold">Pedro Sánchez</div>
-                <div class="text-secondary">Hola, ¿cómo van las cosas?</div>
-              </div>
-              <div class="ms-auto text-secondary">2022-01-03 15:45:00</div>
-            </div>
-          </a>
-        </li>
+        {% endfor %}
       </ul>
     </div>
   </div>

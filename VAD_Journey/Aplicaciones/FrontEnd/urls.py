@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import path, re_path
 from Aplicaciones.FrontEnd.views import *
 from django.conf import settings #add this for images
 from django.conf.urls.static import static #add this for images
+from django.views.static import serve
+
 
 urlpatterns = [
     path('', v_pagina_principal, name='n_pagina_principal'),
@@ -24,6 +26,7 @@ urlpatterns = [
     path('mis_viajes/<int:idP>', v_mis_viajes, name='n_mis_viajes'),
     path('mis_mensajes/<int:idP>', v_mis_mensajes, name='n_mis_mensajes'),
     path('conversacion/<int:idP><int:idPc>', v_conversacion, name='n_conversacion'),
+    path('opiniones_recibidas/<int:idP>', v_opiniones_recibidas_main, name='n_opiniones_recibidas_main'),
 
     path('nuevo_usuario2/', v_nuevo_usuario2),
     path('nuevo_viaje2/<int:idP>', v_nuevo_viaje2),

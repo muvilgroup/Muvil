@@ -5,9 +5,9 @@ import pytz
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
-from django.db.models import Sum, Count, Avg, CharField, Value, F, Q
-from .choices import categorias_puntuacion
-from .templatetags.filters import ViajesFilter
+from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max
+from .choices import categorias_puntuacion, estados_viajes
+from .templatetags.filters import ViajesFilter, MensajesFilter, UsuarioviajesopinionesFilter
 
 from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes
 
@@ -36,20 +36,21 @@ def v_pagina_principal(request):
 
     # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
-    viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
-    Usuario_Viajes_Opiniones = Opiniones.objects.values('id_persona_receptor__nombre', 'id_viaje__ciudad_origen'
-                                                        , 'id_viaje__ciudad_destino', 'id_viaje__fechor_ida'
-                                                        , 'id_viaje__importe_total_asiento', 'id_viaje__numero_asientos_libres'
-                                                        , 'id_persona_receptor__pref_conversacion','id_persona_receptor__pref_fumar'
-                                                        , 'id_persona_receptor__imagen')\
-        .annotate(avg_puntuacion=Avg('puntuacion'),
-                  count_opiniones=Count('mensaje_opinion'))\
-        .filter(id_viaje__in=viajesProximos).order_by('id_viaje__fechor_ida')
+    #viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
+    viajesProximos = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
+                                                     , 'ciudad_destino', 'fechor_ida'
+                                                     , 'importe_total_asiento',
+                                                     'numero_asientos_libres',
+                                                     'estado', 'id_persona_id__pref_conversacion',
+                                                     'id_persona_id__pref_fumar', 'id_persona_id__imagen') \
+        .annotate(count_opiniones=Count('opiniones__mensaje_opinion'), avg_puntuacion=Avg('opiniones__puntuacion')) \
+        .filter(fechor_ida__gte=dateNow) \
+        .order_by('fechor_ida')[0:4]
 
     args = {
         'idP': idP,
         'usuario': datos_usuario,
-        'Usuario_Viajes_Opiniones':Usuario_Viajes_Opiniones,
+        'viajesProximos':viajesProximos,
         'numAlert': numalert
     }
     return render(request, "pagina_principal.html", args)
@@ -60,19 +61,28 @@ def v_buscar_viaje(request, idP):
     destino = request.POST.get('inputDestino')
     fecha = request.POST.get('inputFecha')
     plazas = request.POST.get('inputPlazas')
-    #print(plazas)
 
-    viajesListados = Viajes.objects.filter(ciudad_origen=origen, ciudad_destino=destino, fecha_ida=fecha).order_by('fecha_ida')
+    Usuario_Viajes_Opiniones = Viajes.objects.values('id_persona_id__nombre', 'ciudad_origen'
+                                                        , 'ciudad_destino', 'fechor_ida'
+                                                        , 'importe_total_asiento',
+                                                        'numero_asientos_libres',
+                                                        'estado', 'id_persona_id__pref_conversacion',
+                                                        'id_persona_id__pref_fumar', 'id_persona_id__imagen')\
+        .annotate(count_opiniones=Count('opiniones__mensaje_opinion'), avg_puntuacion=Avg('opiniones__puntuacion'))\
+        .filter(ciudad_origen=origen, ciudad_destino=destino, fechor_ida__date=fecha)\
+        .order_by('fechor_ida')
 
+    fV = UsuarioviajesopinionesFilter(request.POST, queryset=Usuario_Viajes_Opiniones)
     args = {
         'idP': idP,
         'usuario': datos_usuario,
-        'viajes': viajesListados,
+        'filter': fV,
         'ciudad_origen': origen,
         'ciudad_destino': destino,
         'fecha_viaje': fecha,
         'nro_plazas': plazas
     }
+
     return render(request, "buscar_viaje.html", args)
 
 def v_nuevo_usuario(request):
@@ -390,11 +400,10 @@ def v_perfil_publico(request, idP):
         opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
     except opiniones_recibidas.DoesNotExist:
         opiniones_recibidas = None
-
     total_viajesConductor = viajesConductor.count()
-    total_viajesConductor_Canc = viajesConductor.filter(flg_cancelado=True).count()
+    total_viajesConductor_Canc = viajesConductor.filter(estado=3).count()
     total_viajesPasajero = reservasPasajero.count()
-    total_viajesPasajero_Canc = reservasPasajero.filter(flg_cancelado=True).count()
+    total_viajesPasajero_Canc = reservasPasajero.filter(estado=3).count()
     avg_puntuacion = opiniones_recibidas.aggregate(avg_punt=Avg('puntuacion'))
     avg_puntuacion_Conductor = opiniones_recibidas.filter(id_viaje__in = viajesConductor).aggregate(avg_punt=Avg('puntuacion'))
     total_opiniones = opiniones_recibidas.count()
@@ -421,7 +430,6 @@ def v_perfil_publico(request, idP):
     }
 
     return render(request, 'perfil_publico.html', args)
-
 
 def v_mis_viajes(request, idP):
     usuario = Personas.objects.get(id=idP)
@@ -454,9 +462,21 @@ def v_mis_viajes(request, idP):
 def v_mis_mensajes(request, idP):
     usuario = Personas.objects.get(id=idP)
 
+    #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
+    listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
+
+    listado_conversaciones = Mensajes.objects.values('id_persona_publicador__nombre', 'id_persona_publicador__apellido1', 'id_persona_publicador__id', 'id_persona_publicador__imagen'
+                                                        , 'id_persona_receptor__nombre', 'id_persona_receptor__apellido1', 'id_persona_receptor__id', 'id_persona_receptor__imagen'
+                                                        )\
+        .annotate(max_fec_created=Max('fec_created'))\
+        .filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
+    print(listado_conversaciones.count())
+    fM = MensajesFilter(request.GET, queryset=listado_conversaciones)
+
     args = {
             "idP": idP,
-            "usuario": usuario
+            "usuario": usuario,
+            "filter": fM
             }
 
     return render(request, "mis_mensajes.html", args)
@@ -469,7 +489,7 @@ def v_conversacion(request, idP, idPc):
     args = {
             "idP": idP,
             "usuario": usuario,
-            "usuario_receptor": usuario,
+            "usuario_receptor": usuario_receptor,
             "listado_mensajes": listado_mensajes
             }
     if request.method == "POST":
@@ -481,6 +501,34 @@ def v_conversacion(request, idP, idPc):
     else:
         return render(request, "conversacion.html", args)
 
+def v_opiniones_recibidas_main(request, idP):
+    usuario = Personas.objects.get(id=idP)
+
+    try:
+        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
+    except opiniones_recibidas.DoesNotExist:
+        opiniones_recibidas = None
+
+    avg_puntuacion = opiniones_recibidas.aggregate(avg_punt=Avg('puntuacion'))
+    total_opiniones = opiniones_recibidas.count()
+
+    # Se crea un diccionario con las categorias de opiniones y su valor
+    opiniones_cat_dict = dict()
+    for x in reversed(range(len(categorias_puntuacion))):  # de 0 a 4 (5 iteraciones)
+        categoria = categorias_puntuacion[x][1]
+        count_opiniones = opiniones_recibidas.filter(categoria_puntuacion=(x+1)).count()
+        opiniones_cat_dict.update({categoria: count_opiniones})
+
+    args = {
+        "idP": idP,
+        "usuario": usuario,
+        "avg_puntuacion": avg_puntuacion,
+        "total_opiniones": total_opiniones,
+        "opiniones_recibidas": opiniones_recibidas,
+        "opiniones_cat_dict": opiniones_cat_dict
+    }
+
+    return render(request, 'opiniones_recibidas_main.html', args)
 
 
 

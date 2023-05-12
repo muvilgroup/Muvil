@@ -104,11 +104,9 @@
 							<div class="col-5 align-self-center">
 								<div class="img-container-car img-responsive">
 									{% if vehiculo.imagen_vehiculo %}
-									<img style="cursor: pointer;"
-										 src="{{ vehiculo.imagen_vehiculo.url }}">
+									<img src="{{ vehiculo.imagen_vehiculo.url }}">
 									{% else %}
-									<img style="cursor: pointer;"
-										 src='{% static "img/default-car.jpeg" %}'>
+									<img src='{% static "img/default-car.jpeg" %}'>
 									{% endif %}
 								</div>
 							</div>
@@ -128,21 +126,9 @@
 							<div class="img-container-profile">
 								{% if usuario.imagen %}
 								<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
-								<input type="file" id="id_image" name="imagen" hidden>
-								<label for="id_image">
-									<img class="rounded-circle"
-										 style="cursor: pointer;"
-										 src="{{ usuario.imagen.url }}"
-										 title="Sube una nueva imagen">
-								</label>
+								<img class="rounded-circle" src="{{ usuario.imagen.url }}">
 								{% else %}
-								<input type="file" id="id_image" name="imagen" hidden>
-								<label for="id_image">
-									<img class="rounded-circle"
-										 style="cursor: pointer;"
-										 src='{% static "img/avatar-mujer.jpg" %}'
-										 title="Sube una nueva imagen">
-								</label>
+								<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
 								{% endif %}
 							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
 							</div>
