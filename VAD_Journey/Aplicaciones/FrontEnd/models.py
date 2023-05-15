@@ -157,3 +157,15 @@ class Mensajes (models.Model):
         verbose_name = 'mensajes'
         verbose_name_plural = 'mensajes'
 
+class Localizaciones (models.Model):
+    id_provincia = models.PositiveIntegerField(default='0')
+    provincia = models.CharField(max_length=3000, blank=True, null=True)
+    coordenada_x = models.DecimalField(max_digits = 32,decimal_places = 16, blank=True, null=True)
+    coordenada_y = models.DecimalField(max_digits = 32, decimal_places = 16, blank=True, null=True)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'localizaciones'
+        verbose_name_plural = 'localizaciones'
+

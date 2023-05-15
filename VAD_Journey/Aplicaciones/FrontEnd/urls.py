@@ -7,6 +7,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path('', v_pagina_principal, name='n_pagina_principal'),
+    path('ejecuciones/', v_ejecuciones),
     path('buscar_viaje/<int:idP>', v_buscar_viaje, name='n_buscar_viaje'),
     path('nuevo_usuario/', v_nuevo_usuario, name='n_nuevo_usuario'),
     path('listado_usuarios/', v_listado_usuarios, name='n_listado_usuarios'),

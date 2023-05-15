@@ -9,9 +9,63 @@ from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max
 from .choices import categorias_puntuacion, estados_viajes
 from .templatetags.filters import ViajesFilter, MensajesFilter, UsuarioviajesopinionesFilter
 
-from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes
+from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones
 
 # Create your views here.
+def v_ejecuciones(request):
+    '''Localizaciones.objects.bulk_create([
+        Localizaciones(id_provincia=33, provincia='Asturias'),
+        Localizaciones(id_provincia=5, provincia='Ávila'),
+        Localizaciones(id_provincia=6, provincia='Badajoz'),
+        Localizaciones(id_provincia=7, provincia='Balears, Illes'),
+        Localizaciones(id_provincia=8, provincia='Barcelona'),
+        Localizaciones(id_provincia=48, provincia='Bizkaia'),
+        Localizaciones(id_provincia=9, provincia='Burgos'),
+        Localizaciones(id_provincia=10, provincia='Cáceres'),
+        Localizaciones(id_provincia=11, provincia='Cádiz'),
+        Localizaciones(id_provincia=39, provincia='Cantabria'),
+        Localizaciones(id_provincia=12, provincia='Castellón/Castelló'),
+        Localizaciones(id_provincia=13, provincia='Ciudad Real'),
+        Localizaciones(id_provincia=14, provincia='Córdoba'),
+        Localizaciones(id_provincia=15, provincia='Coruña, A'),
+        Localizaciones(id_provincia=16, provincia='Cuenca'),
+        Localizaciones(id_provincia=20, provincia='Gipuzkoa'),
+        Localizaciones(id_provincia=17, provincia='Girona'),
+        Localizaciones(id_provincia=18, provincia='Granada'),
+        Localizaciones(id_provincia=19, provincia='Guadalajara'),
+        Localizaciones(id_provincia=21, provincia='Huelva'),
+        Localizaciones(id_provincia=22, provincia='Huesca'),
+        Localizaciones(id_provincia=23, provincia='Jaén'),
+        Localizaciones(id_provincia=24, provincia='León'),
+        Localizaciones(id_provincia=25, provincia='Lleida'),
+        Localizaciones(id_provincia=27, provincia='Lugo'),
+        Localizaciones(id_provincia=28, provincia='Madrid'),
+        Localizaciones(id_provincia=29, provincia='Málaga'),
+        Localizaciones(id_provincia=30, provincia='Murcia'),
+        Localizaciones(id_provincia=31, provincia='Navarra'),
+        Localizaciones(id_provincia=32, provincia='Ourense'),
+        Localizaciones(id_provincia=34, provincia='Palencia'),
+        Localizaciones(id_provincia=35, provincia='Palmas, Las'),
+        Localizaciones(id_provincia=36, provincia='Pontevedra'),
+        Localizaciones(id_provincia=26, provincia='Rioja, La'),
+        Localizaciones(id_provincia=37, provincia='Salamanca'),
+        Localizaciones(id_provincia=38, provincia='Santa Cruz de Tenerife'),
+        Localizaciones(id_provincia=40, provincia='Segovia'),
+        Localizaciones(id_provincia=41, provincia='Sevilla'),
+        Localizaciones(id_provincia=42, provincia='Soria'),
+        Localizaciones(id_provincia=43, provincia='Tarragona'),
+        Localizaciones(id_provincia=44, provincia='Teruel'),
+        Localizaciones(id_provincia=45, provincia='Toledo'),
+        Localizaciones(id_provincia=46, provincia='Valencia/València'),
+        Localizaciones(id_provincia=47, provincia='Valladolid'),
+        Localizaciones(id_provincia=49, provincia='Zamora'),
+        Localizaciones(id_provincia=50, provincia='Zaragoza'),
+        Localizaciones(id_provincia=51, provincia='Ceuta'),
+        Localizaciones(id_provincia=52, provincia='Melilla'),
+    ])'''
+
+    return render(request, 'pagina_principal.html')
+
 def v_pagina_principal(request):
     dateNow = timezone.now()
     #timeNow = datetime.time(datetime.now())
@@ -34,6 +88,8 @@ def v_pagina_principal(request):
         datos_usuario = None
         idP = None
 
+    localizaciones = Localizaciones.objects.all()
+
     # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
     #viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
@@ -50,7 +106,8 @@ def v_pagina_principal(request):
     args = {
         'idP': idP,
         'usuario': datos_usuario,
-        'viajesProximos':viajesProximos,
+        'localizaciones': localizaciones,
+        'viajesProximos': viajesProximos,
         'numAlert': numalert
     }
     return render(request, "pagina_principal.html", args)
@@ -61,6 +118,8 @@ def v_buscar_viaje(request, idP):
     destino = request.POST.get('inputDestino')
     fecha = request.POST.get('inputFecha')
     plazas = request.POST.get('inputPlazas')
+
+    localizaciones = Localizaciones.objects.all()
 
     Usuario_Viajes_Opiniones = Viajes.objects.values('id_persona_id__nombre', 'ciudad_origen'
                                                         , 'ciudad_destino', 'fechor_ida'
@@ -76,6 +135,7 @@ def v_buscar_viaje(request, idP):
     args = {
         'idP': idP,
         'usuario': datos_usuario,
+        'localizaciones': localizaciones,
         'filter': fV,
         'ciudad_origen': origen,
         'ciudad_destino': destino,
