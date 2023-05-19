@@ -9,7 +9,15 @@
 	<title>Buscar Viaje</title>
 
 	<link type='text/css' href='{% static "css/buscar_viaje.css" %}' rel='stylesheet' />
-
+	<style>
+		.boton-3d:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px 0 0 black;
+		}
+		.boton-3d:is(:hover, :focus) {
+		  outline-offset: 3px;
+		}
+	</style>
 </head>
 <body>
 
@@ -251,7 +259,7 @@
 									<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 								</div>
 								<div class="col-2 col-md-3">
-									<a class="link-primary fw-bold">
+									<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idP=uvo.id_persona_id %}">
 										({{uvo.count_opiniones}} opiniones)
 									</a>
 								</div>
@@ -307,6 +315,9 @@
 											 id="smoking-icon"
 											 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
 									</label>
+								</div>
+								<div class="col-12 d-flex justify-content-center">
+									<a class="btn btn-warning boton-3d"><b>Reservar Plaza</b></a>
 								</div>
 							</div>
 						</div>

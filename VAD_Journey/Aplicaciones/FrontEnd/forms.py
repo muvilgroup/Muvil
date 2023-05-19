@@ -75,11 +75,13 @@ class ViajesForm(ModelForm):
         widgets = {
             'ciudad_origen': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
+                'list': "localizaciones"
             }),
             'ciudad_destino': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
+                'list': "localizaciones"
             }),
             'flg_ida_vuelta': RadioSelect(
                 attrs={

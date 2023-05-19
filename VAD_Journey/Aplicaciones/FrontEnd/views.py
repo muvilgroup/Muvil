@@ -5,7 +5,7 @@ import pytz
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
-from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max
+from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef
 from .choices import categorias_puntuacion, estados_viajes
 from .templatetags.filters import ViajesFilter, MensajesFilter, UsuarioviajesopinionesFilter
 
@@ -93,13 +93,17 @@ def v_pagina_principal(request):
     # Se recuperan los 4 próximos viajes
     ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
     #viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
+    crit1 = Q(id_persona_receptor=OuterRef('id_persona_id'))
     viajesProximos = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
                                                      , 'ciudad_destino', 'fechor_ida'
                                                      , 'importe_total_asiento',
                                                      'numero_asientos_libres',
                                                      'estado', 'id_persona_id__pref_conversacion',
                                                      'id_persona_id__pref_fumar', 'id_persona_id__imagen') \
-        .annotate(count_opiniones=Count('opiniones__mensaje_opinion'), avg_puntuacion=Avg('opiniones__puntuacion')) \
+        .annotate(count_opiniones=Subquery(Opiniones.objects.filter(crit1).
+                                           values('id_persona_receptor').annotate(c=Count('*')).values('c')),
+                  avg_puntuacion=Subquery(Opiniones.objects.filter(crit1).
+                                           values('id_persona_receptor').annotate(avg=Avg('puntuacion')).values('avg'))) \
         .filter(fechor_ida__gte=dateNow) \
         .order_by('fechor_ida')[0:4]
 
@@ -121,15 +125,19 @@ def v_buscar_viaje(request, idP):
 
     localizaciones = Localizaciones.objects.all()
 
-    Usuario_Viajes_Opiniones = Viajes.objects.values('id_persona_id__nombre', 'ciudad_origen'
+    crit1 = Q(id_persona_receptor=OuterRef('id_persona_id'))
+    Usuario_Viajes_Opiniones = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
                                                         , 'ciudad_destino', 'fechor_ida'
                                                         , 'importe_total_asiento',
                                                         'numero_asientos_libres',
                                                         'estado', 'id_persona_id__pref_conversacion',
-                                                        'id_persona_id__pref_fumar', 'id_persona_id__imagen')\
-        .annotate(count_opiniones=Count('opiniones__mensaje_opinion'), avg_puntuacion=Avg('opiniones__puntuacion'))\
-        .filter(ciudad_origen=origen, ciudad_destino=destino, fechor_ida__date=fecha)\
-        .order_by('fechor_ida')
+                                                        'id_persona_id__pref_fumar', 'id_persona_id__imagen') \
+        .annotate(
+            count_opiniones=Subquery(Opiniones.objects.filter(crit1).values('id_persona_receptor')
+                                     .annotate(c=Count('*')).values('c')),
+            avg_puntuacion=Subquery(Opiniones.objects.filter(crit1).values('id_persona_receptor')
+                                    .annotate(avg=Avg('puntuacion')).values('avg'))
+                ).filter(ciudad_origen=origen, ciudad_destino=destino, fechor_ida__date=fecha).order_by('fechor_ida')
 
     fV = UsuarioviajesopinionesFilter(request.POST, queryset=Usuario_Viajes_Opiniones)
     args = {
@@ -170,10 +178,12 @@ def v_listado_usuarios(request):
 
 def v_nuevo_viaje(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
+    localizaciones = Localizaciones.objects.all()
 
     args = {
         "idP": idP,
-        "usuario": datos_usuario
+        "usuario": datos_usuario,
+        "localizaciones": localizaciones
     }
 
     if request.method == "POST":

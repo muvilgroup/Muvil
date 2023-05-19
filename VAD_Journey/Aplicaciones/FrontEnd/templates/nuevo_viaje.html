@@ -21,10 +21,20 @@
 				<div class="col-md-4 py-2">
 					<label for="input" class="form-label">Ciudad Origen</label>
 					{{ form.ciudad_origen }}
+					<datalist id="localizaciones">
+					{% for loc in localizaciones %}
+						<option value="{{ loc.provincia }}"></option>
+					{% endfor %}
+					</datalist>
 				</div>
 				<div class="col-md-4 py-2">
 					<label for="input" class="form-label">Ciudad Destino</label>
 					{{ form.ciudad_destino }}
+					<datalist id="localizaciones">
+					{% for loc in localizaciones %}
+						<option value="{{ loc.provincia }}"></option>
+					{% endfor %}
+					</datalist>
 				</div>
 				<div class="col-md-4 py-2">
 					<label for="input" class="form-label">Fecha Viaje</label>
