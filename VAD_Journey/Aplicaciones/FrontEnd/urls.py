@@ -28,11 +28,11 @@ urlpatterns = [
     path('mis_mensajes/<int:idP>', v_mis_mensajes, name='n_mis_mensajes'),
     path('conversacion/<int:idP><int:idPc>', v_conversacion, name='n_conversacion'),
     path('opiniones_recibidas/<int:idP>', v_opiniones_recibidas_main, name='n_opiniones_recibidas_main'),
+    path('detalles_viaje/<int:idP>-<int:idV>', v_detalles_viaje, name='n_detalles_viaje'),
+    path('cancelar_viaje/<int:idP>-<int:idV>', v_cancelar_viaje, name='n_cancelar_viaje'),
+    path('reservar_plaza/<int:idP>-<int:idV>', v_reservar_plaza, name='n_reservar_plaza'),
+    path('aceptar_pasajero/<int:idP>-<int:idV>-<int:idPl>', v_aceptar_pasajero, name='n_aceptar_pasajero'),
+    path('rechazar_pasajero/<int:idP>-<int:idV>-<int:idPl>', v_rechazar_pasajero, name='n_rechazar_pasajero'),
+    path('cancelar_reserva/<int:idP>-<int:idV>-<int:idPl>', v_cancelar_reserva, name='n_cancelar_reserva'),
 
-    path('nuevo_usuario2/', v_nuevo_usuario2),
-    path('nuevo_viaje2/<int:idP>', v_nuevo_viaje2),
-    path('save_user/', guardar_usuario),
-    path('save_journey/', guardar_viaje),
-    path('vehicle_register/<int:idP>', panel_nuevo_vehiculo),
-    path('save_vehicle/', guardar_vehiculo),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

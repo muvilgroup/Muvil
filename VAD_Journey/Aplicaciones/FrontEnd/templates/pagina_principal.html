@@ -45,23 +45,27 @@
 			clip-path: circle(0%);
 		  }
 		}
-		[transition-style="out:circle:hesitate"] {
-		  animation: 2.5s cubic-bezier(.15, 1, .30, 1) circle-out-hesitate both;
+		[transicion-precarga="out:circle:hesitate"] {
+		  	animation: 1.5s circle-out-hesitate cubic-bezier(.25, 1, .30, 1) both;
+		  	animation-delay: 1s;
 		}
 	</style>
 </head>
 <body>
 	<!-- INICIO WELCOME LOADER -->
-	<div id="welcome-loader" transition-style="out:circle:hesitate">
+	<div id="welcome-loader" transicion-precarga="out:circle:hesitate">
+		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
+		<div hidden>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		</div>
+		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
+		<!-- FIN WELCOME LOADER -->
 	</div>
-	<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
-	<div hidden>
-		<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-		<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-		<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-	</div>
-	<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
-	<!-- FIN WELCOME LOADER -->
 
 	{% include "cabecera_grande.html" %}
 
@@ -75,12 +79,6 @@
 		  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 		{% endif %}
-
-
-
-	<!--
-	<iframe src="https://componentes.cnig.es/api-core/?" name="iframe_a" height="500px" width="100%" title="Iframe Example"></iframe>
-	-->
 
 	<!-- INICIO Carrusel-->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -376,7 +374,14 @@
 								</label>
 							</div>
 							<div class="col-12 d-flex justify-content-center">
-								<a class="btn btn-warning boton-3d"><b>Reservar Plaza</b></a>
+								<a class="btn btn-warning boton-3d"
+								{% if numAlert == 1 or numAlert == 3 %}
+									href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+								{% elif numAlert == 2 %}
+								   href="{% url 'n_detalles_viaje' idP=idP idV=uvo.id %}"
+								{% endif %} >
+									<b>Reservar Plaza</b>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -387,6 +392,7 @@
 	{% endif %}
 	<!-- FIN Próximas Salidas -->
 
+
 	{% include "pie_pagina.html" %}
 
 	<script src="{% static 'js/pagina_principal.js' %}"></script>
@@ -396,6 +402,19 @@
 		window.addEventListener("load", function(){
 			loader.style.display = "none";
 		})
+	</script>
+	<script>
+		// Para mostrar un elemento solo cuando se accede a la pagina por 1a vez
+		// verifica que el localStorage sea null para mostrar el mensaje
+		if( !localStorage.getItem('ingreso') ){
+
+			document.getElementById('welcome-loader2').style.display= 'block';
+			// estableces el localstorage en 1 para que no se vuelva a cumplir la condicion
+			localStorage.setItem('ingreso',1);
+
+		} else {
+			document.getElementById('welcome-loader2').style.display= 'none';
+		}
 	</script>
 </body>
 </html>

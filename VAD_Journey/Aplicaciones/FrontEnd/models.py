@@ -67,10 +67,6 @@ class Viajes (models.Model):
     fecha_ida = models.DateField(blank=True, null=True)
     fecha_vuelta = models.DateField(blank=True, null=True)
     numero_asientos_viaje = models.PositiveSmallIntegerField()
-    '''flg_solicitado = models.BooleanField(default=False)
-    flg_reservado = models.BooleanField(default=False)
-    flg_cancelado = models.BooleanField(default=False)
-    flg_incidencia = models.BooleanField(default=False)'''
     estado = models.PositiveIntegerField(choices=estados_viajes, default=1)
     importe_total_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
     importe_comision_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
@@ -80,6 +76,9 @@ class Viajes (models.Model):
     hora_vuelta = models.TimeField(blank=True, null=True)
     fechor_ida = models.DateTimeField()
     fechor_vuelta = models.DateTimeField(blank=True, null=True)
+    fechor_pendiente = models.DateTimeField(blank=True, null=True)
+    fechor_realizado = models.DateTimeField(blank=True, null=True)
+    fechor_cancelado = models.DateTimeField(blank=True, null=True)
     id_vehiculo = models.ForeignKey(Vehiculos, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
@@ -97,6 +96,8 @@ class Opiniones (models.Model):
     mensaje_opinion = models.CharField(max_length=3000, blank=True, null=True)
     flg_respuesta = models.BooleanField(default=False)
     mensaje_respuesta = models.CharField(max_length=3000, blank=True, null=True)
+    fechor_opinion = models.DateTimeField(blank=True, null=True)
+    fechor_respuesta = models.DateTimeField(blank=True, null=True)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
@@ -107,12 +108,12 @@ class Opiniones (models.Model):
 class Plazas (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
-    '''flg_solicitado = models.BooleanField(default=False)
-    flg_reservado = models.BooleanField(default=False)
-    flg_cancelado = models.BooleanField(default=False)
-    flg_incidencia = models.BooleanField(default=False)'''
     flg_conductor = models.BooleanField(default=False)
     estado = models.PositiveIntegerField(choices=estados_plazas, default=1)
+    fechor_pendiente = models.DateTimeField(blank=True, null=True)
+    fechor_confirmado = models.DateTimeField(blank=True, null=True)
+    fechor_rechazado = models.DateTimeField(blank=True, null=True)
+    fechor_cancelado = models.DateTimeField(blank=True, null=True)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 

@@ -95,8 +95,8 @@ def v_pagina_principal(request):
     #viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
     crit1 = Q(id_persona_receptor=OuterRef('id_persona_id'))
     viajesProximos = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
-                                                     , 'ciudad_destino', 'fechor_ida'
-                                                     , 'importe_total_asiento',
+                                                     ,'id', 'ciudad_destino', 'fechor_ida'
+                                                     ,'importe_total_asiento',
                                                      'numero_asientos_libres',
                                                      'estado', 'id_persona_id__pref_conversacion',
                                                      'id_persona_id__pref_fumar', 'id_persona_id__imagen') \
@@ -104,9 +104,8 @@ def v_pagina_principal(request):
                                            values('id_persona_receptor').annotate(c=Count('*')).values('c')),
                   avg_puntuacion=Subquery(Opiniones.objects.filter(crit1).
                                            values('id_persona_receptor').annotate(avg=Avg('puntuacion')).values('avg'))) \
-        .filter(fechor_ida__gte=dateNow) \
+        .filter(Q(fechor_ida__gte=dateNow, numero_asientos_libres__gt=0)) \
         .order_by('fechor_ida')[0:4]
-
     args = {
         'idP': idP,
         'usuario': datos_usuario,
@@ -115,6 +114,96 @@ def v_pagina_principal(request):
         'numAlert': numalert
     }
     return render(request, "pagina_principal.html", args)
+
+def v_detalles_viaje(request, idP, idV):
+    usuario = Personas.objects.get(id=idP)
+    viaje = Viajes.objects.get(id=idV)
+    plazas = Plazas.objects.filter(Q(id_viaje=idV, flg_conductor=False, estado__in=(1, 2))) # plazas pendientes o confirmadas
+    flg_reserva_pend_conf = plazas.filter(Q(id_persona=idP)).exists()
+    if viaje.id_persona == usuario:
+        usuario_conductor = True
+    else:
+        usuario_conductor = False
+
+    if usuario_conductor:
+        opiniones_escritas_x_cond = Opiniones.objects.filter(Q(id_viaje=idV, id_persona_publicador=idP))
+        opinion_escrita_a_cond = None
+    else:
+        opiniones_escritas_x_cond = None
+        opinion_escrita_a_cond = Opiniones.objects.filter(Q(id_viaje=idV, id_persona_publicador=idP, id_persona_receptor=viaje.id_persona.id))
+
+    '''
+    #Validacion 1: ¿Tiene ya ese usuario una reserva en ese viaje?
+    plaza_ya_reservada_pendiente = Plazas.objects.filter(Q(id_viaje=viaje, id_persona=usuario, estado=1)).count()
+
+    if plaza_ya_reservada_pendiente > 0:
+        messages.error(request, "¡¡ERROR!! Tienes ya una reserva pendiente para este viaje!! cuando el conductor la acepte o la rechace podrás hacer otra reserva")
+    else:
+        # 1.- Se inserta la plaza pero como Pendiente
+        plaza_reserva = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1, fechor_pendiente=datetimeNow)
+        plaza_reserva.save()
+        messages.success(request, "¡¡¡Ya tienes tu viaje reservado!!! Sólo queda esperar que el conductor acepte!!!")
+
+    return redirect('n_pagina_principal')
+    '''
+    args = {
+        'idP': idP,
+        'usuario': usuario,
+        'viaje': viaje,
+        'plazas': plazas,
+        'flg_reserva_pend_conf': flg_reserva_pend_conf,
+        'usuario_conductor': usuario_conductor,
+        'opiniones_escritas_x_cond': opiniones_escritas_x_cond,
+        'opinion_escrita_a_cond': opinion_escrita_a_cond,
+    }
+
+    return render(request, "detalles_viaje.html", args)
+
+def v_cancelar_viaje(request, idP, idV):
+    dateNow = timezone.now()
+    viaje_cancelado = Viajes.objects.filter(id=idV).update(estado=3, fechor_cancelado=dateNow)
+
+    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+
+def v_reservar_plaza(request, idP, idV):
+    dateNow = timezone.now()
+    usuario = Personas.objects.get(id=idP)
+    viaje = Viajes.objects.get(id=idV)
+
+    plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1, fechor_pendiente=dateNow)
+    plaza_pendiente.save()
+
+    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+
+def v_aceptar_pasajero(request, idP, idV, idPl):
+    dateNow = timezone.now()
+    viaje = Viajes.objects.get(id=idV)
+    if viaje.numero_asientos_libres > 0:
+        viaje.numero_asientos_libres = F("numero_asientos_libres") - 1
+        viaje.save()
+        plaza_aceptada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=2, fechor_confirmado=dateNow)
+        messages.success(request, "¡¡¡Reserva registrada correctamente!!!")
+        messages.success(request, "¡¡¡Ve preparando la maleta!!!")
+    else:
+        # se ha quedado sin plaza por reserva de otra de forma simultanea, por tanto se cancela ésta
+        plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
+        messages.error(request, "¡¡¡Lo siento, se han agotado las plazas de este viaje en el último momento!!!")
+        messages.error(request, "¡¡¡Se ha cancelado tu reserva automáticamente!!!")
+        messages.error(request, "¡¡¡Prueba en otro viaje!!!")
+
+    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+
+def v_rechazar_pasajero(request, idP, idV, idPl):
+    dateNow = timezone.now()
+    plaza_rechazada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=3, fechor_rechazado=dateNow)
+
+    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+
+def v_cancelar_reserva(request, idP, idV, idPl):
+    dateNow = timezone.now()
+    plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
+
+    return redirect('n_detalles_viaje', idP=idP, idV=idV)
 
 def v_buscar_viaje(request, idP):
     datos_usuario = Personas.objects.get(id=idP)
@@ -191,6 +280,7 @@ def v_nuevo_viaje(request, idP):
         if form.is_valid():
             viaje = form.save(commit=False)
             viaje.id_persona = Personas.objects.get(id=idP)
+            viaje.numero_asientos_libres = viaje.numero_asientos_viaje
             viaje.importe_comision_asiento = viaje.importe_conductor_asiento/10
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
             viaje.fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
@@ -601,152 +691,3 @@ def v_opiniones_recibidas_main(request, idP):
     return render(request, 'opiniones_recibidas_main.html', args)
 
 
-
-def main(request):
-    email_input = request.POST.get('txtEmail', False)
-    pass_input = request.POST.get('txtPass', False)
-
-    existe_persona = Personas.objects.filter(email=email_input, password=pass_input)
-
-    if existe_persona:
-        numalert = 2  #OK Login
-        datos_usuario = Personas.objects.get(email=email_input, password=pass_input)
-        return render(request, "main.html", {'usuario':datos_usuario, 'numAlert':numalert})
-    else:
-        numalert = 1 #Error Login
-        return render(request, "main.html", {'numAlert':numalert})
-
-def search_journey(request):
-    origen_input = request.POST.get('Origen')
-    destino_input = request.POST.get('Destino')
-    fecha_input = request.POST.get('Fecha')
-
-    viajesListados = Viajes.objects.filter(ciudad_origen=origen_input, ciudad_destino=destino_input, fecha_ida=fecha_input).order_by('fecha_ida')
-
-    datos = {
-        'viajes':viajesListados
-    }
-
-    return render(request, "main.html", datos)
-
-def v_nuevo_usuario2(request):
-    return render(request, "user_register.html", {})
-
-def v_nuevo_viaje2(request, idP):
-    return render(request, "journey_register.html", {'ID_Persona':idP})
-
-def adm_perfil(request):
-    return render(request, "adm_datospersonales.html", {})
-
-def guardar_usuario(request):
-    Email_input = request.POST['txtEmail']
-    Password_input = request.POST['txtPass']
-    nombre_input = request.POST['txtNombre']
-    Apellido1_input = request.POST['txtApe1']
-    Apellido2_input = request.POST['txtApe2']
-    FechaNacimiento_input = request.POST['datFechaNac']
-    TipoDoc_input = request.POST['txtTipoDoc']
-    NumeroDoc_input = request.POST['numDoc']
-    Telefono_input = request.POST['numTelefono']
-    Genero_input = request.POST['txtGenero']
-    ruta_foto_input = request.POST['userImg']
-
-    usuario = Personas.objects.create(
-        nombre = nombre_input,
-        apellido1 = Apellido1_input,
-        apellido2 = Apellido2_input,
-        fec_nacimiento = FechaNacimiento_input,
-        tipo_documento = TipoDoc_input,
-        numero_documento = NumeroDoc_input,
-        email = Email_input,
-        password = Password_input,
-        numero_telefono = Telefono_input,
-        genero = Genero_input,
-        ruta_foto = ruta_foto_input
-    )
-
-    numalert = 3  #OK Nuevo usuario creado
-    datos_usuario = Personas.objects.get(email=Email_input, password=Password_input)
-
-    return render(request, "home.html", {'usuario': datos_usuario, 'numAlert': numalert})
-
-def guardar_viaje(request):
-    idP_input = request.POST['numIdP']
-    ciudadO_input = request.POST['txtCiudadO']
-    ciudadD_input = request.POST['txtCiudadD']
-    idaVuelta_input = request.POST['flgIdaVuelta']
-    fechaIda_input = request.POST['datFechaIda']
-    fechaVuelta_input = request.POST['datFechaVuelta']
-    numeroAsientos_input = request.POST['numAsientos']
-    importeConductorAsiento_input = int(request.POST['numImporte'])
-    horaIda_input = request.POST['timHoraIda']
-    horaVuelta_input = request.POST['timHoraVuelta']
-
-    flg_solicitado = False
-    flg_reservado = False
-    flg_cancelado = False
-    flg_incidencia = False
-    numero_asientos_libres = numeroAsientos_input
-    importe_comision_asiento = importeConductorAsiento_input * 0.1
-    importe_total_asiento = importe_comision_asiento + importeConductorAsiento_input
-
-    viaje = Viajes.objects.create(
-        id_persona = idP_input,
-        ciudad_origen = ciudadO_input,
-        ciudad_destino = ciudadD_input,
-        flg_ida_vuelta = idaVuelta_input,
-        fecha_ida = fechaIda_input,
-        fecha_vuelta = fechaVuelta_input,
-        numero_asientos_viaje = numeroAsientos_input,
-        flg_solicitado = flg_solicitado,
-        flg_reservado = flg_reservado,
-        flg_cancelado = flg_cancelado,
-        flg_incidencia = flg_incidencia,
-        importe_total_asiento = importe_total_asiento,
-        importe_comision_asiento = importe_comision_asiento,
-        importe_conductor_asiento = importeConductorAsiento_input,
-        numero_asientos_libres = numero_asientos_libres,
-        hora_ida = horaIda_input,
-        hora_vuelta = horaVuelta_input
-    )
-
-    numalert = 4  # OK viaje nuevo publicado
-
-    return render(request, "home.html", {'numAlert': numalert})
-
-
-
-def panel_nuevo_vehiculo(request, idP):
-    return render(request, "vehicle_register.html", {'ID_Persona':idP})
-
-def guardar_vehiculo(request):
-    idP_input = request.POST['numIdP']
-    tipoVehiculo_input = request.POST['txtTipoVehiculo']
-    marca_input = request.POST['txtMarca']
-    modelo_input = request.POST['txtModelo']
-    color_input = request.POST['txtColor']
-    anosAnt_input = request.POST['numAnosAnt']
-    numeroAsientos_input = request.POST['numAsientos']
-    flagFumador_input = request.POST['flgFumador']
-    flagMascotas_input = request.POST['flgMascotas']
-
-    vehiculo = Vehiculos.objects.create(
-        id_persona = idP_input,
-        tipo_vehiculo = tipoVehiculo_input,
-        marca = marca_input,
-        modelo = modelo_input,
-        color = color_input,
-        años_antiguedad = anosAnt_input,
-        numero_asientos = numeroAsientos_input,
-        flag_acepta_fumador = flagFumador_input,
-        flag_acepta_mascota = flagMascotas_input
-    )
-
-    return redirect('/prueba_insert/')
-
-
-def prueba_insert(request):
-    return render(request, "prueba_insert.html", {'ID_Persona':'111','ID_Viaje':'222','ID_Vehiculo':'333'})
-
-def panel_mi_perfil(request):
-    return render(request, "index.html", {})

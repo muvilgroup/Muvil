@@ -1,0 +1,382 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Detalles Viaje</title>
+
+	<style>
+		.img-container-viajes{
+            width:80px;
+            height:80px;
+            overflow:hidden;
+        }
+        .img-container-viajes img{
+            width:100%;
+            height:auto;
+        }
+        .boton-3d:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px 0 0 black;
+		}
+		.boton-3d:is(:hover, :focus) {
+		  outline-offset: 3px;
+		}
+    </style>
+
+</head>
+
+<body>
+
+	{% include "cabecera.html" %}
+
+	{% if messages %}
+	<div class="alert alert-success alert-dismissible fade show text-center fs-4 mb-0" role="alert">
+		{% for message in messages %}
+		<p {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+			<strong>{{ message }}</strong>
+		</p>
+		{% endfor %}
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+	{% endif %}
+
+	<div class="container-lg mt-5">
+		<div class="row justify-content-around">
+			<div class="col-12 shadow">
+				<div class="row">
+					<div class="col-12 px-3 pt-2">
+						<h3 class="border-bottom border-5 border-warning">Detalles del Viaje</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Estado del Viaje:</h4>
+					</div>
+					<div class="col-3 px-3">
+						<div class="row mt-2" id="estado-viaje">
+							<h4 class="text-white rounded-pill text-center"
+								 style="background-color:
+								 	{% if viaje.estado == 1 %}
+										#8C8F8B
+									{% elif viaje.estado == 2 %}
+										#1CAB04
+									{% elif viaje.estado == 3 %}
+										#991C1C
+									{% endif %}
+									;">
+								{{viaje.get_estado_display|upper}}
+							</h4>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Fecha:</h4>
+					</div>
+					<div class="col-3 px-3">
+						<h3>{{viaje.fechor_ida|date}}</h3>
+					</div>
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Hora:</h4>
+					</div>
+					<div class="col-3 px-3">
+						<h3>{{viaje.fechor_ida|time}}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Desde:</h4>
+					</div>
+					<div class="col-3 px-3">
+						<h3>{{viaje.ciudad_origen}}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Hasta:</h4>
+					</div>
+					<div class="col-3 px-3">
+						<h3>{{viaje.ciudad_destino}}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Precio pasajero:</h4>
+					</div>
+					<div class="col-3 px-3">
+						<h3>{{viaje.importe_total_asiento}} €</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3">
+						<h4 class="fw-bold">Plazas libres:</h4>
+					</div>
+					<div class="col-3 px-3">
+						{% if viaje.numero_asientos_libres == 0 %}
+						<h4 class="text-white rounded-pill text-center" style="background-color:#991C1C;">
+							¡VIAJE COMPLETO!
+						</h4>
+						{% else %}
+						<h3>{{viaje.numero_asientos_libres}}</h3>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 px-3 pt-2">
+						<h4 class="border-bottom border-3 border-warning">Conductor</h4>
+					</div>
+				</div>
+				<div class="row my-2">
+					<div class="col-2 d-flex justify-content-center">
+						<div class="img-responsive img-container-viajes align-self-center">
+							{% if viaje.id_persona.imagen %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src="{{ viaje.id_persona.imagen.url }}">
+							{% else %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src='{% static "img/avatar-mujer.jpg" %}'>
+							{% endif %}
+						</div>
+					</div>
+					<h4 class="col-4 text-start align-self-center">
+						{% if viaje.id_persona.id == idP%}
+						<strong>(Usted)</strong>
+						{% endif %}
+						 {{viaje.id_persona.nombre}} {{viaje.id_persona.apellido1}} {{viaje.id_persona.apellido2}}
+					</h4>
+					{% if usuario_conductor and viaje.estado == 1 %} <!-- Viaje Pendiente -->
+					<div class="col-5 px-3 pt-2 align-self-center">
+						<a class="col-4 btn btn-danger fw-bold fs-5 boton-3d mx-4" href=""
+						   data-bs-toggle="modal" data-bs-target="#cancelarviajeModal">
+							Cancelar Viaje
+						</a>
+					</div>
+					{% elif viaje.estado == 2 %}
+						{% if not usuario_conductor %}
+							{% for oeac in opinion_escrita_a_cond %}
+								<h5 class="col text-start align-self-center">
+									Opinión publicada: <strong>{{oeac.fechor_opinion|date}} a las {{oeac.fechor_opinion|time}}</strong>
+								</h5>
+							{% empty %}
+								<div class="col-5 px-3 pt-2 align-self-center">
+									<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4" href="">
+										Dejar Opinión
+									</a>
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endif %}
+				</div>
+			{% if viaje.estado != 3 %} <!-- Viaje Cancelado -->
+				<div class="row">
+					<div class="col-3 px-3 pt-2">
+						<h4 class="border-bottom border-3 border-warning">Pasajeros</h4>
+					</div>
+				</div>
+				{% for plaza in plazas %}
+				<div class="row pb-3">
+					<div class="col-2 pt-2 d-flex justify-content-center">
+						<div class="img-responsive img-container-viajes align-self-center">
+							{% if plaza.id_persona.imagen %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src="{{ plaza.id_persona.imagen.url }}">
+							{% else %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src='{% static "img/avatar-mujer.jpg" %}'>
+							{% endif %}
+						</div>
+					</div>
+					<h4 class="col-4 text-start align-self-center">
+						{% if plaza.id_persona.id == idP%}
+						<strong>(Usted)</strong>
+						{% endif %}
+						 {{plaza.id_persona.nombre}} {{plaza.id_persona.apellido1}} {{plaza.id_persona.apellido2}}
+					</h4>
+				{% if viaje.estado == 1 %}
+					{% if usuario_conductor and plaza.estado == 1 %} <!-- Viaje Pendiente / Plaza Pendiente -->
+					<div class="col-5 px-3 pt-2 align-self-center">
+						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4" data-bs-toggle="modal" data-bs-target="#aceptarpasajeroModal{{plaza.id}}">
+							Aceptar
+						</a>
+						<a class="btn btn-danger fw-bold fs-5 boton-3d" data-bs-toggle="modal" data-bs-target="#rechazarpasajeroModal{{plaza.id}}">
+							Rechazar
+						</a>
+					</div>
+					{% elif not usuario_conductor and usuario == plaza.id_persona and plaza.estado == 1 %} <!-- Viaje Pendiente / Plaza Pendiente -->
+					<div class="col-5 px-3 pt-2 align-self-center">
+						<a class="btn btn-danger fw-bold fs-5 boton-3d mx-4" data-bs-toggle="modal" data-bs-target="#cancelarreservaModal{{plaza.id}}">
+							Cancelar Reserva
+						</a>
+					</div>
+					{% elif plaza.estado == 2 %}
+					<h5 class="col-4 text-start align-self-center">
+						confirmación: <strong>{{plaza.fechor_confirmado|date}} a las {{plaza.fechor_confirmado|time}}</strong>
+					</h5>
+					{% endif %}
+				{% elif viaje.estado == 2 %} <!-- Viaje Realizado-->
+					{% if usuario_conductor %}
+					{% for oexc in opiniones_escritas_x_cond %}
+						{% if plaza.id_persona == oexc.id_persona_receptor %}
+						<h5 class="col text-start align-self-center">
+							Opinión publicada: <strong>{{oexc.fechor_opinion|date}} a las {{oexc.fechor_opinion|time}}</strong>
+						</h5>
+						{% else %}
+						<div class="col-5 px-3 pt-2 align-self-center">
+							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4" href="">
+								Dejar Opinión
+							</a>
+						</div>
+						{% endif %}
+					{% empty %}
+						<div class="col-5 px-3 pt-2 align-self-center">
+							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4" href="">
+								Dejar Opinión
+							</a>
+						</div>
+					{% endfor %}
+					{% endif %}
+				{% endif %}
+				</div>
+				<!-- INICIO Ventanas Modales -->
+				<div class="modal fade" id="aceptarpasajeroModal{{plaza.id}}" tabindex="-1" role="dialog" aria-labelledby="aceptarpasajeroModal{{plaza.id}}" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center">¿¿¿ Aceptar esta reserva en tu viaje ???</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5"
+								 href="{% url 'n_aceptar_pasajero' idP=usuario.id idV=viaje.id idPl=plaza.id %}">
+								  Si
+							  </a>
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+								  Cerrar
+							  </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+				<div class="modal fade" id="rechazarpasajeroModal{{plaza.id}}" tabindex="-1" role="dialog" aria-labelledby="rechazarpasajeroModal{{plaza.id}}" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center">¿¿¿ Rechazar esta reserva ???</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5"
+								 href="{% url 'n_rechazar_pasajero' idP=usuario.id idV=viaje.id idPl=plaza.id %}">
+								  Si
+							  </a>
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+								  Cerrar
+							  </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+				<div class="modal fade" id="cancelarreservaModal{{plaza.id}}" tabindex="-1" role="dialog" aria-labelledby="cancelarreservaModal{{plaza.id}}" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres cancelar tu reserva en este viaje ???</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5"
+								 href="{% url 'n_cancelar_reserva' idP=usuario.id idV=viaje.id idPl=plaza.id %}">
+								  Si
+							  </a>
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+								  No
+							  </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				<!-- FIN Ventanas Modales -->
+				{% empty %}
+				<div class="row pb-3">
+					<div class="col-5 px-3 pt-2 text-center">
+						<h4 class="fw-bold">¡No hay pasajeros confirmados en este viaje!</h4>
+					</div>
+				</div>
+				{% endfor %}
+				{% if not usuario_conductor and viaje.numero_asientos_libres > 0 and viaje.estado == 1 %}
+					{% if not plazas or not flg_reserva_pend_conf %}
+				<div class="row pb-3">
+					<div class="col-2 d-flex justify-content-center">
+						<div class="img-responsive img-container-viajes align-self-center">
+							{% if usuario.imagen %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src="{{ usuario.imagen.url }}">
+							{% else %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src='{% static "img/avatar-mujer.jpg" %}'>
+							{% endif %}
+						</div>
+					</div>
+					<h4 class="col-4 text-start align-self-center">
+						<strong>(Usted)</strong>
+						 {{usuario.nombre}} {{usuario.apellido1}} {{usuario.apellido2}}
+					</h4>
+					<div class="col-6 px-3 pt-2 align-self-center">
+						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4"
+						   href="{% url 'n_reservar_plaza' idP=usuario.id idV=viaje.id %}">
+							Reservar una plaza
+						</a>
+					</div>
+				</div>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			</div>
+		</div>
+
+		<!-- INICIO Modal Cancelar Viaje -->
+		<div class="modal fade" id="cancelarviajeModal" tabindex="-1" role="dialog" aria-labelledby="cancelarviajeModal" aria-hidden="true">
+				<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+				  </div>
+				  <div class="modal-body">
+					<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres cancelar el viaje ???</p>
+				  </div>
+				  <div class="modal-footer justify-content-center">
+					  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" href="{% url 'n_cancelar_viaje' idP=usuario.id idV=viaje.id %}">
+						  Si
+					  </a>
+					  <button type="button" class="col-3 btn btn-warning fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+						  No
+					  </button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		<!-- FIN Modal Cancelar Viaje -->
+
+	</div>
+
+</body>
+
+</html>

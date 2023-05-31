@@ -105,9 +105,7 @@
 				<div class="modal-content text-dark">
 				  <div class="modal-header border border-4 border-primary bg-primary text-white">
 					<h5 class="modal-title" id="userModalLabel">Introduce los datos de tu usuario...</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
+					<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 				  </div>
 				  <div class="modal-body border border-4 border-primary">
 					<form method="POST" action="/main/"> {% csrf_token %}
