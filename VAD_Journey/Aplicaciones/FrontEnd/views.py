@@ -8,10 +8,37 @@ from django.contrib import messages
 from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef
 from .choices import categorias_puntuacion, estados_viajes
 from .templatetags.filters import ViajesFilter, MensajesFilter, UsuarioviajesopinionesFilter
+from django.views.generic import View
+from django.contrib.auth import login, logout, authenticate
 
 from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones
+from ..users.admin import UserCreationForm as CustomUserCreationForm
+
 
 # Create your views here.
+class Vregistrousuario (View):
+    def get(self, request):
+        form = CustomUserCreationForm()
+        datos = {
+            'form': form,
+        }
+        return render(request,"registro_usuario.html", datos)
+
+    def post(self, request):
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            #username = form.cleaned_data.get('email')
+            #messages.success(request, f"Usuario creado correctamente: {username}")
+            login(request, usuario)
+            #messages.info(request, f"Estas logueado como {username}")
+            return redirect('n_nuevo_usuario')
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+                print(msg)
+            return redirect('n_registro_usuario')
+
 def v_ejecuciones(request):
     '''Localizaciones.objects.bulk_create([
         Localizaciones(id_provincia=33, provincia='Asturias'),
@@ -73,21 +100,18 @@ def v_pagina_principal(request):
     # Se comprueba si se ha introducido el user/pass
     email_input = request.POST.get('txtEmail', False)
     pass_input = request.POST.get('txtPass', False)
-    existe_persona = Personas.objects.filter(email=email_input, password=pass_input)
 
-    if not email_input and not pass_input:
-        numalert = 1 #Primera vez
-        datos_usuario = None
-        idP = None
-    elif existe_persona:
-        numalert = 2  # OK Login
-        datos_usuario = Personas.objects.filter(email=email_input, password=pass_input).first()
-        idP = datos_usuario.id
+    if email_input and pass_input:
+        user = authenticate(username=email_input, password=pass_input)
+        login(request, user)
+
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+        #fk reverso print(request.user.personas_set.all())
     else:
-        numalert = 3  # Error Login
-        datos_usuario = None
-        idP = None
+        usuario = None
 
+    numalert = 1
     localizaciones = Localizaciones.objects.all()
 
     # Se recuperan los 4 próximos viajes
@@ -107,16 +131,21 @@ def v_pagina_principal(request):
         .filter(Q(fechor_ida__gte=dateNow, numero_asientos_libres__gt=0)) \
         .order_by('fechor_ida')[0:4]
     args = {
-        'idP': idP,
-        'usuario': datos_usuario,
+        'usuario': usuario,
         'localizaciones': localizaciones,
         'viajesProximos': viajesProximos,
         'numAlert': numalert
     }
     return render(request, "pagina_principal.html", args)
 
-def v_detalles_viaje(request, idP, idV):
-    usuario = Personas.objects.get(id=idP)
+def v_detalles_viaje(request, idV):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
+
+    idP = usuario.id
+
     viaje = Viajes.objects.get(id=idV)
     plazas = Plazas.objects.filter(Q(id_viaje=idV, flg_conductor=False, estado__in=(1, 2))) # plazas pendientes o confirmadas
     flg_reserva_pend_conf = plazas.filter(Q(id_persona=idP)).exists()
@@ -147,7 +176,6 @@ def v_detalles_viaje(request, idP, idV):
     return redirect('n_pagina_principal')
     '''
     args = {
-        'idP': idP,
         'usuario': usuario,
         'viaje': viaje,
         'plazas': plazas,
@@ -159,23 +187,28 @@ def v_detalles_viaje(request, idP, idV):
 
     return render(request, "detalles_viaje.html", args)
 
-def v_cancelar_viaje(request, idP, idV):
+def v_cancelar_viaje(request, idV):
     dateNow = timezone.now()
     viaje_cancelado = Viajes.objects.filter(id=idV).update(estado=3, fechor_cancelado=dateNow)
 
-    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+    return redirect('n_detalles_viaje', idV=idV)
 
-def v_reservar_plaza(request, idP, idV):
+def v_reservar_plaza(request, idV):
     dateNow = timezone.now()
-    usuario = Personas.objects.get(id=idP)
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
+
     viaje = Viajes.objects.get(id=idV)
 
-    plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1, fechor_pendiente=dateNow)
+    plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1,
+                             fechor_pendiente=dateNow)
     plaza_pendiente.save()
 
-    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+    return redirect('n_detalles_viaje', idV=idV)
 
-def v_aceptar_pasajero(request, idP, idV, idPl):
+def v_aceptar_pasajero(request, idV, idPl):
     dateNow = timezone.now()
     viaje = Viajes.objects.get(id=idV)
     if viaje.numero_asientos_libres > 0:
@@ -191,22 +224,26 @@ def v_aceptar_pasajero(request, idP, idV, idPl):
         messages.error(request, "¡¡¡Se ha cancelado tu reserva automáticamente!!!")
         messages.error(request, "¡¡¡Prueba en otro viaje!!!")
 
-    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+    return redirect('n_detalles_viaje', idV=idV)
 
-def v_rechazar_pasajero(request, idP, idV, idPl):
+def v_rechazar_pasajero(request, idV, idPl):
     dateNow = timezone.now()
     plaza_rechazada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=3, fechor_rechazado=dateNow)
 
-    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+    return redirect('n_detalles_viaje', idV=idV)
 
-def v_cancelar_reserva(request, idP, idV, idPl):
+def v_cancelar_reserva(request, idV, idPl):
     dateNow = timezone.now()
     plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
 
-    return redirect('n_detalles_viaje', idP=idP, idV=idV)
+    return redirect('n_detalles_viaje', idV=idV)
 
-def v_buscar_viaje(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+def v_buscar_viaje(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
+
     origen = request.POST.get('inputOrigen')
     destino = request.POST.get('inputDestino')
     fecha = request.POST.get('inputFecha')
@@ -230,8 +267,7 @@ def v_buscar_viaje(request, idP):
 
     fV = UsuarioviajesopinionesFilter(request.POST, queryset=Usuario_Viajes_Opiniones)
     args = {
-        'idP': idP,
-        'usuario': datos_usuario,
+        'usuario': usuario,
         'localizaciones': localizaciones,
         'filter': fV,
         'ciudad_origen': origen,
@@ -246,9 +282,11 @@ def v_nuevo_usuario(request):
     if request.method == "POST":
         form = PersonasForm(request.POST, request.FILES)
         if form.is_valid():
-            persona = form.save()
+            persona = form.save(commit=False)
+            persona.id_usuario = request.user
             persona.save()
             messages.success(request, "¡¡¡Usuario creado correctamente!!!.")
+            messages.success(request, f"¡¡¡ Bienvenid@ {request.user.email} !!!")
             return redirect('n_pagina_principal')
         else:
             #print(form.errors)
@@ -265,13 +303,15 @@ def v_listado_usuarios(request):
 
     return render(request, "listado_usuarios.html", args)
 
-def v_nuevo_viaje(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+def v_nuevo_viaje(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
     localizaciones = Localizaciones.objects.all()
 
     args = {
-        "idP": idP,
-        "usuario": datos_usuario,
+        "usuario": usuario,
         "localizaciones": localizaciones
     }
 
@@ -279,14 +319,14 @@ def v_nuevo_viaje(request, idP):
         form = ViajesForm(request.POST)
         if form.is_valid():
             viaje = form.save(commit=False)
-            viaje.id_persona = Personas.objects.get(id=idP)
+            viaje.id_persona = usuario
             viaje.numero_asientos_libres = viaje.numero_asientos_viaje
             viaje.importe_comision_asiento = viaje.importe_conductor_asiento/10
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
             viaje.fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
             viaje.save()
             #Insertamos la plaza del conductor
-            plaza_conductor = Plazas(id_persona=datos_usuario, id_viaje=viaje, flg_conductor=True, estado=2)
+            plaza_conductor = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=True, estado=2)
             plaza_conductor.save()
             messages.success(request, "¡¡¡Viaje publicado correctamente!!!.")
             return redirect('n_pagina_principal')
@@ -305,61 +345,66 @@ def v_listado_viajes(request):
 
     return render(request, "listado_viajes.html", args)
 
-def v_menu_usuario(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
-
+def v_menu_usuario(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
     args = {
-            "idP": idP,
-            "usuario": datos_usuario
+            "usuario": usuario
             }
     if request.method == "POST":
-        form = PersonasForm(request.POST, request.FILES, instance=datos_usuario)
+        form = PersonasForm(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             persona = form.save()
             persona.save()
             messages.success(request, "¡¡¡Datos de Usuario actualizados correctamente!!!")
-            return redirect('n_menu_usuario', idP=idP)
+            return redirect('n_menu_usuario')
         else:
             messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!!")
-            return redirect('n_menu_usuario', idP=idP)
+            return redirect('n_menu_usuario')
     else:
         # Se crea un form con la información del usuario logueado
-        form = PersonasForm(instance=datos_usuario)
+        form = PersonasForm(instance=usuario)
         args.update({"form": form})
         return render(request, 'menu_usuario.html', args)
 
-def v_menu_usuario_perfil(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
-
+def v_menu_usuario_perfil(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
     args = {
-            "idP": idP,
-            "usuario": datos_usuario
+            "usuario": usuario
             }
     if request.method == "POST":
-        form = PersonasForm(request.POST, request.FILES, instance=datos_usuario)
+        form = PersonasForm(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             persona = form.save()
             persona.save()
             messages.success(request, "¡¡¡Datos de Usuario actualizados correctamente!!!")
-            return redirect('n_menu_usuario_perfil', idP=idP)
+            return redirect('n_menu_usuario_perfil')
         else:
             messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!!")
-            return redirect('n_menu_usuario_perfil', idP=idP)
+            return redirect('n_menu_usuario_perfil')
     else:
         # Se crea un form con la información del usuario logueado
-        form = PersonasForm(instance=datos_usuario)
+        form = PersonasForm(instance=usuario)
         args.update({"form": form})
         return render(request, 'menu_usuario_perfil.html', args)
 
-def v_menu_usuario_coches(request, idP):
-    usuario = Personas.objects.get(id=idP)
+def v_menu_usuario_coches(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
+
     try:
         vehiculos = Vehiculos.objects.all().filter(id_persona=usuario)
     except Vehiculos.DoesNotExist:
         vehiculos = None
 
     args = {
-            "idP": idP,
             "usuario": usuario,
             "vehiculos": vehiculos
             }
@@ -371,26 +416,25 @@ def v_menu_usuario_coches(request, idP):
             vehiculo.id_persona = usuario
             vehiculo.save()
             messages.success(request, "¡¡¡Vehiculo registrado correctamente!!!")
-            return redirect('n_menu_usuario_coches', idP=idP)
+            return redirect('n_menu_usuario_coches')
         else:
             messages.error(request, "¡¡¡ERROR. El vehículo no se ha podido registrar!!!")
-            return redirect('n_menu_usuario_coches', idP=idP)
+            return redirect('n_menu_usuario_coches')
     else:
         # Se crea un form con la información del usuario logueado
         form = VehiculosForm()
         args.update({"form": form})
         return render(request, 'menu_usuario_coches.html', args)
 
-def v_menu_usuario_coches_eliminar(request, idP, idVe):
+def v_menu_usuario_coches_eliminar(request, idVe):
     vehiculo=Vehiculos.objects.get(id=idVe)
     vehiculo.delete()
 
-    return redirect('n_menu_usuario_coches', idP=idP)
+    return redirect('n_menu_usuario_coches')
 
-def v_menu_usuario_coches_editar(request, idP, idVe):
+def v_menu_usuario_coches_editar(request, idVe):
     vehiculo=Vehiculos.objects.get(id=idVe)
     args = {
-        "idP": idP,
         "vehiculo": vehiculo
     }
     if request.method == "POST":
@@ -399,37 +443,42 @@ def v_menu_usuario_coches_editar(request, idP, idVe):
             vehiculoform = form.save()
             vehiculoform.save()
             messages.success(request, "¡¡¡Datos de vehiculo actualizados correctamente!!!")
-            return redirect('n_menu_usuario_coches', idP=idP)
+            return redirect('n_menu_usuario_coches')
         else:
             messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!! Prueba de nuevo!!!")
-            return redirect('n_menu_usuario_coches', idP=idP)
+            return redirect('n_menu_usuario_coches')
     else:
         # Se crea un form con la información del usuario logueado
         form = VehiculosForm(instance=vehiculo)
         args.update({"form": form})
         return render(request, 'editar_coche.html', args)
 
-def v_menu_usuario_preferencias(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+def v_menu_usuario_preferencias(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
 
     args = {
-        "idP": idP,
         "usuario": datos_usuario
     }
     if request.method == "POST":
-        datos_usuario.pref_conversacion = request.POST['pref_conversacion']
-        datos_usuario.pref_musica = request.POST['pref_musica']
-        datos_usuario.pref_mascota = request.POST['pref_mascota']
-        datos_usuario.pref_fumar = request.POST['pref_fumar']
-        datos_usuario.pref_comida = request.POST['pref_comida']
-        datos_usuario.save()
+        usuario.pref_conversacion = request.POST['pref_conversacion']
+        usuario.pref_musica = request.POST['pref_musica']
+        usuario.pref_mascota = request.POST['pref_mascota']
+        usuario.pref_fumar = request.POST['pref_fumar']
+        usuario.pref_comida = request.POST['pref_comida']
+        usuario.save()
         messages.success(request, "¡¡¡Preferencias actualizadas correctamente!!!")
-        return redirect('n_menu_usuario_preferencias', idP=idP)
+        return redirect('n_menu_usuario_preferencias')
     else:
         return render(request, 'menu_usuario_preferencias.html', args)
 
-def v_menu_usuario_opiniones(request, idP):
-    usuario = Personas.objects.get(id=idP)
+def v_menu_usuario_opiniones(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
     opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
     opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=usuario)
 
@@ -444,7 +493,6 @@ def v_menu_usuario_opiniones(request, idP):
     total_opiniones = opiniones_recibidas.count()
 
     args = {
-            "idP": idP,
             "usuario": usuario,
             "opiniones_recibidas": opiniones_recibidas,
             "opiniones_publicadas": opiniones_publicadas,
@@ -454,13 +502,16 @@ def v_menu_usuario_opiniones(request, idP):
     }
     return render(request, 'menu_usuario_opiniones.html', args)
 
-def v_menu_usuario_notificaciones(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+def v_menu_usuario_notificaciones(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
 
     args = {
-        "idP": idP,
-        "usuario": datos_usuario
+        "usuario": usuario
     }
+
     if request.method == "POST":
         notif_noticiasofertas_email = request.POST.get('notif_noticiasofertas_email')
         notif_noticiasofertas_sms = request.POST.get('notif_noticiasofertas_sms')
@@ -504,43 +555,50 @@ def v_menu_usuario_notificaciones(request, idP):
             else:
                 notif_reservas = 0
 
-        datos_usuario.notif_noticiasofertas = notif_noticiasofertas
-        datos_usuario.notif_opiniones = notif_opiniones
-        datos_usuario.notif_reservas = notif_reservas
-        datos_usuario.save()
+        usuario.notif_noticiasofertas = notif_noticiasofertas
+        usuario.notif_opiniones = notif_opiniones
+        usuario.notif_reservas = notif_reservas
+        usuario.save()
         messages.success(request, "¡¡¡Notificaciones actualizadas correctamente!!!")
-        return redirect('n_menu_usuario_notificaciones', idP=idP)
+        return redirect('n_menu_usuario_notificaciones')
     else:
         return render(request, 'menu_usuario_notificaciones.html', args)
 
-def v_menu_usuario_pagoscobros(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+def v_menu_usuario_pagoscobros(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
 
     args = {
-            "idP": idP,
             "usuario": datos_usuario
             }
 
     return render(request, 'menu_usuario_pagoscobros.html', args)
 
-def v_menu_usuario_contrasenya(request, idP):
-    datos_usuario = Personas.objects.get(id=idP)
+def v_menu_usuario_contrasenya(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
 
     args = {
-        "idP": idP,
-        "usuario": datos_usuario
+        "usuario": usuario
     }
     if request.method == "POST":
-        print(request.POST['nueva_password'])
-        datos_usuario.password = request.POST['nueva_password']
-        datos_usuario.save()
+        usuario.password = request.POST['nueva_password']
+        usuario.save()
         messages.success(request, "¡¡¡Tu contraseña ha sido actualizada correctamente!!!")
-        return redirect('n_menu_usuario_contrasenya', idP=idP)
+        return redirect('n_menu_usuario_contrasenya')
     else:
         return render(request, 'menu_usuario_contrasenya.html', args)
 
-def v_perfil_publico(request, idP):
-    usuario = Personas.objects.get(id=idP)
+def v_perfil_publico(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
+
     try:
         vehiculo = Vehiculos.objects.filter(id_persona=usuario).first()
     except vehiculo.DoesNotExist:
@@ -576,7 +634,6 @@ def v_perfil_publico(request, idP):
         opiniones_cat_dict.update({categoria: count_opiniones})
 
     args = {
-        "idP": idP,
         "usuario": usuario,
         "vehiculo": vehiculo,
         "total_viajesConductor": total_viajesConductor,
@@ -591,8 +648,12 @@ def v_perfil_publico(request, idP):
 
     return render(request, 'perfil_publico.html', args)
 
-def v_mis_viajes(request, idP):
-    usuario = Personas.objects.get(id=idP)
+def v_mis_viajes(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
+
 
     try:
         #reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
@@ -611,7 +672,6 @@ def v_mis_viajes(request, idP):
 
     fV = ViajesFilter(request.GET, queryset=listado_viajes)
     args = {
-        "idP": idP,
         "usuario": usuario,
         "filter": fV,
         "listado_plazas_viajes": listado_plazas_viajes
@@ -619,11 +679,14 @@ def v_mis_viajes(request, idP):
 
     return render(request, 'mis_viajes.html', args)
 
-def v_mis_mensajes(request, idP):
-    usuario = Personas.objects.get(id=idP)
+def v_mis_mensajes(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
 
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
-    listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
+    #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
 
     listado_conversaciones = Mensajes.objects.values('id_persona_publicador__nombre', 'id_persona_publicador__apellido1', 'id_persona_publicador__id', 'id_persona_publicador__imagen'
                                                         , 'id_persona_receptor__nombre', 'id_persona_receptor__apellido1', 'id_persona_receptor__id', 'id_persona_receptor__imagen'
@@ -634,7 +697,6 @@ def v_mis_mensajes(request, idP):
     fM = MensajesFilter(request.GET, queryset=listado_conversaciones)
 
     args = {
-            "idP": idP,
             "usuario": usuario,
             "filter": fM
             }
@@ -642,12 +704,14 @@ def v_mis_mensajes(request, idP):
     return render(request, "mis_mensajes.html", args)
 
 
-def v_conversacion(request, idP, idPc):
-    usuario = Personas.objects.get(id=idP)
+def v_conversacion(request, idPc):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
     usuario_receptor = Personas.objects.get(id=idPc)
     listado_mensajes = Mensajes.objects.filter(Q(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor) | Q(id_persona_publicador=usuario_receptor, id_persona_receptor=usuario)).order_by('fec_created')
     args = {
-            "idP": idP,
             "usuario": usuario,
             "usuario_receptor": usuario_receptor,
             "listado_mensajes": listado_mensajes
@@ -661,8 +725,11 @@ def v_conversacion(request, idP, idPc):
     else:
         return render(request, "conversacion.html", args)
 
-def v_opiniones_recibidas_main(request, idP):
-    usuario = Personas.objects.get(id=idP)
+def v_opiniones_recibidas_main(request):
+    if request.user.is_authenticated:
+        usuario = Personas.objects.get(id_usuario=request.user.id)
+    else:
+        usuario = None
 
     try:
         opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
@@ -680,7 +747,6 @@ def v_opiniones_recibidas_main(request, idP):
         opiniones_cat_dict.update({categoria: count_opiniones})
 
     args = {
-        "idP": idP,
         "usuario": usuario,
         "avg_puntuacion": avg_puntuacion,
         "total_opiniones": total_opiniones,

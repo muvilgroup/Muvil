@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuevo Usuario</title>
+
+</head>
+
+<body>
+
+	{% include "cabecera_grande.html" %}
+
+	<div class="container mt-5 d-flex justify-content-center">
+		<div class="row col-6 justify-content-center">
+			<h2 class="border-bottom border-warning border-4">Introduce tus datos...</h2>
+			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales"> {% csrf_token %}
+				{{form}}
+				<div class="col-12 d-flex justify-content-center py-3">
+					<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>

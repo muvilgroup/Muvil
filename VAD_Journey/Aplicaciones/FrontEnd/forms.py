@@ -1,12 +1,14 @@
 from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput
-from .models import Personas, Viajes, Vehiculos, Opiniones
+from django.contrib.auth import get_user_model
+from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario
 from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion
+
 
 class PersonasForm(ModelForm):
 
     class Meta:
         model = Personas
-        fields = ('nombre', 'apellido1','apellido2','password','email','tipo_documento','numero_documento','fec_nacimiento',
+        fields = ('nombre', 'apellido1','apellido2','tipo_documento','numero_documento','fec_nacimiento',
                   'numero_telefono','descripcion','imagen')
         widgets = {
             'nombre': TextInput(attrs={
@@ -21,14 +23,14 @@ class PersonasForm(ModelForm):
                 'class': "form-control",
                 'style': 'max-width: 300px;'
             }),
-            'password': TextInput(attrs={
+            ''''password': TextInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;'
             }),
             'email': EmailInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;'
-            }),
+            }),'''
             'tipo_documento': RadioSelect(
                 attrs={
                 'class': "form-check-inline",
