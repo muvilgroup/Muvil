@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Apps locales
     'Aplicaciones.FrontEnd',
+    'Aplicaciones.users',
+    # PWA
     'pwa',
 ]
 
@@ -71,6 +74,9 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
 
@@ -111,6 +117,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'users.Usuario'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

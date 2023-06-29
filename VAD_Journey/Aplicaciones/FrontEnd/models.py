@@ -1,21 +1,20 @@
 from django.db import models
 from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias, estados_viajes, estados_plazas
 from django.core.validators import MaxValueValidator, MinValueValidator
-import datetime
-
-# Create your models here.
+from ..users.models import Usuario, UsuarioManager
 
 class Personas (models.Model):
+    id_usuario = models.ForeignKey(Usuario, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=64)
     apellido1 = models.CharField(max_length=64)
     apellido2 = models.CharField(max_length=64, blank=True, null=True)
     fec_nacimiento = models.DateField(blank=True, null=True)
     tipo_documento = models.CharField (max_length=8)
     numero_documento = models.CharField(max_length=32)
-    email = models.CharField(max_length=320)
+    #email = models.CharField(max_length=320)
     numero_telefono = models.PositiveIntegerField(validators=[MaxValueValidator(999999999)])
     genero = models.CharField(max_length=1, choices=genero, default='F', blank=True, null=True)
-    password = models.CharField(max_length=30, default='<NO_PASSWORD>')
+    #password = models.CharField(max_length=30, default='<NO_PASSWORD>')
     puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5, blank=True, null=True)
     prestigio = models.CharField(max_length=2, choices=prestigio, default='B', blank=True, null=True)
     numero_opiniones = models.PositiveIntegerField(default = '0', blank=True, null=True)
@@ -36,7 +35,7 @@ class Personas (models.Model):
         verbose_name = 'personas'
         verbose_name_plural = 'personas'
     def __str__(self):
-        return str(self.id) + ' - ' + self.email
+        return str(self.id) + ' - ' + self.nombre
 
 class Vehiculos (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id',null=True,blank=True,on_delete=models.CASCADE)

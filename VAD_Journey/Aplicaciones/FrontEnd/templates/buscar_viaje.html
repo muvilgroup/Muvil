@@ -25,7 +25,7 @@
 
 	<!-- INICIO Barra Busqueda -->
 	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
-		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/{{usuario.id}}"> {% csrf_token %}
+		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
 			<div class="col-6 col-md-3 form-floating p-0 m-0" id="origen">
 				<input type="text" list="localizaciones" class="form-select rounded-0 rounded-start border border-warning" name="inputOrigen" id="inputOrigen"
 					   {% if ciudad_origen %}
@@ -259,7 +259,7 @@
 									<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 								</div>
 								<div class="col-2 col-md-3">
-									<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idP=uvo.id_persona_id %}">
+									<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' %}">
 										({{uvo.count_opiniones}} opiniones)
 									</a>
 								</div>
