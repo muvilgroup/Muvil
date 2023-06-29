@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
-import pytz
 from datetime import datetime, date
 from .forms import PersonasForm, ViajesForm, VehiculosForm
 from django.contrib import messages
@@ -36,7 +35,7 @@ class Vregistrousuario (View):
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
-                print(msg)
+                #print(msg)
             return redirect('n_registro_usuario')
 
 def v_ejecuciones(request):
@@ -177,6 +176,7 @@ def v_detalles_viaje(request, idV):
     '''
     args = {
         'usuario': usuario,
+        'idP': idP,
         'viaje': viaje,
         'plazas': plazas,
         'flg_reserva_pend_conf': flg_reserva_pend_conf,
@@ -239,10 +239,6 @@ def v_cancelar_reserva(request, idV, idPl):
     return redirect('n_detalles_viaje', idV=idV)
 
 def v_buscar_viaje(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
 
     origen = request.POST.get('inputOrigen')
     destino = request.POST.get('inputDestino')
@@ -267,7 +263,6 @@ def v_buscar_viaje(request):
 
     fV = UsuarioviajesopinionesFilter(request.POST, queryset=Usuario_Viajes_Opiniones)
     args = {
-        'usuario': usuario,
         'localizaciones': localizaciones,
         'filter': fV,
         'ciudad_origen': origen,
@@ -460,7 +455,7 @@ def v_menu_usuario_preferencias(request):
         usuario = None
 
     args = {
-        "usuario": datos_usuario
+        "usuario": usuario
     }
     if request.method == "POST":
         usuario.pref_conversacion = request.POST['pref_conversacion']
@@ -571,7 +566,7 @@ def v_menu_usuario_pagoscobros(request):
         usuario = None
 
     args = {
-            "usuario": datos_usuario
+            "usuario": usuario
             }
 
     return render(request, 'menu_usuario_pagoscobros.html', args)
@@ -654,6 +649,7 @@ def v_mis_viajes(request):
     else:
         usuario = None
 
+    idP = usuario.id
 
     try:
         #reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
@@ -673,6 +669,7 @@ def v_mis_viajes(request):
     fV = ViajesFilter(request.GET, queryset=listado_viajes)
     args = {
         "usuario": usuario,
+        "idP": idP,
         "filter": fV,
         "listado_plazas_viajes": listado_plazas_viajes
     }
@@ -684,6 +681,8 @@ def v_mis_mensajes(request):
         usuario = Personas.objects.get(id_usuario=request.user.id)
     else:
         usuario = None
+
+    idP = usuario.id
 
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
@@ -698,6 +697,7 @@ def v_mis_mensajes(request):
 
     args = {
             "usuario": usuario,
+            "idP": idP,
             "filter": fM
             }
 
@@ -709,10 +709,15 @@ def v_conversacion(request, idPc):
         usuario = Personas.objects.get(id_usuario=request.user.id)
     else:
         usuario = None
+
+    idP = usuario.id
+
     usuario_receptor = Personas.objects.get(id=idPc)
     listado_mensajes = Mensajes.objects.filter(Q(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor) | Q(id_persona_publicador=usuario_receptor, id_persona_receptor=usuario)).order_by('fec_created')
+
     args = {
             "usuario": usuario,
+            "idP": idP,
             "usuario_receptor": usuario_receptor,
             "listado_mensajes": listado_mensajes
             }

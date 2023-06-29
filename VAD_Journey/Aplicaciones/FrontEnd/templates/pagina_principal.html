@@ -306,7 +306,7 @@
 								<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 							</div>
 							<div class="col-2 col-md-3">
-								<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idP=uvo.id_persona_id %}">
+								<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' %}">
 									({{uvo.count_opiniones}} opiniones)
 								</a>
 							</div>
@@ -368,7 +368,8 @@
 								{% if numAlert == 1 or numAlert == 3 %}
 									href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
 								{% elif numAlert == 2 %}
-								   href="{% url 'n_detalles_viaje' idP=idP idV=uvo.id %}"
+								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
+								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
 								{% endif %} >
 									<b>Reservar Plaza</b>
 								</a>

@@ -55,9 +55,9 @@
         {% for v in filter.qs %}
         <li class="list-group-item">
           <a {% if idP == v.id_persona_publicador__id %}
-             href="{% url 'n_conversacion' idP=idP  idPc=v.id_persona_receptor__id %}"
+             href="{% url 'n_conversacion' idPc=v.id_persona_receptor__id %}"
              {% else %}
-             href="{% url 'n_conversacion' idP=idP  idPc=v.id_persona_publicador__id %}"
+             href="{% url 'n_conversacion' idPc=v.id_persona_publicador__id %}"
              {% endif %}
           >
             <div class="d-flex align-items-center">
