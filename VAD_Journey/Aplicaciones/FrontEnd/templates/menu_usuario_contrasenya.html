@@ -6,15 +6,6 @@
 
 {% block contenido_tab %}
 
-				<!-- Mensajes de Verificación -->
-				<div id="msg-error" class="d-none alert alert-danger alert-dismissible fade show fs-5 text-center" role="alert">
-					<strong>Las Contraseñas no coinciden, vuelve a intentarlo !</strong>
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-				<!--<div id="msg-ok" class="alert alert-success d-none" role="alert">
-					Las Contraseñas coinciden ! (Procesando formulario ... )
-				</div>-->
-				<!-- Fin Mensajes de Verificación -->
 
 				<div class="tab-pane fade show active" id="v-pills-contrasena" role="tabpanel" aria-labelledby="v-pills-contrasena-tab">
 					<!-- INICIO Cambiar Contraseña -->
@@ -23,49 +14,22 @@
 							<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
 						</div>
 					</div>
-					<form method="POST" class="row px-2 pt-2 align-items-start border" id="form-contrasenyas"
-					onsubmit="return verificarPasswords();"> {% csrf_token %}
-						<div class="row mb-2">
-						  <div class="col justify-content-center d-lg-block d-none" >
-							  <img class="rounded mx-auto d-block" src='{% static "img/Key.png" %}'>
-						  </div>
-						  <div class="col-12 col-lg-6">
-							  <div class="row mb-3 align-items-center">
-								<div class="col-6 text-end">
-									<label for="inputcontrasenaactual" class="form-label">Contraseña Actual: </label>
-								</div>
-								<div class="col-6">
-									<input type="text" class="form-control" id="inputcontrasenaactual"
-										   value="{{usuario.password}}" disabled>
-								</div>
-							  </div>
-							  <div class="row mb-3 align-items-center">
-								<div class="col-6 text-end">
-									<label for="nueva_password1" class="form-label">Nueva Contraseña: </label>
-								</div>
-								<div class="col-6">
-									<input type="text" class="form-control" id="nueva_password1" name="nueva_password"
-									required>
-								</div>
-							  </div>
-							  <div class="row mb-3 align-items-center">
-								<div class="col-6 text-end">
-									<label for="nueva_password2" class="form-label">Repetir Nueva: </label>
-								</div>
-								<div class="col-6">
-									<input type="text" class="form-control" id="nueva_password2">
-								</div>
-							  </div>
-							  <div class="d-flex justify-content-center align-items-center py-3">
-								  <button type="submit" id="btn-guardar" class="btn btn-warning border-light border-3 fw-bold">
-									  Guardar
-								  </button>
-							  </div>
-						  </div>
+					<form method="POST" class="px-2"> {% csrf_token %}
+						<div class="row">
+							<div class="col-auto justify-content-center d-lg-block d-none" >
+								<img class="rounded mx-auto d-block" src='{% static "img/Key.png" %}'>
+							</div>
+							<div class="col">
+								{{ form }}
+							</div>
+						</div>
+						<div class="row justify-content-center my-2">
+							<button type="submit" id="btn-guardar" class="col-auto btn btn-warning border-light border-3 fw-bold">
+								Cambiar Contraseña
+							</button>
 						</div>
 					</form>
 					<!-- FIN Contraseña -->
 				</div>
 
-				<script src="{% static 'js/menu_usuario_contrasenya.js' %}"></script>
 {% endblock %}

@@ -7,7 +7,10 @@ from django.conf.urls.static import static #add this for images
 urlpatterns = [
     path('', v_pagina_principal, name='n_pagina_principal'),
     path('registro_usuario/', Vregistrousuario.as_view(), name='n_registro_usuario'),
-    path('ejecuciones/', v_ejecuciones),
+    path('activar/<uidb64>/<token>', v_activar, name='n_activar'),
+    path("resetear_contrasenya/", v_resetear_contrasenya, name="n_resetear_contrasenya"),
+    path('reset/<uidb64>/<token>', v_confirmacion_reset, name='n_confirmacion_reset'),
+    path('import_export/', v_import_export, name='n_import_export'),
     path('buscar_viaje/', v_buscar_viaje, name='n_buscar_viaje'),
     path('nuevo_usuario/', v_nuevo_usuario, name='n_nuevo_usuario'),
     path('listado_usuarios/', v_listado_usuarios, name='n_listado_usuarios'),
@@ -34,5 +37,6 @@ urlpatterns = [
     path('aceptar_pasajero/<int:idV>-<int:idPl>', v_aceptar_pasajero, name='n_aceptar_pasajero'),
     path('rechazar_pasajero/<int:idV>-<int:idPl>', v_rechazar_pasajero, name='n_rechazar_pasajero'),
     path('cancelar_reserva/<int:idV>-<int:idPl>', v_cancelar_reserva, name='n_cancelar_reserva'),
+    path('contacto/', v_contacto, name='n_contacto'),
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,43 +2,199 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import datetime, date
-from .forms import PersonasForm, ViajesForm, VehiculosForm
+from .forms import PersonasForm, ViajesForm, VehiculosForm, ContactoForm, CambiarPassForm, ResetearPassForm,\
+    RegistrarUsuarioForm, ImportExportForm
 from django.contrib import messages
 from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef
 from .choices import categorias_puntuacion, estados_viajes
 from .templatetags.filters import ViajesFilter, MensajesFilter, UsuarioviajesopinionesFilter
 from django.views.generic import View
-from django.contrib.auth import login, logout, authenticate
-
+from django.contrib.auth import login, logout, authenticate, get_user_model
+from django.core.mail import send_mail
+from .token import token_activacion_usuario
 from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones
 from ..users.admin import UserCreationForm as CustomUserCreationForm
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from .decorators import check_logued_usuario, get_persona_usuario
+from tablib import Dataset
+from .resources import LocalizacionesResource
 
 
 # Create your views here.
 class Vregistrousuario (View):
     def get(self, request):
-        form = CustomUserCreationForm()
+        form = RegistrarUsuarioForm()
         datos = {
             'form': form,
         }
         return render(request,"registro_usuario.html", datos)
 
     def post(self, request):
-        form = CustomUserCreationForm(request.POST)
+        form = RegistrarUsuarioForm(request.POST)
         if form.is_valid():
-            usuario = form.save()
-            #username = form.cleaned_data.get('email')
-            #messages.success(request, f"Usuario creado correctamente: {username}")
-            login(request, usuario)
-            #messages.info(request, f"Estas logueado como {username}")
-            return redirect('n_nuevo_usuario')
+            usuario = form.save(commit=False)
+            usuario.is_active = False
+            usuario.save()
+            activacionEmail(request, usuario, form.cleaned_data.get('email'))
+            return redirect('n_pagina_principal')
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
-                #print(msg)
             return redirect('n_registro_usuario')
 
-def v_ejecuciones(request):
+def v_activar(request, uidb64, token):
+    Usuario = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        usuario = Usuario.objects.get(pk=uid)
+    except:
+        user = None
+
+    if usuario is not None and token_activacion_usuario.check_token(usuario, token):
+        usuario.is_active = True
+        usuario.save()
+        login(request, usuario)
+        messages.success(request, "<h2>Gracias por la confirmación por email!</h2><hr> <p>Tu cuenta ha sido activada, "
+                                  "completa los datos de tu usuario y empieza a viajar!</p>")
+        return redirect('n_nuevo_usuario')
+    else:
+        messages.error(request, "El enlace de activación no es válido!")
+
+    return redirect('n_pagina_principal')
+
+def activacionEmail(request, usuario, to_email):
+    asunto = "Activa tu cuenta de usuario"
+    mensaje = render_to_string ("mail_activacion_usuario.html", {
+        'user': usuario.email,
+        'domain': get_current_site(request).domain,
+        'uid': urlsafe_base64_encode(force_bytes(usuario.pk)),
+        'token': token_activacion_usuario.make_token(usuario),
+        "protocol": 'https' if request.is_secure() else 'http'
+    })
+    email = EmailMessage(asunto, mensaje, to=[to_email])
+    if email.send():
+        messages.success(request, f"<h2>Ya falta muy poco!!!</h2><hr> \
+        <p>Por favor, diríjase a la bandeja de entrada o spam de su correo \
+        electrónico {usuario} y active su cuenta pulsando sobre el link de registro enviado.</p>")
+    else:
+        messages.error(request, f'Ha ocurrido un error al enviar el mail de confirmación a {to_email}, \
+        por favor, comprueba si está bien escrita la dirección de correo.')
+
+def v_resetear_contrasenya(request):
+    if request.method == 'POST':
+        form = ResetearPassForm(request.POST)
+        if form.is_valid():
+            user_email = form.cleaned_data['email']
+            associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
+            if associated_user:
+                subject = "Password Reset request"
+                message = render_to_string("mail_resetear_contrasenya.html", {
+                    'user': associated_user,
+                    'domain': get_current_site(request).domain,
+                    'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
+                    'token': token_activacion_usuario.make_token(associated_user),
+                    "protocol": 'https' if request.is_secure() else 'http'
+                })
+                email = EmailMessage(subject, message, to=[associated_user.email])
+                if email.send():
+                    messages.success(request,
+                        """
+                        <h2>Reseteo de contraseña enviado</h2><hr>
+                        <p>
+                            Le hemos enviado instrucciones por correo electrónico para resetear su contraseña, si existe una cuenta con el correo electrónico que ingresó,
+                            debería recibirlo en breve.<br>Si no recibe un correo electrónico, asegúrese de haber ingresado la dirección
+                            con la que te registraste y revisa tu carpeta de correo no deseado (spam).
+                        </p>
+                        """
+                    )
+                else:
+                    messages.error(request, "Ha ocurrido un problema al enviar el mail de reseteo de contraseña! <b>SERVER PROBLEM</b>")
+
+            return redirect('n_pagina_principal')
+
+        for key, error in list(form.errors.items()):
+            if key == 'captcha' and error[0] == 'This field is required.':
+                messages.error(request, "Debes superar el test reCaptcha")
+                continue
+
+    form = ResetearPassForm()
+    return render(
+        request=request,
+        template_name="resetear_contrasenya.html",
+        context={"form": form}
+        )
+
+def v_confirmacion_reset(request, uidb64, token):
+    User = get_user_model()
+    print('s')
+    try:
+        print('q')
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and token_activacion_usuario.check_token(user, token):
+        if request.method == 'POST':
+            form = CambiarPassForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Su contraseña se ha cambiado. Ya puede <b>iniciar sesión</b> de nuevo.")
+                return redirect('n_pagina_principal')
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+
+        form = CambiarPassForm(user)
+        return render(request, 'cambiar_contrasenya.html', {'form': form})
+    else:
+        messages.error(request, "El link de reseteo ha caducado!")
+
+    messages.error(request, 'Algo ha ido mal, redirigiendo a la página principal!')
+    return redirect('n_pagina_principal')
+
+def v_import_export(request):
+    dateNow = timezone.now()
+    if request.method == 'POST':
+        form = ImportExportForm(request.POST, request.FILES)
+        if form.is_valid():
+            #localizaciones = LocalizacionesResource()
+            dataset = Dataset()
+            new_localizaciones = request.FILES['fichero_import']
+            modelo = request.POST.get('modelo', False)
+            imported_data = dataset.load(new_localizaciones.read(), format='xlsx')
+
+            for data in imported_data:
+                value = Localizaciones(
+                    id=data[0],
+                    id_comunidadauto=data[1],
+                    comunidadauto=data[2],
+                    id_provincia=data[3],
+                    provincia=data[4],
+                    id_isla=data[5],
+                    isla=data[6],
+                    dc=data[7],
+                    id_municipio=data[8],
+                    municipio=data[9],
+                    direccion=data[10],
+                    coordenada_x=None,
+                    coordenada_y=None,
+                    fec_created=dateNow,
+                    fec_updated=dateNow
+                )
+                value.save()
+
+            messages.success(request,f"<h2 class='text-center'>¡¡¡El fichero se ha cargado en el modelo <strong>{modelo}</strong> correctamente!!!</h2>")
+        else:
+            messages.error(request, "¡¡¡Error en el formulario!!!")
+            messages.error(request, form.errors)
+
+    form = ImportExportForm()
+
     '''Localizaciones.objects.bulk_create([
         Localizaciones(id_provincia=33, provincia='Asturias'),
         Localizaciones(id_provincia=5, provincia='Ávila'),
@@ -89,20 +245,29 @@ def v_ejecuciones(request):
         Localizaciones(id_provincia=51, provincia='Ceuta'),
         Localizaciones(id_provincia=52, provincia='Melilla'),
     ])'''
-
-    return render(request, 'pagina_principal.html')
+    datos = {
+        'form': form,
+    }
+    return render(request, 'import_export.html', datos)
 
 def v_pagina_principal(request):
     dateNow = timezone.now()
-    #timeNow = datetime.time(datetime.now())
+
+    if request.session.get('first_time', 0) == 0:
+        first_time = request.session['first_time'] = 1
+    else:
+        first_time = request.session['first_time'] = 2
 
     # Se comprueba si se ha introducido el user/pass
     email_input = request.POST.get('txtEmail', False)
     pass_input = request.POST.get('txtPass', False)
 
-    if email_input and pass_input:
+    if email_input and pass_input and not request.user.is_authenticated:
         user = authenticate(username=email_input, password=pass_input)
-        login(request, user)
+        if user is not None:
+            login(request, user)
+        else:
+            messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
 
     if request.user.is_authenticated:
         usuario = Personas.objects.get(id_usuario=request.user.id)
@@ -133,15 +298,14 @@ def v_pagina_principal(request):
         'usuario': usuario,
         'localizaciones': localizaciones,
         'viajesProximos': viajesProximos,
-        'numAlert': numalert
+        'numAlert': numalert,
+        'first_time': first_time,
     }
     return render(request, "pagina_principal.html", args)
 
-def v_detalles_viaje(request, idV):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_detalles_viaje(request, idV, usuario):
 
     idP = usuario.id
 
@@ -187,18 +351,17 @@ def v_detalles_viaje(request, idV):
 
     return render(request, "detalles_viaje.html", args)
 
+@check_logued_usuario
 def v_cancelar_viaje(request, idV):
     dateNow = timezone.now()
     viaje_cancelado = Viajes.objects.filter(id=idV).update(estado=3, fechor_cancelado=dateNow)
 
     return redirect('n_detalles_viaje', idV=idV)
 
-def v_reservar_plaza(request, idV):
+@check_logued_usuario
+@get_persona_usuario
+def v_reservar_plaza(request, idV, usuario):
     dateNow = timezone.now()
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
 
     viaje = Viajes.objects.get(id=idV)
 
@@ -208,6 +371,7 @@ def v_reservar_plaza(request, idV):
 
     return redirect('n_detalles_viaje', idV=idV)
 
+@check_logued_usuario
 def v_aceptar_pasajero(request, idV, idPl):
     dateNow = timezone.now()
     viaje = Viajes.objects.get(id=idV)
@@ -226,19 +390,23 @@ def v_aceptar_pasajero(request, idV, idPl):
 
     return redirect('n_detalles_viaje', idV=idV)
 
+@check_logued_usuario
 def v_rechazar_pasajero(request, idV, idPl):
     dateNow = timezone.now()
     plaza_rechazada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=3, fechor_rechazado=dateNow)
 
     return redirect('n_detalles_viaje', idV=idV)
 
+@check_logued_usuario
 def v_cancelar_reserva(request, idV, idPl):
     dateNow = timezone.now()
     plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
 
     return redirect('n_detalles_viaje', idV=idV)
 
-def v_buscar_viaje(request):
+@check_logued_usuario
+@get_persona_usuario
+def v_buscar_viaje(request, usuario):
 
     origen = request.POST.get('inputOrigen')
     destino = request.POST.get('inputDestino')
@@ -273,6 +441,7 @@ def v_buscar_viaje(request):
 
     return render(request, "buscar_viaje.html", args)
 
+@check_logued_usuario
 def v_nuevo_usuario(request):
     if request.method == "POST":
         form = PersonasForm(request.POST, request.FILES)
@@ -298,11 +467,9 @@ def v_listado_usuarios(request):
 
     return render(request, "listado_usuarios.html", args)
 
-def v_nuevo_viaje(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_nuevo_viaje(request, usuario):
     localizaciones = Localizaciones.objects.all()
 
     args = {
@@ -340,11 +507,9 @@ def v_listado_viajes(request):
 
     return render(request, "listado_viajes.html", args)
 
-def v_menu_usuario(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario(request, usuario):
     args = {
             "usuario": usuario
             }
@@ -364,11 +529,9 @@ def v_menu_usuario(request):
         args.update({"form": form})
         return render(request, 'menu_usuario.html', args)
 
-def v_menu_usuario_perfil(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_perfil(request, usuario):
     args = {
             "usuario": usuario
             }
@@ -388,12 +551,9 @@ def v_menu_usuario_perfil(request):
         args.update({"form": form})
         return render(request, 'menu_usuario_perfil.html', args)
 
-def v_menu_usuario_coches(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
-
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_coches(request, usuario):
     try:
         vehiculos = Vehiculos.objects.all().filter(id_persona=usuario)
     except Vehiculos.DoesNotExist:
@@ -421,12 +581,14 @@ def v_menu_usuario_coches(request):
         args.update({"form": form})
         return render(request, 'menu_usuario_coches.html', args)
 
+@check_logued_usuario
 def v_menu_usuario_coches_eliminar(request, idVe):
     vehiculo=Vehiculos.objects.get(id=idVe)
     vehiculo.delete()
 
     return redirect('n_menu_usuario_coches')
 
+@check_logued_usuario
 def v_menu_usuario_coches_editar(request, idVe):
     vehiculo=Vehiculos.objects.get(id=idVe)
     args = {
@@ -448,12 +610,9 @@ def v_menu_usuario_coches_editar(request, idVe):
         args.update({"form": form})
         return render(request, 'editar_coche.html', args)
 
-def v_menu_usuario_preferencias(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
-
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_preferencias(request, usuario):
     args = {
         "usuario": usuario
     }
@@ -469,11 +628,9 @@ def v_menu_usuario_preferencias(request):
     else:
         return render(request, 'menu_usuario_preferencias.html', args)
 
-def v_menu_usuario_opiniones(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_opiniones(request, usuario):
     opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
     opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=usuario)
 
@@ -497,11 +654,9 @@ def v_menu_usuario_opiniones(request):
     }
     return render(request, 'menu_usuario_opiniones.html', args)
 
-def v_menu_usuario_notificaciones(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_notificaciones(request, usuario):
 
     args = {
         "usuario": usuario
@@ -559,11 +714,9 @@ def v_menu_usuario_notificaciones(request):
     else:
         return render(request, 'menu_usuario_notificaciones.html', args)
 
-def v_menu_usuario_pagoscobros(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_pagoscobros(request, usuario):
 
     args = {
             "usuario": usuario
@@ -571,28 +724,32 @@ def v_menu_usuario_pagoscobros(request):
 
     return render(request, 'menu_usuario_pagoscobros.html', args)
 
-def v_menu_usuario_contrasenya(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_contrasenya(request, usuario):
+    user = request.user
+    if request.method == 'POST':
+        form = CambiarPassForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Tu contraseña ha sido modificada!!!")
+            login(request, user)
+            return redirect('n_pagina_principal')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
 
-    args = {
-        "usuario": usuario
+    form = CambiarPassForm(user)
+
+    args ={
+        'usuario': usuario,
+        'form': form
     }
-    if request.method == "POST":
-        usuario.password = request.POST['nueva_password']
-        usuario.save()
-        messages.success(request, "¡¡¡Tu contraseña ha sido actualizada correctamente!!!")
-        return redirect('n_menu_usuario_contrasenya')
-    else:
-        return render(request, 'menu_usuario_contrasenya.html', args)
+    return render(request, 'menu_usuario_contrasenya.html', args)
 
-def v_perfil_publico(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_perfil_publico(request, usuario):
 
     try:
         vehiculo = Vehiculos.objects.filter(id_persona=usuario).first()
@@ -643,11 +800,9 @@ def v_perfil_publico(request):
 
     return render(request, 'perfil_publico.html', args)
 
-def v_mis_viajes(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_mis_viajes(request, usuario):
 
     idP = usuario.id
 
@@ -676,11 +831,9 @@ def v_mis_viajes(request):
 
     return render(request, 'mis_viajes.html', args)
 
-def v_mis_mensajes(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_mis_mensajes(request, usuario):
 
     idP = usuario.id
 
@@ -703,12 +856,9 @@ def v_mis_mensajes(request):
 
     return render(request, "mis_mensajes.html", args)
 
-
-def v_conversacion(request, idPc):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_conversacion(request, idPc, usuario):
 
     idP = usuario.id
 
@@ -730,11 +880,9 @@ def v_conversacion(request, idPc):
     else:
         return render(request, "conversacion.html", args)
 
-def v_opiniones_recibidas_main(request):
-    if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-    else:
-        usuario = None
+@check_logued_usuario
+@get_persona_usuario
+def v_opiniones_recibidas_main(request, usuario):
 
     try:
         opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
@@ -761,4 +909,25 @@ def v_opiniones_recibidas_main(request):
 
     return render(request, 'opiniones_recibidas_main.html', args)
 
+@check_logued_usuario
+@get_persona_usuario
+def v_contacto(request, usuario):
+
+    if request.method == "POST":
+        email = request.POST.get("email2")
+        asunto = "Contacto: " + request.POST.get("subject")
+        mensaje = f"Mensaje de {email}: \n\n" + request.POST.get("message")
+        try:
+            send_mail(asunto,
+                      mensaje,
+                      email,
+                      ["vad.journey@gmail.com"])
+            return redirect("/contacto/?valido")
+        except:
+            return redirect("/contacto/?error")
+
+    datos = {
+
+    }
+    return render(request, "contacto.html", datos)
 

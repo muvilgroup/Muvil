@@ -1,5 +1,6 @@
 from django.db import models
-from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias, estados_viajes, estados_plazas
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias, estados_viajes, \
+    estados_plazas
 from django.core.validators import MaxValueValidator, MinValueValidator
 from ..users.models import Usuario, UsuarioManager
 
@@ -158,8 +159,16 @@ class Mensajes (models.Model):
         verbose_name_plural = 'mensajes'
 
 class Localizaciones (models.Model):
-    id_provincia = models.PositiveIntegerField(default='0')
+    id_comunidadauto = models.PositiveIntegerField(default='-1')
+    comunidadauto = models.CharField(max_length=3000, blank=True, null=True)
+    id_provincia = models.PositiveIntegerField(default='-1')
     provincia = models.CharField(max_length=3000, blank=True, null=True)
+    id_isla = models.PositiveIntegerField(default='-1')
+    isla = models.CharField(max_length=3000, blank=True, null=True)
+    dc = models.PositiveIntegerField(default='-1')
+    id_municipio = models.PositiveIntegerField(default='-1')
+    municipio = models.CharField(max_length=3000, blank=True, null=True)
+    direccion = models.CharField(max_length=3000, blank=True, null=True)
     coordenada_x = models.DecimalField(max_digits = 32,decimal_places = 16, blank=True, null=True)
     coordenada_y = models.DecimalField(max_digits = 32, decimal_places = 16, blank=True, null=True)
     fec_created = models.DateTimeField(auto_now_add=True)

@@ -155,16 +155,9 @@
 			  </div>
 			</div>
 			<!-- FIN Modal necesario login -->
-			{% if messages %}
-			<div class="alert alert-success alert-dismissible fade show text-center fs-4 mb-0" role="alert">
-				{% for message in messages %}
-				<p {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-					<strong>{{ message }}</strong>
-				</p>
-				{% endfor %}
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>
-			{% endif %}
+
+			{% include 'including/messages.html' %}
+
 		</header>
 
 </body>

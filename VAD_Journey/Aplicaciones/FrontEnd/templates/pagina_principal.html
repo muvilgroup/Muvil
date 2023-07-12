@@ -52,6 +52,7 @@
 	</style>
 </head>
 <body>
+	{% if first_time < 2 %}
 	<!-- INICIO WELCOME LOADER -->
 	<div id="welcome-loader" transicion-precarga="out:circle:hesitate">
 		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
@@ -66,9 +67,9 @@
 		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
 		<!-- FIN WELCOME LOADER -->
 	</div>
+	{% endif %}
 
 	{% include "cabecera_grande.html" %}
-
 
 	<!-- INICIO Carrusel-->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -125,7 +126,7 @@
 				<label for="inputOrigen" class="form-label">Origen</label>
 				<datalist id="localizaciones">
 					{% for loc in localizaciones %}
-						<option value="{{ loc.provincia }}"></option>
+						<option value="{{ loc.direccion }}"></option>
 					{% endfor %}
 				</datalist>
 			</div>
@@ -134,7 +135,7 @@
 				<label for="inputDestino" class="form-label">Destino</label>
 				<datalist id="localizaciones">
 					{% for loc in localizaciones %}
-						<option value="{{ loc.provincia }}"></option>
+						<option value="{{ loc.direccion }}"></option>
 					{% endfor %}
 				</datalist>
 			</div>

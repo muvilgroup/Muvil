@@ -1,8 +1,12 @@
+from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
+from ..users.admin import UserCreationForm as CustomUserCreationForm
 from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario
-from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion
-
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 
 class PersonasForm(ModelForm):
 
@@ -67,7 +71,6 @@ class PersonasForm(ModelForm):
             })
         }
 
-
 class ViajesForm(ModelForm):
 
     class Meta:
@@ -124,7 +127,6 @@ class ViajesForm(ModelForm):
                 'step': 0.5
             })
         }
-
 
 class VehiculosForm(ModelForm):
 
@@ -190,3 +192,33 @@ class OpinionesForm(ModelForm):
                 'placeholder': 'Descríbete en pocas palabras y encuentra gente como tú...'
             })
         }
+
+class ContactoForm(forms.Form):
+    email = forms.CharField(label="Email", required=True)
+    asunto = forms.CharField(label="Asunto", required=True)
+    mensaje = forms.CharField(widget=forms.Textarea, required=True)
+
+class CambiarPassForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['new_password1', 'new_password2']
+
+class ResetearPassForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(ResetearPassForm, self).__init__(*args, **kwargs)
+
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
+class RegistrarUsuarioForm(CustomUserCreationForm):
+    email = forms.EmailField(help_text='A valid email address, please.', required=True)
+
+    class Meta:
+        model = get_user_model()
+        fields = ['email', 'password1', 'password2']
+
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
+class ImportExportForm(forms.Form):
+    #modelo = forms.CharField(label="Modelo", required=True)
+    modelo = forms.ChoiceField(choices=modelos)
+    fichero_import = forms.FileField(label="Fichero")

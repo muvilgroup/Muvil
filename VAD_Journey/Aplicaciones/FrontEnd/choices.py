@@ -45,3 +45,8 @@ estados_plazas = (
     (3, 'Rechazado'),
     (4, 'Cancelado')
 )
+
+modelos = (
+    ('Localizaciones', 'Localizaciones'),
+    ('<Pendiente añadir>', '<Pendiente añadir>')
+)

@@ -44,7 +44,21 @@ INSTALLED_APPS = [
     'Aplicaciones.users',
     # PWA
     'pwa',
+    # Google recaptcha
+    'captcha',
+    # Import or export to/from file to Django ORM
+    'import_export',
+    # 3 parties authentication
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+SITE_ID = 1
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +93,6 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 WSGI_APPLICATION = 'VAD_Journey.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -117,8 +130,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
-AUTH_USER_MODEL = 'users.Usuario'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -164,6 +175,48 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/Aplicaciones/FrontEnd/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/media')
+
+#################################
+###  3rd PARTIES AUTH  ##########
+#################################
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+#################################
+###  EMAIL  #####################
+#################################
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_FROM = "vad.journey@gmail.com"
+EMAIL_HOST_USER = "vad.journey@gmail.com"
+EMAIL_HOST_PASSWORD = "ktzqeajqysjhatap"
+EMAIL_USE_TLS = True # necesita autenticacion
+EMAIL_PORT = 587
+
+PASSWORD_RESET_TIMEOUT = 86400 # 6 horas
+
+AUTH_USER_MODEL = 'users.Usuario'
+
+#################################
+###  RECAPTCHA  #################
+#################################
+RECAPTCHA_PUBLIC_KEY = '6Lf0owwnAAAAAMdN0o2Am_baoRYEFmVEJd0ZvS0j'
+RECAPTCHA_PRIVATE_KEY = '6Lf0owwnAAAAAJ0JSMYdii6Lqn_VKFIOdzl_PytE'
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
 
 #################################
 ###  PWA  #######################
