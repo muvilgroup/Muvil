@@ -176,13 +176,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/Aplicaciones/FrontEnd/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/media')
 
+
+AUTHENTICATION_BACKENDS = [
+    'Aplicaciones.users.backends.CustomEmailAuthBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+    ]
+
+ACCOUNT_FORMS = {'signup': 'Aplicaciones.users.admin.UserCreationForm'}
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+
 #################################
 ###  3rd PARTIES AUTH  ##########
 #################################
-AUTHENTICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend'
-]
-
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [

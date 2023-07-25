@@ -18,10 +18,16 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.mail import EmailMessage
 from .decorators import check_logued_usuario, get_persona_usuario
 from tablib import Dataset
 from .resources import LocalizacionesResource
+from allauth.socialaccount.models import SocialAccount
+from PIL import Image
+import requests
+import io
+
 
 
 # Create your views here.
@@ -130,9 +136,7 @@ def v_resetear_contrasenya(request):
 
 def v_confirmacion_reset(request, uidb64, token):
     User = get_user_model()
-    print('s')
     try:
-        print('q')
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except:
@@ -156,6 +160,10 @@ def v_confirmacion_reset(request, uidb64, token):
 
     messages.error(request, 'Algo ha ido mal, redirigiendo a la página principal!')
     return redirect('n_pagina_principal')
+
+def v_signup_redirect(request):
+    messages.error(request, "<h2 class='text-center'>Algo ha ido mal!!! Quizás ya exista una cuenta con ese email!!!</h2>")
+    return redirect("n_pagina_principal")
 
 def v_import_export(request):
     dateNow = timezone.now()
@@ -270,8 +278,18 @@ def v_pagina_principal(request):
             messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
 
     if request.user.is_authenticated:
-        usuario = Personas.objects.get(id_usuario=request.user.id)
-        #fk reverso print(request.user.personas_set.all())
+        user_auth = request.user
+        try:
+            usuario = Personas.objects.get(id_usuario=user_auth.id)
+        except Personas.DoesNotExist:
+            # Aqui entra cuando volvemos del login por FB pero no hay persona creada y se crea con los datos de FB
+            extra_data = SocialAccount.objects.get(user=user_auth).extra_data
+            nombre = extra_data.get('given_name')
+            apellido1 = extra_data.get('family_name')
+            imagen_url = extra_data.get('picture')
+            usuario = Personas(id_usuario=user_auth, nombre=nombre, apellido1=apellido1)
+            usuario.save()
+            login(request, user_auth, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
     else:
         usuario = None
 

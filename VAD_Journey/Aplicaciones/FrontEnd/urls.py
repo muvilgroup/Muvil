@@ -10,6 +10,7 @@ urlpatterns = [
     path('activar/<uidb64>/<token>', v_activar, name='n_activar'),
     path("resetear_contrasenya/", v_resetear_contrasenya, name="n_resetear_contrasenya"),
     path('reset/<uidb64>/<token>', v_confirmacion_reset, name='n_confirmacion_reset'),
+    path('social/signup/', v_signup_redirect, name='n_signup_redirect'),
     path('import_export/', v_import_export, name='n_import_export'),
     path('buscar_viaje/', v_buscar_viaje, name='n_buscar_viaje'),
     path('nuevo_usuario/', v_nuevo_usuario, name='n_nuevo_usuario'),
