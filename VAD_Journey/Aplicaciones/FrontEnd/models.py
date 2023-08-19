@@ -3,19 +3,21 @@ from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, es
     estados_plazas
 from django.core.validators import MaxValueValidator, MinValueValidator
 from ..users.models import Usuario, UsuarioManager
+from django.core.validators import RegexValidator
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Personas (models.Model):
+    phoneNumberRegex = RegexValidator(regex=r"^\+?1?\d{8,15}$")
+
     id_usuario = models.ForeignKey(Usuario, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=64)
-    apellido1 = models.CharField(max_length=64)
+    nombre = models.CharField(max_length=64, blank=False, null=False)
+    apellido1 = models.CharField(max_length=64, blank=False, null=False)
     apellido2 = models.CharField(max_length=64, blank=True, null=True)
-    fec_nacimiento = models.DateField(blank=True, null=True)
-    tipo_documento = models.CharField (max_length=8, blank=True, null=True)
-    numero_documento = models.CharField(max_length=32, blank=True, null=True)
-    #email = models.CharField(max_length=320)
-    numero_telefono = models.PositiveIntegerField(validators=[MaxValueValidator(999999999)], blank=True, null=True)
+    fec_nacimiento = models.DateField(blank=False, null=False)
+    tipo_documento = models.CharField (max_length=8, blank=False, null=False)
+    numero_documento = models.CharField(max_length=32, blank=False, null=False, unique=True)
+    num_telefono = models.CharField(validators = [phoneNumberRegex], max_length = 16, blank=False, null=False)
     genero = models.CharField(max_length=1, choices=genero, default='F', blank=True, null=True)
-    #password = models.CharField(max_length=30, default='<NO_PASSWORD>')
     puntuacion = models.DecimalField(max_digits=2, decimal_places=1, default=3.5, blank=True, null=True)
     prestigio = models.CharField(max_length=2, choices=prestigio, default='B', blank=True, null=True)
     numero_opiniones = models.PositiveIntegerField(default = '0', blank=True, null=True)
@@ -57,7 +59,8 @@ class Vehiculos (models.Model):
         verbose_name = 'vehiculos'
         verbose_name_plural = 'vehiculos'
     def __str__(self):
-        return str(self.id) + ' - ' + self.marca + ' ' + self.modelo
+        #return str(self.id) + ' - ' + self.marca + ' ' + self.modelo
+        return self.marca + ' ' + self.modelo
 
 class Viajes (models.Model):
     id_persona = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE)

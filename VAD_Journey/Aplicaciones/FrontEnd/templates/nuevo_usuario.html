@@ -14,6 +14,11 @@
 
 	{% include "index.html" %}
 
+	{% include 'including/messages.html' %}
+
+
+
+
 	<div class="container mt-5">
 		<div class="row">
 			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
@@ -22,11 +27,11 @@
 				</h3>
 				<h2 class="border-bottom border-warning border-4">Introduce tus datos personales...</h2>
 				<div class="col-md-4 py-2">
-					<label for="inputNombre" class="form-label">Nombre</label>
+					<label for="inputNombre" class="form-label"><strong>Nombre</strong></label>
 					{{ form.nombre }}
 				</div>
 				<div class="col-md-4 py-2">
-					<label for="inputPApellido" class="form-label">Primer Apellido</label>
+					<label for="inputPApellido" class="form-label"><strong>Primer Apellido</strong></label>
 					{{ form.apellido1 }}
 				</div>
 				<div class="col-md-4 py-2">
@@ -37,11 +42,11 @@
 					{{ form.tipo_documento }}
 				</div>
 				<div class="col-md-4 py-2">
-					<label for="numeroDoc" class="form-label">Número documento</label>
+					<label for="numeroDoc" class="form-label"><strong>Número documento</strong></label>
 					{{ form.numero_documento }}
 				</div>
 				<div class="col-md-4 py-2">
-					<label for="inputNacimiento" class="form-label">Fecha de Nacimiento</label>
+					<label for="inputNacimiento" class="form-label"><strong>Fecha de Nacimiento</strong></label>
 					{{ form.fec_nacimiento }}
 				</div>
 				<!--<div class="col-md-2 py-2">
@@ -53,8 +58,8 @@
 					</select>
 				</div>-->
 				<div class="col-md-4 py-2">
-					<label for="inputTelefono" class="form-label">Teléfono</label>
-					{{ form.numero_telefono }}
+					<label for="inputTelefono" class="form-label"><strong>Teléfono</strong></label>
+					{{ form.num_telefono }}
 				</div>
 				<div class="col-md-4 py-2">
 					<label for="inputImagen" class="form-label">Sube tu foto de perfil</label>
@@ -71,7 +76,8 @@
 		</div>
 	</div>
 
-	{% include 'including/messages.html' %}
+
+
 
 </body>
 

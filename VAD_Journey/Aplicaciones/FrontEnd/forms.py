@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput
+from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput, Select
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from ..users.admin import UserCreationForm as CustomUserCreationForm
@@ -7,34 +7,43 @@ from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario
 from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
+from ..users.models import Usuario
 
 class PersonasForm(ModelForm):
 
     class Meta:
         model = Personas
         fields = ('nombre', 'apellido1','apellido2','tipo_documento','numero_documento','fec_nacimiento',
-                  'numero_telefono','descripcion','imagen')
+                  'num_telefono','descripcion','imagen')
+
+        fec_nacimiento = forms.DateField(
+            required=True,
+            input_formats=(
+                '%Y-%m-%d',  # '2006-10-25'
+                '%m/%d/%Y',  # '10/25/2006'
+                '%m/%d/%y'
+            )
+        )  # '10/25/06')
+
         widgets = {
+            'fec_nacimiento': DateInput(attrs={
+                'class': "form-control",
+                'style': 'max-width: 300px;',
+            }),
             'nombre': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
+                'minlength': 3,
             }),
             'apellido1': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
+                'minlength': 3,
             }),
             'apellido2': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
             }),
-            ''''password': TextInput(attrs={
-                'class': "form-control",
-                'style': 'max-width: 300px;'
-            }),
-            'email': EmailInput(attrs={
-                'class': "form-control",
-                'style': 'max-width: 300px;'
-            }),'''
             'tipo_documento': RadioSelect(
                 attrs={
                 'class': "form-check-inline",
@@ -47,18 +56,12 @@ class PersonasForm(ModelForm):
             ),
             'numero_documento': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
-            }),
-            'fec_nacimiento': DateInput(attrs={
-                'class': "form-control",
-                'type': 'date',
-                'format': '%d-%m-%Y',
-                'style': 'max-width: 300px;'
-            }),
-            'numero_telefono': NumberInput(attrs={
-                'class': "form-control",
                 'style': 'max-width: 300px;',
-                'max': '999999999'
+                'pattern':".{9}", # 9 caracteres
+            }),
+            'num_telefono': TextInput(attrs={
+                'class': "form-control",
+                'style': 'max-width: 300px;'
             }),
             'descripcion': Textarea(attrs={
                 'class': "form-control",
@@ -71,12 +74,13 @@ class PersonasForm(ModelForm):
             })
         }
 
+
 class ViajesForm(ModelForm):
 
     class Meta:
         model = Viajes
         fields = ('ciudad_origen','ciudad_destino','flg_ida_vuelta','fecha_ida','fecha_vuelta','hora_ida','hora_vuelta',
-                  'numero_asientos_viaje', 'importe_conductor_asiento')
+                  'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo')
         widgets = {
             'ciudad_origen': TextInput(attrs={
                 'class': "form-control",
@@ -125,8 +129,20 @@ class ViajesForm(ModelForm):
                 'class': "form-control",
                 'style': 'max-width: 300px;',
                 'step': 0.5
+            }),
+            'id_vehiculo': Select(attrs={
+                'class': "form-control",
+                'required': 'True',
+                'style': 'max-width: 300px;'
             })
         }
+
+    # Para mostrar solo los coches de ese usuario.
+    # Ahora se añade al formulario ViajesForm el parametro user cada vez que se le llame
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(ViajesForm, self).__init__(*args, **kwargs)
+        self.fields['id_vehiculo'].queryset = Vehiculos.objects.filter(id_persona = Personas.objects.get(id_usuario = user.id))
 
 class VehiculosForm(ModelForm):
 

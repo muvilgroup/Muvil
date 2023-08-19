@@ -257,7 +257,7 @@
 						  </div>
 						  <div class="modal-footer justify-content-center">
 							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5"
-								 href="{% url 'n_aceptar_pasajero' idP=usuario.id idV=viaje.id idPl=plaza.id %}">
+								 href="{% url 'n_aceptar_pasajero' idV=viaje.id idPl=plaza.id %}">
 								  Si
 							  </a>
 							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
@@ -279,7 +279,7 @@
 						  </div>
 						  <div class="modal-footer justify-content-center">
 							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5"
-								 href="{% url 'n_rechazar_pasajero' idP=usuario.id idV=viaje.id idPl=plaza.id %}">
+								 href="{% url 'n_rechazar_pasajero' idV=viaje.id idPl=plaza.id %}">
 								  Si
 							  </a>
 							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
@@ -301,7 +301,7 @@
 						  </div>
 						  <div class="modal-footer justify-content-center">
 							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5"
-								 href="{% url 'n_cancelar_reserva' idP=usuario.id idV=viaje.id idPl=plaza.id %}">
+								 href="{% url 'n_cancelar_reserva' idV=viaje.id idPl=plaza.id %}">
 								  Si
 							  </a>
 							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
@@ -363,7 +363,7 @@
 					<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres cancelar el viaje ???</p>
 				  </div>
 				  <div class="modal-footer justify-content-center">
-					  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" href="{% url 'n_cancelar_viaje' idP=usuario.id idV=viaje.id %}">
+					  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" href="{% url 'n_cancelar_viaje' idV=viaje.id %}">
 						  Si
 					  </a>
 					  <button type="button" class="col-3 btn btn-warning fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">

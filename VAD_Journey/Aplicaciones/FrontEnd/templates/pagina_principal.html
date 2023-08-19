@@ -154,11 +154,7 @@
 			</div>
 			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
 				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning boton-3d"
-						{% if numAlert == 1 or numAlert == 3 %}
-							type="button" data-bs-toggle="modal" data-bs-target="#needLoginModal"
-						{% elif numAlert == 2 %}
-							type="submit"
-						{% endif %} >
+						type="submit">
 					Buscar
 				</button>
 			</div>
@@ -369,7 +365,6 @@
 								{% if numAlert == 1 or numAlert == 3 %}
 									href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
 								{% elif numAlert == 2 %}
-								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
 								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
 								{% endif %} >
 									<b>Reservar Plaza</b>

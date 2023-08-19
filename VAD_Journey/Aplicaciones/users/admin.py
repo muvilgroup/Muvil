@@ -20,14 +20,14 @@ class UserCreationForm(forms.ModelForm):
     error_messages = {
         'password_mismatch': _("The two password fields didn't match."),
     }
-    password1 = forms.CharField(label='Password',
+    password1 = forms.CharField(label='Contraseña',
                                 strip=False,
                                 widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
                                 help_text=password_validation.password_validators_help_text_html())
-    password2 = forms.CharField(label='Password confirmation',
+    password2 = forms.CharField(label='Confirmación contraseña',
                                 strip=False,
                                 widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
-                                help_text=_("Enter the same password as above, for verification."))
+                                help_text=_("Por favor, repite la contraseña por motivos de seguridad."))
 
     class Meta:
         model = Usuario
@@ -60,6 +60,7 @@ class UserCreationForm(forms.ModelForm):
             try:
                 password_validation.validate_password(password, self.instance)
             except ValidationError as error:
+                #print('entraaaa' + str(error))
                 self.add_error("password2", error)
 
     def save(self, commit=True):

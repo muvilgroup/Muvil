@@ -317,7 +317,14 @@
 									</label>
 								</div>
 								<div class="col-12 d-flex justify-content-center">
-									<a class="btn btn-warning boton-3d"><b>Reservar Plaza</b></a>
+									<a class="btn btn-warning boton-3d"
+										{% if not user.is_authenticated %}
+										   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+										{% else %}
+										   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
+										{% endif %}>
+										<b>Reservar Plaza</b>
+									</a>
 								</div>
 							</div>
 						</div>

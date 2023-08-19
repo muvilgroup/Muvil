@@ -38,15 +38,11 @@
 							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputNombre" class="form-label">Nombre</label>
+							<label for="inputNombre" class="form-label"><strong>Nombre</strong></label>
 							{{ form.nombre }}
 						</div>
-						<div class="col-md-4 py-2 d-none">
-							<label for="inputPass" class="form-label">Nombre</label>
-							{{ form.password }}
-						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputPApellido" class="form-label">Primer Apellido</label>
+							<label for="inputPApellido" class="form-label"><strong>Primer Apellido</strong></label>
 							{{ form.apellido1 }}
 						</div>
 						<div class="col-md-4 py-2">
@@ -57,20 +53,20 @@
 							{{ form.tipo_documento }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputDocumento" class="form-label">Número Documento</label>
+							<label for="inputDocumento" class="form-label"><strong>Número Documento</strong></label>
 							{{ form.numero_documento }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputNacimiento" class="form-label">Fecha de Nacimiento</label>
+							<label for="inputNacimiento" class="form-label"><strong>Fecha de Nacimiento</strong></label>
 							{{ form.fec_nacimiento }}
 						</div>
 						<div class="col-md-7 py-2">
-							<label for="inputEmail" class="form-label">Email</label>
-							{{ form.email }}
+							<label for="inputEmail" class="form-label"><strong>Email</strong></label>
+							<input class="form-control" type="text" value="{{ user.email }}" disabled />
 						</div>
 						<div class="col-md-3 py-2">
-							<label for="inputTelefono" class="form-label">Teléfono</label>
-							{{ form.numero_telefono }}
+							<label for="inputTelefono" class="form-label"><strong>Teléfono</strong></label>
+							{{ form.num_telefono }}
 						</div>
 						<div class="col-12 py-2">
 							<label for="exampleFormControlTextarea1" class="form-label">Déjanos conocerte</label>

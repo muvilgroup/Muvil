@@ -21,6 +21,8 @@ PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/static/j
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-_u7d(jjmsy0n79)@v0d)n#w^odr@_*eenkj4agmn8nq5=ewt2%'
 
@@ -48,6 +50,8 @@ INSTALLED_APPS = [
     'captcha',
     # Import or export to/from file to Django ORM
     'import_export',
+    # phone numbers
+    'phonenumber_field',
     # 3 parties authentication
     'django.contrib.sites',
     'allauth',

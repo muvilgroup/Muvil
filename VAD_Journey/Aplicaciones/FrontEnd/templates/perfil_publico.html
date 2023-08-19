@@ -58,7 +58,7 @@
 							<p class="m-0 px-4"> <strong>{{total_viajesPasajero}}</strong> viajes realizados </p>
 							<p class="m-0 px-4"> <strong>{{total_viajesPasajero_Canc}}</strong> reservas canceladas como pasajero </p>
 							<p class="m-0 px-4 pb-2"> <strong>{{total_viajesConductor_Canc}}</strong> reservas canceladas como conductor </p>
-							<p class="m-0 text-center py-3"> Última conexión: <strong>07/03/2023</strong> </p>
+							<p class="m-0 text-center py-3"> Última conexión: <strong>{{request.user.last_login|date:"SHORT_DATE_FORMAT"}} {{request.user.last_login|time:"H:i"}} </strong> </p>
 						</div>
 					</div>
 					<div class="row tarjeta-coche border border-2 order-1 order-lg-2 mt-4 rounded shadow m-0 p-0">
@@ -134,7 +134,7 @@
 							</div>
 						</div>
 						<div class="col-12 text-center fs-4">
-							<strong>{{usuario.nombre}} {{usuario.apellido}}</strong>
+							<strong>{{usuario.nombre}} {{usuario.apellido1}}</strong>
 						</div>
 						<div class="col-12 text-center">
 							Prestigio: {{usuario.get_prestigio_display}}

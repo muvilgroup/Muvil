@@ -20,13 +20,14 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.mail import EmailMessage
-from .decorators import check_logued_usuario, get_persona_usuario
+from .decorators import check_logued_usuario, get_persona_usuario, get_vehiculos_usuario
 from tablib import Dataset
 from .resources import LocalizacionesResource
 from allauth.socialaccount.models import SocialAccount
 from PIL import Image
 import requests
 import io
+import pytz
 
 
 
@@ -48,9 +49,24 @@ class Vregistrousuario (View):
             activacionEmail(request, usuario, form.cleaned_data.get('email'))
             return redirect('n_pagina_principal')
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
-            return redirect('n_registro_usuario')
+            password1 = form.data['password1']
+            password2 = form.data['password2']
+            email = form.data['email']
+            #print(form.errors)
+            #print('------------')
+            #print(form.errors.as_data())
+            for msg in form.errors.as_data():
+                if msg == 'email':
+                    messages.error(request, f"La direccion de email {email} no es válida o ya existe")
+                if msg == 'password2' and password1 == password2:
+                    messages.error(request, f"La contraseña {password1} no es lo suficientemente robusta")
+                elif msg == 'password2' and password1 != password2:
+                    messages.error(request,
+                                   f"Los 2 campos de contraseña no coinciden")
+            datos = {
+                'form': form,
+            }
+            return render(request,'registro_usuario.html', datos)
 
 def v_activar(request, uidb64, token):
     Usuario = get_user_model()
@@ -63,7 +79,7 @@ def v_activar(request, uidb64, token):
     if usuario is not None and token_activacion_usuario.check_token(usuario, token):
         usuario.is_active = True
         usuario.save()
-        login(request, usuario)
+        login(request, usuario, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
         messages.success(request, "<h2>Gracias por la confirmación por email!</h2><hr> <p>Tu cuenta ha sido activada, "
                                   "completa los datos de tu usuario y empieza a viajar!</p>")
         return redirect('n_nuevo_usuario')
@@ -273,7 +289,7 @@ def v_pagina_principal(request):
     if email_input and pass_input and not request.user.is_authenticated:
         user = authenticate(username=email_input, password=pass_input)
         if user is not None:
-            login(request, user)
+            login(request, user, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
         else:
             messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
 
@@ -422,9 +438,8 @@ def v_cancelar_reserva(request, idV, idPl):
 
     return redirect('n_detalles_viaje', idV=idV)
 
-@check_logued_usuario
-@get_persona_usuario
-def v_buscar_viaje(request, usuario):
+# no validamos aqui el logueo del usuario ya que puede acceder sin él
+def v_buscar_viaje(request):
 
     origen = request.POST.get('inputOrigen')
     destino = request.POST.get('inputDestino')
@@ -465,15 +480,22 @@ def v_nuevo_usuario(request):
         form = PersonasForm(request.POST, request.FILES)
         if form.is_valid():
             persona = form.save(commit=False)
+            # INICIO validacion +18 años
+            if datetime.now().year - persona.fec_nacimiento.year < 18:
+                messages.error(request, "¡¡¡Error, debes tener +18 años!!!")
+                return redirect('n_nuevo_usuario')
+            # FIN validacion +18 años
             persona.id_usuario = request.user
             persona.save()
             messages.success(request, "¡¡¡Usuario creado correctamente!!!.")
             messages.success(request, f"¡¡¡ Bienvenid@ {request.user.email} !!!")
             return redirect('n_pagina_principal')
         else:
-            #print(form.errors)
             messages.error(request, "¡¡¡ERROR. Usuario no creado!!!.")
-            return redirect('n_pagina_principal')
+            for field in form:
+                if field.errors:
+                    messages.error(request, f"{field.label}: {field.errors}")
+            return redirect('n_nuevo_usuario')
     else:
         form = PersonasForm()
         return render(request, 'nuevo_usuario.html', {'form': form})
@@ -487,7 +509,12 @@ def v_listado_usuarios(request):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_nuevo_viaje(request, usuario):
+@get_vehiculos_usuario
+def v_nuevo_viaje(request, usuario, vehiculos):
+    if not vehiculos:
+        messages.error(request, "¡¡¡Por favor, registra 1 vehiculo antes de publicar viajes!!!.")
+        return redirect('n_menu_usuario_coches')
+
     localizaciones = Localizaciones.objects.all()
 
     args = {
@@ -496,14 +523,32 @@ def v_nuevo_viaje(request, usuario):
     }
 
     if request.method == "POST":
-        form = ViajesForm(request.POST)
+        form = ViajesForm(request.POST, user=request.user)
         if form.is_valid():
             viaje = form.save(commit=False)
+            v_fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
+            # INICIO Validacion de viajes a pasado
+            if v_fechor_ida < datetime.now():
+                messages.error(request, "¡¡¡No se pueden publicar viajes a pasado!!!")
+                return redirect('n_nuevo_viaje')
+            # FIN Validacion de viajes a pasado
+            # INICIO Validacion de plazas maximas superadas
+            vehiculo_obj = Vehiculos.objects.get(id=viaje.id_vehiculo.id)
+            if viaje.numero_asientos_viaje > getattr(vehiculo_obj, 'numero_asientos'):
+                messages.error(request, "¡¡¡No se pueden ofertar mas plazas de las que el vehiculo acepta!!! Prueba otra vez.")
+                return redirect('n_nuevo_viaje')
+            # FIN Validacion de plazas maximas superadas
+            # INICIO Validacion de plazas mayor que 0
+            if viaje.numero_asientos_viaje <= 0:
+                messages.error(request, "¡¡¡No se pueden publicar viajes sin plazas libres!!!")
+                return redirect('n_nuevo_viaje')
+            # FIN Validacion de plazas mayor que 0
             viaje.id_persona = usuario
             viaje.numero_asientos_libres = viaje.numero_asientos_viaje
             viaje.importe_comision_asiento = viaje.importe_conductor_asiento/10
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
-            viaje.fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
+            viaje.fechor_ida = v_fechor_ida
+            viaje.id_vehiculo = viaje.id_vehiculo
             viaje.save()
             #Insertamos la plaza del conductor
             plaza_conductor = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=True, estado=2)
@@ -514,7 +559,7 @@ def v_nuevo_viaje(request, usuario):
             messages.error(request, "¡¡¡ERROR. Viaje no publicado!!!.")
             return redirect('n_pagina_principal')
     else:
-        form = ViajesForm()
+        form = ViajesForm(user=request.user)
         args.update({'form': form})
         return render(request, 'nuevo_viaje.html', args)
 
@@ -587,6 +632,9 @@ def v_menu_usuario_coches(request, usuario):
         if form.is_valid():
             vehiculo = form.save(commit=False)
             vehiculo.id_persona = usuario
+            if vehiculo.anyo_antiguedad > datetime.now().year:
+                messages.error(request, "¡¡¡El año de antigüedad no puede ser posterior al actual!!!")
+                return redirect('n_menu_usuario_coches')
             vehiculo.save()
             messages.success(request, "¡¡¡Vehiculo registrado correctamente!!!")
             return redirect('n_menu_usuario_coches')
@@ -602,6 +650,14 @@ def v_menu_usuario_coches(request, usuario):
 @check_logued_usuario
 def v_menu_usuario_coches_eliminar(request, idVe):
     vehiculo=Vehiculos.objects.get(id=idVe)
+    # INICIO validacion coche con viajes pendientes
+    viajes_pend_count = Viajes.objects.all().filter(Q(id_vehiculo=vehiculo, estado=1)).count()
+    if viajes_pend_count > 0:
+        messages.error(request, f"¡¡¡Error, <strong>este vehiculo tiene viajes {viajes_pend_count} pendientes</strong> y no se puede "
+                                f"eliminar hasta que no se completen esos viajes!!!")
+        return redirect('n_menu_usuario_coches')
+    # FIN validacion coche con viajes pendientes
+
     vehiculo.delete()
 
     return redirect('n_menu_usuario_coches')
@@ -615,7 +671,11 @@ def v_menu_usuario_coches_editar(request, idVe):
     if request.method == "POST":
         form = VehiculosForm(request.POST, request.FILES, instance=vehiculo)
         if form.is_valid():
-            vehiculoform = form.save()
+            vehiculoform = form.save(commit=False)
+            if vehiculo.anyo_antiguedad > datetime.now().year:
+                messages.error(request, "¡¡¡El año de antigüedad no puede ser posterior al actual!!!")
+                return redirect('n_menu_usuario_coches')
+            print(vehiculoform.imagen_vehiculo)
             vehiculoform.save()
             messages.success(request, "¡¡¡Datos de vehiculo actualizados correctamente!!!")
             return redirect('n_menu_usuario_coches')
@@ -751,7 +811,7 @@ def v_menu_usuario_contrasenya(request, usuario):
         if form.is_valid():
             form.save()
             messages.success(request, "Tu contraseña ha sido modificada!!!")
-            login(request, user)
+            login(request, user, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
             return redirect('n_pagina_principal')
         else:
             for error in list(form.errors.values()):

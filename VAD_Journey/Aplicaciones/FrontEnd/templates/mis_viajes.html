@@ -63,7 +63,9 @@
 					<div class="col-7">
 						<div class="row" id="fecha-viaje">
 							<p class="fs-5">
-								<strong>{{v.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> de {{v.ciudad_origen}} a {{v.ciudad_destino}}
+								<a href="{% url 'n_detalles_viaje' idV=v.id %}" class="text-decoration-none">
+									<strong>{{v.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> de {{v.ciudad_origen}} a {{v.ciudad_destino}}
+								</a>
 							</p>
 						</div>
 						<div class="row" id="listado-pasajeros">
