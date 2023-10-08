@@ -27,7 +27,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SECRET_KEY = 'django-insecure-_u7d(jjmsy0n79)@v0d)n#w^odr@_*eenkj4agmn8nq5=ewt2%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['vadjourney.pythonanywhere.com', '127.0.0.1', 'localhost']
 
@@ -61,7 +61,7 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-SOCIALACCOUNT_LOGIN_ON_GET=True
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 
 
@@ -73,7 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware', # PARA PRODUCCION
+    'allauth.account.middleware.AccountMiddleware',  # PARA PRODUCCION
 ]
 
 ROOT_URLCONF = 'VAD_Journey.urls'

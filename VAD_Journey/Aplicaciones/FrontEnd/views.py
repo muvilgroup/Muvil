@@ -276,7 +276,6 @@ def v_import_export(request):
 
 def v_pagina_principal(request):
     dateNow = timezone.now()
-
     if request.session.get('first_time', 0) == 0:
         first_time = request.session['first_time'] = 1
     else:
@@ -335,7 +334,8 @@ def v_pagina_principal(request):
         'numAlert': numalert,
         'first_time': first_time,
     }
-    return render(request, "pagina_principal.html", args)
+
+    return render(request, "pagina_principal.html",args)
 
 @check_logued_usuario
 @get_persona_usuario
