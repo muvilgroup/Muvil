@@ -1,0 +1,8 @@
+.img-container-user{
+  	width:55px;
+  	overflow:hidden;
+}
+.img-container-user img{
+  	width:100%;
+  	height:auto
+}

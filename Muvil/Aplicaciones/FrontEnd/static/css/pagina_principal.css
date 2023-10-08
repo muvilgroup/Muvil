@@ -1,0 +1,34 @@
+.contenedor-pestanas-eventos a{
+		color: #CACACA;
+	}
+.contenedor-mes-evento {
+	background-color: #F9F4F4;
+}
+.imagen-evento {
+	width: 400px;
+	height: 300px;
+}
+.texto-evento {
+	background-color: #F9F4F4;
+	color: black;
+	font-size: 25px;
+}
+.carousel-inner > .carousel-item > img {
+	width:640px;
+	height:300px;
+}
+.barra-busqueda {
+	width: 80%;
+}
+.duracion-km {
+	color: #CACACA;
+}
+.img-container-journey{
+  	width:80px;
+  	overflow:hidden;
+}
+.img-container-journey img{
+  	width:100%;
+  	height:auto
+}
+

@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cambiar Contraseña</title>
+
+</head>
+
+<body>
+
+	{% include 'index.html' %}
+	<div class="container-lg">
+		<div class="row">
+			<div class="col-12 px-3 pt-2">
+				<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
+			</div>
+		</div>
+		<form method="POST" class="px-2"> {% csrf_token %}
+			<div class="row">
+				<div class="col">
+					{{ form }}
+				</div>
+			</div>
+			<div class="row justify-content-start my-2 px-2">
+				<button type="submit" id="btn-guardar" class="col-auto btn btn-warning border-light border-3 fw-bold">
+					Cambiar Contraseña
+				</button>
+			</div>
+		</form>
+	</div>
+
+	{% include 'including/messages.html' %}
+
+</body>
+
+</html>

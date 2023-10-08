@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>VAD</title>
+    <link type='text/css' href='{% static "css/journey_register.css" %}' rel='stylesheet' />
+    <!----- Boostrap ----->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+<body id="iywx">
+  <div class="btn-group">
+              <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                Bienvenid@ {{datos_persona.nombre}} {{datos_persona.apellido1}}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-lg-end">
+                <li><a class="dropdown-item" href="#">Mis Viajes</a></li>
+                <li><a class="dropdown-item" href="#">Mis Mensajes</a></li>
+                <li><a class="dropdown-item" href="#">Mis Pagos/Reembolsos</a></li>
+                <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                <li><a class="dropdown-item" href="#">Desconectar</a></li>
+              </ul>
+            </div>
+    <h1>CARGAR IMAGEN</h1>
+    <div class="custom-file">
+        <label class="custom-file-label" for="customFileLang">Carga tu foto de perfil...</label>
+        <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+    </div>
+    <h1>PANEL TEMPORAL PARA INSERTAR REGISTROS</h1>
+    <div class="row d-flex justify-content-center py-4">
+       <a class="btn btn-primary btn-lg col-6 p-4" href="/user_register/{{ID_Persona}}">Insertar Persona</a>
+    </div>
+    <div class="row d-flex justify-content-center py-4">
+       <a class="btn btn-secondary btn-lg col-6 p-4" href="/journey_register/{{ID_Persona}}">Publicar Viaje</a>
+    </div>
+    <div class="row d-flex justify-content-center py-4">
+       <a class="btn btn-warning btn-lg col-6 p-4" href="/vehicle_register/{{ID_Persona}}">Insertar Vehiculo</a>
+    </div>
+    <h1>ID Persona: {{ID_Persona}}</h1>
+    <h1>ID Viaje: {{ID_Viaje}}</h1>
+    <h1>ID Vehiculo: {{ID_Vehiculo}}</h1>
+
+
+
+
+    <!----- Boostrap ----->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+
+</body>
+</html>
