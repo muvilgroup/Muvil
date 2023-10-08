@@ -1,7 +1,0 @@
-{% autoescape off %}
-Hola {{ user.username }},
-
-Por favor, pulsa en el enlace de abajo para confirmar tu cuenta de MUVIL:
-
-{{ protocol }}://{{ domain }}{% url 'n_activar' uidb64=uid token=token %}
-{% endautoescape %}
