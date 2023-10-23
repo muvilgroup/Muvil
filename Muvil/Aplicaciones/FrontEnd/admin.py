@@ -21,7 +21,7 @@ admin.site.register(Viajes, ViajesAdmin)
 
 class PlazasAdmin (admin.ModelAdmin):
     readonly_fields = ('fec_created', 'fec_updated')
-    list_display = ('id_viaje','id_persona','flg_conductor')
+    list_display = ('id', 'id_viaje','id_persona','flg_conductor')
 
 admin.site.register(Plazas, PlazasAdmin)
 

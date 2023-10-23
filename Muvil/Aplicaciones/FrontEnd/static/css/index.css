@@ -46,9 +46,6 @@ html * {
 }
 
 /* clases para color fuente segun colores muvil */
-.font0-muvil{
-    color:#CACACA;
-}
 .font1-muvil{
     color:#FFC700;
 }
@@ -100,3 +97,5 @@ html * {
   width: calc(4rem + 0.75rem);
   border-radius: 5rem;
 }
+
+

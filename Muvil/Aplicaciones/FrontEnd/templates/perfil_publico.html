@@ -1,13 +1,14 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Perfil Público</title>
+{% block base_title %} Perfil Público {% endblock %}
 
+{% block base_link %}
+	<link type='text/css' href='{% static "css/perfil_publico.css" %}' rel='stylesheet' />
+{% endblock %}
+
+{% block base_style %}
 	<style>
         .img-container-car{
             width:110px;
@@ -29,24 +30,10 @@
 			width: 20px;
 			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
 		}
-
-
-
-
-
-
-
-
     </style>
+{% endblock %}
 
-	<link type='text/css' href='{% static "css/perfil_publico.css" %}' rel='stylesheet' />
-
-</head>
-
-<body>
-
-	{% include "cabecera.html" %}
-
+{% block base_content %}
 	<div class="container-lg mt-5">
 		<div class="row justify-content-around">
 			<aside class="col-12 col-lg-3 mt-3 order-2 order-lg-1">
@@ -69,34 +56,34 @@
 							</div>
 							<div class="col-7">
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
-									<div class="col-2 text-center" id="car-year-icon">
+									<div class="col-auto text-center" id="car-year-icon">
 										<img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
-									<div class="col-10" id="car-year-text">
+									<div class="col-auto" id="car-year-text">
 										<label for="car-year-icon">{{vehiculo.anyo_antiguedad}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
-									<div class="col-2 text-center" id="car-year-icon">
+									<div class="col-auto text-center" id="car-year-icon">
 										<img src='{% static "icon/tag.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
-									<div class="col-10" id="car-year-text">
+									<div class="col-auto" id="car-year-text">
 										<label for="car-year-icon">{{vehiculo.matricula}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
-									<div class="col-2 text-center" id="car-year-icon">
+									<div class="col-auto text-center" id="car-year-icon">
 										<img src='{% static "icon/brush.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
-									<div class="col-10" id="car-year-text">
+									<div class="col-auto" id="car-year-text">
 										<label for="car-year-icon">{{vehiculo.color}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
-									<div class="col-2 text-center" id="car-year-icon">
+									<div class="col-auto text-center" id="car-year-icon">
 										<img src='{% static "icon/vector.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
-									<div class="col-10" id="car-year-text">
+									<div class="col-auto" id="car-year-text">
 										<label for="car-year-icon">{{vehiculo.numero_asientos}}</label>
 									</div>
 								</div>
@@ -120,13 +107,24 @@
 						<h3 class="border-bottom border-5 border-warning">Perfil</h3>
 					</div>
 				</div>
+				{% if request.user.id != usuario_perfil.id %}
+				<div class="row">
+					<div class="col-12 d-flex justify-content-center py-3">
+						<a class="btn btn-warning rounded col-12 col-md-4 boton-3d"
+						   href="{% url 'n_conversacion' idPc=usuario_perfil.id %}">
+							<i class="fas fa-comment-dots fa-lg"></i>
+							<span class="fs-5 fw-bold">Envía un mensaje a {{usuario_perfil.nombre}}</span>
+						</a>
+					</div>
+				</div>
+				{% endif %}
 				<div class="row" id="foto-scoring">
 					<div class="col-6 px-3 pt-2" id="foto">
 						<div class="col-12 mb-3 d-flex justify-content-center">
 							<div class="img-container-profile">
-								{% if usuario.imagen %}
+								{% if usuario_perfil.imagen %}
 								<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
-								<img class="rounded-circle" src="{{ usuario.imagen.url }}">
+								<img class="rounded-circle" src="{{ usuario_perfil.imagen.url }}">
 								{% else %}
 								<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
 								{% endif %}
@@ -134,10 +132,10 @@
 							</div>
 						</div>
 						<div class="col-12 text-center fs-4">
-							<strong>{{usuario.nombre}} {{usuario.apellido1}}</strong>
+							<strong>{{usuario_perfil.nombre}} {{usuario_perfil.apellido1}}</strong>
 						</div>
 						<div class="col-12 text-center">
-							Prestigio: {{usuario.get_prestigio_display}}
+							Prestigio: {{usuario_perfil.get_prestigio_display}}
 						</div>
 						<div class="col-12 text-center">
 							Valoracion como conductor: {{avg_puntuacion_Conductor.avg_punt|floatformat:2}}
@@ -148,7 +146,11 @@
 							<div class="row" id="puntuacion">
 								<div class="col d-flex justify-content-center">
 									<p class="display-3 fw-bold mb-0">
+										{% if avg_puntuacion.avg_punt %}
 										{{ avg_puntuacion.avg_punt|floatformat:2 }}
+										{% else %}
+										-,-
+										{% endif %}
 									</p>
 								</div>
 							</div>
@@ -175,7 +177,9 @@
 							</div>
 							<div class="row mb-1" id="numero_opiniones">
 								<div class="col d-flex justify-content-center fw-bold">
-									{{ total_opiniones }} opiniones
+									<a href="{% url 'n_opiniones_recibidas_main' idPr=usuario_perfil.id %}">
+										{{ total_opiniones }} opiniones
+									</a>
 								</div>
 							</div>
 						</div>
@@ -209,11 +213,11 @@
 					<div class="col px-5 pt-2">
 						<label class="btn btn-white">
 							<img src='{% static "icon/group.svg" %}' alt="Hablo poco"
-								 {% if usuario.pref_conversacion == 1 %}
+								 {% if usuario_perfil.pref_conversacion == 1 %}
 								 height="25px" width="25px"
-								 {% elif usuario.pref_conversacion == 2 %}
+								 {% elif usuario_perfil.pref_conversacion == 2 %}
 								 height="30px" width="30px"
-								 {% elif usuario.pref_conversacion == 3 %}
+								 {% elif usuario_perfil.pref_conversacion == 3 %}
 								 height="35px" width="35px"
 								 {% else %}
 								 height="0px" width="0px"
@@ -223,11 +227,11 @@
 						</label>
 						<label class="btn btn-white">
 							<img src='{% static "icon/music.svg" %}' alt="Hablo poco"
-								 {% if usuario.pref_musica == 1 %}
+								 {% if usuario_perfil.pref_musica == 1 %}
 								 height="25px" width="25px"
-								 {% elif usuario.pref_musica == 2 %}
+								 {% elif usuario_perfil.pref_musica == 2 %}
 								 height="30px" width="30px"
-								 {% elif usuario.pref_musica == 3 %}
+								 {% elif usuario_perfil.pref_musica == 3 %}
 								 height="35px" width="35px"
 								 {% else %}
 								 height="0px" width="0px"
@@ -237,11 +241,11 @@
 						</label>
 						<label class="btn btn-white">
 							<img src='{% static "icon/footprint.svg" %}' alt="Hablo poco"
-								 {% if usuario.pref_mascota == 1 %}
+								 {% if usuario_perfil.pref_mascota == 1 %}
 								 height="25px" width="25px"
-								 {% elif usuario.pref_mascota == 2 %}
+								 {% elif usuario_perfil.pref_mascota == 2 %}
 								 height="30px" width="30px"
-								 {% elif usuario.pref_mascota == 3 %}
+								 {% elif usuario_perfil.pref_mascota == 3 %}
 								 height="35px" width="35px"
 								 {% else %}
 								 height="0px" width="0px"
@@ -251,11 +255,11 @@
 						</label>
 						<label class="btn btn-white">
 							<img src='{% static "icon/smoking.svg" %}' alt="Hablo poco"
-								 {% if usuario.pref_fumar == 1 %}
+								 {% if usuario_perfil.pref_fumar == 1 %}
 								 height="25px" width="25px"
-								 {% elif usuario.pref_fumar == 2 %}
+								 {% elif usuario_perfil.pref_fumar == 2 %}
 								 height="30px" width="30px"
-								 {% elif usuario.pref_fumar == 3 %}
+								 {% elif usuario_perfil.pref_fumar == 3 %}
 								 height="35px" width="35px"
 								 {% else %}
 								 height="0px" width="0px"
@@ -265,11 +269,11 @@
 						</label>
 						<label class="btn btn-white">
 							<img src='{% static "icon/nutrition.svg" %}' alt="Hablo poco"
-								 {% if usuario.pref_comida == 1 %}
+								 {% if usuario_perfil.pref_comida == 1 %}
 								 height="25px" width="25px"
-								 {% elif usuario.pref_comida == 2 %}
+								 {% elif usuario_perfil.pref_comida == 2 %}
 								 height="30px" width="30px"
-								 {% elif usuario.pref_comida == 3 %}
+								 {% elif usuario_perfil.pref_comida == 3 %}
 								 height="35px" width="35px"
 								 {% else %}
 								 height="0px" width="0px"
@@ -284,14 +288,13 @@
 						<h5 class="border-bottom border-3 border-warning">Más sobre mi...</h5>
 					</div>
 					<div class="col-12 px-5 pt-2">
-						<textarea class="w-100" rows="10" placeholder="Aqui está mi introducción">{{usuario.descripcion}}
+						<textarea class="w-100" rows="10" placeholder="Aqui está mi introducción">{{usuario_perfil.descripcion}}
 						</textarea>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
 
-</body>
 
-</html>

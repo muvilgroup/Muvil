@@ -1,13 +1,10 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Nuevo Usuario</title>
+{% block base_title %} Editar {% endblock %}
 
+{% block base_style %}
 	<style>
 		.img-container-car{
 		  	width:100px;
@@ -18,54 +15,12 @@
 		  	height:40%
 		}
 	</style>
-</head>
+{% endblock %}
 
-<body>
-
-	{% include "cabecera.html" %}
-
-	<div class="container mt-5 d-flex justify-content-center">
+{% block base_content %}
+		<div class="container mt-5 d-flex justify-content-center">
 		<div class="row col-7">
 			<h2 class="border-bottom border-warning border-4">Modifica los datos del vehículo...</h2>
-			<!--
-			<form method="POST" class="post-form row px-2 pt-2" id="form-vehiculo" enctype="multipart/form-data"> {% csrf_token %}
-				<div class="col-md-4 py-2">
-					<label for="inputMarca" class="form-label">Marca</label>
-					{{ form.marca }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="inputModelo" class="form-label">Modelo</label>
-					{{ form.modelo }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="inputImagenV" class="form-label">Imagen del vehículo</label>
-					{{ form.imagen_vehiculo }}
-				</div>
-				<h3 class="border-bottom border-3 border-warning my-2"></h3>
-				<div class="col-md-4 py-2">
-					{{ form.tipo_vehiculo }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="inputColor" class="form-label">Color</label>
-					{{ form.color }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="inputMatricula" class="form-label">Matricula</label>
-					{{ form.matricula }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="numeroAnyo" class="form-label">Año</label>
-					{{ form.anyo_antiguedad }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="inputAsientos" class="form-label">Número Asientos</label>
-					{{ form.numero_asientos }}
-				</div>
-				<div class="col-12 d-flex justify-content-center py-3">
-					<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
-				</div>
-			</form>
-			-->
 			<form method="POST" class="post-form row px-2 pt-2 d-flex justify-content-center" id="form-vehiculo" enctype="multipart/form-data">{% csrf_token %}
 				<div class="col-12 col-lg-6">
 					<div class="col-12 ">
@@ -117,20 +72,11 @@
 				{% endif %}
 					(Pulsa sobre la imagen para cambiarla...)
 				</div>
-				<!--
-				<div class="col col-auto img-container-car img-responsive pe-4 pt-1">
-					<label for="userImg" class="form-label">Carga una imagen del coche...</label>
-					<input class="form-control" type="file" id="userImg" name="userImg" onchange="preview()">
-					<button onclick="clearImage()" class="btn btn-danger mt-3">Cancelar imagen</button>
-				</div>
-				-->
 				<div class="col-12 d-flex justify-content-center py-1">
 					<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
 				</div>
 			</form>
 		</div>
 	</div>
+{% endblock %}
 
-</body>
-
-</html>

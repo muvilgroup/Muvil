@@ -9,6 +9,12 @@ tipo_vehiculo = (
     ('H', 'Hibrido')
 )
 
+equipaje = (
+    ('EP', 'Maleta pequeña'),
+    ('EM', 'Maleta mediana'),
+    ('EG', 'Maleta grande')
+)
+
 prestigio = (
     ('B', 'Bronce'),
     ('P', 'Plata'),
@@ -20,7 +26,7 @@ prestigio = (
 categorias_puntuacion = (
     (1, 'Muy Mal'),
     (2, 'Mal'),
-    (3, 'Correcto'),
+    (3, 'Bien'),
     (4, 'Muy Bien'),
     (5, 'Excelente')
 )

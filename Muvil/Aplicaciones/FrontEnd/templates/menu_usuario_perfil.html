@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block titulo %} Mi Perfil {% endblock %}
+{% block base_title %} Mi Perfil {% endblock %}
 
 {% block contenido_tab %}
 				<div class="tab-pane fade show active" id="v-pills-datos" role="tabpanel" aria-labelledby="v-pills-datos-tab">
@@ -14,7 +14,7 @@
 					</div>
 					<form method="POST" class="row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 						<div class="col-lg-8 col-6 d-flex justify-content-center align-items-center py-3">
-							<a class="btn btn-warning border-light border-3 fw-bold" href="{% url 'n_perfil_publico' %}"> Ver Perfil Público </a>
+							<a class="btn btn-warning border-light border-3 fw-bold" href="{% url 'n_perfil_publico' idP=usuario.id %}"> Ver Perfil Público </a>
 						</div>
 						<div class="col-lg-3 col-6 mb-3 ps-5 button-container img-container-user">
 						{% if form.instance.imagen %}

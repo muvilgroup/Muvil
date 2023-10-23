@@ -1,0 +1,106 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuevo Viaje</title>
+
+</head>
+
+<body>
+
+	{% include "cabecera.html" %}
+
+	<div class="container mt-5 d-flex justify-content-center">
+		<div class="row col-8 justify-content-center">
+			<h2 class="border-bottom border-warning border-4">Introduce los datos de tu viaje...</h2>
+			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+				<div class="col-md-6 py-2">
+					<label for="input" class="form-label">Ciudad Origen</label>
+					{{ form.ciudad_origen }}
+					<datalist id="localizaciones">
+					{% for loc in localizaciones %}
+						<option value="{{ loc.direccion }}"></option>
+					{% endfor %}
+					</datalist>
+				</div>
+				<div class="col-md-6 py-2">
+					<label for="input" class="form-label">Ciudad Destino</label>
+					{{ form.ciudad_destino }}
+					<datalist id="localizaciones">
+					{% for loc in localizaciones %}
+						<option value="{{ loc.direccion }}"></option>
+					{% endfor %}
+					</datalist>
+				</div>
+				<div class="col-md-6 py-2">
+					<label for="input" class="form-label">Fecha Viaje</label>
+					{{ form.fecha_ida }}
+				</div>
+				<div class="col-md-6 py-2">
+					<label for="input" class="form-label">Hora Salida</label>
+					{{ form.hora_ida }}
+				</div>
+				<!--
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Ida y Vuelta</label>
+					{{ form.flg_ida_vuelta }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Fecha Vuelta</label>
+					{{ form.fecha_vuelta }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Hora Vuelta</label>
+					{{ form.hora_vuelta }}
+				</div>
+				-->
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Vehiculo</label>
+					{{ form.id_vehiculo }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Plazas</label>
+					{{ form.numero_asientos_viaje }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="input" class="form-label">Precio por plaza</label>
+					{{ form.importe_conductor_asiento }}
+				</div>
+				<div class="col-12 d-flex justify-content-center py-3">
+					<a class="btn btn-warning btn-guardar col-4" href="" data-bs-toggle="modal"
+					   data-bs-target="#publicarviajeModal">
+						Publicar Viaje
+					</a>
+				</div>
+				<!-- INICIO Modal Cancelar Viaje -->
+				<div class="modal fade" id="publicarviajeModal" tabindex="-1" role="dialog" aria-labelledby="publicarviajeModal" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres publicar el viaje ???</p>
+							<p class="fs-5 text-center">¡Una vez publicado, no será posible realizar cambios sobre ese viaje por el bien de los usuarios que lo estuvieran consultando!</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <button type="submit" class="col-2 btn btn-warning btn-guardar col-4"><b>Publicar Viaje</b></button>
+							  <button type="button" class="col-3 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+								  No
+							  </button>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				<!-- FIN Modal Cancelar Viaje -->
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>

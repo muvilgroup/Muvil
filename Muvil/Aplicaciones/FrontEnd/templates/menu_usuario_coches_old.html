@@ -1,0 +1,150 @@
+{% extends "menu_usuario_navbar.html" %}
+
+{% load static %}
+{% load templatetags %}
+
+{% block titulo %} Mis Coches {% endblock %}
+
+{% block contenido_tab %}
+				<div class="tab-pane fade show active" id="v-pills-coches" role="tabpanel" aria-labelledby="v-pills-coches-tab">
+					<!-- INICIO Mis Coches -->
+					<div class="row">
+						<div class="col-12 px-3 pt-2">
+							<h3 class="border-bottom border-5 border-warning">Mis Coches</h3>
+						</div>
+					</div>
+					<div class="row px-3 pt-2 pb-3">
+						<div class="col-12 mb-2 d-flex justify-content-end">
+							<button class="btn btn-warning col-6 col-lg-3" data-bs-toggle="collapse" href="#collapseAddCar" role="button" aria-expanded="false" aria-controls="collapseAddCar">
+								<a href="" alt="Añadir"><embed src='{% static "icon/plus-circle.svg" %}' alt="Añadir"/></a>
+								<b>Añadir Coche</b>
+							</button>
+						</div>
+						<div class="collapse" id="collapseAddCar">
+							<div class="card card-body">
+								<h3 class="border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</h3>
+								<form method="POST" class="row px-2 pt-2" id="form-newcar" enctype="multipart/form-data">{% csrf_token %}
+									<div class="col-12 col-lg-6">
+										<div class="col-12 ">
+											<label for="inputTipo" class="form-label">Tipo</label>
+											{{form.tipo_vehiculo}}
+										</div>
+										<div class="col-12 ">
+											<label for="inputTipo" class="form-label">Marca</label>
+											{{form.marca}}
+										</div>
+										<div class="col-12 ">
+											<label for="inputModelo" class="form-label">Modelo</label>
+											{{form.modelo}}
+										</div>
+										<div class="col-12 ">
+											<label for="inputAnio" class="form-label">Año</label>
+											{{form.anyo_antiguedad}}
+										</div>
+										<div class="col-12 ">
+											<label for="inputMatricula" class="form-label">Matrícula</label>
+											{{form.matricula}}
+										</div>
+										<div class="col-12 ">
+											<label for="inputColor" class="form-label">Color</label>
+											{{form.color}}
+										</div>
+										<div class="col-12">
+											<label for="inputNumPlazas" class="form-label">Nº Plazas</label>
+											{{form.numero_asientos}}
+										</div>
+									</div>
+									<div class="col col-auto img-container-car img-responsive pe-4 pt-1">
+										{{ form.imagen_vehiculo }}
+									</div>
+									<!--
+									<div class="col col-auto img-container-car img-responsive pe-4 pt-1">
+										<label for="userImg" class="form-label">Carga una imagen del coche...</label>
+										<input class="form-control" type="file" id="userImg" name="userImg" onchange="preview()">
+										<button onclick="clearImage()" class="btn btn-danger mt-3">Cancelar imagen</button>
+									</div>
+									-->
+									<div class="col-12 d-flex justify-content-center py-1">
+										<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+									</div>
+								</form>
+								<div class="row px-2 pt-2">
+									<div class="col-12">
+										<h3 class="border-bottom border-5 border-warning"></h3>
+									</div>
+								</div>
+						  	</div>
+						</div>
+					</div>
+
+				{% if not vehiculos %}
+					<div class="card col-10 mx-auto my-2" id="car-card">
+						<p class="fs-2 fw-bold text-center">¡¡¡ Aún no tienes coches registrados !!!</p>
+					</div>
+				{% else %}
+					{% for c in vehiculos %}
+					<div class="card col-10 mx-auto mb-3" id="car-card">
+						<div class="row no-gutters">
+							<div class="col-12 col-lg-7">
+								<div class="card-block px-2">
+									<div class="card-body">
+										<div class="card-title fs-3 pb-1" id="car-title">
+											{{ c.marca | resaltar_texto }} {{ c.modelo | resaltar_texto}}
+										</div>
+										<div class="card-subtitle row pb-1 ps-3" id="car-year">
+											<div class="col-2 text-center" id="car-year-icon">
+												 <img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="25px" width="25px" id="car-year-icon"/>
+											</div>
+											<div class="col-10" id="car-year-text">
+												<label for="car-year-icon" class="fs-5">{{ c.anyo_antiguedad }}</label>
+											</div>
+										</div>
+										<div class="card-subtitle row pb-1 ps-3" id="car-plate">
+											<div class="col-2 text-center" id="car-plate-icon">
+												 <img src='{% static "icon/tag.svg" %}' alt="Matrícula" height="25px" width="25px" id="car-plate-icon"/>
+											</div>
+											<div class="col-10" id="car-plate-text">
+												<label for="car-plate-icon" class="fs-5">{{ c.matricula }}</label>
+											</div>
+										</div>
+										<div class="card-subtitle row pb-1 ps-3" id="car-color">
+											<div class="col-2 text-center" id="car-color-icon">
+												 <img src='{% static "icon/brush.svg" %}' alt="Color" height="25px" width="25px" id="car-color-icon"/>
+											</div>
+											<div class="col-10" id="car-color-text">
+												<label for="car-color-icon" class="fs-5">{{ c.color }}</label>
+											</div>
+										</div>
+										<div class="card-subtitle row pb-1 ps-3" id="car-seats">
+											<div class="col-2 text-center" id="car-seats-icon">
+												 <img src='{% static "icon/vector.svg" %}' alt="Número de asientos" height="25px" width="25px" id="car-seats-icon"/>
+											</div>
+											<div class="col-10" id="car-seats-text">
+												<label for="car-seats-icon" class="fs-5">{{ c.numero_asientos }} plazas</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-lg-5 img-container-car d-flex align-items-center">
+							{% if c.imagen_vehiculo %}
+								<img class="mx-auto d-block" src="{{ c.imagen_vehiculo.url }}">
+							{% endif %}
+							</div>
+						</div>
+						<div class="card-footer pt-1 text-center bg-white">
+							<a class="btn btn-outline-dark col-5 col-lg-3" href="/menu_usuario/miscoches/editar/{{c.id}}">
+								<img alt="Editar" src='{% static "icon/pencil-fill.svg" %}' width="15px">
+								<b>Editar</b>
+							</a>
+							<a class="btn btn-outline-danger col-6 col-lg-3" href="/menu_usuario/miscoches/eliminar/{{c.id}}">
+								<img alt="Eliminar" src='{% static "icon/trash-fill.svg" %}' width="15px">
+								<b>Eliminar</b>
+							</a>
+						</div>
+				  	</div>
+					{% endfor %}
+				{% endif %}
+					<!-- FIN Mis Coches -->
+				</div>
+{% endblock %}

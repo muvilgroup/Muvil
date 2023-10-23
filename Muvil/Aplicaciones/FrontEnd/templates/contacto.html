@@ -1,32 +1,26 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Contacto</title>
+{% block base_title %} Contacto {% endblock %}
 
-	<style>
+{% block base_head %} {% endblock %}
 
-    </style>
-
+{% block base_link %}
 	<link type='text/css' href='{% static "css/contacto.css" %}' rel='stylesheet' />
+{% endblock %}
 
-</head>
+{% block base_style %}
+{% endblock %}
 
-<body>
-
-	{% include "cabecera.html" %}
-
+{% block base_content %}
 	{% if 'valido' in request.GET %}
 	<p class="fw-bold fs-5 text-center bg-warning"> Mensaje enviado correctamente!!! </p>
 	{% elif 'error' in request.GET%}
 	<p class="fw-bold fs-5 text-center bg-warning"> Error al enviar el mensaje!!! </p>
 	{% endif %}
 
-	<div class="container">
+	<div class="container mb-3">
 		<h1 class="mt-5">Formulario de Contacto</h1>
 		<form action="#" method="POST"> {% csrf_token %}
 		  <div class="mb-3">
@@ -41,12 +35,11 @@
 			<label for="message" class="form-label">Mensaje</label>
 			<textarea class="form-control" id="message" name="message" rows="5" required></textarea>
 		  </div>
-		  <button type="submit" class="btn btn-warning fw-bold">Enviar</button>
+		  <button type="submit" class="col-2 btn btn-warning fw-bold">Enviar</button>
 		</form>
-	  </div>
+	</div>
+{% endblock %}
 
-  </div>
+{% block base_script %}
+{% endblock %}
 
-</body>
-
-</html>

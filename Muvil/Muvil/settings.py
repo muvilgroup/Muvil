@@ -45,22 +45,17 @@ INSTALLED_APPS = [
     'Aplicaciones.FrontEnd',
     'Aplicaciones.users',
     # PWA
-    'pwa',
+    'pwa_webpush',
     # Google recaptcha
     'captcha',
     # Import or export to/from file to Django ORM
     'import_export',
     # phone numbers
     'phonenumber_field',
-    # 3 parties authentication
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
+
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 
@@ -73,7 +68,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Muvil.urls'
@@ -159,7 +153,8 @@ AUTH_PASSWORD_VALIDATORS = [
 #LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'es-eu'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
@@ -185,7 +180,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/media')
 
 AUTHENTICATION_BACKENDS = [
     'Aplicaciones.users.backends.CustomEmailAuthBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
+    #'allauth.account.auth_backends.AuthenticationBackend'
     ]
 
 ACCOUNT_FORMS = {'signup': 'Aplicaciones.users.admin.UserCreationForm'}
@@ -211,13 +206,16 @@ SOCIALACCOUNT_PROVIDERS = {
 #################################
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_FROM = "vad.journey@gmail.com"
-EMAIL_HOST_USER = "vad.journey@gmail.com"
-EMAIL_HOST_PASSWORD = "ktzqeajqysjhatap"
+#EMAIL_FROM = "vad.journey@gmail.com"
+#EMAIL_HOST_USER = "vad.journey@gmail.com"
+#EMAIL_HOST_PASSWORD = "ktzqeajqysjhatap"
+EMAIL_FROM = "muvil.group@gmail.com"
+EMAIL_HOST_USER = "muvil.group@gmail.com"
+EMAIL_HOST_PASSWORD = "zlwudviqjvmmqktb" # Google Account > Ver en 2 pasos > Crear contraseña de applicaciones
 EMAIL_USE_TLS = True # necesita autenticacion
 EMAIL_PORT = 587
 
-PASSWORD_RESET_TIMEOUT = 86400 # 6 horas
+PASSWORD_RESET_TIMEOUT = 21600 # 6 horas
 
 AUTH_USER_MODEL = 'users.Usuario'
 
@@ -233,7 +231,7 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 ###  PWA  #######################
 #################################
 PWA_APP_NAME = 'Muvil'
-PWA_APP_DESCRIPTION = "VAD Journey PWA"
+PWA_APP_DESCRIPTION = "Muvil PWA"
 PWA_APP_THEME_COLOR = '#000000'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
@@ -243,30 +241,48 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        'src': '/static/img/Square150x150Logo.scale-100.png',
+        'src': '/static/img/logo_Muvil_150x150.png',
         'sizes': '150x150',
+        'type': 'image/png',
+        'purpose': 'any'
+    },
+    {
+        'src': '/static/img/logo_Muvil_512x512_2.png',
+        'sizes': '512x512',
         'type': 'image/png',
         'purpose': 'any'
     }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': '/static/img/Square150x150Logo.scale-100.png',
+        'src': '/static/img/logo_Muvil_150x150.png',
         'sizes': '150x150',
+        'type': 'image/png',
+        'purpose': 'any'
+    },
+    {
+        'src': '/static/img/logo_Muvil_512x512_2.png',
+        'sizes': '512x512',
         'type': 'image/png',
         'purpose': 'any'
     }
 ]
 PWA_APP_SPLASH_SCREEN = [
     {
-        'src': '/static/img/Square150x150Logo.scale-100.png',
+        'src': '/static/img/logo_Muvil_150x150.png',
         'sizes': '150x150',
+        'type': 'image/png',
+        'purpose': 'any'
+    },
+    {
+        'src': '/static/img/logo_Muvil_512x512_2.png',
+        'sizes': '512x512',
         'type': 'image/png',
         'purpose': 'any'
     }
 ]
 PWA_APP_DIR = 'ltr'
-PWA_APP_LANG = 'en-US'
+PWA_APP_LANG = 'es-eu'
 
 
 

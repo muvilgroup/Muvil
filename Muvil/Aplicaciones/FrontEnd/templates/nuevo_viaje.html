@@ -1,24 +1,17 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Nuevo Viaje</title>
+{% block base_title %} Nuevo Viaje {% endblock %}
 
-</head>
 
-<body>
-
-	{% include "cabecera.html" %}
-
-	<div class="container mt-5 d-flex justify-content-center">
+{% block base_content %}
+	<div class="container-md mt-5 d-flex justify-content-center">
 		<div class="row col-8 justify-content-center">
 			<h2 class="border-bottom border-warning border-4">Introduce los datos de tu viaje...</h2>
 			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
-				<div class="col-md-6 py-2">
+				<div class="col-12 col-md-6 py-2">
+					<i class="fas fa-map fa-lg"></i>
 					<label for="input" class="form-label">Ciudad Origen</label>
 					{{ form.ciudad_origen }}
 					<datalist id="localizaciones">
@@ -28,6 +21,7 @@
 					</datalist>
 				</div>
 				<div class="col-md-6 py-2">
+					<i class="fas fa-flag-checkered fa-lg"></i>
 					<label for="input" class="form-label">Ciudad Destino</label>
 					{{ form.ciudad_destino }}
 					<datalist id="localizaciones">
@@ -37,42 +31,77 @@
 					</datalist>
 				</div>
 				<div class="col-md-6 py-2">
+					<i class="fas fa-calendar-day fa-lg"></i>
 					<label for="input" class="form-label">Fecha Viaje</label>
 					{{ form.fecha_ida }}
 				</div>
 				<div class="col-md-6 py-2">
+					<i class="fas fa-clock fa-lg"></i>
 					<label for="input" class="form-label">Hora Salida</label>
 					{{ form.hora_ida }}
 				</div>
-				<!--
-				<div class="col-md-4 py-2">
-					<label for="input" class="form-label">Ida y Vuelta</label>
-					{{ form.flg_ida_vuelta }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="input" class="form-label">Fecha Vuelta</label>
-					{{ form.fecha_vuelta }}
-				</div>
-				<div class="col-md-4 py-2">
-					<label for="input" class="form-label">Hora Vuelta</label>
-					{{ form.hora_vuelta }}
-				</div>
-				-->
-				<div class="col-md-4 py-2">
-					<label for="input" class="form-label">Vehiculo</label>
-					{{ form.id_vehiculo }}
-				</div>
-				<div class="col-md-4 py-2">
+				<datalist id="lista_horas_viaje">
+				</datalist>
+				<div class="col-md-6 py-2">
+					<i class="fas fa-people-group fa-lg"></i>
 					<label for="input" class="form-label">Plazas</label>
 					{{ form.numero_asientos_viaje }}
 				</div>
-				<div class="col-md-4 py-2">
-					<label for="input" class="form-label">Precio por plaza</label>
+				<div class="col-md-6 py-2">
+					<i class="fas fa-coins fa-lg"></i>
+					<label for="input" class="form-label">Precio por plaza (€)</label>
 					{{ form.importe_conductor_asiento }}
 				</div>
+				<div class="col-md-6 py-2">
+					<i class="fas fa-car-side fa-lg"></i>
+					<label for="input" class="form-label">Vehiculo</label>
+					{{ form.id_vehiculo }}
+				</div>
+				<div class="col-md-6 py-2">
+					<i class="fas fa-suitcase fa-lg"></i>
+					<label for="input" class="form-label">Equipaje</label>
+					{{ form.equipaje }}
+				</div>
+				<div class="col-md-12 py-2 mx-3 d-flex bg-light">
+					<label for="input" class="form-label fw-bold">¿Publicar viaje de VUELTA?</label>
+					{{ form.flg_ida_vuelta }}
+				</div>
+				<!-- INICIO Campos Vuelta -->
+				<div class="col-md-6 py-2 bg-light" id="form_vuelta1" style="display:none">
+					<i class="fas fa-map fa-lg"></i>
+					<label for="input" class="form-label">Ciudad Origen Vuelta</label>
+					{{ vueltaform.ciudad_origen_vuelta }}
+				</div>
+				<div class="col-md-6 py-2 bg-light" id="form_vuelta2" style="display:none">
+					<i class="fas fa-flag-checkered fa-lg"></i>
+					<label for="input" class="form-label">Ciudad Destino Vuelta</label>
+					{{ vueltaform.ciudad_destino_vuelta }}
+				</div>
+				<div class="col-md-6 py-2 bg-light" id="form_vuelta3" style="display:none">
+					<i class="fas fa-calendar-day fa-lg"></i>
+					<label for="input" class="form-label">Fecha Vuelta</label>
+					{{ vueltaform.fecha_vuelta }}
+				</div>
+				<div class="col-md-6 py-2 bg-light" id="form_vuelta4" style="display:none">
+					<i class="fas fa-clock fa-lg"></i>
+					<label for="input" class="form-label">Hora Vuelta</label>
+					{{ vueltaform.hora_vuelta }}
+				</div>
+				<div class="col-md-6 py-2 bg-light" id="form_vuelta5" style="display:none">
+					<i class="fas fa-people-group fa-lg"></i>
+					<label for="input" class="form-label">Plazas Vuelta</label>
+					{{ vueltaform.numero_asientos_vuelta }}
+				</div>
+				<div class="col-md-6 py-2 bg-light" id="form_vuelta6" style="display:none">
+					<i class="fas fa-coins fa-lg"></i>
+					<label for="input" class="form-label">Precio por plaza (€) Vuelta</label>
+					{{ vueltaform.importe_conductor_asiento_vuelta }}
+				</div>
+				<!-- FIN Campos Vuelta -->
 				<div class="col-12 d-flex justify-content-center py-3">
-					<a class="btn btn-warning btn-guardar col-4" href="" data-bs-toggle="modal"
+					<a class="btn btn-warning btn-guardar col-4 boton-3d fw-bold" href="" data-bs-toggle="modal"
 					   data-bs-target="#publicarviajeModal">
+						<i class="fas fa-road fa-lg"></i>
 						Publicar Viaje
 					</a>
 				</div>
@@ -100,7 +129,57 @@
 			</form>
 		</div>
 	</div>
+{% endblock %}
 
-</body>
+{% block base_script %}
+	<script>
+        var dataList = document.getElementById('lista_horas_viaje');
 
-</html>
+        for (var hora = 0; hora < 24; hora++) {
+            for (var minuto = 0; minuto < 60; minuto += 30) {
+                var horaString = hora.toString().padStart(2, '0');
+                var minutoString = minuto.toString().padStart(2, '0');
+                var option = document.createElement('option');
+                option.value = `${horaString}:${minutoString}`;
+                dataList.appendChild(option);
+            }
+        }
+    </script>
+	<script>
+        function mostrarVuelta() {
+            var checkBox = document.getElementById("vueltaCheck");
+            var form_blocks = document.querySelectorAll('div[id^="form_vuelta"]');
+            var form_fields = document.querySelectorAll('input[id^="campo_vuelta"]');
+
+            for (var i = 0; i < form_blocks.length; i++) {
+                if (checkBox.checked == true) {
+                    form_blocks[i].style.display = "block";
+                    form_fields[i].required = true;
+                } else {
+                    form_blocks[i].style.display = "none";
+                    form_fields[i].required = false;
+                }
+            }
+
+            var ciudad_origen_vuelta = document.getElementById("campo_vuelta1");
+            var ciudad_destino_vuelta = document.getElementById("campo_vuelta2");
+            var num_asientos_vuelta = document.getElementById("campo_vuelta5");
+            var precio_plaza_vuelta = document.getElementById("campo_vuelta6");
+            var ciudad_origen_ida = document.getElementById("ciudad_origen");
+            var ciudad_destino_ida = document.getElementById("ciudad_destino");
+            var num_asientos_ida = document.getElementById("numero_asientos_viaje");
+            var precio_plaza_ida = document.getElementById("importe_conductor_asiento");
+
+            if (checkBox.checked == true) {
+            	ciudad_origen_vuelta.readOnly = true;
+            	ciudad_origen_vuelta.value = ciudad_destino_ida.value;
+            	ciudad_destino_vuelta.readOnly = true;
+            	ciudad_destino_vuelta.value = ciudad_origen_ida.value ;
+            	num_asientos_vuelta.value = num_asientos_ida.value;
+            	precio_plaza_vuelta.value = precio_plaza_ida.value;
+            }
+        }
+    </script>
+{% endblock %}
+
+

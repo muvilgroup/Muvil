@@ -20,6 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', include("django.contrib.auth.urls")),
     path('', include('Aplicaciones.FrontEnd.urls')),
-    path('', include('pwa.urls')),
-    path('', include("allauth.urls")),
+    path('', include('pwa_webpush.urls')),
 ]

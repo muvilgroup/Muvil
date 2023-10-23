@@ -1,12 +1,13 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, RadioSelect, DateInput, NumberInput, Textarea, TimeInput, Select
+from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, DateInput, NumberInput, Textarea, TimeInput, Select, CheckboxInput
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from ..users.admin import UserCreationForm as CustomUserCreationForm
 from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario
-from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos, equipaje
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
+from datetime import datetime
 from ..users.models import Usuario
 
 class PersonasForm(ModelForm):
@@ -20,6 +21,7 @@ class PersonasForm(ModelForm):
             required=True,
             input_formats=(
                 '%Y-%m-%d',  # '2006-10-25'
+                '%d-%m-%Y',  # '25-10-2006'
                 '%m/%d/%Y',  # '10/25/2006'
                 '%m/%d/%y'
             )
@@ -74,67 +76,64 @@ class PersonasForm(ModelForm):
             })
         }
 
-
 class ViajesForm(ModelForm):
-
     class Meta:
         model = Viajes
-        fields = ('ciudad_origen','ciudad_destino','flg_ida_vuelta','fecha_ida','fecha_vuelta','hora_ida','hora_vuelta',
-                  'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo')
+        fields = ('ciudad_origen','ciudad_destino','fecha_ida','hora_ida', 'flg_ida_vuelta',
+                  'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo', 'equipaje')
         widgets = {
             'ciudad_origen': TextInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;',
-                'list': "localizaciones"
+                'list': "localizaciones",
+                'id': "ciudad_origen"
             }),
             'ciudad_destino': TextInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;',
-                'list': "localizaciones"
+                'list': "localizaciones",
+                'id': "ciudad_destino"
             }),
-            'flg_ida_vuelta': RadioSelect(
-                attrs={
-                    'class': "form-check-inline",
-                },
-                choices=[
-                    ('I', 'Ida'),
-                    ('IV', 'Ida/Vuelta'),
-                ],
-            ),
             'fecha_ida': DateInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;',
-                'type': 'date'
-            }),
-            'fecha_vuelta': DateInput(attrs={
-                'class': "form-control",
-                'style': 'max-width: 300px;',
-                'type': 'date'
+                'type': 'date',
+                'value': datetime.now().strftime("%Y-%m-%d")
             }),
             'hora_ida': TimeInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;',
-                'type': 'time'
-            }),
-            'hora_vuelta': TimeInput(attrs={
-                'class': "form-control",
-                'style': 'max-width: 300px;',
-                'type': 'time'
+                'type': 'time',
+                'list': 'lista_horas_viaje'
             }),
             'numero_asientos_viaje': NumberInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
+                'style': 'max-width: 300px;',
+                'id': "numero_asientos_viaje"
             }),
             'importe_conductor_asiento': NumberInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;',
-                'step': 0.5
+                'step': 0.5,
+                'id': "importe_conductor_asiento"
             }),
             'id_vehiculo': Select(attrs={
                 'class': "form-control",
                 'required': 'True',
                 'style': 'max-width: 300px;'
-            })
+            }),
+            'flg_ida_vuelta': CheckboxInput(attrs={
+                'class': "form-check-input",
+                'type': "checkbox",
+                'onclick': "mostrarVuelta()",
+                'id': "vueltaCheck"
+            }),
+            'equipaje': Select(
+                attrs={
+                    'class': "form-select",
+                },
+                choices=equipaje,
+            )
         }
 
     # Para mostrar solo los coches de ese usuario.
@@ -143,6 +142,72 @@ class ViajesForm(ModelForm):
         user = kwargs.pop('user', None)
         super(ViajesForm, self).__init__(*args, **kwargs)
         self.fields['id_vehiculo'].queryset = Vehiculos.objects.filter(id_persona = Personas.objects.get(id_usuario = user.id))
+
+class VueltaViajesForm(forms.Form):
+    ciudad_origen_vuelta = forms.CharField(
+        label='Ciudad Origen Vuelta',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'style': 'max-width: 300px;',
+            'id': 'campo_vuelta1'
+        }
+        )
+    )
+    ciudad_destino_vuelta = forms.CharField(
+        label='Ciudad Destino Vuelta',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'style': 'max-width: 300px;',
+            'id': 'campo_vuelta2'
+        }
+        )
+    )
+    fecha_vuelta = forms.DateField(
+                    label='Fecha Vuelta',
+                    required=False,
+                    widget=forms.DateInput(attrs={
+                                                'class': "form-control",
+                                                'style': 'max-width: 300px;',
+                                                'type': 'date',
+                                                'id': 'campo_vuelta3'
+                                                }
+                                            )
+                    )
+    hora_vuelta = forms.TimeField(
+                    label='Hora Vuelta',
+                    required=False,
+                    widget=forms.TimeInput(attrs={
+                                                'class': "form-control",
+                                                'style': 'max-width: 300px;',
+                                                'type': 'time',
+                                                'list': 'lista_horas_viaje',
+                                                'id': 'campo_vuelta4'
+                                                }
+                                            )
+                    )
+    numero_asientos_vuelta = forms.IntegerField(
+                        label='Plazas Vuelta',
+                        required=False,
+                        widget=forms.NumberInput(attrs={
+                                                        'class': "form-control",
+                                                        'style': 'max-width: 300px;',
+                                                        'id': 'campo_vuelta5'
+                                                        }
+                                                )
+                    )
+    importe_conductor_asiento_vuelta = forms.DecimalField(
+                        label='Precio Vuelta',
+                        required=False,
+                        widget=forms.NumberInput(attrs={
+                                                        'class': "form-control",
+                                                        'style': 'max-width: 300px;',
+                                                        'step': 0.5,
+                                                        'id': 'campo_vuelta6'
+                                                        }
+                                                )
+                    )
 
 class VehiculosForm(ModelForm):
 
@@ -188,7 +253,7 @@ class OpinionesForm(ModelForm):
 
     class Meta:
         model = Opiniones
-        fields = ('puntuacion','mensaje_opinion','mensaje_respuesta')
+        fields = ('puntuacion','mensaje_opinion')
 
         widgets = {
             'puntuacion': RadioSelect(
@@ -201,18 +266,17 @@ class OpinionesForm(ModelForm):
                 'class': "form-control",
                 'rows': '3',
                 'placeholder': 'Descríbete en pocas palabras y encuentra gente como tú...'
-            }),
-            'mensaje_respuesta': Textarea(attrs={
-                'class': "form-control",
-                'rows': '3',
-                'placeholder': 'Descríbete en pocas palabras y encuentra gente como tú...'
             })
         }
 
 class ContactoForm(forms.Form):
-    email = forms.CharField(label="Email", required=True)
+    email = forms.EmailField(label="Email", required=True)
     asunto = forms.CharField(label="Asunto", required=True)
     mensaje = forms.CharField(widget=forms.Textarea, required=True)
+
+class LoginnForm(forms.Form):
+    email = forms.EmailField(label="Email", required=True)
+    contrasenya = forms.CharField(label="Contraseña", required=True)
 
 class CambiarPassForm(SetPasswordForm):
     class Meta:

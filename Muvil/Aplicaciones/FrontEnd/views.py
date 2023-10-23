@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 from django.http import HttpResponse
 from django.utils import timezone
-from datetime import datetime, date
+from datetime import datetime, timedelta
 from .forms import PersonasForm, ViajesForm, VehiculosForm, ContactoForm, CambiarPassForm, ResetearPassForm,\
-    RegistrarUsuarioForm, ImportExportForm
+    RegistrarUsuarioForm, ImportExportForm, LoginnForm, VueltaViajesForm
+from .utils import codificar_numeros
+from .geolocalizacion import Geolocalizacion
 from django.contrib import messages
 from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef
 from .choices import categorias_puntuacion, estados_viajes
@@ -11,6 +14,7 @@ from .templatetags.filters import ViajesFilter, MensajesFilter, Usuarioviajesopi
 from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.core.mail import send_mail
+from .validaciones import ValidacionesViajes
 from .token import token_activacion_usuario
 from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones
 from ..users.admin import UserCreationForm as CustomUserCreationForm
@@ -23,7 +27,6 @@ from django.core.mail import EmailMessage
 from .decorators import check_logued_usuario, get_persona_usuario, get_vehiculos_usuario
 from tablib import Dataset
 from .resources import LocalizacionesResource
-from allauth.socialaccount.models import SocialAccount
 from PIL import Image
 import requests
 import io
@@ -38,7 +41,7 @@ class Vregistrousuario (View):
         datos = {
             'form': form,
         }
-        return render(request,"registro_usuario.html", datos)
+        return render(request, "registro_usuario.html", datos)
 
     def post(self, request):
         form = RegistrarUsuarioForm(request.POST)
@@ -47,7 +50,7 @@ class Vregistrousuario (View):
             usuario.is_active = False
             usuario.save()
             activacionEmail(request, usuario, form.cleaned_data.get('email'))
-            return redirect('n_pagina_principal')
+            return render(request, 'pagina_principal.html', {})
         else:
             password1 = form.data['password1']
             password2 = form.data['password2']
@@ -66,7 +69,7 @@ class Vregistrousuario (View):
             datos = {
                 'form': form,
             }
-            return render(request,'registro_usuario.html', datos)
+            return render(request, 'registro_usuario.html', datos)
 
 def v_activar(request, uidb64, token):
     Usuario = get_user_model()
@@ -74,7 +77,7 @@ def v_activar(request, uidb64, token):
         uid = force_str(urlsafe_base64_decode(uidb64))
         usuario = Usuario.objects.get(pk=uid)
     except:
-        user = None
+        usuario = None
 
     if usuario is not None and token_activacion_usuario.check_token(usuario, token):
         usuario.is_active = True
@@ -83,8 +86,14 @@ def v_activar(request, uidb64, token):
         messages.success(request, "<h2>Gracias por la confirmación por email!</h2><hr> <p>Tu cuenta ha sido activada, "
                                   "completa los datos de tu usuario y empieza a viajar!</p>")
         return redirect('n_nuevo_usuario')
+    elif usuario is not None and not token_activacion_usuario.check_token(usuario, token):
+        # El enlace ha caducado y se deb eliminar el usuario para que pueda volver a registrarlo.
+        usuario.delete()
+        messages.error(request, "¡El enlace de activación ha caducado! \
+                                <p>¡Debes repetir el proceso de alta de usuario!</p>")
     else:
-        messages.error(request, "El enlace de activación no es válido!")
+        messages.error(request, "¡El enlace de activación no es válido! \
+                                <p>¡Debes repetir el proceso de alta de usuario!</p>")
 
     return redirect('n_pagina_principal')
 
@@ -101,10 +110,13 @@ def activacionEmail(request, usuario, to_email):
     if email.send():
         messages.success(request, f"<h2>Ya falta muy poco!!!</h2><hr> \
         <p>Por favor, diríjase a la bandeja de entrada o spam de su correo \
-        electrónico {usuario} y active su cuenta pulsando sobre el link de registro enviado.</p>")
+        electrónico {usuario} y active su cuenta pulsando sobre el link de registro enviado.</p> \
+        <p> Es importante que lo active antes de {int(settings.PASSWORD_RESET_TIMEOUT/3600)} horas, de lo contrario \
+                                  deberá volver a repetir el proceso.")
     else:
         messages.error(request, f'Ha ocurrido un error al enviar el mail de confirmación a {to_email}, \
         por favor, comprueba si está bien escrita la dirección de correo.')
+
 
 def v_resetear_contrasenya(request):
     if request.method == 'POST':
@@ -274,6 +286,7 @@ def v_import_export(request):
     }
     return render(request, 'import_export.html', datos)
 
+
 def v_pagina_principal(request):
     dateNow = timezone.now()
     if request.session.get('first_time', 0) == 0:
@@ -281,24 +294,106 @@ def v_pagina_principal(request):
     else:
         first_time = request.session['first_time'] = 2
 
-    # Se comprueba si se ha introducido el user/pass
-    email_input = request.POST.get('txtEmail', False)
-    pass_input = request.POST.get('txtPass', False)
+    if request.method == "POST":
+        # Se recuperan los introducidos user/pass
+        email_input = request.POST.get('txtEmail', False)
+        pass_input = request.POST.get('txtPass', False)
 
-    if email_input and pass_input and not request.user.is_authenticated:
-        print("1")
-        user = authenticate(username=email_input, password=pass_input)
-        if user is not None:
-            print("2")
-            login(request, user, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
-        else:
-            messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
-    print("3")
+        if not request.user.is_authenticated:
+            user = authenticate(username=email_input, password=pass_input)
+            if user is not None:
+                # 1.- Notificar si hay plazas pendientes de aceptar no vistas
+                criterio_viajes_user = Q(id_viaje__id_persona_id__id_usuario_id=user.id)
+                criterio_plazas_pend = Q(estado=1)
+                criterio_plaza_pend_no_vista = Q(fechor_pendiente__gt=user.last_login)
+                plazas_pendientes_aceptar = Plazas.objects.filter(criterio_viajes_user &
+                                                                  criterio_plazas_pend &
+                                                                  criterio_plaza_pend_no_vista)
+                alertas=False
+                if plazas_pendientes_aceptar:
+                    messages.success(request, f"¡ATENCIÓN! Tienes nuevas reservas en alguno de tus viajes.<br>\
+                                                Puedes verlas en la sección <a class='btn btn-warning fw-bold' href='/mis_viajes'>\
+                                                Mis Viajes</a>")
+                    alertas=True
+                    #return redirect('n_pagina_principal')
+
+                # 2.- Notificar si se ha aceptado mi reserva
+                criterio_plazas_user = Q(id_persona_id__id_usuario_id=user.id)
+                criterio_plazas_conf = Q(estado=2)
+                criterio_plaza_conf_no_vista = Q(fechor_confirmado__gt=user.last_login)
+                plazas_aceptadas = Plazas.objects.filter(criterio_plazas_user &
+                                                         criterio_plazas_conf &
+                                                         criterio_plaza_conf_no_vista)
+                if plazas_aceptadas:
+                    messages.success(request, f"¡GENIAL! Tu reserva ha sido confirmada.<br>\
+                                                Consulta los detalles del viaje en la sección <a class='btn btn-warning \
+                                                fw-bold' href='/mis_viajes'>\
+                                                Mis Viajes</a>")
+                    alertas=True
+                    #return redirect('n_pagina_principal')
+
+                # 3.- Notificar si se ha rechazado mi reserva
+                criterio_plazas_rech = Q(estado=3)
+                criterio_plaza_rech_no_vista = Q(fechor_rechazado__gt=user.last_login)
+                plazas_rechazadas = Plazas.objects.filter(criterio_plazas_user &
+                                                         criterio_plazas_rech &
+                                                         criterio_plaza_rech_no_vista)
+                if plazas_rechazadas:
+                    messages.success(request, f"¡VAYA! Tu reserva pendiente ha sido rechazada.<br>\
+                                                Prueba a reservar en otro de los viajes.")
+                    alertas=True
+
+                # 4.- Notificar si se ha cancelado mi viaje
+                criterio_viaje_canc = Q(id_viaje__estado=3)
+                criterio_plaza_canc_no_vista = Q(fechor_cancelado__gt=user.last_login)
+                plazas_canceladas = Plazas.objects.filter(criterio_plazas_user &
+                                                          criterio_viaje_canc &
+                                                          criterio_plaza_canc_no_vista)
+                if plazas_canceladas:
+                    messages.success(request, f"¡VAYA! Tu viaje ha sido cancelado.<br>\
+                                                Prueba a reservar en otro de los viajes.")
+                alertas = True
+
+                # 5.- Notificar si hay mensajes nuevos
+                criterio_mensajes_no_leidos = Q(flg_leido=False)
+                criterio_mensajes_para_user = Q(id_persona_receptor__id_usuario_id=user.id)
+                mensajes_no_leidos = Mensajes.objects.filter(criterio_mensajes_no_leidos &
+                                                          criterio_mensajes_para_user)
+                if mensajes_no_leidos:
+                    messages.success(request, f"¡Tienes mensajes nuevos!<br>\
+                                                Los puedes leer en la sección <a class='btn btn-warning \
+                                                fw-bold' href='/mis_mensajes'>Mis Mensajes</a>")
+                alertas = True
+
+                # 6.- Notificar si hay opiniones nuevas
+                criterio_opiniones_no_leidas = Q(flg_leido=False)
+                criterio_opiniones_para_user = Q(id_persona_receptor__id_usuario_id=user.id)
+                opiniones_no_leidas = Opiniones.objects.filter(criterio_opiniones_no_leidas &
+                                                               criterio_opiniones_para_user)
+                if opiniones_no_leidas:
+                    messages.success(request, f"¡Te han publicado una nueva opinión!<br>\
+                                                                La puedes ver en la sección <a class='btn btn-warning \
+                                                                fw-bold' href='/menu_usuario/opiniones'>Mis Opiniones</a>")
+                alertas = True
+                # return redirect('n_pagina_principal')
+
+                login(request, user, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
+                if not alertas:
+                    messages.success(request, f"¡Bienvenid@ {request.user.email}!")
+
+                return redirect('n_pagina_principal')
+            else:
+                messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
+
+
     if request.user.is_authenticated:
         user_auth = request.user
+        usuario = Personas.objects.get(id_usuario=user_auth.id)
+        '''
         try:
             usuario = Personas.objects.get(id_usuario=user_auth.id)
         except Personas.DoesNotExist:
+            
             # Aqui entra cuando volvemos del login por FB pero no hay persona creada y se crea con los datos de FB
             extra_data = SocialAccount.objects.get(user=user_auth).extra_data
             nombre = extra_data.get('given_name')
@@ -307,8 +402,10 @@ def v_pagina_principal(request):
             usuario = Personas(id_usuario=user_auth, nombre=nombre, apellido1=apellido1)
             usuario.save()
             login(request, user_auth, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
+        '''
     else:
         usuario = None
+
 
     numalert = 1
     localizaciones = Localizaciones.objects.all()
@@ -319,15 +416,16 @@ def v_pagina_principal(request):
     crit1 = Q(id_persona_receptor=OuterRef('id_persona_id'))
     viajesProximos = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
                                                      ,'id', 'ciudad_destino', 'fechor_ida'
-                                                     ,'importe_total_asiento',
-                                                     'numero_asientos_libres',
+                                                     ,'importe_total_asiento','fechor_llegada'
+                                                     ,'numero_asientos_libres',
                                                      'estado', 'id_persona_id__pref_conversacion',
-                                                     'id_persona_id__pref_fumar', 'id_persona_id__imagen') \
+                                                     'id_persona_id__pref_fumar', 'id_persona_id__imagen',
+                                                    'distancia_kms','duracion_min') \
         .annotate(count_opiniones=Subquery(Opiniones.objects.filter(crit1).
                                            values('id_persona_receptor').annotate(c=Count('*')).values('c')),
                   avg_puntuacion=Subquery(Opiniones.objects.filter(crit1).
                                            values('id_persona_receptor').annotate(avg=Avg('puntuacion')).values('avg'))) \
-        .filter(Q(fechor_ida__gte=dateNow, numero_asientos_libres__gt=0)) \
+        .filter(Q(fechor_ida__gte=dateNow, numero_asientos_libres__gt=0, estado=1)) \
         .order_by('fechor_ida')[0:4]
     args = {
         'usuario': usuario,
@@ -337,7 +435,7 @@ def v_pagina_principal(request):
         'first_time': first_time,
     }
 
-    return render(request, "pagina_principal.html",args)
+    return render(request, "pagina_principal.html", args)
 
 @check_logued_usuario
 @get_persona_usuario
@@ -348,6 +446,13 @@ def v_detalles_viaje(request, idV, usuario):
     viaje = Viajes.objects.get(id=idV)
     plazas = Plazas.objects.filter(Q(id_viaje=idV, flg_conductor=False, estado__in=(1, 2))) # plazas pendientes o confirmadas
     flg_reserva_pend_conf = plazas.filter(Q(id_persona=idP)).exists()
+    flg_reserva_confirmada = plazas.filter(Q(id_persona=idP, estado=2)).exists()
+
+    if flg_reserva_confirmada and viaje.estado == 1:
+        messages.success(request, "¡¡¡Enhorabuena, tu plaza ha sido confirmada!!!\
+                                    <p>Ahora puedes ver el <strong>número de contacto del conductor</strong> para \
+                                     cerrar los detalles del viaje</p>")
+
     if viaje.id_persona == usuario:
         usuario_conductor = True
     else:
@@ -380,6 +485,7 @@ def v_detalles_viaje(request, idV, usuario):
         'viaje': viaje,
         'plazas': plazas,
         'flg_reserva_pend_conf': flg_reserva_pend_conf,
+        'flg_reserva_confirmada': flg_reserva_confirmada,
         'usuario_conductor': usuario_conductor,
         'opiniones_escritas_x_cond': opiniones_escritas_x_cond,
         'opinion_escrita_a_cond': opinion_escrita_a_cond,
@@ -391,6 +497,8 @@ def v_detalles_viaje(request, idV, usuario):
 def v_cancelar_viaje(request, idV):
     dateNow = timezone.now()
     viaje_cancelado = Viajes.objects.filter(id=idV).update(estado=3, fechor_cancelado=dateNow)
+    # Se cancelan las plazas del viaje
+    plazas_canceladas = Plazas.objects.filter(id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
 
     return redirect('n_detalles_viaje', idV=idV)
 
@@ -401,9 +509,26 @@ def v_reservar_plaza(request, idV, usuario):
 
     viaje = Viajes.objects.get(id=idV)
 
+    # Devolver plazas en viajes pendientes o confirmados que esten en el mismo slot de tiempo
+    criterio_plazas_pend = Q(id_persona_id=request.user.id, estado=1, id_viaje__fechor_ida__range=(viaje.fechor_ida, viaje.fechor_llegada)) \
+               | Q(id_persona=usuario, estado=1, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
+    criterio_plazas_conf = Q(id_persona_id=request.user.id, estado=2, id_viaje__fechor_ida__range=(viaje.fechor_ida, viaje.fechor_llegada)) \
+                           | Q(id_persona_id=request.user.id, estado=2, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
+    plazas_coincidentes = Plazas.objects.filter(criterio_plazas_pend | criterio_plazas_conf)
+
+    #print(plazas_coincidentes)
+    if plazas_coincidentes:
+        messages.error(request, "¡¡¡ERROR!!! Ya tienes una plaza confirmada o pendiente en otro viaje en esta franja \
+                                        horaria, no puedes hacer 2 viajes al mismo tiempo... al menos físicamente :)")
+        return redirect('n_detalles_viaje', idV=idV)
+
     plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1,
                              fechor_pendiente=dateNow)
     plaza_pendiente.save()
+
+    messages.success(request, "¡¡¡Tu solicitud de reserva se ha enviado al conductor!!! Tendrás tu plaza reservada en cuanto sea aceptada.")
+
+    # Enviamos mail al conductor
 
     return redirect('n_detalles_viaje', idV=idV)
 
@@ -415,8 +540,8 @@ def v_aceptar_pasajero(request, idV, idPl):
         viaje.numero_asientos_libres = F("numero_asientos_libres") - 1
         viaje.save()
         plaza_aceptada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=2, fechor_confirmado=dateNow)
-        messages.success(request, "¡¡¡Reserva registrada correctamente!!!")
-        messages.success(request, "¡¡¡Ve preparando la maleta!!!")
+        messages.success(request, "¡¡¡Reserva registrada correctamente!!!<br>\
+                                   ¡¡¡Avisaremos al usuario de que has aceptado su petición!!!")
     else:
         # se ha quedado sin plaza por reserva de otra de forma simultanea, por tanto se cancela ésta
         plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
@@ -438,6 +563,8 @@ def v_cancelar_reserva(request, idV, idPl):
     dateNow = timezone.now()
     plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
 
+    messages.success(request, "¡¡¡Has cancelado tu reserva en este viaje!!!")
+
     return redirect('n_detalles_viaje', idV=idV)
 
 # no validamos aqui el logueo del usuario ya que puede acceder sin él
@@ -452,11 +579,12 @@ def v_buscar_viaje(request):
 
     crit1 = Q(id_persona_receptor=OuterRef('id_persona_id'))
     Usuario_Viajes_Opiniones = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
-                                                        , 'ciudad_destino', 'fechor_ida'
-                                                        , 'importe_total_asiento',
-                                                        'numero_asientos_libres',
-                                                        'estado', 'id_persona_id__pref_conversacion',
-                                                        'id_persona_id__pref_fumar', 'id_persona_id__imagen') \
+                                                        ,'id', 'ciudad_destino', 'fechor_ida'
+                                                        ,'importe_total_asiento', 'fechor_llegada'
+                                                        ,'numero_asientos_libres'
+                                                        ,'estado', 'id_persona_id__pref_conversacion'
+                                                        ,'id_persona_id__pref_fumar', 'id_persona_id__imagen'
+                                                        ,'distancia_kms','duracion_min') \
         .annotate(
             count_opiniones=Subquery(Opiniones.objects.filter(crit1).values('id_persona_receptor')
                                      .annotate(c=Count('*')).values('c')),
@@ -526,43 +654,79 @@ def v_nuevo_viaje(request, usuario, vehiculos):
 
     if request.method == "POST":
         form = ViajesForm(request.POST, user=request.user)
-        if form.is_valid():
+        vueltaform = VueltaViajesForm(request.POST)
+        if form.is_valid() and vueltaform.is_valid():
             viaje = form.save(commit=False)
             v_fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
-            # INICIO Validacion de viajes a pasado
-            if v_fechor_ida < datetime.now():
-                messages.error(request, "¡¡¡No se pueden publicar viajes a pasado!!!")
-                return redirect('n_nuevo_viaje')
-            # FIN Validacion de viajes a pasado
-            # INICIO Validacion de plazas maximas superadas
-            vehiculo_obj = Vehiculos.objects.get(id=viaje.id_vehiculo.id)
-            if viaje.numero_asientos_viaje > getattr(vehiculo_obj, 'numero_asientos'):
-                messages.error(request, "¡¡¡No se pueden ofertar mas plazas de las que el vehiculo acepta!!! Prueba otra vez.")
-                return redirect('n_nuevo_viaje')
-            # FIN Validacion de plazas maximas superadas
-            # INICIO Validacion de plazas mayor que 0
-            if viaje.numero_asientos_viaje <= 0:
-                messages.error(request, "¡¡¡No se pueden publicar viajes sin plazas libres!!!")
-                return redirect('n_nuevo_viaje')
-            # FIN Validacion de plazas mayor que 0
             viaje.id_persona = usuario
             viaje.numero_asientos_libres = viaje.numero_asientos_viaje
             viaje.importe_comision_asiento = viaje.importe_conductor_asiento/10
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
             viaje.fechor_ida = v_fechor_ida
             viaje.id_vehiculo = viaje.id_vehiculo
+            viaje.fechor_pendiente = timezone.now()
+            # Tiempo y Distancia viaje
+            geo = Geolocalizacion()
+            kms_viaje, minutos_viaje = geo.calcular_parametros_conduccion(viaje.ciudad_origen, viaje.ciudad_destino)
+            viaje.distancia_kms = kms_viaje
+            viaje.duracion_min = minutos_viaje
+            viaje.fechor_llegada = v_fechor_ida + timedelta(minutes=minutos_viaje)
+
+            # Pasamos validaciones sobre el viaje de Ida
+            val = ValidacionesViajes(viaje_input=viaje)
+            lista_mensajes = val.viaje_mensajes_salida()
+            for mensaje in lista_mensajes:
+                messages.error(request, mensaje)
+            if lista_mensajes:
+                return redirect('n_nuevo_viaje')
+
+            if form.cleaned_data['flg_ida_vuelta']:
+                v_fechor_vuelta = datetime.combine(vueltaform.cleaned_data['fecha_vuelta'], vueltaform.cleaned_data['hora_vuelta'])
+                viaje_vuelta = Viajes()
+                viaje_vuelta.id_persona = usuario
+                viaje_vuelta.id_vehiculo = viaje.id_vehiculo
+                viaje_vuelta.numero_asientos_viaje = vueltaform.cleaned_data['numero_asientos_vuelta']
+                viaje_vuelta.numero_asientos_libres = vueltaform.cleaned_data['numero_asientos_vuelta']
+                viaje_vuelta.ciudad_origen = vueltaform.cleaned_data['ciudad_origen_vuelta']
+                viaje_vuelta.ciudad_destino = vueltaform.cleaned_data['ciudad_destino_vuelta']
+                viaje_vuelta.fecha_ida = vueltaform.cleaned_data['fecha_vuelta']
+                viaje_vuelta.hora_ida = vueltaform.cleaned_data['hora_vuelta']
+                viaje_vuelta.importe_conductor_asiento = vueltaform.cleaned_data['importe_conductor_asiento_vuelta']
+                viaje_vuelta.importe_comision_asiento = viaje_vuelta.importe_conductor_asiento / 10
+                viaje_vuelta.importe_total_asiento = viaje_vuelta.importe_comision_asiento + viaje_vuelta.importe_conductor_asiento
+                viaje_vuelta.fechor_ida = v_fechor_vuelta
+                viaje_vuelta.fechor_pendiente = timezone.now()
+                viaje_vuelta.flg_ida_vuelta = True
+                # Pasamos validaciones sobre el viaje de Vuelta
+                val = ValidacionesViajes(viaje_vuelta)
+                lista_mensajes = val.val_mensajes_salida()
+                for mensaje in lista_mensajes:
+                    messages.error(request, "(Viaje de Vuelta)" + mensaje)
+                if lista_mensajes:
+                    return redirect('n_nuevo_viaje')
+            # Al pasar todas las validaciones guardamos los viajes:
+            # Guardamos el VIAJE
             viaje.save()
-            #Insertamos la plaza del conductor
+            # Insertamos la plaza del conductor
             plaza_conductor = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=True, estado=2)
             plaza_conductor.save()
-            messages.success(request, "¡¡¡Viaje publicado correctamente!!!.")
+            messages.success(request, "¡¡¡Viaje publicado correctamente!!!")
+            if form.cleaned_data['flg_ida_vuelta']:
+                # Guardamos el VIAJE de VUELTA
+                viaje_vuelta.save()
+                # Insertamos la plaza del conductor
+                plaza_conductor_vuelta = Plazas(id_persona=usuario, id_viaje=viaje_vuelta, flg_conductor=True, estado=2)
+                plaza_conductor_vuelta.save()
+                messages.success(request, "¡¡¡Y también hemos publicado el viaje de vuelta!!!")
+
             return redirect('n_pagina_principal')
         else:
             messages.error(request, "¡¡¡ERROR. Viaje no publicado!!!.")
             return redirect('n_pagina_principal')
     else:
         form = ViajesForm(user=request.user)
-        args.update({'form': form})
+        vueltaform = VueltaViajesForm()
+        args.update({'form': form, 'vueltaform': vueltaform})
         return render(request, 'nuevo_viaje.html', args)
 
 def v_listado_viajes(request):
@@ -571,28 +735,6 @@ def v_listado_viajes(request):
     args = {"viajes": viajesListados}
 
     return render(request, "listado_viajes.html", args)
-
-@check_logued_usuario
-@get_persona_usuario
-def v_menu_usuario(request, usuario):
-    args = {
-            "usuario": usuario
-            }
-    if request.method == "POST":
-        form = PersonasForm(request.POST, request.FILES, instance=usuario)
-        if form.is_valid():
-            persona = form.save()
-            persona.save()
-            messages.success(request, "¡¡¡Datos de Usuario actualizados correctamente!!!")
-            return redirect('n_menu_usuario')
-        else:
-            messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!!")
-            return redirect('n_menu_usuario')
-    else:
-        # Se crea un form con la información del usuario logueado
-        form = PersonasForm(instance=usuario)
-        args.update({"form": form})
-        return render(request, 'menu_usuario.html', args)
 
 @check_logued_usuario
 @get_persona_usuario
@@ -711,8 +853,13 @@ def v_menu_usuario_preferencias(request, usuario):
 @check_logued_usuario
 @get_persona_usuario
 def v_menu_usuario_opiniones(request, usuario):
+
+    # Se actualizan los mensajes como leidos
+    Opiniones.objects.filter(id_persona_receptor=usuario).update(flg_leido=True)
+    
     opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
     opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=usuario)
+
 
     # Se crea un diccionario con las categorias de opiniones y su valor
     opiniones_cat_dict = dict()
@@ -829,30 +976,32 @@ def v_menu_usuario_contrasenya(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_perfil_publico(request, usuario):
+def v_perfil_publico(request, idP, usuario):
+
+    usuario_perfil = Personas.objects.get(id=idP)
 
     try:
-        vehiculo = Vehiculos.objects.filter(id_persona=usuario).first()
+        vehiculo = Vehiculos.objects.filter(id_persona=usuario_perfil).first()
     except vehiculo.DoesNotExist:
         vehiculo = None
 
     try:
-        viajesConductor = Viajes.objects.all().filter(id_persona=usuario)
+        viajesConductor = Viajes.objects.all().filter(id_persona=usuario_perfil)
     except viajesConductor.DoesNotExist:
         viajesConductor = None
 
     try:
-        reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
+        reservasPasajero = Plazas.objects.all().filter(id_persona=usuario_perfil)
     except reservasPasajero.DoesNotExist:
         reservasPasajero = None
 
     try:
-        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
+        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario_perfil)
     except opiniones_recibidas.DoesNotExist:
         opiniones_recibidas = None
     total_viajesConductor = viajesConductor.count()
     total_viajesConductor_Canc = viajesConductor.filter(estado=3).count()
-    total_viajesPasajero = reservasPasajero.count()
+    total_viajesPasajero = reservasPasajero.filter(estado=2).count()
     total_viajesPasajero_Canc = reservasPasajero.filter(estado=3).count()
     avg_puntuacion = opiniones_recibidas.aggregate(avg_punt=Avg('puntuacion'))
     avg_puntuacion_Conductor = opiniones_recibidas.filter(id_viaje__in = viajesConductor).aggregate(avg_punt=Avg('puntuacion'))
@@ -867,6 +1016,7 @@ def v_perfil_publico(request, usuario):
 
     args = {
         "usuario": usuario,
+        "usuario_perfil": usuario_perfil,
         "vehiculo": vehiculo,
         "total_viajesConductor": total_viajesConductor,
         "total_viajesConductor_Canc": total_viajesConductor_Canc,
@@ -893,9 +1043,14 @@ def v_mis_viajes(request, usuario):
         #listado_viajes = viajesConductor | viajesPasajero
         #listado_plazas_viajes = Plazas.objects.all().filter(id_viaje__in=listado_viajes)
 
-        plazas = Plazas.objects.all().filter(id_persona=usuario)
-        listado_viajes = Viajes.objects.all().filter(id__in=plazas.values_list('id_viaje').distinct())
-        listado_plazas_viajes = Plazas.objects.all().filter(id_viaje__in=listado_viajes).order_by('-flg_conductor')
+        plazas = Plazas.objects.all().filter(Q(id_persona=usuario) & (~Q(estado=3)) )  #excluye plazas rechazadas
+        listado_viajes = Viajes.objects.all().filter(id__in=plazas.values_list('id_viaje')).order_by('-fechor_ida')
+        listado_viajes_distinct = listado_viajes.distinct()
+        listado_plazas_viajes = Plazas.objects\
+            .values('id_viaje__id','id_persona__id','id_persona__imagen','id_persona__nombre','flg_conductor')\
+            .filter(id_viaje__in=listado_viajes_distinct).order_by('-flg_conductor').distinct()
+        print(listado_plazas_viajes)
+
 
     except plazas.DoesNotExist:
         listado_viajes = None
@@ -919,6 +1074,10 @@ def v_mis_mensajes(request, usuario):
 
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
+
+    # Se actualizan los mensajes como leidos
+    Mensajes.objects.filter(id_persona_receptor=usuario).update(flg_leido=True)
+
 
     listado_conversaciones = Mensajes.objects.values('id_persona_publicador__nombre', 'id_persona_publicador__apellido1', 'id_persona_publicador__id', 'id_persona_publicador__imagen'
                                                         , 'id_persona_receptor__nombre', 'id_persona_receptor__apellido1', 'id_persona_receptor__id', 'id_persona_receptor__imagen'
@@ -952,9 +1111,11 @@ def v_conversacion(request, idPc, usuario):
             "listado_mensajes": listado_mensajes
             }
     if request.method == "POST":
-        # Insertamos el mensaje
         mensaje = request.POST.get('mensaje', False)
-        nuevo_mensaje = Mensajes(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor, flg_leido=False, mensaje=mensaje)
+        # Codificamos el mensaje para evitar palabrotas
+        mensaje_limpio = codificar_numeros(mensaje)
+        # Insertamos el mensaje
+        nuevo_mensaje = Mensajes(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor, flg_leido=False, mensaje=mensaje_limpio)
         nuevo_mensaje.save()
         return render(request, "conversacion.html", args)
     else:
@@ -962,10 +1123,12 @@ def v_conversacion(request, idPc, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_opiniones_recibidas_main(request, usuario):
+def v_opiniones_recibidas_main(request, idPr, usuario):
+
+    usuario_receptor = Personas.objects.get(id=idPr)
 
     try:
-        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
+        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario_receptor)
     except opiniones_recibidas.DoesNotExist:
         opiniones_recibidas = None
 
@@ -991,6 +1154,41 @@ def v_opiniones_recibidas_main(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
+def v_nueva_opinion (request, idV, idPr, idO, usuario):
+
+    viaje = Viajes.objects.get(id=idV)
+    persona_receptor = Personas.objects.get(id=idPr)
+    datos = {
+        "usuario": usuario,
+        "persona_receptor": persona_receptor,
+    }
+    if request.method == "POST":
+        if idO != 0:  # si el argumento idOpinion es informado es porque se va a insertar una respuesta de esa idOpinion
+            Opiniones.objects.filter(id=idO).update(flg_opinion_respondida=True)
+            opinion_respuesta = Opiniones.objects.get(id=idO)
+        else:
+            opinion_respuesta = None
+
+        rating = int(request.POST.get("rating"))
+        opinion = request.POST.get("opinion")
+        # Se inserta la opinión
+        nueva_opinion = Opiniones(id_persona_publicador=usuario,
+                                  id_persona_receptor=persona_receptor,
+                                  id_viaje=viaje,
+                                  puntuacion=rating,
+                                  categoria_puntuacion=rating,
+                                  mensaje_opinion=opinion,
+                                  id_opinion_respuesta=opinion_respuesta,
+                                  fechor_opinion=datetime.now()
+                                  )
+        nueva_opinion.save()
+        messages.success(request, "¡¡¡Muchas gracias!!! Se ha publicado tu reseña!!!")
+        return render(request, "pagina_principal.html", datos)
+
+    return render(request, "nueva_opinion.html", datos)
+
+@check_logued_usuario
+@get_persona_usuario
 def v_contacto(request, usuario):
 
     if request.method == "POST":
@@ -1001,7 +1199,8 @@ def v_contacto(request, usuario):
             send_mail(asunto,
                       mensaje,
                       email,
-                      ["vad.journey@gmail.com"])
+                      ["muvil.group@gmail.com"] #Destinatario puede ser distinto al mail configurado en settings.py
+                      )
             return redirect("/contacto/?valido")
         except:
             return redirect("/contacto/?error")

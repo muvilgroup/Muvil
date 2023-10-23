@@ -1,18 +1,19 @@
+{% extends "base.html" %}
+
 {% load static %}
-{% load pwa %}
+{% load templatetags %}
+{% load pwa_webpush %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	{% progressive_web_app_meta %}
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Página Principal</title>
+{% block base_title %} Pagina Principal {% endblock %}
 
+{% block base_head %} {% progressive_web_app_meta %} {% endblock %}
+
+{% block base_link %}
 	<link type='text/css' href='{% static "css/pagina_principal.css" %}' rel='stylesheet' />
 	<link rel="stylesheet" href="https://unpkg.com/transition-style">
+{% endblock %}
 
+{% block base_style %}
 	<style>
 		.star {
 			width: 20px;
@@ -21,58 +22,10 @@
 		.tarjeta-viaje:hover {
 			transform: scale(1.02); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 		}
-		.boton-3d:hover {
-		  transform: translateY(-4px) translateX(-2px);
-		  box-shadow: 2px 5px 0 0 black;
-		}
-		.boton-3d:is(:hover, :focus) {
-		  outline-offset: 3px;
-		}
-		#welcome-loader {
-			background: #fff url({% static "gif/welcome.gif" %}) no-repeat center center;
-			background-size: 50%;
-			height: 100vh;
-			width: 100%;
-			position: fixed;
-			z-index: 100;
-		}
-		@keyframes circle-out-hesitate {
-		  0% {
-			clip-path: circle(125%);
-		  }
-		  40% {
-			clip-path: circle(40%);
-		  }
-		  100% {
-			clip-path: circle(0%);
-		  }
-		}
-		[transicion-precarga="out:circle:hesitate"] {
-		  	animation: 1.5s circle-out-hesitate cubic-bezier(.25, 1, .30, 1) both;
-		  	animation-delay: 1s;
-		}
 	</style>
-</head>
-<body>
-	{% if first_time < 2 %}
-	<!-- INICIO WELCOME LOADER -->
-	<div id="welcome-loader" transicion-precarga="out:circle:hesitate">
-		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
-		<div hidden>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-		</div>
-		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
-		<!-- FIN WELCOME LOADER -->
-	</div>
-	{% endif %}
+{% endblock %}
 
-	{% include "cabecera_grande.html" %}
-
+{% block base_content %}
 	<!-- INICIO Carrusel-->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
 		<div class="carousel-indicators">
@@ -142,7 +95,9 @@
 				</datalist>
 			</div>
 			<div class="col-6 col-md-2 form-floating p-0 m-0" id="fecha">
-				<input type="date" class="form-control rounded-0 border border-warning" name="inputFecha" id="inputFecha" placeholder="Fecha" required>
+				<input type="date" class="form-control rounded-0 border border-warning"
+					   name="inputFecha" id="inputFecha" placeholder="Fecha"
+					   value="{% now 'Y-m-d' %}" required>
 				<label for="inputFecha" class="form-label">¿Cuando?</label>
 			</div>
 			<div class="col-6 col-md-2 form-floating p-0 m-0 row-auto" id="plazas">
@@ -279,7 +234,7 @@
 							</div>
 							<div class="col-12 ps-5">
 								<p class="duracion-km fw-md-bold">
-									3:10 horas (320km)
+									{{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
 								</p>
 							</div>
 							<div class="col-1 ps-3">
@@ -287,17 +242,19 @@
 							</div>
 							<div class="col-11 fw-bold fs-md-5">
 								<p class="fs-5">
-									{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}} {{ uvo.fechor_ida|time:"H:i" }} - {{uvo.ciudad_destino}}
+									{{uvo.fechor_llegada|date:"SHORT_DATE_FORMAT"}} {{ uvo.fechor_llegada|time:"H:i" }} - {{uvo.ciudad_destino}}
 								</p>
 							</div>
 						</div>
 						<div class="row align-items-center contenedor-conductor">
 							<div class="col-lg-2 col-3 ps-3 img-container-journey">
-							{% if uvo.id_persona_id__imagen %}
-                                <img src="{{MEDIA_URL}}{{uvo.id_persona_id__imagen}}">
-							{% else %}
-								<img src='{% static "img/avatar-mujer.jpg" %}'>
-                            {% endif %}
+								<a href="{% url 'n_perfil_publico' idP=uvo.id_persona_id %}">
+									{% if uvo.id_persona_id__imagen %}
+                                	<img src="{{MEDIA_URL}}{{uvo.id_persona_id__imagen}}">
+									{% else %}
+									<img src='{% static "img/avatar-mujer.jpg" %}'>
+                            		{% endif %}
+								</a>
 							</div>
 							{% if uvo.avg_puntuacion %}
 							<div class="col-2 col-md-2 fw-bold fs-3 d-flex">
@@ -305,7 +262,7 @@
 								<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 							</div>
 							<div class="col-2 col-md-3">
-								<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' %}">
+								<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
 									({{uvo.count_opiniones}} opiniones)
 								</a>
 							</div>
@@ -364,9 +321,9 @@
 							</div>
 							<div class="col-12 d-flex justify-content-center">
 								<a class="btn btn-warning boton-3d"
-								{% if numAlert == 1 or numAlert == 3 %}
+								{% if not user.is_authenticated %}
 									href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
-								{% elif numAlert == 2 %}
+								{% else %}
 								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
 								{% endif %} >
 									<b>Reservar Plaza</b>
@@ -380,30 +337,9 @@
 	</div>
 	{% endif %}
 	<!-- FIN Próximas Salidas -->
+{% endblock %}
 
-
-	{% include "pie_pagina.html" %}
-
+{% block base_script %}
 	<script src="{% static 'js/pagina_principal.js' %}"></script>
-	<script>
-		var loader = document.getElementById("welcome-loader");
-
-		window.addEventListener("load", function(){
-			loader.style.display = "none";
-		})
-	</script>
-	<script>
-		// Para mostrar un elemento solo cuando se accede a la pagina por 1a vez
-		// verifica que el localStorage sea null para mostrar el mensaje
-		if( !localStorage.getItem('ingreso') ){
-
-			document.getElementById('welcome-loader2').style.display= 'block';
-			// estableces el localstorage en 1 para que no se vuelva a cumplir la condicion
-			localStorage.setItem('ingreso',1);
-
-		} else {
-			document.getElementById('welcome-loader2').style.display= 'none';
-		}
-	</script>
-</body>
-</html>
+	<script src="{% static 'js/fontawesome_5.15.4/all.min.js' %}"></script>
+{% endblock %}

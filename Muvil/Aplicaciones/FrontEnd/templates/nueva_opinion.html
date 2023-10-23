@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block base_title %} Reseña {% endblock %}
+
+{% block base_link %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}
+
+{% block base_style %}
+    <style>
+        /* Estilos para el formulario */
+        .container {
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .rating {
+            text-align: center;
+        }
+
+        .rating i {
+            font-size: 36px;
+            cursor: pointer;
+        }
+
+        .rating i.fa-star:before {
+            color: #ddd;
+        }
+
+        .rating i.fa-star.checked:before {
+            color: #ffcc00;
+        }
+
+        .rating-word {
+            font-size: 18px;
+			font-weight: bold;
+            margin-top: 10px;
+			text-align: center;
+        }
+
+        /* Estilos para el botón */
+        .btn-primary {
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+{% endblock %}
+
+{% block base_content %}
+    <div class="container mt-5">
+		<h1 class="text-center border-bottom border-warning mb-3 pb-1">¡Gracias por tu opinión!</h1>
+        <h1 class="text-center fs-5">¿Como ha ido el viaje con <strong>muvil.group@muvil.com?</strong></h1>
+        <div class="row">
+            <div class="col-md-12 my-4">
+                <form method="POST" action=""> {% csrf_token %}
+                    <div class="form-group">
+                        <!--<label for="puntuacion"><i class="fas fa-star"></i> Puntuación:</label>-->
+                        <div class="rating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                            <input type="hidden" name="rating" id="rating">
+                        </div>
+                        <div class="rating-word" id="rating-word"><i class="far fa-question-circle"></i> Selecciona una calificación</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="opinion"><i class="far fa-edit"></i> Descríbenos tu experiencia...</label>
+                        <textarea class="form-control" id="opinion" name="opinion" rows="5"></textarea>
+                    </div>
+					<div class="row d-flex justify-content-center">
+						<button type="submit" class="col-12 col-md-4 btn btn-warning btn-block"><i class="fas fa-check"></i> Enviar Reseña</button>
+					</div>
+				</form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block base_script %}
+    <script>
+        $(document).ready(function () {
+            $('.rating i').click(function () {
+                const rating = $(this).data('rating');
+                $('#rating').val(rating);
+                $('.rating i').removeClass('checked');
+                $(this).prevAll().addClass('checked');
+                $(this).addClass('checked');
+                setRatingWord(rating);
+            });
+
+            function setRatingWord(rating) {
+                const ratingWordElement = document.getElementById('rating-word');
+                let ratingWord = '';
+                switch (rating) {
+                    case 1:
+                        ratingWord = '<i class="far fa-thumbs-down"></i> Muy mal';
+                        break;
+                    case 2:
+                        ratingWord = '<i class="far fa-frown"></i> Mal';
+                        break;
+                    case 3:
+                        ratingWord = '<i class="far fa-meh"></i> Bien';
+                        break;
+                    case 4:
+                        ratingWord = '<i class="far fa-smile"></i> Muy bien';
+                        break;
+                    case 5:
+                        ratingWord = '<i class="far fa-thumbs-up"></i> Excelente';
+                        break;
+                }
+                ratingWordElement.innerHTML = ratingWord;
+            }
+        });
+    </script>
+{% endblock %}
+

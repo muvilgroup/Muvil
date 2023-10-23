@@ -1,0 +1,35 @@
+{% extends "menu_usuario_navbar.html" %}
+
+{% load static %}
+
+{% block titulo %} Contraseña {% endblock %}
+
+{% block contenido_tab %}
+
+
+				<div class="tab-pane fade show active" id="v-pills-contrasena" role="tabpanel" aria-labelledby="v-pills-contrasena-tab">
+					<!-- INICIO Cambiar Contraseña -->
+					<div class="row">
+						<div class="col-12 px-3 pt-2">
+							<h3 class="border-bottom border-5 border-warning">Cambiar Contraseña</h3>
+						</div>
+					</div>
+					<form method="POST" class="px-2"> {% csrf_token %}
+						<div class="row">
+							<div class="col-auto justify-content-center d-lg-block d-none" >
+								<img class="rounded mx-auto d-block" src='{% static "img/Key.png" %}'>
+							</div>
+							<div class="col">
+								{{ form }}
+							</div>
+						</div>
+						<div class="row justify-content-center my-2">
+							<button type="submit" id="btn-guardar" class="col-auto btn btn-warning border-light border-3 fw-bold">
+								Cambiar Contraseña
+							</button>
+						</div>
+					</form>
+					<!-- FIN Contraseña -->
+				</div>
+
+{% endblock %}

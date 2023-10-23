@@ -1,13 +1,14 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Mis Viajes</title>
+{% block base_title %} Mis Viajes {% endblock %}
 
+{% block base_link %}
+	<link type='text/css' href='{% static "css/mis_viajes.css" %}' rel='stylesheet' />
+{% endblock %}
+
+{% block base_style %}
 	<style>
 		.img-container-driver{
             width:60px;
@@ -23,17 +24,17 @@
         	border-style: none none none solid; /* top | right | bottom | left */
 		}
     </style>
+{% endblock %}
 
-	<link type='text/css' href='{% static "css/mis_viajes.css" %}' rel='stylesheet' />
-
-</head>
-
-<body>
-
-	{% include "cabecera.html" %}
-
+{% block base_content %}
 	<div class="container-lg mt-5">
 		<div class="row justify-content-around">
+			<div class="col-12 d-flex justify-content-center py-3">
+				<a class="btn btn-warning rounded col-12 col-md-4 boton-3d" href="{% url 'n_nuevo_viaje' %}">
+					<i class="fas fa-square-plus fa-lg"></i>
+					<span class="fs-5 fw-bold">Publicar nuevo viaje</span>
+				</a>
+			</div>
 			<aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-misviajes border">
 				<h4 class="fw-bold border-bottom border-3 border-warning">
 					Filtrar por...
@@ -70,23 +71,25 @@
 						</div>
 						<div class="row" id="listado-pasajeros">
 							{% for p in listado_plazas_viajes %}
-							{% if p.id_viaje.id == v.id %}
+							{% if p.id_viaje__id == v.id %}
 							<div class="col-auto" id="usuario-viaje">
 								<div class="col-12 align-self-center">
 									<div class="img-responsive img-container-driver">
-										{% if p.id_persona.imagen %}
-										<img style="cursor: pointer;"
-											 class="rounded-circle"
-											 src="{{ p.id_persona.imagen.url }}">
-										{% else %}
-										<img style="cursor: pointer;"
-											 class="rounded-circle"
-											 src='{% static "img/avatar-mujer.jpg" %}'>
-										{% endif %}
+										<a href="{% url 'n_perfil_publico' idP=p.id_persona__id %}">
+											{% if p.id_persona__imagen %}
+											<img style="cursor: pointer;"
+												 class="rounded-circle"
+												 src="{{MEDIA_URL}}{{ p.id_persona__imagen }}">
+											{% else %}
+											<img style="cursor: pointer;"
+												 class="rounded-circle"
+												 src='{% static "img/avatar-mujer.jpg" %}'>
+											{% endif %}
+										</a>
 									</div>
 								</div>
 								<div class="col-12 fw-bold text-center">
-									{{p.id_persona.nombre}}
+									{{p.id_persona__nombre}}
 								</div>
 								<div class="col-12 text-center">
 									{% if p.flg_conductor %}
@@ -98,68 +101,6 @@
 							</div>
 							{% endif %}
 							{% endfor %}
-							<!--
-							<div class="col-2" id="usuario-viaje">
-								<div class="col-12 align-self-center">
-									<div class="img-container-driver img-responsive">
-										<img style="cursor: pointer;"
-											 class="rounded-circle"
-											 src='{% static "img/personas/5.jpg" %}'>
-									</div>
-								</div>
-								<div class="col-12 fw-bold text-center">
-									Cecilia
-								</div>
-								<div class="col-12 text-center">
-									Pasajero
-								</div>
-							</div>
-							<div class="col-2" id="usuario-viaje">
-								<div class="col-12 align-self-center">
-									<div class="img-container-driver img-responsive">
-										<img style="cursor: pointer;"
-											 class="rounded-circle"
-											 src='{% static "img/personas/6.jpg" %}'>
-									</div>
-								</div>
-								<div class="col-12 fw-bold text-center">
-									Lola
-								</div>
-								<div class="col-12 text-center">
-									Pasajero
-								</div>
-							</div>
-							<div class="col-2" id="usuario-viaje">
-								<div class="col-12 align-self-center">
-									<div class="img-container-driver img-responsive">
-										<img style="cursor: pointer;"
-											 class="rounded-circle"
-											 src='{% static "img/personas/11.jpg" %}'>
-									</div>
-								</div>
-								<div class="col-12 fw-bold text-center">
-									Manuel
-								</div>
-								<div class="col-12 text-center">
-									Pasajero
-								</div>
-							</div>
-							<div class="col-2" id="usuario-viaje">
-								<div class="col-12 align-self-center">
-									<div class="img-container-driver img-responsive">
-										<img style="cursor: pointer;"
-											 class="rounded-circle"
-											 src='{% static "img/personas/11.jpg" %}'>
-									</div>
-								</div>
-								<div class="col-12 fw-bold text-center">
-									Manuel
-								</div>
-								<div class="col-12 text-center">
-									Pasajero
-								</div>
-							</div>
-							-->
 						</div>
 					</div>
 					<div class="col-4 me-3 align-self-center">
@@ -185,7 +126,7 @@
 								por pasajero
 							</div>
 							<div class="col-12 pb-2 text-center">
-								<a href="{% url 'n_opiniones_recibidas_main' %}">
+								<a href="{% url 'n_opiniones_recibidas_main' idPr=v.id_persona_id %}">
 									Ver Opiniones
 								</a>
 							</div>
@@ -204,7 +145,5 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
 
-</body>
-
-</html>
