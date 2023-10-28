@@ -17,6 +17,7 @@ from django.core.mail import send_mail
 from .validaciones import ValidacionesViajes
 from .token import token_activacion_usuario
 from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones
+from allauth.socialaccount.models import SocialAccount
 from ..users.admin import UserCreationForm as CustomUserCreationForm
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -387,22 +388,23 @@ def v_pagina_principal(request):
 
 
     if request.user.is_authenticated:
+        #usuario = Personas.objects.get(id_usuario=request.user.id)
         user_auth = request.user
-        usuario = Personas.objects.get(id_usuario=user_auth.id)
-        '''
         try:
             usuario = Personas.objects.get(id_usuario=user_auth.id)
         except Personas.DoesNotExist:
-            
             # Aqui entra cuando volvemos del login por FB pero no hay persona creada y se crea con los datos de FB
             extra_data = SocialAccount.objects.get(user=user_auth).extra_data
-            nombre = extra_data.get('given_name')
-            apellido1 = extra_data.get('family_name')
-            imagen_url = extra_data.get('picture')
-            usuario = Personas(id_usuario=user_auth, nombre=nombre, apellido1=apellido1)
-            usuario.save()
-            login(request, user_auth, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
-        '''
+            initial_values = {
+                "nombre": extra_data.get('given_name'),
+                "apellido1": extra_data.get('family_name'),
+                "imagen": extra_data.get('picture')
+            }
+            request.session['google_initial_values'] = initial_values
+            return redirect('n_nuevo_usuario')
+            #usuario = Personas(id_usuario=user_auth, nombre=nombre, apellido1=apellido1)
+            #usuario.save()
+            #login(request.user, user_auth, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
     else:
         usuario = None
 
@@ -627,7 +629,12 @@ def v_nuevo_usuario(request):
                     messages.error(request, f"{field.label}: {field.errors}")
             return redirect('n_nuevo_usuario')
     else:
-        form = PersonasForm()
+        google_account_values = request.session.get('google_initial_values')
+        if google_account_values:
+            messages.success(request, "¡¡¡Se han recogido los datos de tu cuenta, solo falta completar el resto!!!")
+            form = PersonasForm(None, initial=google_account_values)
+        else:
+            form = PersonasForm()
         return render(request, 'nuevo_usuario.html', {'form': form})
 
 def v_listado_usuarios(request):

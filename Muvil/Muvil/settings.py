@@ -52,6 +52,19 @@ INSTALLED_APPS = [
     'import_export',
     # phone numbers
     'phonenumber_field',
+    # social auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to enable:
+    #'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.microsoft',
+    #'allauth.socialaccount.providers.paypal',
+    #'allauth.socialaccount.providers.reddit',
+    #'allauth.socialaccount.providers.telegram',
+    #'allauth.socialaccount.providers.twitter',
 ]
 
 SITE_ID = 1
@@ -68,6 +81,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # social auth
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Muvil.urls'
@@ -75,7 +90,7 @@ ROOT_URLCONF = 'Muvil.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -180,15 +195,34 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'Aplicaciones/FrontEnd/media')
 
 AUTHENTICATION_BACKENDS = [
     'Aplicaciones.users.backends.CustomEmailAuthBackend',
-    #'allauth.account.auth_backends.AuthenticationBackend'
+    'allauth.account.auth_backends.AuthenticationBackend'
     ]
 
 ACCOUNT_FORMS = {'signup': 'Aplicaciones.users.admin.UserCreationForm'}
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 #################################
 ###  3rd PARTIES AUTH  ##########
 #################################
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '944380967912-p3te5bu5nct37384av92igc2pdt0nuaf.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
+'''
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -200,6 +234,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+'''
 
 #################################
 ###  EMAIL  #####################

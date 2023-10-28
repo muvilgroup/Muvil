@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -149,6 +150,12 @@
 					  <a class="row form-group pe-1 d-flex justify-content-end" href="{% url 'n_resetear_contrasenya' %}">¿Has olvidado tu contraseña?</a>
 					  <div class="pb-3 d-flex justify-content-center">
 						<input type="submit" class="btn btn-warning col-5 text-dark fw-bold" value="Iniciar Sesión"/>
+					  </div>
+					  <div class="d-flex justify-content-center btn btn-outline-info">
+						<a href="{% provider_login_url 'google'%}?next=/">
+							<i class="fab fa-google me-1"></i>
+							<strong>Inicia sesión con Google</strong>
+						</a>
 					  </div>
 					</form>
 				  </div>
