@@ -122,18 +122,18 @@ WSGI_APPLICATION = 'Muvil.wsgi.application'
         'DATABASE_PORT':'5432'
     }
 }'''
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'rsxkoykr',
-        'USER': 'rsxkoykr',
-        'PASSWORD': 'rhruYV5osl80to7a-Aca7eui-QMZk7Wy',
-        'HOST': 'kandula.db.elephantsql.com',
+        'NAME': 'muvil_db',
+        'USER': 'admin_db',
+        'PASSWORD': 'Cavives8',
+        'HOST': 'localhost',
         'DATABASE_PORT': '5432'
     }
 }
-'''
+
 '''
 DATABASES = {
     'default': {
@@ -142,11 +142,7 @@ DATABASES = {
     }
 }
 '''
-POSTGRESQL_NAME = 'muvil_db'
-POSTGRESQL_USER = 'admin_db'
-POSTGRESQL_PASS = 'Cavives8'
-POSTGRESQL_HOST = 'localhost'
-POSTGRESQL_PORT = 5432
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
