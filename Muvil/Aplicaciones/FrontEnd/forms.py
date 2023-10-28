@@ -287,7 +287,7 @@ class ResetearPassForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super(ResetearPassForm, self).__init__(*args, **kwargs)
 
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 class RegistrarUsuarioForm(CustomUserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
@@ -296,7 +296,7 @@ class RegistrarUsuarioForm(CustomUserCreationForm):
         model = get_user_model()
         fields = ['email', 'password1', 'password2']
 
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 class ImportExportForm(forms.Form):
     #modelo = forms.CharField(label="Modelo", required=True)
