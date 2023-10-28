@@ -88,7 +88,7 @@ def v_activar(request, uidb64, token):
                                   "completa los datos de tu usuario y empieza a viajar!</p>")
         return redirect('n_nuevo_usuario')
     elif usuario is not None and not token_activacion_usuario.check_token(usuario, token):
-        # El enlace ha caducado y se deb eliminar el usuario para que pueda volver a registrarlo.
+        # El enlace ha caducado y se debe eliminar el usuario para que pueda volver a registrarlo.
         usuario.delete()
         messages.error(request, "¡El enlace de activación ha caducado! \
                                 <p>¡Debes repetir el proceso de alta de usuario!</p>")
