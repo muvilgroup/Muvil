@@ -134,14 +134,19 @@ DATABASES = {
     }
 }
 '''
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'Muvil.sqlite3',
     }
 }
-
+'''
+POSTGRESQL_NAME = 'muvil_db'
+POSTGRESQL_USER = 'admin_db'
+POSTGRESQL_PASS = 'Cavives8'
+POSTGRESQL_HOST = 'localhost'
+POSTGRESQL_PORT = 5432
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
