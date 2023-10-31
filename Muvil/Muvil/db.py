@@ -14,7 +14,7 @@ POSTGRE_MUVIL = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'muvil_db',
         'USER': 'admin_db',
-        'PASSWORD': 'Cavives8',
+        'PASSWORD': 'Cavives8_$',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432'
     }
