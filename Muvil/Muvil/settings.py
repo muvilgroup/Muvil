@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import db
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -112,41 +113,8 @@ WSGI_APPLICATION = 'Muvil.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-'''DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Muvil',
-        'USER':'postgres',
-        'PASSWORD':'SuperUsuario2022.',
-        'HOST':'127.0.0.1',  # localhost también valdría
-        'DATABASE_PORT':'5432'
-    }
-}'''
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'muvil_db',
-        'USER': 'admin_db',
-        'PASSWORD': 'Cavives8',
-        'HOST': 'localhost',
-        'DATABASE_PORT': '5432'
-    }
-}
-'''
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'Muvil.sqlite3',
-    }
-}
-'''
-POSTGRESQL_NAME='muvil_db'
-POSTGRESQL_USER='admin_db'
-POSTGRESQL_PASS='Cavives8'
-POSTGRESQL_HOST='localhost'
-POSTGRESQL_PORT='5432'
+DATABASES = db.SQLITE
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
