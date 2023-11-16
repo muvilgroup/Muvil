@@ -31,12 +31,22 @@ categorias_puntuacion = (
     (5, 'Excelente')
 )
 
-estados_transferencias = (
+estado_transferencia = (
     (1, 'Pendiente'),
     (2, 'Realizado'),
-    (3, 'Cancelado'),
+    (3, 'Reembolso'),
     (4, 'Denegado'),
     (5, 'Error')
+)
+
+tipo_transferencia = (
+    ('C', 'Cobro'),
+    ('P', 'Pago')
+)
+
+tipo_descuento = (
+    ('OP', 'Opinion Publicada'),
+    ('O', 'Otros')
 )
 
 estados_viajes = (

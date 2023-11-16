@@ -1,10 +1,8 @@
 from django.db import models
-from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estados_transferencias, estados_viajes, \
-    estados_plazas, equipaje
-from django.core.validators import MaxValueValidator, MinValueValidator
-from ..users.models import Usuario, UsuarioManager
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estado_transferencia, estados_viajes, \
+    estados_plazas, equipaje, tipo_transferencia, tipo_descuento
+from ..users.models import Usuario
 from django.core.validators import RegexValidator
-from phonenumber_field.modelfields import PhoneNumberField
 
 class Personas (models.Model):
     phoneNumberRegex = RegexValidator(regex=r"^\+?1?\d{8,15}$")
@@ -69,6 +67,7 @@ class Viajes (models.Model):
     fecha_ida = models.DateField(blank=True, null=True)
     numero_asientos_viaje = models.PositiveSmallIntegerField()
     equipaje = models.CharField(max_length=2, choices=equipaje, default='EM')
+    flg_confirmacion_auto = models.BooleanField(default=True)
     estado = models.PositiveIntegerField(choices=estados_viajes, default=1)
     importe_total_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
     importe_comision_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)
@@ -128,8 +127,11 @@ class Plazas (models.Model):
 class Transferencias (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
-    importe = models.DecimalField(max_digits = 5,decimal_places = 2, default=0.0)
-    estado = models.PositiveIntegerField(choices=estados_transferencias, default=1)
+    tipo_transferencia = models.CharField(max_length=1, choices=tipo_transferencia, default='C')
+    importe = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    tipo_descuento = models.CharField(max_length=2, choices=tipo_descuento, default='OP')
+    importe_descuento = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    estado = models.PositiveIntegerField(choices=estado_transferencia, default=1)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
@@ -141,7 +143,7 @@ class MetodosPago (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     importe = models.DecimalField(max_digits = 5,decimal_places = 2, default=0.0)
-    estado = models.PositiveIntegerField(choices=estados_transferencias, default=1)
+    estado = models.PositiveIntegerField(choices=estado_transferencia, default=1)
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 

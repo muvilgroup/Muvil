@@ -44,7 +44,7 @@
                   {% if m.id_persona_publicador_id == idP %} Tú {% else %} {{m.id_persona_publicador.nombre}} {% endif %}
                 </div>
                 <div class="p-2 bg-light rounded-end">{{m.mensaje}}</div>
-                <div class="ms-auto text-dark">{{m.fec_created}}</div>
+                <div class="ms-auto text-dark">{{m.fec_created|date:"SHORT_DATETIME_FORMAT"}}</div>
               </div>
             {% endfor %}
             </li>

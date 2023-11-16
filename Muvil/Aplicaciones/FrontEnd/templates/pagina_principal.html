@@ -73,6 +73,10 @@
 	</div>
 	<!-- FIN Carrusel-->
 
+	<div>
+		<iframe class="border" title="titulo"  sandbox="allow-top-navigation allow-scripts allow-same-origin allow-forms" src="https://api.paycomet.com/gateway/ifr-bankstore" width="400" height="525" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" style="border: 0px solid #000000; padding: 0px; margin: 0px"></iframe>
+	</div>
+
 	<!-- INICIO Barra Busqueda -->
 	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
@@ -326,6 +330,11 @@
 								{% else %}
 								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
 								{% endif %} >
+									{% if uvo.flg_confirmacion_auto %}
+									<i class="fas fa-wand-sparkles fa-lg"></i>
+									{% else %}
+									<i class="fas fa-hand-point-up fa-lg"></i>
+									{% endif %}
 									<b>Reservar Plaza</b>
 								</a>
 							</div>

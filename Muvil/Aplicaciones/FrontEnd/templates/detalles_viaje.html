@@ -189,10 +189,19 @@
 				</div>
 			{% if viaje.estado != 3 %} <!-- Viaje Cancelado -->
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 pt-2">
+					<div class="col-12 px-3 pt-2">
 						<div class="border-bottom border-warning border-3">
 							<i class="fas fa-person-walking-luggage fa-xl"></i>
 							<span class="fs-4 fw-bold mx-2">Pasajeros</span>
+							(
+							{% if viaje.flg_confirmacion_auto %}
+							<i class="fas fa-wand-sparkles fa-lg"></i>
+							: confirmación automática
+							{% else %}
+							<i class="fas fa-hand-point-up fa-lg"></i>
+							: confirmación manual
+							{% endif %}
+							)
 						</div>
 					</div>
 				</div>

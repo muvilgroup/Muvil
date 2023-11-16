@@ -79,7 +79,7 @@ class PersonasForm(ModelForm):
 class ViajesForm(ModelForm):
     class Meta:
         model = Viajes
-        fields = ('ciudad_origen','ciudad_destino','fecha_ida','hora_ida', 'flg_ida_vuelta',
+        fields = ('ciudad_origen','ciudad_destino','fecha_ida','hora_ida', 'flg_ida_vuelta', 'flg_confirmacion_auto',
                   'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo', 'equipaje')
         widgets = {
             'ciudad_origen': TextInput(attrs={
@@ -127,6 +127,10 @@ class ViajesForm(ModelForm):
                 'type': "checkbox",
                 'onclick': "mostrarVuelta()",
                 'id': "vueltaCheck"
+            }),
+            'flg_confirmacion_auto': CheckboxInput(attrs={
+                'class': "form-check-input",
+                'type': "checkbox"
             }),
             'equipaje': Select(
                 attrs={
@@ -217,9 +221,9 @@ class VehiculosForm(ModelForm):
                   'imagen_vehiculo')
 
         widgets = {
-            'tipo_vehiculo': RadioSelect(
+            'tipo_vehiculo': Select(
                 attrs={
-                    'class': "form-check-inline",
+                    'class': "form-select"
                 },
                 choices=tipo_vehiculo,
             ),

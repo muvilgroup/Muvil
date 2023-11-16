@@ -7,9 +7,14 @@
 
 {% block base_content %}
 	<div class="container-md mt-5 d-flex justify-content-center">
-		<div class="row col-8 justify-content-center">
+		<div class="row col-12 col-md-8 justify-content-center">
 			<h2 class="border-bottom border-warning border-4">Introduce los datos de tu viaje...</h2>
 			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+				<div class="col-md-12 py-2 mx-3 text-center bg-light">
+					{{ form.flg_confirmacion_auto }}
+					<i class="fas fa-wand-sparkles fa-lg"></i>
+					<label for="conf-manual" class="form-check-label fw-bold">Aceptación automatica de reservas</label>
+				</div>
 				<div class="col-12 col-md-6 py-2">
 					<i class="fas fa-map fa-lg"></i>
 					<label for="input" class="form-label">Ciudad Origen</label>
@@ -62,9 +67,10 @@
 					<label for="input" class="form-label">Equipaje</label>
 					{{ form.equipaje }}
 				</div>
-				<div class="col-md-12 py-2 mx-3 d-flex bg-light">
-					<label for="input" class="form-label fw-bold">¿Publicar viaje de VUELTA?</label>
+				<div class="col-md-12 py-2 mx-3 text-center bg-light">
 					{{ form.flg_ida_vuelta }}
+					<label for="input" class="form-check-label fw-bold">¿Publicar viaje de VUELTA?</label>
+					<i class="fas fa-right-left fa-lg"></i>
 				</div>
 				<!-- INICIO Campos Vuelta -->
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta1" style="display:none">

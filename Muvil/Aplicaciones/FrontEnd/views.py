@@ -419,7 +419,7 @@ def v_pagina_principal(request):
     viajesProximos = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
                                                      ,'id', 'ciudad_destino', 'fechor_ida'
                                                      ,'importe_total_asiento','fechor_llegada'
-                                                     ,'numero_asientos_libres',
+                                                     ,'numero_asientos_libres', 'flg_confirmacion_auto',
                                                      'estado', 'id_persona_id__pref_conversacion',
                                                      'id_persona_id__pref_fumar', 'id_persona_id__imagen',
                                                     'distancia_kms','duracion_min') \
@@ -524,11 +524,24 @@ def v_reservar_plaza(request, idV, usuario):
                                         horaria, no puedes hacer 2 viajes al mismo tiempo... al menos físicamente :)")
         return redirect('n_detalles_viaje', idV=idV)
 
-    plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1,
-                             fechor_pendiente=dateNow)
-    plaza_pendiente.save()
-
-    messages.success(request, "¡¡¡Tu solicitud de reserva se ha enviado al conductor!!! Tendrás tu plaza reservada en cuanto sea aceptada.")
+    if viaje.flg_confirmacion_auto:
+        if viaje.numero_asientos_libres > 0:
+            viaje.numero_asientos_libres = F("numero_asientos_libres") - 1
+            viaje.save()
+            plaza_aceptada = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=2,
+                                    fechor_confirmado=dateNow)
+            plaza_aceptada.save()
+            messages.success(request, "¡¡¡Reserva registrada correctamente!!!<br>\
+                                       ¡¡¡Avisaremos al usuario de que has aceptado su petición!!!")
+        else:
+            # se ha quedado sin plaza por reserva de otra de forma simultanea
+            messages.error(request, "¡¡¡Lo siento, se han agotado las plazas de este viaje en el último momento!!!")
+            messages.error(request, "¡¡¡Prueba en otro viaje!!!")
+    else:
+        plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1,
+                                 fechor_pendiente=dateNow)
+        plaza_pendiente.save()
+        messages.success(request, "¡¡¡Tu solicitud de reserva se ha enviado al conductor!!! Tendrás tu plaza reservada en cuanto sea aceptada.")
 
     # Enviamos mail al conductor
 
@@ -680,8 +693,8 @@ def v_nuevo_viaje(request, usuario, vehiculos):
             viaje.fechor_llegada = v_fechor_ida + timedelta(minutes=minutos_viaje)
 
             # Pasamos validaciones sobre el viaje de Ida
-            val = ValidacionesViajes(viaje_input=viaje)
-            lista_mensajes = val.viaje_mensajes_salida()
+            val = ValidacionesViajes(persona_input=usuario, viaje_input=viaje)
+            lista_mensajes = val.val_mensajes_salida()
             for mensaje in lista_mensajes:
                 messages.error(request, mensaje)
             if lista_mensajes:
@@ -703,9 +716,12 @@ def v_nuevo_viaje(request, usuario, vehiculos):
                 viaje_vuelta.importe_total_asiento = viaje_vuelta.importe_comision_asiento + viaje_vuelta.importe_conductor_asiento
                 viaje_vuelta.fechor_ida = v_fechor_vuelta
                 viaje_vuelta.fechor_pendiente = timezone.now()
+                viaje_vuelta.distancia_kms = kms_viaje
+                viaje_vuelta.duracion_min = minutos_viaje
+                viaje_vuelta.fechor_llegada = v_fechor_vuelta + timedelta(minutes=minutos_viaje)
                 viaje_vuelta.flg_ida_vuelta = True
                 # Pasamos validaciones sobre el viaje de Vuelta
-                val = ValidacionesViajes(viaje_vuelta)
+                val = ValidacionesViajes(persona_input=usuario, viaje_input=viaje_vuelta)
                 lista_mensajes = val.val_mensajes_salida()
                 for mensaje in lista_mensajes:
                     messages.error(request, "(Viaje de Vuelta)" + mensaje)
