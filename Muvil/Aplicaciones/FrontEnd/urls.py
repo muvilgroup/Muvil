@@ -39,5 +39,6 @@ urlpatterns = [
     path('cancelar_reserva/<int:idV>-<int:idPl>', v_cancelar_reserva, name='n_cancelar_reserva'),
     path('nueva_opinion/<int:idV>-<int:idPr>-<int:idO>', v_nueva_opinion, name='n_nueva_opinion'),
     path('contacto/', v_contacto, name='n_contacto'),
+    path('pasarela_pago/', v_pasarela_pago, name='n_pasarela_pago'),
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

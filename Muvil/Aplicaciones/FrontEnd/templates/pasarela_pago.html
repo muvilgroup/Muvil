@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block base_title %} Pasarela Pago {% endblock %}
+
+
+{% block base_content %}
+	<!-- INICIO Pasarela Pago-->
+	<div class="container">
+		<div class="row">
+			<aside class="col-sm-6">
+				<article class="card">
+					<div class="card-body p-5">
+						<p class="d-flex justify-content-center">
+							<img class="px-1" src='{% static "img/VISA.png" %}' width="70">
+							<img class="px-1" src='{% static "img/MASTERCARD.png" %}' width="70">
+							<img class="px-1" src='{% static "img/AMERICANEXPRESS.png" %}' width="70">
+						</p>
+						<p class="alert alert-success">Some text success or error</p>
+
+						<form role="form" id="paycometPaymentForm" method="POST"> {% csrf_token %}
+							<input type="hidden" name="amount" value="1234">
+							<input type="hidden" data-paycomet="jetID" value="z6pjyNMiRbIsZ3vYSau5VXw8C10otE2G">
+							<div class="form-group">
+								<label for="username">Full name (on the card)</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fa fa-user"></i></span>
+									</div>
+									<input type="text" class="form-control" name="cardHolderName" data-paycomet="cardHolderName" placeholder="" required="">
+								</div> <!-- input-group.// -->
+							</div> <!-- form-group.// -->
+
+							<div class="form-group">
+								<label for="cardNumber">Card number</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+									</div>
+									<div id="paycomet-pan" style="padding:0px; height:36px;"></div>
+									<input class="form-control" name="pan" name-paycomet="pan" placeholder-paycomet="Introduce tu tarjeta...">
+								</div> <!-- input-group.// -->
+							</div> <!-- form-group.// -->
+
+							<div class="row">
+								<div class="col-sm-8">
+									<div class="form-group">
+										<label><span class="hidden-xs">Expiration</span> </label>
+										<div class="form-inline">
+											<select class="form-control" style="width:45%" data-paycomet="expiryMonth" name="expiryMonth">
+												<option>MM</option>
+												<option value="01">01 - Enero</option>
+												<option value="02">02 - Febrero</option>
+												<option value="03">03 - Marzo</option>
+												<option value="04">04 - Abril</option>
+												<option value="05">05 - Mayo</option>
+												<option value="06">06 - Junio</option>
+												<option value="07">07 - Julio</option>
+												<option value="08">08 - Agosto</option>
+												<option value="09">09 - Septiembre</option>
+												<option value="10">10 - Octubre</option>
+												<option value="11">11 - Noviembre</option>
+												<option value="12">12 - Diciembre</option>
+											</select>
+											<span style="width:10%; text-align: center"> / </span>
+											<select class="form-control" style="width:45%" data-paycomet="expiryYear" name="expiryYear">
+												<option>YY</option>
+												<option value="20">2020</option>
+												<option value="21">2021</option>
+												<option value="22">2022</option>
+												<option value="23">2023</option>
+												<option value="24">2024</option>
+												<option value="25">2025</option>
+												<option value="26">2026</option>
+												<option value="27">2027</option>
+												<option value="28">2028</option>
+												<option value="29">2029</option>
+												<option value="30">2030</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label data-toggle="tooltip" title=""
+											data-original-title="3 digits code on back side of the card">CVV <i
+												class="fa fa-question-circle"></i></label>
+										<div id="paycomet-cvc2" style="height: 0px; padding:0px;"></div>
+										<input name="cvc2" paycomet-name="cvc2" class="form-control" paycomet-placeholder="CVV2" class="form-control" required="" type="text">
+									</div> <!-- form-group.// -->
+								</div>
+
+							</div> <!-- row.// -->
+							<button class="subscribe btn btn-primary btn-block" type="submit"> Confirmar Pago </button>
+						</form>
+						<div id="paymentErrorMsg">
+
+						</div>
+					</div> <!-- card-body.// -->
+				</article> <!-- card.// -->
+			</aside>
+		</div>
+	</div>
+	<!-- FIN Pasarela Pago-->
+
+{% endblock %}
+
+{% block base_script %}
+	<script src="https://api.paycomet.com/gateway/paycomet.jetiframe.js"></script>
+{% endblock %}
+
+

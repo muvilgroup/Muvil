@@ -1,3 +1,9 @@
+# Pasarela de Pago
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import HttpResponse
@@ -32,6 +38,7 @@ from PIL import Image
 import requests
 import io
 import pytz
+
 
 
 
@@ -286,6 +293,39 @@ def v_import_export(request):
         'form': form,
     }
     return render(request, 'import_export.html', datos)
+
+def v_pasarela_pago(request):
+    if request.method == "POST":
+        print(request.POST.get('expiryYear', False))
+        print(request.POST.get('expiryMonth', False))
+
+        # create an instance of the API class
+        api_instance = swagger_client.BalanceApi()
+        api_instance2 = swagger_client.CardsApi()
+        body = {
+                "terminal": 65660
+                }
+        body2 = {
+            "terminal": 65660,
+            "cardHolderName": request.POST.get('cardHolderName', False),
+            "pan": request.POST.get('pan', False),
+            "expiryYear": request.POST.get('expiryYear', False),
+            "expiryMonth": request.POST.get('expiryMonth', False),
+            "cvc2": request.POST.get('cvc2', False)
+        }
+        pAYCOMETAPITOKEN = "892c972dc58b350c814e7c2388d14d4b32a10967"
+
+        try:
+            #api_response = api_instance.product_balance(body=body, paycomet_api_token=pAYCOMETAPITOKEN)
+            api_response = api_instance2.add_user(body=body2, paycomet_api_token=pAYCOMETAPITOKEN)
+            pprint(api_response)
+        except ApiException as e:
+            print("Exception when calling CardsApi->addUser: %s\n" % e)
+
+        return render(request, 'pasarela_pago.html', {})
+    else:
+        print("NO POST")
+        return render(request, 'pasarela_pago.html', {})
 
 
 def v_pagina_principal(request):
