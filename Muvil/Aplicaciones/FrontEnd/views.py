@@ -296,28 +296,43 @@ def v_import_export(request):
 
 def v_pasarela_pago(request):
     if request.method == "POST":
-        print(request.POST.get('expiryYear', False))
-        print(request.POST.get('expiryMonth', False))
+        print(request.POST.get('paytpvToken', False))
 
         # create an instance of the API class
         api_instance = swagger_client.BalanceApi()
         api_instance2 = swagger_client.CardsApi()
+        api_instance3 = swagger_client.PaymentsApi()
         body = {
                 "terminal": 65660
                 }
         body2 = {
-            "terminal": 65660,
-            "cardHolderName": request.POST.get('cardHolderName', False),
-            "pan": request.POST.get('pan', False),
-            "expiryYear": request.POST.get('expiryYear', False),
-            "expiryMonth": request.POST.get('expiryMonth', False),
-            "cvc2": request.POST.get('cvc2', False)
+            "terminal": "65660",
+            "jetToken": request.POST.get('paytpvToken', False)
         }
         pAYCOMETAPITOKEN = "892c972dc58b350c814e7c2388d14d4b32a10967"
 
         try:
-            #api_response = api_instance.product_balance(body=body, paycomet_api_token=pAYCOMETAPITOKEN)
             api_response = api_instance2.add_user(body=body2, paycomet_api_token=pAYCOMETAPITOKEN)
+            dict_api_response = api_response.to_dict()
+            pprint(api_response)
+            id_user = dict_api_response["id_user"]
+            token_user = dict_api_response["token_user"]
+            body3 = {
+                    "payment": {
+                                "terminal": "65660",
+                                "amount": "77",
+                                "currency": "EUR",
+                                "idUser": id_user,
+                                "tokenUser": token_user,
+                                "methodId": "1",
+                                "order": "MUVIL12345000",
+                                "originalIp": "127.0.0.1",
+                                "secure": "1",
+                                "urlOk": "https://www.paycomet.com/url-ok",
+                                "urlKo": "https://www.paycomet.com/url-ko"
+                                }
+                    }
+            api_response = api_instance3.execute_purchase(body=body3, paycomet_api_token=pAYCOMETAPITOKEN)
             pprint(api_response)
         except ApiException as e:
             print("Exception when calling CardsApi->addUser: %s\n" % e)
