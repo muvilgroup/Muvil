@@ -30,10 +30,10 @@
 
 {% block base_content %}
 	<!-- INICIO Barra Busqueda -->
-	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
+	<div class="container-md mt-5 d-flex justify-content-center" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
-			<div class="col-6 col-md-3 form-floating p-0 m-0" id="origen">
-				<input type="text" list="localizaciones" class="form-select rounded-0 rounded-start border border-warning" name="inputOrigen" id="inputOrigen"
+			<div class="col-12 col-md-3 form-floating p-0 m-0" id="origen">
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning" name="inputOrigen" id="inputOrigen"
 					   {% if ciudad_origen %}
 					   	value="{{ciudad_origen}}"
 					   {% else %}
@@ -46,8 +46,8 @@
 					{% endfor %}
 				</datalist>
 			</div>
-			<div class="col-6 col-md-3 form-floating p-0 m-0" id="destino">
-				<input type="text" list="localizaciones" class="form-select rounded-0 border border-warning" name="inputDestino" id="inputDestino"
+			<div class="col-12 col-md-3 form-floating p-0 m-0" id="destino">
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning" name="inputDestino" id="inputDestino"
 					   {% if ciudad_destino %}
 					   	value="{{ciudad_destino}}"
 					   {% else %}
@@ -60,8 +60,8 @@
 					{% endfor %}
 				</datalist>
 			</div>
-			<div class="col-6 col-md-2 form-floating p-0 m-0" id="fecha">
-				<input type="date" class="form-control rounded-0 border border-warning" name="inputFecha" id="inputFecha"
+			<div class="col-12 col-md-2 form-floating p-0 m-0" id="fecha">
+				<input type="date" class="form-control rounded border border-warning" name="inputFecha" id="inputFecha"
 				       {% if fecha_viaje %}
 						value="{{fecha_viaje}}"
 					   {% else %}
@@ -69,8 +69,8 @@
 					   {% endif %} required>
 				<label for="inputFecha" class="form-label">¿Cuando?</label>
 			</div>
-			<div class="col-6 col-md-2 form-floating p-0 m-0 row-auto" name="inputPlazas" id="inputPlazas">
-				<select data-trigger="" class="form-select rounded-0 border border-warning h-100">
+			<div class="col-12 col-md-2 form-floating p-0 m-0 row-auto" name="inputPlazas" id="inputPlazas">
+				<select data-trigger="" class="form-select rounded border border-warning h-100">
 				  	<option placeholder="" {% if nro_plazas == "1 plaza" %}selected{% endif %}>1 plaza</option>
 				  	<option {% if nro_plazas == "2 plazas" %}selected{% endif %}>2 plazas</option>
 				  	<option {% if nro_plazas == "3 plazas" %}selected{% endif %}>3 plazas</option>
@@ -79,7 +79,7 @@
 				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
 			</div>
 			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
-				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning" type="submit">
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded border border-warning" type="submit">
 					Buscar
 				</button>
 			</div>
@@ -96,12 +96,12 @@
 				</button>
 			</div>
 
-			<!-- INICIO Modal Filtros -->
+			<!-- INICIO Modal Filtros (Responsivo) -->
 			<div class="modal fade" id="ventana-filtros-viajes-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					  <div class="modal-header">
-						<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtros</h5>
+						<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtrar por...</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					  </div>
 					  <div class="modal-body">
@@ -206,7 +206,7 @@
 					</div>
 				  </div>
 			</div>
-			<!-- FIN Modal Filtros -->
+			<!-- FIN Modal Filtros (Responsivo) -->
 
 			<aside class="col-3 filtros-viajes d-none d-md-block" id="contenedor-filtros-viajes">
 				<h4 class="fw-bold border-bottom border-3 border-warning">

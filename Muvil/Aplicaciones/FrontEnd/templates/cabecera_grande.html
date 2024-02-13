@@ -67,9 +67,11 @@
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
 									<li class="d-flex align-items-center">
 										<a class="dropdown-item position-relative" href="{% url 'n_nuevo_viaje' %}">
+											<!--
 											<span class="position-absolute top-40 start-10 translate-middle p-2 bg-warning border border-light rounded-circle">
 												<span class="visually-hidden">New alerts</span>
 											</span>
+											-->
 											<i class="fas fa-car fa-xl">
 											</i>
 											<span class="fs-5 fw-bold font2-muvil mx-2">Publicar Viaje</span>
@@ -77,9 +79,6 @@
 									</li>
 									<li class="d-flex align-items-center">
 										<a class="dropdown-item position-relative" href="{% url 'n_mis_viajes' %}">
-											<span class="position-absolute top-40 start-10 translate-middle p-2 bg-warning border border-light rounded-circle">
-												<span class="visually-hidden">New alerts</span>
-											</span>
 											<i class="fas fa-signs-post fa-xl"></i>
 											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Viajes</span>
 										</a>
@@ -91,11 +90,19 @@
 										</a>
 									</li>
 									<li class="d-flex align-items-center">
+										<a class="dropdown-item" href="{% url 'n_menu_usuario_opiniones' %}">
+											<i class="fas fa-comments fa-xl"></i>
+											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Opiniones</span>
+										</a>
+									</li>
+									<!--
+									<li class="d-flex align-items-center">
 										<a class="dropdown-item" href="{% url 'n_menu_usuario_pagoscobros' %}">
 											<i class="fas fa-piggy-bank fa-xl"></i>
 											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Pagos/Cobros</span>
 										</a>
 									</li>
+									-->
 									<li class="d-flex align-items-center">
 										<a class="dropdown-item" href="{% url 'n_menu_usuario_perfil' %}">
 											<i class="fas fa-user-gear fa-xl"></i>

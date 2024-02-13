@@ -15,15 +15,15 @@
 					</div>
 					<div class="row px-3 pt-2 pb-3">
 						<div class="col-12 mb-2 d-flex justify-content-end">
-							<button class="btn btn-warning col-6 col-lg-3" data-bs-toggle="collapse" href="#collapseAddCar" role="button" aria-expanded="false" aria-controls="collapseAddCar">
+							<button class="btn btn-warning col-12 col-lg-3" data-bs-toggle="collapse" href="#collapseAddCar" role="button" aria-expanded="false" aria-controls="collapseAddCar">
 								<a href="" alt="Añadir"><embed src='{% static "icon/plus-circle.svg" %}' alt="Añadir"/></a>
 								<b>Añadir Coche</b>
 							</button>
 						</div>
 						<div class="collapse" id="collapseAddCar">
 							<div class="card card-body">
-								<h3 class="border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</h3>
-								<form method="POST" class="row px-2 pt-2" id="form-newcar" enctype="multipart/form-data">{% csrf_token %}
+								<span class="fs-5 font2-muvil border-bottom border-5 border-warning">Introduce los datos del nuevo vehículo...</span>
+								<form method="POST" class="row pt-2" id="form-newcar" enctype="multipart/form-data">{% csrf_token %}
 									<div class="col-12 col-lg-6">
 										<div class="col-12 ">
 											<label for="inputTipo" class="form-label">Tipo</label>
@@ -66,7 +66,7 @@
 									</div>
 									-->
 									<div class="col-12 d-flex justify-content-center py-1">
-										<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+										<button type="submit" class="btn btn-warning btn-guardar col-6"><b>Guardar</b></button>
 									</div>
 								</form>
 								<div class="row px-2 pt-2">
@@ -84,44 +84,44 @@
 					</div>
 				{% else %}
 					{% for c in vehiculos %}
-					<div class="card col-10 mx-auto mb-3" id="car-card">
+					<div class="card col-12 mx-auto mb-3" id="car-card">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-7">
 								<div class="card-block px-2">
 									<div class="card-body">
-										<div class="card-title fs-3 pb-1" id="car-title">
+										<div class="card-title fs-4 pb-1" id="car-title">
 											{{ c.marca | resaltar_texto }} {{ c.modelo | resaltar_texto}}
 										</div>
 										<div class="card-subtitle row pb-1 ps-3" id="car-year">
 											<div class="col-2 text-center" id="car-year-icon">
-												 <img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="25px" width="25px" id="car-year-icon"/>
+												 <img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 											</div>
 											<div class="col-10" id="car-year-text">
-												<label for="car-year-icon" class="fs-5">{{ c.anyo_antiguedad }}</label>
+												<label for="car-year-icon">{{ c.anyo_antiguedad }}</label>
 											</div>
 										</div>
 										<div class="card-subtitle row pb-1 ps-3" id="car-plate">
 											<div class="col-2 text-center" id="car-plate-icon">
-												 <img src='{% static "icon/tag.svg" %}' alt="Matrícula" height="25px" width="25px" id="car-plate-icon"/>
+												 <img src='{% static "icon/tag.svg" %}' alt="Matrícula" height="20px" width="20px" id="car-plate-icon"/>
 											</div>
 											<div class="col-10" id="car-plate-text">
-												<label for="car-plate-icon" class="fs-5">{{ c.matricula }}</label>
+												<label for="car-plate-icon">{{ c.matricula }}</label>
 											</div>
 										</div>
 										<div class="card-subtitle row pb-1 ps-3" id="car-color">
 											<div class="col-2 text-center" id="car-color-icon">
-												 <img src='{% static "icon/brush.svg" %}' alt="Color" height="25px" width="25px" id="car-color-icon"/>
+												 <img src='{% static "icon/brush.svg" %}' alt="Color" height="20px" width="20px" id="car-color-icon"/>
 											</div>
 											<div class="col-10" id="car-color-text">
-												<label for="car-color-icon" class="fs-5">{{ c.color }}</label>
+												<label for="car-color-icon">{{ c.color }}</label>
 											</div>
 										</div>
 										<div class="card-subtitle row pb-1 ps-3" id="car-seats">
 											<div class="col-2 text-center" id="car-seats-icon">
-												 <img src='{% static "icon/vector.svg" %}' alt="Número de asientos" height="25px" width="25px" id="car-seats-icon"/>
+												 <img src='{% static "icon/vector.svg" %}' alt="Número de asientos" height="20px" width="20px" id="car-seats-icon"/>
 											</div>
 											<div class="col-10" id="car-seats-text">
-												<label for="car-seats-icon" class="fs-5">{{ c.numero_asientos }} plazas</label>
+												<label for="car-seats-icon">{{ c.numero_asientos }} plazas</label>
 											</div>
 										</div>
 									</div>
@@ -138,7 +138,7 @@
 								<img alt="Editar" src='{% static "icon/pencil-fill.svg" %}' width="15px">
 								<b>Editar</b>
 							</a>
-							<a class="btn btn-outline-danger col-6 col-lg-3" href="/menu_usuario/miscoches/eliminar/{{c.id}}">
+							<a class="btn btn-outline-danger col-5 col-lg-3" href="/menu_usuario/miscoches/eliminar/{{c.id}}">
 								<img alt="Eliminar" src='{% static "icon/trash-fill.svg" %}' width="15px">
 								<b>Eliminar</b>
 							</a>

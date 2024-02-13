@@ -179,10 +179,15 @@
 	-->
 
 	<!-- INICIO Barra Busqueda -->
-	<div class="container-md mt-5 d-flex justify-content-center contenedor-barra-busqueda" id="contenedor-barra-busqueda">
+	<div class="container-md mt-5 d-flex justify-content-center" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
-			<div class="col-6 col-md-3 form-floating p-0 m-0">
-				<input type="text" list="localizaciones" class="form-select rounded-0 rounded-start border border-warning" name="inputOrigen" id="inputOrigen" placeholder="¿Desde donde sales?" required>
+			<div class="col-12 col-md-3 form-floating p-0 m-0" id="origen">
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning" name="inputOrigen" id="inputOrigen"
+					   {% if ciudad_origen %}
+					   	value="{{ciudad_origen}}"
+					   {% else %}
+					   	placeholder="¿Desde donde sales?"
+					   {% endif %} required>
 				<label for="inputOrigen" class="form-label">Origen</label>
 				<datalist id="localizaciones">
 					{% for loc in localizaciones %}
@@ -190,8 +195,13 @@
 					{% endfor %}
 				</datalist>
 			</div>
-			<div class="col-6 col-md-3 form-floating p-0 m-0" id="destino">
-				<input type="text" list="localizaciones" class="form-select rounded-0 border border-warning" name="inputDestino" id="inputDestino" placeholder="¿A donde quieres ir?" required>
+			<div class="col-12 col-md-3 form-floating p-0 m-0" id="destino">
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning" name="inputDestino" id="inputDestino"
+					   {% if ciudad_destino %}
+					   	value="{{ciudad_destino}}"
+					   {% else %}
+					   	placeholder="¿A donde quieres ir?"
+					   {% endif %} required>
 				<label for="inputDestino" class="form-label">Destino</label>
 				<datalist id="localizaciones">
 					{% for loc in localizaciones %}
@@ -199,33 +209,35 @@
 					{% endfor %}
 				</datalist>
 			</div>
-			<div class="col-6 col-md-2 form-floating p-0 m-0" id="fecha">
-				<input type="date" class="form-control rounded-0 border border-warning"
-					   name="inputFecha" id="inputFecha" placeholder="Fecha"
-					   value="{% now 'Y-m-d' %}" required>
+			<div class="col-12 col-md-2 form-floating p-0 m-0" id="fecha">
+				<input type="date" class="form-control rounded border border-warning" name="inputFecha" id="inputFecha"
+				       {% if fecha_viaje %}
+						value="{{fecha_viaje}}"
+					   {% else %}
+					   	value="{% now 'Y-m-d' %}"
+					   {% endif %} required>
 				<label for="inputFecha" class="form-label">¿Cuando?</label>
 			</div>
-			<div class="col-6 col-md-2 form-floating p-0 m-0 row-auto" id="plazas">
-				<select data-trigger="" class="form-select rounded-0 border border-warning h-100" name="inputPlazas">
-				  	<option placeholder="">1 plaza</option>
-				  	<option>2 plazas</option>
-				  	<option>3 plazas</option>
-				  	<option>4 plazas</option>
+			<div class="col-12 col-md-2 form-floating p-0 m-0 row-auto" name="inputPlazas" id="inputPlazas">
+				<select data-trigger="" class="form-select rounded border border-warning h-100">
+				  	<option placeholder="" {% if nro_plazas == "1 plaza" %}selected{% endif %}>1 plaza</option>
+				  	<option {% if nro_plazas == "2 plazas" %}selected{% endif %}>2 plazas</option>
+				  	<option {% if nro_plazas == "3 plazas" %}selected{% endif %}>3 plazas</option>
+				  	<option {% if nro_plazas == "4 plazas" %}selected{% endif %}>4 plazas</option>
 				</select>
 				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
 			</div>
 			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
-				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded-0 rounded-end border border-warning boton-3d"
-						type="submit">
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded border border-warning" type="submit">
 					Buscar
 				</button>
 			</div>
 		</form>
-
 	</div>
 	<!-- FIN Barra Busqueda -->
 
 	<!-- INICIO Eventos -->
+	<!--
 	<nav class="container-md mt-5">
 		<div class="col-12 d-flex justify-content-center">
 			<p class="w-50 text-center fw-bold fs-3 border-bottom border-warning border-5">
@@ -312,6 +324,7 @@
 			</div>
 		  </div>
 	</div>
+	-->
 	<!-- FIN Eventos -->
 
 	<!-- INICIO Próximas Salidas -->
