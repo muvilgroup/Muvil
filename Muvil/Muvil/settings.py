@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-_u7d(jjmsy0n79)@v0d)n#w^odr@_*eenkj4agmn8nq5=ewt2%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.muvil.es', 'muvil.es', 'vadjourney.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['www.muvil.es', 'muvil.es', '127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = ['https://www.muvil.es', 'https://muvil.es']
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     # Apps locales
     'Aplicaciones.FrontEnd',
@@ -171,6 +172,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 AUTHENTICATION_BACKENDS = [
     'Aplicaciones.users.backends.CustomEmailAuthBackend',
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend'
     ]
 
