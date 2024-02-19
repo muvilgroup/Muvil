@@ -74,7 +74,8 @@ SITE_ID = 1
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-USE_X_FORWARDED_HOST = True
+#USE_X_FORWARDED_HOST = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
