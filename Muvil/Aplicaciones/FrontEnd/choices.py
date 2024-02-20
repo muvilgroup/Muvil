@@ -3,6 +3,12 @@ genero = (
     ('M', 'Masculino')
 )
 
+documentos_identidad = (
+    ('DNI', 'DNI'),
+    ('NIE', 'NIE'),
+    ('PASSWORD', 'PASSWORD')
+)
+
 tipo_vehiculo = (
     ('C', 'Combustible'),
     ('E', 'Electrico'),

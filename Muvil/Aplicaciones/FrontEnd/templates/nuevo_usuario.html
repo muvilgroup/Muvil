@@ -20,7 +20,7 @@
 		<div class="row">
 			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 				<h3 class="col-md-12 py-4 fw-bold fs-4 text-center shadow">
-					Bienvenid@ al equipo!!! {{ user.email }}
+					Bienvenid@ al equipo!!! {% if form.nombre.value %} {{ form.nombre.value }} {% else %} {{ user.email }} {% endif %}
 				</h3>
 				<h2 class="border-bottom border-warning border-4">Introduce tus datos personales...</h2>
 				<div class="col-md-4 py-2">
@@ -36,6 +36,7 @@
 					{{ form.apellido2 }}
 				</div>
 				<div class="col-md-4 py-2">
+					<label for="numeroDoc" class="form-label"><strong>Tipo documento</strong></label>
 					{{ form.tipo_documento }}
 				</div>
 				<div class="col-md-4 py-2">

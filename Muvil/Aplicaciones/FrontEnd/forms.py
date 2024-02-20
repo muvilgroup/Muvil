@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from ..users.admin import UserCreationForm as CustomUserCreationForm
 from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario
-from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos, equipaje
+from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos, equipaje, documentos_identidad
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 from datetime import datetime
@@ -46,15 +46,12 @@ class PersonasForm(ModelForm):
                 'class': "form-control",
                 'style': 'max-width: 300px;',
             }),
-            'tipo_documento': RadioSelect(
+            'tipo_documento': Select(
                 attrs={
-                'class': "form-check-inline",
+                    'class': "form-select",
+                    'style': 'max-width: 300px;',
                 },
-                choices=[
-                            ('DNI', 'DNI'),
-                            ('NIE', 'NIE'),
-                            ('PASSWORD', 'PASSWORD'),
-                        ],
+                choices=documentos_identidad,
             ),
             'numero_documento': TextInput(attrs={
                 'class': "form-control",
