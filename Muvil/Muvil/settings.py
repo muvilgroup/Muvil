@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
     # Apps locales
     'Aplicaciones.FrontEnd',
@@ -70,7 +69,6 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.twitter',
 ]
 
-SITE_ID = 1
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
