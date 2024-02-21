@@ -38,7 +38,7 @@
 {% block base_content %}
     <div class="container-lg mt-5">
         <div class="row justify-content-around">
-          <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-mismensajes border">
+          <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-mismensajes border d-none d-md-block">
               <h4 class="fw-bold border-bottom border-3 border-warning">
                   Filtrar por...
               </h4>
@@ -47,39 +47,67 @@
                   <input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
               </form>
           </aside>
-        <div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
-          <ul class="list-group">
-            <li class="list-group-item bg-info text-white fs-5 fw-bold">Conversaciones con Usuarios</li>
-            {% for v in filter.qs %}
-            <li class="list-group-item">
-              <a {% if idP == v.id_persona_publicador__id %}
-                 href="{% url 'n_conversacion' idPc=v.id_persona_receptor__id %}"
-                 {% else %}
-                 href="{% url 'n_conversacion' idPc=v.id_persona_publicador__id %}"
-                 {% endif %}
-              >
-                <div class="d-flex align-items-center">
-                  <div class="flex-shrink-0 img-container-message-user"><img {% if idP == v.id_persona_publicador__id %} src="{{MEDIA_URL}}{{v.id_persona_receptor__imagen}}" {% else %} src="{{MEDIA_URL}}{{v.id_persona_publicador__imagen}}" {% endif %} alt="{{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}"></div>
-                  <div class="ms-3">
-                    <div class="fw-bold">
-                        {% if idP == v.id_persona_publicador__id %}
-                        {{v.id_persona_receptor__nombre}} {{v.id_persona_receptor__apellido1}}
-                        {% else %}
-                        {{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}
-                        {% endif %}
-                    </div>
-                    <div class="text-secondary"></div>
-                  </div>
-                  <div class="ms-auto text-secondary">Último mensaje: <strong>{{v.max_fec_created}}</strong></div>
+            <div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
+              <ul class="list-group">
+                <li class="list-group-item text-white fs-5 fw-bold" style="background-color: #A8A6A2;">Conversaciones con Usuarios</li>
+                <div class="col-12 d-flex justify-content-end my-2">
+                    <button type="button" class="btn btn-warning col-4 fw-bold d-block d-md-none" data-bs-toggle="modal" data-bs-target="#ventana-filtros-mensajes-modal">
+                        <i class="fas fa-filter fa-lg"></i> Filtros
+                    </button>
                 </div>
-              </a>
-            </li>
-            {% empty %}
-              <p class="fs-5 fw-bold text-center py-3"> ¡ Aún no tienes conversaciones con usuarios !</p>
-            {% endfor %}
-          </ul>
+                <!-- INICIO Modal Filtros (Responsivo) -->
+                <div class="modal fade" id="ventana-filtros-mensajes-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtrar por...</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-mismensajes border">
+                                  <h4 class="fw-bold border-bottom border-3 border-warning">
+                                      Filtrar por...
+                                  </h4>
+                                  <form method="get">
+                                      {{ filter.form.as_p }}
+                                      <input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+                                  </form>
+                              </aside>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN Modal Filtros (Responsivo) -->
+                {% for v in filter.qs %}
+                <li class="list-group-item">
+                  <a {% if idP == v.id_persona_publicador__id %}
+                     href="{% url 'n_conversacion' idPc=v.id_persona_receptor__id %}"
+                     {% else %}
+                     href="{% url 'n_conversacion' idPc=v.id_persona_publicador__id %}"
+                     {% endif %}
+                  >
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 img-container-message-user"><img {% if idP == v.id_persona_publicador__id %} src="{{MEDIA_URL}}{{v.id_persona_receptor__imagen}}" {% else %} src="{{MEDIA_URL}}{{v.id_persona_publicador__imagen}}" {% endif %} alt="{{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}"></div>
+                      <div class="ms-3">
+                        <div class="fw-bold">
+                            {% if idP == v.id_persona_publicador__id %}
+                            {{v.id_persona_receptor__nombre}} {{v.id_persona_receptor__apellido1}}
+                            {% else %}
+                            {{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}
+                            {% endif %}
+                        </div>
+                        <div class="text-secondary"></div>
+                      </div>
+                      <div class="ms-auto text-secondary">Último mensaje: <strong>{{v.max_fec_created}}</strong></div>
+                    </div>
+                  </a>
+                </li>
+                {% empty %}
+                  <p class="fs-5 fw-bold text-center py-3"> ¡ No hay conversaciones encontradas !</p>
+                {% endfor %}
+              </ul>
+            </div>
         </div>
-      </div>
     </div>
 {% endblock %}
 

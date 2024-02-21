@@ -30,9 +30,7 @@ SECRET_KEY = 'django-insecure-_u7d(jjmsy0n79)@v0d)n#w^odr@_*eenkj4agmn8nq5=ewt2%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.muvil.es', 'muvil.es', '127.0.0.1', 'localhost']
-
-CSRF_TRUSTED_ORIGINS = ['https://www.muvil.es', 'https://muvil.es']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -73,7 +71,6 @@ INSTALLED_APPS = [
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 #USE_X_FORWARDED_HOST = True
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

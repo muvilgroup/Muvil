@@ -22,6 +22,33 @@
 		.tarjeta-viaje:hover {
 			transform: scale(1.02); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 		}
+		.titulo {
+		  border-bottom: 1px solid #dee2e6;
+		  margin-bottom: 10px;
+		  text-align: center;
+		  background-color: #C3FCF2;
+		}
+		.precio {
+		  font-size: 2.5rem;
+		  font-weight: bold;
+		}
+		.gris {
+		  color: #6c757d;
+		  padding-left: 3px;
+		}
+		.col-centered {
+		  display: flex;
+		  align-items: center;
+		}
+		.row-centered {
+		  display: flex;
+		  justify-content: center;
+		}
+		.img-comment {
+		  max-width: 50px;
+		  max-height: 50px;
+		  overflow: hidden;
+		}
 	</style>
 {% endblock %}
 
@@ -336,125 +363,82 @@
 					Próximas Salidas
 				</p>
 			</div>
+
 			{% for uvo in viajesProximos %}
-			<div class="col-12 col-md-6 p-2 my-3 d-flex align-items-center tarjeta-viaje rounded shadow">
-					<div class="col-9 contenedor-ruta-conductor">
-						<div class="row contenedor-ruta">
-							<div class="col-1 ps-3">
-								<img src='{% static "icon/location.svg" %}' alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-11 fw-bold fs-md-5">
-								<p class="fs-5">
-									{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}} {{ uvo.fechor_ida|time:"H:i" }} - {{uvo.ciudad_origen}}
-								</p>
-							</div>
-							<div class="col-1 ps-4">
-							</div>
-							<div class="col-12 ps-5">
-								<p class="duracion-km fw-md-bold">
-									{{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
-								</p>
-							</div>
-							<div class="col-1 ps-3">
-								<img src='{% static "icon/location.svg" %}'" alt="" width="15px" id="location"/>
-							</div>
-							<div class="col-11 fw-bold fs-md-5">
-								<p class="fs-5">
-									{{uvo.fechor_llegada|date:"SHORT_DATE_FORMAT"}} {{ uvo.fechor_llegada|time:"H:i" }} - {{uvo.ciudad_destino}}
-								</p>
-							</div>
-						</div>
-						<div class="row align-items-center contenedor-conductor">
-							<div class="col-lg-2 col-3 ps-3 img-container-journey">
-								<a href="{% url 'n_perfil_publico' idP=uvo.id_persona_id %}">
-									{% if uvo.id_persona_id__imagen %}
-                                	<img src="{{MEDIA_URL}}{{uvo.id_persona_id__imagen}}">
-									{% else %}
-									<img src='{% static "img/avatar-mujer.jpg" %}'>
-                            		{% endif %}
-								</a>
-							</div>
-							{% if uvo.avg_puntuacion %}
-							<div class="col-2 col-md-2 fw-bold fs-3 d-flex">
-								{{uvo.avg_puntuacion|floatformat:2}}
-								<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
-							</div>
-							<div class="col-2 col-md-3">
-								<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
-									({{uvo.count_opiniones}} opiniones)
-								</a>
-							</div>
-							{% else %}
-							<div class="col-4 col-md-5">
-								<a class="link-secondary fw-bold">
-									(Sin opiniones todavía)
-								</a>
-							</div>
-							{% endif %}
-						</div>
-					</div>
-					<div class="col-3 contenedor-precio">
-						<div class="row align-items-center text-center">
-							<div class="col-12 fw-bold fs-1 precio-viaje">
-								{{uvo.importe_total_asiento}}€
-							</div>
-							<div class="col-12 pb-2">
-								por pasajero
-							</div>
-							<div class="col-12 plazas-viaje d-flex justify-content-center">
-								<img src='{% static "icon/passengers.svg" %}' alt="Pasajeros" height="25px" width="25px" id="passengers-icon"/>
-								<div class="ps-md-1">
-									{{uvo.numero_asientos_libres}} plazas
-								</div>
-							</div>
-							<div class="col-12 caracteristicas-viaje py-2 gap-3 d-flex justify-content-center">
-								<label class="btn btn-white">
-									<img src='{% static "icon/group.svg" %}' alt="Hablo poco"
-										 {% if uvo.id_persona_id__pref_conversacion == 1 %}
-										 height="25px" width="25px"
-										 {% elif uvo.id_persona_id__pref_conversacion == 2 %}
-										 height="30px" width="30px"
-										 {% elif uvo.id_persona_id__pref_conversacion == 3 %}
-										 height="35px" width="35px"
-										 {% else %}
-										 height="0px" width="0px"
-										 {% endif %}
-										 id="group-icon"
-										 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
-								</label>
-								<label class="btn btn-white">
-									<img src='{% static "icon/smoking.svg" %}' alt="Hablo poco"
-										 {% if uvo.id_persona_id__pref_fumar == 1 %}
-										 height="25px" width="25px"
-										 {% elif uvo.id_persona_id__pref_fumar == 2 %}
-										 height="30px" width="30px"
-										 {% elif uvo.id_persona_id__pref_fumar == 3 %}
-										 height="35px" width="35px"
-										 {% else %}
-										 height="0px" width="0px"
-										 {% endif %}
-										 id="smoking-icon"
-										 alt="En alguna conversación intervengo" title="En alguna conversación intervengo"/>
-								</label>
-							</div>
-							<div class="col-12 d-flex justify-content-center">
-								<a class="btn btn-warning boton-3d"
-								{% if not user.is_authenticated %}
-									href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
-								{% else %}
-								   href="{% url 'n_detalles_viaje' idV=uvo.id %}"
-								{% endif %} >
-									{% if uvo.flg_confirmacion_auto %}
-									<i class="fas fa-wand-sparkles fa-lg"></i>
-									{% else %}
-									<i class="fas fa-hand-point-up fa-lg"></i>
-									{% endif %}
-									<b>Reservar Plaza</b>
-								</a>
-							</div>
-						</div>
-					</div>
+			<div class="tarjeta-viaje container border col-12 col-md-6 rounded my-1">
+			  <div class="row titulo">
+				<div class="col">
+				  <h4><strong>{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> a las <strong>{{ uvo.fechor_ida|time:"H:i" }}</strong></h4>
 				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-12 col-md-8">
+				  <div class="row">
+					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
+					  <i class="fas fa-location fa-lg" ></i>
+					  {{uvo.ciudad_origen}}
+					</div>
+				  </div>
+				  <div class="row gris">
+					<div class="col ps-5">
+					  {{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
+					  <i class="fas fa-flag-checkered fa-lg" ></i>
+					  {{uvo.ciudad_destino}}
+					</div>
+				  </div>
+				</div>
+				<div class="col-12 col-md-4 col-centered row-centered">
+				  <div class="fs-1 fw-bold">{{uvo.importe_total_asiento}}€</div>
+				</div>
+			  </div>
+			  <div class="row my-2">
+				<div class="col-12 col-md-8 col-centered text-center">
+				  <a href="{% url 'n_perfil_publico' idP=uvo.id_persona_id %}">
+					  {% if uvo.id_persona_id__imagen %}
+					  <img src="{{MEDIA_URL}}{{uvo.id_persona_id__imagen}}" class="img-comment">
+					  {% else %}
+					  <img src='{% static "img/avatar-mujer.jpg" %}'>
+					  {% endif %}
+				  </a>
+				  {% if uvo.avg_puntuacion %}
+				  <div class="fw-bold fs-3 d-flex">
+				  	{{uvo.avg_puntuacion|floatformat:2}}
+				  	<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
+				  </div>
+				  <div class="">
+				   	<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
+				  		({{uvo.count_opiniones}} opiniones)
+				  	</a>
+				  </div>
+				  {% else %}
+				  <div class="">
+				  	<a class="link-secondary fw-bold">
+				  		(Sin opiniones todavía)
+					</a>
+				  </div>
+				  {% endif %}
+				</div>
+				<div class="col-12 col-md-4 col-centered row-centered">
+				  <a class="btn btn-warning boton-3d"
+				  {% if not user.is_authenticated %}
+					href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+				  {% else %}
+				    href="{% url 'n_detalles_viaje' idV=uvo.id %}"
+				  {% endif %} >
+				  {% if uvo.flg_confirmacion_auto %}
+				  <i class="fas fa-wand-sparkles fa-lg"></i>
+				  {% else %}
+				  <i class="fas fa-hand-point-up fa-lg"></i>
+				  {% endif %}
+				  <b>Reservar Plaza</b>
+				</a>
+				</div>
+			  </div>
+			</div>
 			{% endfor %}
 		</div>
 	</div>

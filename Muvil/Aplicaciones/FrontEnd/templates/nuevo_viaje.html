@@ -7,9 +7,9 @@
 
 {% block base_content %}
 	<div class="container-md mt-5 d-flex justify-content-center">
-		<div class="row col-12 col-md-8 justify-content-center">
+		<div class="row col-12 col-md-8">
 			<span class="font2-muvil fs-4 border-bottom border-4 border-warning">Introduce los datos de tu viaje...</span>
-			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+			<form method="POST" class="row justify-content-center post-form px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 				<div class="col-md-12 py-2 mx-3 text-center bg-light">
 					{{ form.flg_confirmacion_auto }}
 					<i class="fas fa-wand-sparkles fa-lg"></i>
@@ -113,7 +113,7 @@
 				</div>
 				<!-- INICIO Modal Cancelar Viaje -->
 				<div class="modal fade" id="publicarviajeModal" tabindex="-1" role="dialog" aria-labelledby="publicarviajeModal" aria-hidden="true">
-						<div class="modal-dialog">
+					<div class="modal-dialog">
 						<div class="modal-content">
 						  <div class="modal-header">
 							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
@@ -129,8 +129,8 @@
 							  </button>
 						  </div>
 						</div>
-					  </div>
 					</div>
+				</div>
 				<!-- FIN Modal Cancelar Viaje -->
 			</form>
 		</div>

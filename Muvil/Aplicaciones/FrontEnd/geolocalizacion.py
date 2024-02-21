@@ -1,5 +1,6 @@
 from geopy.geocoders import Nominatim
 from geopy.distance import distance
+from geopy.exc import GeocoderTimedOut
 import openrouteservice
 
 
@@ -9,12 +10,18 @@ class Geolocalizacion():
         self.__client = openrouteservice.Client(key='5b3ce3597851110001cf6248e9ddd2e474884ff994afc9527d659a58')
 
     def obtener_direccion(self, input_direccion):
-        direccion = self.geo.geocode(input_direccion)
+        try:
+            direccion = self.geo.geocode(input_direccion, timeout=5)
+        except GeocoderTimedOut as e:
+            print("Error: geocode failed on input %s with message %s" % (input_direccion, e.message))
 
         return direccion
 
     def obtener_coordenadas(self, input_direccion):
-        direccion = self.geo.geocode(input_direccion)
+        try:
+            direccion = self.geo.geocode(input_direccion, timeout=5)
+        except GeocoderTimedOut as e:
+            print("Error: geocode failed on input %s with message %s" % (input_direccion, e.message))
 
         return direccion.latitude, direccion.longitude
 
