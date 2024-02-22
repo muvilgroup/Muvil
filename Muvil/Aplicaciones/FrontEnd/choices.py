@@ -6,7 +6,7 @@ genero = (
 documentos_identidad = (
     ('DNI', 'DNI'),
     ('NIE', 'NIE'),
-    ('PASSWORD', 'PASSWORD')
+    ('PASAPORTE', 'PASAPORTE')
 )
 
 tipo_vehiculo = (
