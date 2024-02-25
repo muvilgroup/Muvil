@@ -16,7 +16,7 @@ from .geolocalizacion import Geolocalizacion
 from django.contrib import messages
 from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef
 from .choices import categorias_puntuacion, estados_viajes
-from .templatetags.filters import ViajesFilter, MensajesFilter, UsuarioviajesopinionesFilter
+from .templatetags.filters import MisViajesFilter, BuscarViajeFilter, MensajesFilter, UsuarioviajesopinionesFilter
 from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.core.mail import send_mail
@@ -651,7 +651,7 @@ def v_buscar_viaje(request):
     Usuario_Viajes_Opiniones = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
                                                         ,'id', 'ciudad_destino', 'fechor_ida'
                                                         ,'importe_total_asiento', 'fechor_llegada'
-                                                        ,'numero_asientos_libres'
+                                                        ,'numero_asientos_libres', 'flg_confirmacion_auto'
                                                         ,'estado', 'id_persona_id__pref_conversacion'
                                                         ,'id_persona_id__pref_fumar', 'id_persona_id__imagen'
                                                         ,'distancia_kms','duracion_min') \
@@ -662,7 +662,7 @@ def v_buscar_viaje(request):
                                     .annotate(avg=Avg('puntuacion')).values('avg'))
                 ).filter(ciudad_origen=origen, ciudad_destino=destino, fechor_ida__date=fecha).order_by('fechor_ida')
 
-    fV = UsuarioviajesopinionesFilter(request.POST, queryset=Usuario_Viajes_Opiniones)
+    fV = BuscarViajeFilter(request.POST, queryset=Usuario_Viajes_Opiniones)
     args = {
         'localizaciones': localizaciones,
         'filter': fV,
@@ -1134,7 +1134,7 @@ def v_mis_viajes(request, usuario):
         listado_viajes = None
         listado_plazas_viajes = None
 
-    fV = ViajesFilter(request.GET, queryset=listado_viajes)
+    fV = MisViajesFilter(request.GET, queryset=listado_viajes)
     args = {
         "usuario": usuario,
         "idP": idP,

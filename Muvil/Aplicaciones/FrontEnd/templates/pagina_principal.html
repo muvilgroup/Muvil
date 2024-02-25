@@ -32,10 +32,6 @@
 		  font-size: 2.5rem;
 		  font-weight: bold;
 		}
-		.gris {
-		  color: #6c757d;
-		  padding-left: 3px;
-		}
 		.col-centered {
 		  display: flex;
 		  align-items: center;
@@ -357,7 +353,7 @@
 	<!-- INICIO Próximas Salidas -->
 	{% if viajesProximos %}
 	<div class="container-md mt-4">
-		<div class="row contenedor-tarjetas-viajes">
+		<div class="row contenedor-tarjetas-viajes mx-1">
 			<div class="col-12 d-flex justify-content-center">
 				<p class="w-50 text-center fw-bold fs-3 border-bottom border-warning border-5">
 					Próximas Salidas
@@ -375,18 +371,18 @@
 				<div class="col-12 col-md-8">
 				  <div class="row">
 					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
-					  <i class="fas fa-location fa-lg" ></i>
+					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
 					  {{uvo.ciudad_origen}}
 					</div>
 				  </div>
-				  <div class="row gris">
+				  <div class="row duracion-km">
 					<div class="col ps-5">
 					  {{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
 					</div>
 				  </div>
 				  <div class="row">
 					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
-					  <i class="fas fa-flag-checkered fa-lg" ></i>
+					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
 					  {{uvo.ciudad_destino}}
 					</div>
 				  </div>
