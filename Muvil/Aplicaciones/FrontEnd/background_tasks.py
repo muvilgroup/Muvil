@@ -13,5 +13,7 @@ def actualizar_estado_viajes():
 # Tarea para eliminar los usuarios a los que le haya caducado el enlace de activación (usuarios no activos)
 def eliminar_usuarios_caducados():
     fecha_limite = datetimeNow - datetime.timedelta(seconds=settings.PASSWORD_RESET_TIMEOUT)
-    print(fecha_limite)
     Usuario.objects.filter(fec_updated__lt=fecha_limite, is_active=False).delete()
+
+def prueba_auto():
+    print("background works!!!")
