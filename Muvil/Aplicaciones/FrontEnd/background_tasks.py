@@ -14,6 +14,3 @@ def actualizar_estado_viajes():
 def eliminar_usuarios_caducados():
     fecha_limite = datetimeNow - datetime.timedelta(seconds=settings.PASSWORD_RESET_TIMEOUT)
     Usuario.objects.filter(fec_updated__lt=fecha_limite, is_active=False).delete()
-
-def prueba_auto():
-    print("background works!!!")
