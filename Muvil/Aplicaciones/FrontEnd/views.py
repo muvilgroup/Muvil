@@ -38,7 +38,7 @@ from PIL import Image
 import requests
 import io
 import pytz
-
+#import pywhatkit
 
 
 
@@ -342,6 +342,10 @@ def v_pasarela_pago(request):
         print("NO POST")
         return render(request, 'pasarela_pago.html', {})
 
+'''
+def v_enviar_whatsapp(request):
+    pywhatkit.sendwhatmsg('+34650125557', 'Prueba desde Muvil', 18, 43)
+'''
 
 def v_pagina_principal(request):
     dateNow = timezone.now()

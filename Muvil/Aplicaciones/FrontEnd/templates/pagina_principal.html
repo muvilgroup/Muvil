@@ -96,6 +96,20 @@
 	</div>
 	<!-- FIN Carrusel-->
 
+	<button id="shareButton">Compartir</button>
+
+	<div id="fallbackShare" style="display: none;">
+	  <p>Compartir en:</p>
+	  <a href="https://wa.me/?text=muvil.es" target="_blank">WhatsApp</a>
+	  <a href="mailto:?subject=Mira%20esto&body=muvil.es" target="_blank">Correo electrónico</a>
+	  <!-- Agrega más opciones de compartir según necesites -->
+	</div>
+
+	<div class="text-center btn-warning">
+		<a class=" fw-bold rounded w-25" href="{% url 'n_enviar_whatsapp' %}">
+		Enviar WhastApp
+		</a>
+	</div>
 	<!--
 	<div class="text-center btn-warning">
 		<a class=" fw-bold rounded w-25" href="{% url 'n_pasarela_pago' %}">
@@ -445,4 +459,24 @@
 {% block base_script %}
 	<script src="{% static 'js/pagina_principal.js' %}"></script>
 	<script src="{% static 'js/fontawesome_5.15.4/all.min.js' %}"></script>
+	<script>
+	  document.getElementById('shareButton').addEventListener('click', async () => {
+		const shareData = {
+		  title: 'Título del contenido',
+		  text: 'Descripción breve del contenido.',
+		  url: 'https://www.ejemplo.com',
+		};
+
+		try {
+		  if (navigator.share) {
+			await navigator.share(shareData);
+		  } else {
+			// Mostrar enlaces de fallback si la API Web Share no está disponible
+			document.getElementById('fallbackShare').style.display = 'block';
+		  }
+		} catch (err) {
+		  console.error('Error al compartir:', err);
+		}
+	  });
+	</script>
 {% endblock %}
