@@ -6,7 +6,7 @@ from pprint import pprint
 
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from datetime import datetime, timedelta
 from .forms import PersonasForm, ViajesForm, VehiculosForm, ContactoForm, CambiarPassForm, ResetearPassForm,\
@@ -369,12 +369,12 @@ def v_pagina_principal(request):
                 plazas_pendientes_aceptar = Plazas.objects.filter(criterio_viajes_user &
                                                                   criterio_plazas_pend &
                                                                   criterio_plaza_pend_no_vista)
-                alertas=False
+                alertas = False
                 if plazas_pendientes_aceptar:
                     messages.success(request, f"¡ATENCIÓN! Tienes nuevas reservas en alguno de tus viajes.<br>\
                                                 Puedes verlas en la sección <a class='btn btn-warning fw-bold' href='/mis_viajes'>\
                                                 Mis Viajes</a>")
-                    alertas=True
+                    alertas = True
                     #return redirect('n_pagina_principal')
 
                 # 2.- Notificar si se ha aceptado mi reserva
@@ -412,7 +412,7 @@ def v_pagina_principal(request):
                 if plazas_canceladas:
                     messages.success(request, f"¡VAYA! Tu viaje ha sido cancelado.<br>\
                                                 Prueba a reservar en otro de los viajes.")
-                alertas = True
+                    alertas = True
 
                 # 5.- Notificar si hay mensajes nuevos
                 criterio_mensajes_no_leidos = Q(flg_leido=False)
@@ -423,7 +423,7 @@ def v_pagina_principal(request):
                     messages.success(request, f"¡Tienes mensajes nuevos!<br>\
                                                 Los puedes leer en la sección <a class='btn btn-warning \
                                                 fw-bold' href='/mis_mensajes'>Mis Mensajes</a>")
-                alertas = True
+                    alertas = True
 
                 # 6.- Notificar si hay opiniones nuevas
                 criterio_opiniones_no_leidas = Q(flg_leido=False)
@@ -434,14 +434,16 @@ def v_pagina_principal(request):
                     messages.success(request, f"¡Te han publicado una nueva opinión!<br>\
                                                                 La puedes ver en la sección <a class='btn btn-warning \
                                                                 fw-bold' href='/menu_usuario/opiniones'>Mis Opiniones</a>")
-                alertas = True
+                    alertas = True
                 # return redirect('n_pagina_principal')
 
                 login(request, user, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
                 if not alertas:
                     messages.success(request, f"¡Bienvenid@ {request.user.email}!")
 
-                return redirect('n_pagina_principal')
+                # con este código volvemos a la última pagina en la que estabamos antes del login
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
             else:
                 messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
 
@@ -498,11 +500,14 @@ def v_pagina_principal(request):
 
     return render(request, "pagina_principal.html", args)
 
-@check_logued_usuario
 @get_persona_usuario
 def v_detalles_viaje(request, idV, usuario):
 
-    idP = usuario.id
+    if usuario:
+        idP = usuario.id
+    else:
+        idP = None
+        messages.error(request, "Hola :) ¡Debes iniciar sesión para reservar plaza en este viaje!")
 
     viaje = Viajes.objects.get(id=idV)
     plazas = Plazas.objects.filter(Q(id_viaje=idV, flg_conductor=False, estado__in=(1, 2))) # plazas pendientes o confirmadas
@@ -525,6 +530,7 @@ def v_detalles_viaje(request, idV, usuario):
     else:
         opiniones_escritas_x_cond = None
         opinion_escrita_a_cond = Opiniones.objects.filter(Q(id_viaje=idV, id_persona_publicador=idP, id_persona_receptor=viaje.id_persona.id))
+
 
     '''
     #Validacion 1: ¿Tiene ya ese usuario una reserva en ese viaje?

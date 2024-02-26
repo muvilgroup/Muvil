@@ -395,7 +395,11 @@
 					</h4>
 					<div class="col-6 px-3 pt-2 align-self-center">
 						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4"
-						   href="{% url 'n_reservar_plaza' idV=viaje.id %}">
+							{% if not user.is_authenticated %}
+							   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+							{% else %}
+							   href="{% url 'n_reservar_plaza' idV=viaje.id %}"
+							{% endif %} >
 							Reservar una plaza
 						</a>
 					</div>

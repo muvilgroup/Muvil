@@ -36,7 +36,10 @@ def get_persona_usuario (function=None):
         def _wrapped_view(request, *args, **kwargs):
 
             ###### BEGIN decorator body
-            usuario = Personas.objects.get(id_usuario=request.user.id)
+            try:
+                usuario = Personas.objects.get(id_usuario=request.user.id)
+            except Personas.DoesNotExist:
+                usuario = None
 
             kwargs['usuario'] = usuario
             ###### END decorator body

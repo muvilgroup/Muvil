@@ -427,12 +427,7 @@
 				  {% endif %}
 				</div>
 				<div class="col-12 col-md-4 col-centered row-centered">
-				  <a class="btn btn-warning boton-3d"
-				  {% if not user.is_authenticated %}
-					href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
-				  {% else %}
-				    href="{% url 'n_detalles_viaje' idV=uvo.id %}"
-				  {% endif %} >
+				  <a class="btn btn-warning boton-3d" href="{% url 'n_detalles_viaje' idV=uvo.id %}">
 				  {% if uvo.flg_confirmacion_auto %}
 				  <i class="fas fa-wand-sparkles fa-lg"></i>
 				  {% else %}
