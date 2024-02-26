@@ -11,11 +11,11 @@ document.getElementById('shareButton').addEventListener('click', async () => {
     const text = 'Fecha: 22/10/2023\nHora:20:00\nOrigen: Murcia\nDestino: Albacete\nPrecio: 24€\nPlazas libres: 2';
 
     const full_text = ':chair\t ' + plazas + '\n' + ':clock\t ' + hora + '\n'
-    alert(full_text)
+    const encodedfull_text = encodeURIComponent(url);
     const encodedUrl = encodeURIComponent(url);
     const shareData = {
       title: title,
-      text: full_text,
+      text: encodedfull_text,
       url: url,
     };
 
