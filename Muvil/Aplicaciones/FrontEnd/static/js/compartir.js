@@ -10,7 +10,7 @@ document.getElementById('shareButton').addEventListener('click', async () => {
     const title = 'Aquí tienes los detalles del viaje:';
     const text = 'Fecha: 22/10/2023\nHora:20:00\nOrigen: Murcia\nDestino: Albacete\nPrecio: 24€\nPlazas libres: 2';
 
-    const full_text = '*MUVIL informa:*\n' + '*Aqui tienes los detalles de tu proximo viaje*\n\n''🗓️ '+ fecha + '\n🕖 ' + hora + '\n🏳️ desde ' + desde + '\n🏁 hasta '+ hasta + '\n💶 ' + precio + '\n💺 ' + plazas + '\n🧳 ' + equipaje + '\n\n *Pulsa aquí para reservar* ';
+    const full_text = '*MUVIL informa:*\n' + '*Aqui tienes los detalles de tu proximo viaje*\n\n' + '🗓️ '+ fecha + '\n🕖 ' + hora + '\n🏳️ desde ' + desde + '\n🏁 hasta '+ hasta + '\n💶 ' + precio + '\n💺 ' + plazas + '\n🧳 ' + equipaje + '\n\n *Pulsa aquí para reservar* ';
     const encodedUrl = encodeURIComponent(url);
     const shareData = {
       title: title,
