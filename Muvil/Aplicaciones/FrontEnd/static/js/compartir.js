@@ -1,11 +1,21 @@
 document.getElementById('shareButton').addEventListener('click', async () => {
     const url = document.getElementById('shareUrl').value;
+    const fecha = document.getElementById('fecha').textContent;
+    const hora = document.getElementById('hora').textContent;
+    const desde = document.getElementById('desde').textContent;
+    const hasta = document.getElementById('hasta').textContent;
+    const precio = document.getElementById('precio').textContent;
+    const plazas = document.getElementById('plazas').textContent;
+    const equipaje = document.getElementById('equipaje').textContent;
     const title = 'Aquí tienes los detalles del viaje:';
     const text = 'Fecha: 22/10/2023\nHora:20:00\nOrigen: Murcia\nDestino: Albacete\nPrecio: 24€\nPlazas libres: 2';
+
+    const full_text = ':chair\t' + plazas + '\n' + ':clock\t' + hora + '\n'
+    alert(full_text)
     const encodedUrl = encodeURIComponent(url);
     const shareData = {
       title: title,
-      text: text,
+      text: full_text,
       url: url,
     };
 

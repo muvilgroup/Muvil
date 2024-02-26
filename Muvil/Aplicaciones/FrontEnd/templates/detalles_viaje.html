@@ -63,7 +63,7 @@
 					</div>
 					<div class="col-12 col-sm-3 px-3">
 						<div class="row mt-2" id="estado-viaje">
-							<h4 class="text-white rounded-pill text-center"
+							<h4 class="text-white rounded-pill text-center" id="estado-viaje"
 								 style="background-color:
 								 	{% if viaje.estado == 1 %}
 										#8C8F8B
@@ -84,14 +84,14 @@
 						<span class="fs-4 fw-bold font2-muvil mx-2">Fecha:</span>
 					</div>
 					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold">{{viaje.fechor_ida|date:"SHORT_DATE_FORMAT"}}</div>
+						<div class="fs-5 fw-bold" id="fecha">{{viaje.fechor_ida|date:"SHORT_DATE_FORMAT"}}</div>
 					</div>
 					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
 						<i class="fas fa-clock fa-lg"></i>
 						<span class="fs-4 fw-bold font2-muvil mx-2">Hora:</span>
 					</div>
 					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold">{{viaje.fechor_ida|time}}</div>
+						<div class="fs-5 fw-bold" id="hora">{{viaje.fechor_ida|time}}</div>
 					</div>
 				</div>
 				<div class="row">
@@ -100,7 +100,7 @@
 						<span class="fs-4 fw-bold font2-muvil mx-2">Desde:</span>
 					</div>
 					<div class="col-12 col-sm-6 px-3">
-						<div class="fs-5 fw-bold">{{viaje.ciudad_origen}}</div>
+						<div class="fs-5 fw-bold" id="desde">{{viaje.ciudad_origen}}</div>
 					</div>
 				</div>
 				<div class="row">
@@ -109,7 +109,7 @@
 						<span class="fs-4 fw-bold font2-muvil mx-2">Hasta:</span>
 					</div>
 					<div class="col-12 col-sm-6 px-3">
-						<div class="fs-5 fw-bold">{{viaje.ciudad_destino}}</div>
+						<div class="fs-5 fw-bold" id="hasta">{{viaje.ciudad_destino}}</div>
 					</div>
 				</div>
 				<div class="row">
@@ -118,7 +118,7 @@
 						<span class="fs-4 fw-bold font2-muvil mx-2">Precio persona:</span>
 					</div>
 					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold">{{viaje.importe_total_asiento}} €</div>
+						<div class="fs-5 fw-bold" id="precio">{{viaje.importe_total_asiento}} €</div>
 					</div>
 				</div>
 				<div class="row">
@@ -128,11 +128,11 @@
 					</div>
 					<div class="col-12 col-sm-3 px-3">
 						{% if viaje.numero_asientos_libres == 0 %}
-						<div class="fs-5 fw-bold"> class="text-white rounded-pill text-center" style="background-color:#991C1C;">
+						<div class="fs-5 fw-bold" id="plazas"> class="text-white rounded-pill text-center" style="background-color:#991C1C;">
 							¡VIAJE COMPLETO!
 						</div>
 						{% else %}
-						<div class="fs-5 fw-bold">{{viaje.numero_asientos_libres}}</div>
+						<div class="fs-5 fw-bold" id="plazas">{{viaje.numero_asientos_libres}}</div>
 						{% endif %}
 					</div>
 				</div>
@@ -142,7 +142,7 @@
 						<span class="fs-4 fw-bold font2-muvil mx-2">Equipaje:</span>
 					</div>
 					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold">{{viaje.get_equipaje_display}}</div>
+						<div class="fs-5 fw-bold" id="equipaje">{{viaje.get_equipaje_display}}</div>
 					</div>
 				</div>
 				{% if flg_reserva_confirmada %}
