@@ -14,7 +14,7 @@ document.getElementById('shareButton').addEventListener('click', async () => {
     const encodedUrl = encodeURIComponent(url);
     const shareData = {
       title: title,
-      text: encodedfull_text,
+      text: full_text,
       url: url,
     };
 
