@@ -17,10 +17,14 @@
         }
         .boton-3d:hover {
 		  transform: translateY(-4px) translateX(-2px);
-		  box-shadow: 2px 5px 0 0 black;
+		  box-shadow: 2px 5px 0 0 #A8A6A2;
 		}
 		.boton-3d:is(:hover, :focus) {
 		  outline-offset: 3px;
+		}
+		.boton-muvil{
+			border: 2px solid #A8A6A2;
+			background-color: #FFC700;
 		}
     </style>
 {% endblock %}
@@ -29,11 +33,29 @@
 	<div class="container-lg mt-5">
 		<div class="row justify-content-around">
 			<div class="col-12 shadow">
+				<div class="col-12 d-flex justify-content-center py-3">
+				<!-- INICIO Opciones de compartir -->
+					<button class="boton-3d boton-muvil fw-bold fs-4 rounded" id="shareButton">
+						<i class="fas fa-share-nodes fa-lg"></i>
+						<span>Envía el enlace de este viaje</span>
+					</button>
+					<input type="text" id="shareUrl" placeholder="URL" value="{{ request.path }}" hidden/>
+
+					<div id="fallbackShare" style="display: none;">
+					  <p>Compartir en:</p>
+					  <a href="https://wa.me/?text=muvil.es" target="_blank">WhatsApp</a>
+					  <a href="mailto:?subject=Mira%20esto&body=muvil.es" target="_blank">Correo electrónico</a>
+					  <!-- Agrega más opciones de compartir según necesites -->
+					</div>
+				</div>
+				<!-- FIN Opciones de compartir -->
+
 				<div class="row">
 					<div class="col-12 px-3 pt-2">
 						<h3 class="border-bottom border-5 border-warning">Detalles del Viaje</h3>
 					</div>
 				</div>
+
 				<div class="row">
 					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
 						<i class="fas fa-circle-info fa-lg"></i>
@@ -407,5 +429,10 @@
 			</div>
 		<!-- FIN Modal Cancelar Viaje -->
 	</div>
+{% endblock %}
+
+
+{% block base_script %}
+	<script src="{% static 'js/compartir.js' %}"></script>
 {% endblock %}
 
