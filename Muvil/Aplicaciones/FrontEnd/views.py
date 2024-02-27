@@ -1,7 +1,7 @@
 # Pasarela de Pago
 import time
 #import swagger_client
-from swagger_client.rest import ApiException
+#from swagger_client.rest import ApiException
 from pprint import pprint
 
 from django.shortcuts import render, redirect
