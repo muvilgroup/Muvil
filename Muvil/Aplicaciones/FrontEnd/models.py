@@ -186,7 +186,7 @@ class Localizaciones (models.Model):
 
 class Caparazones (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id',null=True,blank=True,on_delete=models.CASCADE)
-    idiomas = models.CharField(max_length=128)
+    idiomass = models.CharField(max_length=128)
     profesion = models.CharField(max_length=64)
     aficiones = models.CharField(max_length=256)
     estilo_musica = models.CharField(max_length=64)
