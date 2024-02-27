@@ -941,14 +941,23 @@ def v_menu_usuario_preferencias(request, usuario):
 @check_logued_usuario
 @get_persona_usuario
 def v_menu_usuario_caparazon(request, usuario):
-    usuarioCaparazon = Caparazones.objects.get(id_persona=usuario.id)
+    try:
+        usuarioCaparazon = Caparazones.objects.get(id_persona=usuario)
+    except Caparazones.DoesNotExist:
+        # si no existe el caparazon del usuario, se crea uno en blanco
+        usuarioCaparazon = Caparazones(id_persona=usuario)
+        usuarioCaparazon.save()
+    print(request.method)
 
     args = {
-            "usuario": usuario
+            "usuario": usuario,
+            "usuarioCaparazon": usuarioCaparazon
             }
 
     if request.method == "POST":
-        form = CaparazonesForm(request.POST, request.FILES, instance=usuarioCaparazon)
+        form = CaparazonesForm(request.POST, instance=usuarioCaparazon)
+        print("POST")
+        print(usuarioCaparazon)
         if form.is_valid():
             caparazon = form.save()
             caparazon.save()
@@ -960,6 +969,8 @@ def v_menu_usuario_caparazon(request, usuario):
     else:
         # Se crea un form con la información del usuario logueado
         form = CaparazonesForm(instance=usuarioCaparazon)
+        print("GET")
+        print(usuarioCaparazon)
         args.update({"form": form})
         return render(request, 'menu_usuario_caparazon.html', args)
 

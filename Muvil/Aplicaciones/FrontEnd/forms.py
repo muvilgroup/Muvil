@@ -81,43 +81,43 @@ class CaparazonesForm(ModelForm):
         widgets = {
             'idiomas': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Español, Inglés, Portugués, ..."
             }),
             'profesion': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Enfermería/Profesora de primaria/Ingeniero de Teleco ..."
             }),
             'aficiones': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Videojuegos, el Vino, salir de Fiesta, ..."
             }),
             'estilo_musica': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Reggaeton, Trap, Techno, ..."
             }),
             'grupos_musica': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Marc Anthony, Estopa, ColdPlay, ..."
             }),
             'libros': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "El principito, Don Quijote de la Mancha, El poder del Ahora, ..."
             }),
             'peliculas': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Juego de Tronos, El lobo de Wall Street, Kill Bill, ..."
             }),
             'deportes': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Baloncesto, Fútbol, Pádel, ..."
             }),
             'alimentacion': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder': "Veganismo/Vegetarianismo/Alimentación Emocional/..."
             }),
             'animales': TextInput(attrs={
                 'class': "form-control",
-                'minlength': 3,
+                'placeholder':"3 perros, 2 gatos, 1 tortuga, ..."
             })
         }
 
