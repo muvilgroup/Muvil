@@ -238,7 +238,7 @@ RECAPTCHA_PUBLIC_KEY = '6Lf0owwnAAAAAMdN0o2Am_baoRYEFmVEJd0ZvS0j'
 RECAPTCHA_PRIVATE_KEY = '6Lf0owwnAAAAAJ0JSMYdii6Lqn_VKFIOdzl_PytE'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
-
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 #################################
 ###  PWA  #######################
 #################################
