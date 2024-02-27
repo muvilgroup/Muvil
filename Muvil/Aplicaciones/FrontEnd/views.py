@@ -1,6 +1,6 @@
 # Pasarela de Pago
 import time
-import swagger_client
+#import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
