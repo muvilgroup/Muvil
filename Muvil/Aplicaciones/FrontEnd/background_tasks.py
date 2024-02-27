@@ -8,7 +8,7 @@ datetimeNow = timezone.now()
 
 # Tarea para actualizar el estado de los viajes pendientes a COMPLETADO cuando la fecha-hora de inicio sea superada
 def actualizar_estado_viajes():
-    Viajes.objects.filter(estado=1, fechor_ida__lt=datetimeNow).update(estado=2)
+    Viajes.objects.filter(estado=1, fechor_ida__lt=datetimeNow).update(estado=2, fechor_realizado=datetimeNow)
 
 # Tarea para eliminar los usuarios a los que le haya caducado el enlace de activación (usuarios no activos)
 def eliminar_usuarios_caducados():

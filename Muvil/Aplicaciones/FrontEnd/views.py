@@ -405,7 +405,7 @@ def v_pagina_principal(request):
 
                 # 4.- Notificar si ha finalizado un viaje mio
                 criterio_viaje_realizado = Q(estado=2)
-                criterio_viaje_realizado_no_visto = Q(fechor_realizado__gt=user.last_login)
+                criterio_viaje_realizado_no_visto = Q(fechor_llegada__gt=user.last_login)
                 viajes_finalizados = Viajes.objects.filter(criterio_viaje_realizado &
                                                           criterio_viaje_realizado_no_visto)
                 if viajes_finalizados:
