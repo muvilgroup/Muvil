@@ -20,6 +20,7 @@ urlpatterns = [
     path('menu_usuario/miperfil/', v_menu_usuario_perfil, name='n_menu_usuario_perfil'),
     path('menu_usuario/miscoches/', v_menu_usuario_coches, name='n_menu_usuario_coches'),
     path('menu_usuario/preferencias/', v_menu_usuario_preferencias, name='n_menu_usuario_preferencias'),
+    path('menu_usuario/micaparazon/', v_menu_usuario_caparazon, name='n_menu_usuario_caparazon'),
     path('menu_usuario/opiniones/', v_menu_usuario_opiniones, name='n_menu_usuario_opiniones'),
     path('menu_usuario/notificaciones/', v_menu_usuario_notificaciones, name='n_menu_usuario_notificaciones'),
     path('menu_usuario/pagoscobros/', v_menu_usuario_pagoscobros, name='n_menu_usuario_pagoscobros'),

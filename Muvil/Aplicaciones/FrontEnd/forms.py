@@ -3,7 +3,7 @@ from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, DateInp
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from ..users.admin import UserCreationForm as CustomUserCreationForm
-from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario
+from .models import Personas, Viajes, Vehiculos, Opiniones, Usuario, Caparazones
 from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, modelos, equipaje, documentos_identidad
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
@@ -11,7 +11,6 @@ from datetime import datetime
 from ..users.models import Usuario
 
 class PersonasForm(ModelForm):
-
     class Meta:
         model = Personas
         fields = ('nombre', 'apellido1','apellido2','tipo_documento','numero_documento','fec_nacimiento',
@@ -70,6 +69,55 @@ class PersonasForm(ModelForm):
             'password': TextInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px;'
+            })
+        }
+
+class CaparazonesForm(ModelForm):
+    class Meta:
+        model = Caparazones
+        fields = ('idiomas', 'profesion', 'aficiones', 'estilo_musica', 'grupos_musica', 'libros', 'peliculas',
+                  'deportes', 'alimentacion', 'animales')
+
+        widgets = {
+            'idiomas': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'profesion': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'aficiones': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'estilo_musica': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'grupos_musica': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'libros': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'peliculas': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'deportes': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'alimentacion': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
+            }),
+            'animales': TextInput(attrs={
+                'class': "form-control",
+                'minlength': 3,
             })
         }
 

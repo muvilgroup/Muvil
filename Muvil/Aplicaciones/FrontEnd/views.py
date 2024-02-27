@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from datetime import datetime, timedelta
 from .forms import PersonasForm, ViajesForm, VehiculosForm, ContactoForm, CambiarPassForm, ResetearPassForm,\
-    RegistrarUsuarioForm, ImportExportForm, LoginnForm, VueltaViajesForm
+    RegistrarUsuarioForm, ImportExportForm, LoginnForm, VueltaViajesForm, CaparazonesForm
 from .utils import codificar_numeros
 from .geolocalizacion import Geolocalizacion
 from django.contrib import messages
@@ -22,7 +22,7 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.core.mail import send_mail
 from .validaciones import ValidacionesViajes
 from .token import token_activacion_usuario
-from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones
+from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones, Caparazones
 from allauth.socialaccount.models import SocialAccount
 from ..users.admin import UserCreationForm as CustomUserCreationForm
 from django.template.loader import render_to_string
@@ -937,6 +937,32 @@ def v_menu_usuario_preferencias(request, usuario):
         return redirect('n_menu_usuario_preferencias')
     else:
         return render(request, 'menu_usuario_preferencias.html', args)
+
+@check_logued_usuario
+@get_persona_usuario
+def v_menu_usuario_caparazon(request, usuario):
+    usuarioCaparazon = Caparazones.objects.get(id_persona=usuario.id)
+
+    args = {
+            "usuario": usuario
+            }
+
+    if request.method == "POST":
+        form = CaparazonesForm(request.POST, request.FILES, instance=usuarioCaparazon)
+        if form.is_valid():
+            caparazon = form.save()
+            caparazon.save()
+            messages.success(request, "¡¡¡Los datos de tu Caparazón se han actualizado correctamente!!!")
+            return redirect('n_menu_usuario_caparazon')
+        else:
+            messages.error(request, "¡¡¡ERROR. Los datos no se han actualizado!!!")
+            return redirect('n_menu_usuario_caparazon')
+    else:
+        # Se crea un form con la información del usuario logueado
+        form = CaparazonesForm(instance=usuarioCaparazon)
+        args.update({"form": form})
+        return render(request, 'menu_usuario_caparazon.html', args)
+
 
 @check_logued_usuario
 @get_persona_usuario

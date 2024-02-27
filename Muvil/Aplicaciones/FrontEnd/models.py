@@ -184,3 +184,21 @@ class Localizaciones (models.Model):
         verbose_name = 'localizaciones'
         verbose_name_plural = 'localizaciones'
 
+class Caparazones (models.Model):
+    id_persona = models.ForeignKey(Personas,to_field='id',null=True,blank=True,on_delete=models.CASCADE)
+    idiomas = models.CharField(max_length=128)
+    profesion = models.CharField(max_length=64)
+    aficiones = models.CharField(max_length=256)
+    estilo_musica = models.CharField(max_length=64)
+    grupos_musica = models.CharField(max_length=256)
+    libros = models.CharField(max_length=256)
+    peliculas = models.CharField(max_length=256)
+    deportes = models.CharField(max_length=64)
+    alimentacion = models.CharField(max_length=64)
+    animales = models.CharField(max_length=64)
+    fec_created = models.DateTimeField(auto_now_add=True)
+    fec_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'caparazones'
+        verbose_name_plural = 'caparazones'
