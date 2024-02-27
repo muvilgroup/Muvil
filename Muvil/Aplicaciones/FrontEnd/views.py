@@ -403,6 +403,18 @@ def v_pagina_principal(request):
                                                 Prueba a reservar en otro de los viajes.")
                     alertas=True
 
+                # 4.- Notificar si ha finalizado un viaje mio
+                criterio_viaje_realizado = Q(estado=2)
+                criterio_viaje_realizado_no_visto = Q(fechor_realizado__gt=user.last_login)
+                viajes_finalizados = Viajes.objects.filter(criterio_viaje_realizado &
+                                                          criterio_viaje_realizado_no_visto)
+                if viajes_finalizados:
+                    messages.success(request, f"¡Tu viaje ha finalizado! ¿Ha ido todo bien?.<br>\
+                                                En la sección <a class='btn btn-warning \
+                                                fw-bold' href='/mis_viajes'>Mis Viajes</a> puedes confirmar que todo \
+                                                fue bien y dejar una reseña al conductor/pasajero.")
+                    alertas = True
+
                 # 4.- Notificar si se ha cancelado mi viaje
                 criterio_viaje_canc = Q(id_viaje__estado=3)
                 criterio_plaza_canc_no_vista = Q(fechor_cancelado__gt=user.last_login)
