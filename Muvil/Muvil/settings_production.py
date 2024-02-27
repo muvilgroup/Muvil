@@ -10,3 +10,6 @@ DEBUG = True #se deja en True aunque sea produccion porque asi funcionan las med
 USE_X_FORWARDED_HOST = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
+PWA_APP_SCOPE = 'https://www.muvil.es/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = 'https://www.muvil.es/'
