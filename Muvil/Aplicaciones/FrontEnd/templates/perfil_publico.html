@@ -207,7 +207,8 @@
 					</div>
 				</div>
 				<div class="row py-3" id="preferencias">
-					<div class="col-12 px-3 pt-2">
+					<div class="col-12 px-3 pt-2 d-flex">
+						<i class="fa-solid fa-palette fa-xl me-2"></i>
 						<h5 class="border-bottom border-3 border-warning">Preferencias</h5>
 					</div>
 					<div class="col px-5 pt-2">
@@ -284,12 +285,71 @@
 					</div>
 				</div>
 				<div class="row py-3" id="massobremi">
-					<div class="col-12 px-3 pt-2">
+					<div class="col-12 px-3 pt-2 d-flex">
+						<i class="fa-solid fa-magnifying-glass-plus fa-xl me-2"></i>
 						<h5 class="border-bottom border-3 border-warning">Más sobre mi...</h5>
 					</div>
 					<div class="col-12 px-5 pt-2">
-						<textarea class="w-100" rows="10" placeholder="Aqui está mi introducción">{{usuario_perfil.descripcion}}
+						<textarea class="w-100" rows="3" placeholder="Aqui está mi introducción">{{usuario_perfil.descripcion}}
 						</textarea>
+					</div>
+				</div>
+				<div class="row py-3 border rounded" style="background-color:#C3FCF2;" id="caparazon">
+					<div class="col-12 px-3 pt-2 d-flex">
+						<i class="me-2">
+						  <img src='{% static "icon/turtle3.svg" %}' width="30" height="30" alt="Mi caparazón">
+						</i>
+						<h5 class="border-bottom border-3 border-warning">Mi Caparazón</h5>
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-globe fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Idiomas: </label>
+						{{ caparazon.idiomas }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-user-doctor fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Profesión: </label>
+						{{ caparazon.profesion }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-star fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Aficiones: </label>
+						{{ caparazon.aficiones }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-headphones-simple fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Estilo Musical: </label>
+						{{ caparazon.estilo_musica }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-guitar fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Grupos de Música: </label>
+						{{ caparazon.grupos_musica }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-book-bookmark fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Libros: </label>
+						{{ caparazon.libros }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-film fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Peliculas: </label>
+						{{ caparazon.peliculas }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-table-tennis-paddle-ball fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Deportes: </label>
+						{{ caparazon.deportes }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-wheat-awn fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Alimentación: </label>
+						{{ caparazon.alimentacion }}
+					</div>
+					<div class="col-12 col-md-6 ms-5">
+						<i class="fa-solid fa-cat fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5">Mascotas: </label>
+						{{ caparazon.animales }}
 					</div>
 				</div>
 			</div>

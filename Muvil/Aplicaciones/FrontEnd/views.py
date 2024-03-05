@@ -21,6 +21,7 @@ from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.core.mail import send_mail
 from .validaciones import ValidacionesViajes
+from .alertas_pagina_principal import AlertasPrincipal
 from .token import token_activacion_usuario
 from .models import Personas, Viajes, Vehiculos, Opiniones, Plazas, Mensajes, Localizaciones, Caparazones
 from allauth.socialaccount.models import SocialAccount
@@ -124,7 +125,6 @@ def activacionEmail(request, usuario, to_email):
     else:
         messages.error(request, f'Ha ocurrido un error al enviar el mail de confirmación a {to_email}, \
         por favor, comprueba si está bien escrita la dirección de correo.')
-
 
 def v_resetear_contrasenya(request):
     if request.method == 'POST':
@@ -296,7 +296,7 @@ def v_import_export(request):
 
 def v_pasarela_pago(request):
     if request.method == "POST":
-        print(request.POST.get('paytpvToken', False))
+        #print(request.POST.get('paytpvToken', False))
 
         # create an instance of the API class
         api_instance = swagger_client.BalanceApi()
@@ -314,7 +314,7 @@ def v_pasarela_pago(request):
         try:
             api_response = api_instance2.add_user(body=body2, paycomet_api_token=pAYCOMETAPITOKEN)
             dict_api_response = api_response.to_dict()
-            pprint(api_response)
+            #pprint(api_response)
             id_user = dict_api_response["id_user"]
             token_user = dict_api_response["token_user"]
             body3 = {
@@ -333,13 +333,12 @@ def v_pasarela_pago(request):
                                 }
                     }
             api_response = api_instance3.execute_purchase(body=body3, paycomet_api_token=pAYCOMETAPITOKEN)
-            pprint(api_response)
+            #pprint(api_response)
         except ApiException as e:
             print("Exception when calling CardsApi->addUser: %s\n" % e)
 
         return render(request, 'pasarela_pago.html', {})
     else:
-        print("NO POST")
         return render(request, 'pasarela_pago.html', {})
 
 '''
@@ -349,6 +348,7 @@ def v_enviar_whatsapp(request):
 
 def v_pagina_principal(request):
     dateNow = timezone.now()
+
     if request.session.get('first_time', 0) == 0:
         first_time = request.session['first_time'] = 1
     else:
@@ -362,112 +362,35 @@ def v_pagina_principal(request):
         if not request.user.is_authenticated:
             user = authenticate(username=email_input, password=pass_input)
             if user is not None:
-                # 1.- Notificar si hay plazas pendientes de aceptar no vistas
-                criterio_viajes_user = Q(id_viaje__id_persona_id__id_usuario_id=user.id)
-                criterio_plazas_pend = Q(estado=1)
-                criterio_plaza_pend_no_vista = Q(fechor_pendiente__gt=user.last_login)
-                plazas_pendientes_aceptar = Plazas.objects.filter(criterio_viajes_user &
-                                                                  criterio_plazas_pend &
-                                                                  criterio_plaza_pend_no_vista)
-                alertas = False
-                if plazas_pendientes_aceptar:
-                    messages.success(request, f"¡ATENCIÓN! Tienes nuevas reservas en alguno de tus viajes.<br>\
-                                                Puedes verlas en la sección <a class='btn btn-warning fw-bold' href='/mis_viajes'>\
-                                                Mis Viajes</a>")
-                    alertas = True
-                    #return redirect('n_pagina_principal')
-
-                # 2.- Notificar si se ha aceptado mi reserva
-                criterio_plazas_user = Q(id_persona_id__id_usuario_id=user.id)
-                criterio_plazas_conf = Q(estado=2)
-                criterio_plaza_conf_no_vista = Q(fechor_confirmado__gt=user.last_login)
-                plazas_aceptadas = Plazas.objects.filter(criterio_plazas_user &
-                                                         criterio_plazas_conf &
-                                                         criterio_plaza_conf_no_vista)
-                if plazas_aceptadas:
-                    messages.success(request, f"¡GENIAL! Tu reserva ha sido confirmada.<br>\
-                                                Consulta los detalles del viaje en la sección <a class='btn btn-warning \
-                                                fw-bold' href='/mis_viajes'>\
-                                                Mis Viajes</a>")
-                    alertas=True
-                    #return redirect('n_pagina_principal')
-
-                # 3.- Notificar si se ha rechazado mi reserva
-                criterio_plazas_rech = Q(estado=3)
-                criterio_plaza_rech_no_vista = Q(fechor_rechazado__gt=user.last_login)
-                plazas_rechazadas = Plazas.objects.filter(criterio_plazas_user &
-                                                         criterio_plazas_rech &
-                                                         criterio_plaza_rech_no_vista)
-                if plazas_rechazadas:
-                    messages.success(request, f"¡VAYA! Tu reserva pendiente ha sido rechazada.<br>\
-                                                Prueba a reservar en otro de los viajes.")
-                    alertas=True
-
-                # 4.- Notificar si ha finalizado un viaje mio
-                criterio_viaje_realizado = Q(estado=2)
-                criterio_viaje_realizado_no_visto = Q(fechor_llegada__gt=user.last_login)
-                viajes_finalizados = Viajes.objects.filter(criterio_viaje_realizado &
-                                                          criterio_viaje_realizado_no_visto)
-                if viajes_finalizados:
-                    messages.success(request, f"¡Tu viaje ha finalizado! ¿Ha ido todo bien?.<br>\
-                                                En la sección <a class='btn btn-warning \
-                                                fw-bold' href='/mis_viajes'>Mis Viajes</a> puedes confirmar que todo \
-                                                fue bien y dejar una reseña al conductor/pasajero.")
-                    alertas = True
-
-                # 4.- Notificar si se ha cancelado mi viaje
-                criterio_viaje_canc = Q(id_viaje__estado=3)
-                criterio_plaza_canc_no_vista = Q(fechor_cancelado__gt=user.last_login)
-                plazas_canceladas = Plazas.objects.filter(criterio_plazas_user &
-                                                          criterio_viaje_canc &
-                                                          criterio_plaza_canc_no_vista)
-                if plazas_canceladas:
-                    messages.success(request, f"¡VAYA! Tu viaje ha sido cancelado.<br>\
-                                                Prueba a reservar en otro de los viajes.")
-                    alertas = True
-
-                # 5.- Notificar si hay mensajes nuevos
-                criterio_mensajes_no_leidos = Q(flg_leido=False)
-                criterio_mensajes_para_user = Q(id_persona_receptor__id_usuario_id=user.id)
-                mensajes_no_leidos = Mensajes.objects.filter(criterio_mensajes_no_leidos &
-                                                          criterio_mensajes_para_user)
-                if mensajes_no_leidos:
-                    messages.success(request, f"¡Tienes mensajes nuevos!<br>\
-                                                Los puedes leer en la sección <a class='btn btn-warning \
-                                                fw-bold' href='/mis_mensajes'>Mis Mensajes</a>")
-                    alertas = True
-
-                # 6.- Notificar si hay opiniones nuevas
-                criterio_opiniones_no_leidas = Q(flg_leido=False)
-                criterio_opiniones_para_user = Q(id_persona_receptor__id_usuario_id=user.id)
-                opiniones_no_leidas = Opiniones.objects.filter(criterio_opiniones_no_leidas &
-                                                               criterio_opiniones_para_user)
-                if opiniones_no_leidas:
-                    messages.success(request, f"¡Te han publicado una nueva opinión!<br>\
-                                                                La puedes ver en la sección <a class='btn btn-warning \
-                                                                fw-bold' href='/menu_usuario/opiniones'>Mis Opiniones</a>")
-                    alertas = True
-                # return redirect('n_pagina_principal')
-
+                alertas = AlertasPrincipal(usuario_input=user)
+                lista_alertas = alertas.alert_mensajes_salida()
                 login(request, user, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
-                if not alertas:
+                if not lista_alertas:
                     messages.success(request, f"¡Bienvenid@ {request.user.email}!")
+                else:
+                    for mensaje in lista_alertas:
+                        messages.success(request, mensaje)
 
                 # con este código volvemos a la última pagina en la que estabamos antes del login
                 next = request.POST.get('next', '/')
                 return HttpResponseRedirect(next)
             else:
-                messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!")
+                messages.error(request, "¡¡¡Usuario o Contraseña incorrectos!!! Vuelve a intentarlo!!!<br>\
+                      Si has olvidado tu contraseña puedes resetearla aquí <a class='btn btn-warning fw-bold boton-3d' href='resetear_contrasenya/'>Cambiar Contraseña</a>")
 
 
     if request.user.is_authenticated:
-        #usuario = Personas.objects.get(id_usuario=request.user.id)
-        user_auth = request.user
+        user = request.user
+        alertas = AlertasPrincipal(usuario_input=user)
+        lista_alertas = alertas.alert_mensajes_salida()
+        if lista_alertas:
+            for mensaje in lista_alertas:
+                messages.success(request, mensaje)
         try:
-            usuario = Personas.objects.get(id_usuario=user_auth.id)
+            usuario = Personas.objects.get(id_usuario=user.id)
         except Personas.DoesNotExist:
-            # Aqui entra cuando volvemos del login por FB pero no hay persona creada y se crea con los datos de FB
-            extra_data = SocialAccount.objects.get(user=user_auth).extra_data
+            # Aqui entra cuando volvemos del login por Google pero no hay persona creada aún
+            extra_data = SocialAccount.objects.get(user=user).extra_data
             initial_values = {
                 "nombre": extra_data.get('given_name'),
                 "apellido1": extra_data.get('family_name'),
@@ -475,9 +398,7 @@ def v_pagina_principal(request):
             }
             request.session['google_initial_values'] = initial_values
             return redirect('n_nuevo_usuario')
-            #usuario = Personas(id_usuario=user_auth, nombre=nombre, apellido1=apellido1)
-            #usuario.save()
-            #login(request.user, user_auth, backend='Aplicaciones.users.backends.CustomEmailAuthBackend')
+
     else:
         usuario = None
 
@@ -919,7 +840,7 @@ def v_menu_usuario_coches_editar(request, idVe):
             if vehiculo.anyo_antiguedad > datetime.now().year:
                 messages.error(request, "¡¡¡El año de antigüedad no puede ser posterior al actual!!!")
                 return redirect('n_menu_usuario_coches')
-            print(vehiculoform.imagen_vehiculo)
+            #print(vehiculoform.imagen_vehiculo)
             vehiculoform.save()
             messages.success(request, "¡¡¡Datos de vehiculo actualizados correctamente!!!")
             return redirect('n_menu_usuario_coches')
@@ -959,7 +880,6 @@ def v_menu_usuario_caparazon(request, usuario):
         # si no existe el caparazon del usuario, se crea uno en blanco
         usuarioCaparazon = Caparazones(id_persona=usuario)
         usuarioCaparazon.save()
-    print(request.method)
 
     args = {
             "usuario": usuario,
@@ -968,8 +888,6 @@ def v_menu_usuario_caparazon(request, usuario):
 
     if request.method == "POST":
         form = CaparazonesForm(request.POST, instance=usuarioCaparazon)
-        print("POST")
-        print(usuarioCaparazon)
         if form.is_valid():
             caparazon = form.save()
             caparazon.save()
@@ -981,8 +899,6 @@ def v_menu_usuario_caparazon(request, usuario):
     else:
         # Se crea un form con la información del usuario logueado
         form = CaparazonesForm(instance=usuarioCaparazon)
-        print("GET")
-        print(usuarioCaparazon)
         args.update({"form": form})
         return render(request, 'menu_usuario_caparazon.html', args)
 
@@ -1118,6 +1034,11 @@ def v_perfil_publico(request, idP, usuario):
     usuario_perfil = Personas.objects.get(id=idP)
 
     try:
+        caparazon = Caparazones.objects.get(id_persona=usuario_perfil)
+    except caparazon.DoesNotExist:
+        caparazon = None
+
+    try:
         vehiculo = Vehiculos.objects.filter(id_persona=usuario_perfil).first()
     except vehiculo.DoesNotExist:
         vehiculo = None
@@ -1154,6 +1075,7 @@ def v_perfil_publico(request, idP, usuario):
     args = {
         "usuario": usuario,
         "usuario_perfil": usuario_perfil,
+        "caparazon": caparazon,
         "vehiculo": vehiculo,
         "total_viajesConductor": total_viajesConductor,
         "total_viajesConductor_Canc": total_viajesConductor_Canc,
@@ -1186,7 +1108,7 @@ def v_mis_viajes(request, usuario):
         listado_plazas_viajes = Plazas.objects\
             .values('id_viaje__id','id_persona__id','id_persona__imagen','id_persona__nombre','flg_conductor')\
             .filter(id_viaje__in=listado_viajes_distinct).order_by('-flg_conductor').distinct()
-        print(listado_plazas_viajes)
+        #print(listado_plazas_viajes)
 
 
     except plazas.DoesNotExist:
@@ -1221,7 +1143,7 @@ def v_mis_mensajes(request, usuario):
                                                         )\
         .annotate(max_fec_created=Max('fec_created'))\
         .filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
-    print(listado_conversaciones.count())
+    #print(listado_conversaciones.count())
     fM = MensajesFilter(request.GET, queryset=listado_conversaciones)
 
     args = {
