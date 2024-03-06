@@ -301,55 +301,95 @@
 						</i>
 						<h5 class="border-bottom border-3 border-warning">Mi Caparazón</h5>
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-globe fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Idiomas: </label>
-						{{ caparazon.idiomas }}
+						{% if caparazon.idiomas %}
+						 {{ caparazon.idiomas }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-user-doctor fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Profesión: </label>
-						{{ caparazon.profesion }}
+						{% if caparazon.profesion %}
+						 {{ caparazon.profesion }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-star fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Aficiones: </label>
-						{{ caparazon.aficiones }}
+						{% if caparazon.aficiones %}
+						 {{ caparazon.aficiones }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-headphones-simple fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Estilo Musical: </label>
-						{{ caparazon.estilo_musica }}
+						{% if caparazon.estilos_musica %}
+						 {{ caparazon.estilos_musica }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-guitar fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Grupos de Música: </label>
-						{{ caparazon.grupos_musica }}
+						{% if caparazon.grupos_musica %}
+						 {{ caparazon.grupos_musica }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-book-bookmark fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Libros: </label>
-						{{ caparazon.libros }}
+						{% if caparazon.libros %}
+						 {{ caparazon.libros }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-film fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Peliculas: </label>
-						{{ caparazon.peliculas }}
+						{% if caparazon.peliculas %}
+						 {{ caparazon.peliculas }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-table-tennis-paddle-ball fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Deportes: </label>
-						{{ caparazon.deportes }}
+						{% if caparazon.deportes %}
+						 {{ caparazon.deportes }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-wheat-awn fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Alimentación: </label>
-						{{ caparazon.alimentacion }}
+						{% if caparazon.alimentacion %}
+						 {{ caparazon.alimentacion }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
-					<div class="col-12 col-md-6 ms-5">
+					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-cat fa-xl me-2"></i>
 						<label for="inputIdiomas" class="form-label fw-bold col-5">Mascotas: </label>
-						{{ caparazon.animales }}
+						{% if caparazon.animales %}
+						 {{ caparazon.animales }}
+						{% else %}
+						 <p class="text-info">Sin informar</p>
+						{% endif %}
 					</div>
 				</div>
 			</div>
