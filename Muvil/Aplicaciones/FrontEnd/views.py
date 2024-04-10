@@ -434,10 +434,10 @@ def v_pagina_principal(request):
     return render(request, "pagina_principal.html", args)
 
 @get_persona_usuario
-def v_detalles_viaje(request, idV, usuario):
+def v_detalles_viaje(request, idV, persona):
 
-    if usuario:
-        idP = usuario.id
+    if persona:
+        idP = persona.id
     else:
         idP = None
         messages.error(request, "Hola :) ¡Debes iniciar sesión para reservar plaza en este viaje!")
@@ -452,7 +452,7 @@ def v_detalles_viaje(request, idV, usuario):
                                     <p>Ahora puedes ver el <strong>número de contacto del conductor</strong> para \
                                      cerrar los detalles del viaje</p>")
 
-    if viaje.id_persona == usuario:
+    if viaje.id_persona == persona:
         usuario_conductor = True
     else:
         usuario_conductor = False
@@ -480,7 +480,7 @@ def v_detalles_viaje(request, idV, usuario):
     return redirect('n_pagina_principal')
     '''
     args = {
-        'usuario': usuario,
+        'usuario': persona,
         'idP': idP,
         'viaje': viaje,
         'plazas': plazas,
@@ -504,16 +504,16 @@ def v_cancelar_viaje(request, idV):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_reservar_plaza(request, idV, usuario):
+def v_reservar_plaza(request, idV, persona):
     dateNow = timezone.now()
 
     viaje = Viajes.objects.get(id=idV)
 
     # Devolver plazas en viajes pendientes o confirmados que esten en el mismo slot de tiempo
-    criterio_plazas_pend = Q(id_persona_id=request.user.id, estado=1, id_viaje__fechor_ida__range=(viaje.fechor_ida, viaje.fechor_llegada)) \
-               | Q(id_persona=usuario, estado=1, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
-    criterio_plazas_conf = Q(id_persona_id=request.user.id, estado=2, id_viaje__fechor_ida__range=(viaje.fechor_ida, viaje.fechor_llegada)) \
-                           | Q(id_persona_id=request.user.id, estado=2, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
+    criterio_plazas_pend = Q(id_persona_id=persona.id, estado=1, id_viaje__fechor_ida__range=(viaje.fechor_ida, viaje.fechor_llegada)) \
+               | Q(id_persona=persona, estado=1, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
+    criterio_plazas_conf = Q(id_persona_id=persona.id, estado=2, id_viaje__fechor_ida__range=(viaje.fechor_ida, viaje.fechor_llegada)) \
+                           | Q(id_persona_id=persona.id, estado=2, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
     plazas_coincidentes = Plazas.objects.filter(criterio_plazas_pend | criterio_plazas_conf)
 
     #print(plazas_coincidentes)
@@ -526,7 +526,7 @@ def v_reservar_plaza(request, idV, usuario):
         if viaje.numero_asientos_libres > 0:
             viaje.numero_asientos_libres = F("numero_asientos_libres") - 1
             viaje.save()
-            plaza_aceptada = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=2,
+            plaza_aceptada = Plazas(id_persona=persona, id_viaje=viaje, flg_conductor=False, estado=2,
                                     fechor_confirmado=dateNow)
             plaza_aceptada.save()
             messages.success(request, "¡¡¡Reserva registrada correctamente!!!<br>\
@@ -536,7 +536,7 @@ def v_reservar_plaza(request, idV, usuario):
             messages.error(request, "¡¡¡Lo siento, se han agotado las plazas de este viaje en el último momento!!!")
             messages.error(request, "¡¡¡Prueba en otro viaje!!!")
     else:
-        plaza_pendiente = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1,
+        plaza_pendiente = Plazas(id_persona=persona, id_viaje=viaje, flg_conductor=False, estado=1,
                                  fechor_pendiente=dateNow)
         plaza_pendiente.save()
         messages.success(request, "¡¡¡Tu solicitud de reserva se ha enviado al conductor!!! Tendrás tu plaza reservada en cuanto sea aceptada.")
@@ -658,7 +658,7 @@ def v_listado_usuarios(request):
 @check_logued_usuario
 @get_persona_usuario
 @get_vehiculos_usuario
-def v_nuevo_viaje(request, usuario, vehiculos):
+def v_nuevo_viaje(request, persona, vehiculos):
     if not vehiculos:
         messages.error(request, "¡¡¡Por favor, registra 1 vehiculo antes de publicar viajes!!!.")
         return redirect('n_menu_usuario_coches')
@@ -666,7 +666,7 @@ def v_nuevo_viaje(request, usuario, vehiculos):
     localizaciones = Localizaciones.objects.all()
 
     args = {
-        "usuario": usuario,
+        "usuario": persona,
         "localizaciones": localizaciones
     }
 
@@ -676,7 +676,7 @@ def v_nuevo_viaje(request, usuario, vehiculos):
         if form.is_valid() and vueltaform.is_valid():
             viaje = form.save(commit=False)
             v_fechor_ida = datetime.combine(viaje.fecha_ida, viaje.hora_ida)
-            viaje.id_persona = usuario
+            viaje.id_persona = persona
             viaje.numero_asientos_libres = viaje.numero_asientos_viaje
             viaje.importe_comision_asiento = viaje.importe_conductor_asiento/10
             viaje.importe_total_asiento = viaje.importe_comision_asiento + viaje.importe_conductor_asiento
@@ -691,7 +691,7 @@ def v_nuevo_viaje(request, usuario, vehiculos):
             viaje.fechor_llegada = v_fechor_ida + timedelta(minutes=minutos_viaje)
 
             # Pasamos validaciones sobre el viaje de Ida
-            val = ValidacionesViajes(persona_input=usuario, viaje_input=viaje)
+            val = ValidacionesViajes(persona_input=persona, viaje_input=viaje)
             lista_mensajes = val.val_mensajes_salida()
             for mensaje in lista_mensajes:
                 messages.error(request, mensaje)
@@ -701,7 +701,7 @@ def v_nuevo_viaje(request, usuario, vehiculos):
             if form.cleaned_data['flg_ida_vuelta']:
                 v_fechor_vuelta = datetime.combine(vueltaform.cleaned_data['fecha_vuelta'], vueltaform.cleaned_data['hora_vuelta'])
                 viaje_vuelta = Viajes()
-                viaje_vuelta.id_persona = usuario
+                viaje_vuelta.id_persona = persona
                 viaje_vuelta.id_vehiculo = viaje.id_vehiculo
                 viaje_vuelta.numero_asientos_viaje = vueltaform.cleaned_data['numero_asientos_vuelta']
                 viaje_vuelta.numero_asientos_libres = vueltaform.cleaned_data['numero_asientos_vuelta']
@@ -719,7 +719,7 @@ def v_nuevo_viaje(request, usuario, vehiculos):
                 viaje_vuelta.fechor_llegada = v_fechor_vuelta + timedelta(minutes=minutos_viaje)
                 viaje_vuelta.flg_ida_vuelta = True
                 # Pasamos validaciones sobre el viaje de Vuelta
-                val = ValidacionesViajes(persona_input=usuario, viaje_input=viaje_vuelta)
+                val = ValidacionesViajes(persona_input=persona, viaje_input=viaje_vuelta)
                 lista_mensajes = val.val_mensajes_salida()
                 for mensaje in lista_mensajes:
                     messages.error(request, "(Viaje de Vuelta)" + mensaje)
@@ -729,14 +729,14 @@ def v_nuevo_viaje(request, usuario, vehiculos):
             # Guardamos el VIAJE
             viaje.save()
             # Insertamos la plaza del conductor
-            plaza_conductor = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=True, estado=2)
+            plaza_conductor = Plazas(id_persona=persona, id_viaje=viaje, flg_conductor=True, estado=2)
             plaza_conductor.save()
             messages.success(request, "¡¡¡Viaje publicado correctamente!!!")
             if form.cleaned_data['flg_ida_vuelta']:
                 # Guardamos el VIAJE de VUELTA
                 viaje_vuelta.save()
                 # Insertamos la plaza del conductor
-                plaza_conductor_vuelta = Plazas(id_persona=usuario, id_viaje=viaje_vuelta, flg_conductor=True, estado=2)
+                plaza_conductor_vuelta = Plazas(id_persona=persona, id_viaje=viaje_vuelta, flg_conductor=True, estado=2)
                 plaza_conductor_vuelta.save()
                 messages.success(request, "¡¡¡Y también hemos publicado el viaje de vuelta!!!")
 
@@ -759,15 +759,15 @@ def v_listado_viajes(request):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_perfil(request, usuario):
+def v_menu_usuario_perfil(request, persona):
     args = {
-            "usuario": usuario
+            "usuario": persona
             }
     if request.method == "POST":
-        form = PersonasForm(request.POST, request.FILES, instance=usuario)
+        form = PersonasForm(request.POST, request.FILES, instance=persona)
         if form.is_valid():
-            persona = form.save()
-            persona.save()
+            persona_form = form.save()
+            persona_form.save()
             messages.success(request, "¡¡¡Datos de Usuario actualizados correctamente!!!")
             return redirect('n_menu_usuario_perfil')
         else:
@@ -775,20 +775,20 @@ def v_menu_usuario_perfil(request, usuario):
             return redirect('n_menu_usuario_perfil')
     else:
         # Se crea un form con la información del usuario logueado
-        form = PersonasForm(instance=usuario)
+        form = PersonasForm(instance=persona)
         args.update({"form": form})
         return render(request, 'menu_usuario_perfil.html', args)
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_coches(request, usuario):
+def v_menu_usuario_coches(request, persona):
     try:
-        vehiculos = Vehiculos.objects.all().filter(id_persona=usuario)
+        vehiculos = Vehiculos.objects.all().filter(id_persona=persona)
     except Vehiculos.DoesNotExist:
         vehiculos = None
 
     args = {
-            "usuario": usuario,
+            "usuario": persona,
             "vehiculos": vehiculos
             }
 
@@ -796,7 +796,7 @@ def v_menu_usuario_coches(request, usuario):
         form = VehiculosForm(request.POST, request.FILES)
         if form.is_valid():
             vehiculo = form.save(commit=False)
-            vehiculo.id_persona = usuario
+            vehiculo.id_persona = persona
             if vehiculo.anyo_antiguedad > datetime.now().year:
                 messages.error(request, "¡¡¡El año de antigüedad no puede ser posterior al actual!!!")
                 return redirect('n_menu_usuario_coches')
@@ -855,17 +855,17 @@ def v_menu_usuario_coches_editar(request, idVe):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_preferencias(request, usuario):
+def v_menu_usuario_preferencias(request, persona):
     args = {
-        "usuario": usuario
+        "usuario": persona
     }
     if request.method == "POST":
-        usuario.pref_conversacion = request.POST['pref_conversacion']
-        usuario.pref_musica = request.POST['pref_musica']
-        usuario.pref_mascota = request.POST['pref_mascota']
-        usuario.pref_fumar = request.POST['pref_fumar']
-        usuario.pref_comida = request.POST['pref_comida']
-        usuario.save()
+        persona.pref_conversacion = request.POST['pref_conversacion']
+        persona.pref_musica = request.POST['pref_musica']
+        persona.pref_mascota = request.POST['pref_mascota']
+        persona.pref_fumar = request.POST['pref_fumar']
+        persona.pref_comida = request.POST['pref_comida']
+        persona.save()
         messages.success(request, "¡¡¡Preferencias actualizadas correctamente!!!")
         return redirect('n_menu_usuario_preferencias')
     else:
@@ -873,16 +873,16 @@ def v_menu_usuario_preferencias(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_caparazon(request, usuario):
+def v_menu_usuario_caparazon(request, persona):
     try:
-        usuarioCaparazon = Caparazones.objects.get(id_persona=usuario)
+        usuarioCaparazon = Caparazones.objects.get(id_persona=persona)
     except Caparazones.DoesNotExist:
         # si no existe el caparazon del usuario, se crea uno en blanco
-        usuarioCaparazon = Caparazones(id_persona=usuario)
+        usuarioCaparazon = Caparazones(id_persona=persona)
         usuarioCaparazon.save()
 
     args = {
-            "usuario": usuario,
+            "usuario": persona,
             "usuarioCaparazon": usuarioCaparazon
             }
 
@@ -905,13 +905,13 @@ def v_menu_usuario_caparazon(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_opiniones(request, usuario):
+def v_menu_usuario_opiniones(request, persona):
 
     # Se actualizan los mensajes como leidos
-    Opiniones.objects.filter(id_persona_receptor=usuario).update(flg_leido=True)
+    Opiniones.objects.filter(id_persona_receptor=persona).update(flg_leido=True)
     
-    opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario)
-    opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=usuario)
+    opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=persona)
+    opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=persona)
 
 
     # Se crea un diccionario con las categorias de opiniones y su valor
@@ -925,7 +925,7 @@ def v_menu_usuario_opiniones(request, usuario):
     total_opiniones = opiniones_recibidas.count()
 
     args = {
-            "usuario": usuario,
+            "usuario": persona,
             "opiniones_recibidas": opiniones_recibidas,
             "opiniones_publicadas": opiniones_publicadas,
             "avg_puntuacion": avg_puntuacion,
@@ -936,10 +936,10 @@ def v_menu_usuario_opiniones(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_notificaciones(request, usuario):
+def v_menu_usuario_notificaciones(request, persona):
 
     args = {
-        "usuario": usuario
+        "usuario": persona
     }
 
     if request.method == "POST":
@@ -985,10 +985,10 @@ def v_menu_usuario_notificaciones(request, usuario):
             else:
                 notif_reservas = 0
 
-        usuario.notif_noticiasofertas = notif_noticiasofertas
-        usuario.notif_opiniones = notif_opiniones
-        usuario.notif_reservas = notif_reservas
-        usuario.save()
+        persona.notif_noticiasofertas = notif_noticiasofertas
+        persona.notif_opiniones = notif_opiniones
+        persona.notif_reservas = notif_reservas
+        persona.save()
         messages.success(request, "¡¡¡Notificaciones actualizadas correctamente!!!")
         return redirect('n_menu_usuario_notificaciones')
     else:
@@ -996,17 +996,17 @@ def v_menu_usuario_notificaciones(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_pagoscobros(request, usuario):
+def v_menu_usuario_pagoscobros(request, persona):
 
     args = {
-            "usuario": usuario
+            "usuario": persona
             }
 
     return render(request, 'menu_usuario_pagoscobros.html', args)
 
 @check_logued_usuario
 @get_persona_usuario
-def v_menu_usuario_contrasenya(request, usuario):
+def v_menu_usuario_contrasenya(request, persona):
     user = request.user
     if request.method == 'POST':
         form = CambiarPassForm(user, request.POST)
@@ -1022,14 +1022,14 @@ def v_menu_usuario_contrasenya(request, usuario):
     form = CambiarPassForm(user)
 
     args ={
-        'usuario': usuario,
+        'usuario': persona,
         'form': form
     }
     return render(request, 'menu_usuario_contrasenya.html', args)
 
 @check_logued_usuario
 @get_persona_usuario
-def v_perfil_publico(request, idP, usuario):
+def v_perfil_publico(request, idP, persona):
 
     usuario_perfil = Personas.objects.get(id=idP)
 
@@ -1073,7 +1073,7 @@ def v_perfil_publico(request, idP, usuario):
         opiniones_cat_dict.update({categoria: count_opiniones})
 
     args = {
-        "usuario": usuario,
+        "usuario": persona,
         "usuario_perfil": usuario_perfil,
         "caparazon": caparazon,
         "vehiculo": vehiculo,
@@ -1091,9 +1091,9 @@ def v_perfil_publico(request, idP, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_mis_viajes(request, usuario):
+def v_mis_viajes(request, persona):
 
-    idP = usuario.id
+    idP = persona.id
 
     try:
         #reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
@@ -1102,7 +1102,7 @@ def v_mis_viajes(request, usuario):
         #listado_viajes = viajesConductor | viajesPasajero
         #listado_plazas_viajes = Plazas.objects.all().filter(id_viaje__in=listado_viajes)
 
-        plazas = Plazas.objects.all().filter(Q(id_persona=usuario) & (~Q(estado=3)) )  #excluye plazas rechazadas
+        plazas = Plazas.objects.all().filter(Q(id_persona=persona) & (~Q(estado=3)) )  #excluye plazas rechazadas
         listado_viajes = Viajes.objects.all().filter(id__in=plazas.values_list('id_viaje')).order_by('-fechor_ida')
         listado_viajes_distinct = listado_viajes.distinct()
         listado_plazas_viajes = Plazas.objects\
@@ -1117,7 +1117,7 @@ def v_mis_viajes(request, usuario):
 
     fV = MisViajesFilter(request.GET, queryset=listado_viajes)
     args = {
-        "usuario": usuario,
+        "usuario": persona,
         "idP": idP,
         "filter": fV,
         "listado_plazas_viajes": listado_plazas_viajes
@@ -1127,27 +1127,27 @@ def v_mis_viajes(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_mis_mensajes(request, usuario):
+def v_mis_mensajes(request, persona):
 
-    idP = usuario.id
+    idP = persona.id
 
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
     #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
 
     # Se actualizan los mensajes como leidos
-    Mensajes.objects.filter(id_persona_receptor=usuario).update(flg_leido=True)
+    Mensajes.objects.filter(id_persona_receptor=persona).update(flg_leido=True)
 
 
     listado_conversaciones = Mensajes.objects.values('id_persona_publicador__nombre', 'id_persona_publicador__apellido1', 'id_persona_publicador__id', 'id_persona_publicador__imagen'
                                                         , 'id_persona_receptor__nombre', 'id_persona_receptor__apellido1', 'id_persona_receptor__id', 'id_persona_receptor__imagen'
                                                         )\
         .annotate(max_fec_created=Max('fec_created'))\
-        .filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
+        .filter(Q(id_persona_publicador=persona) | Q(id_persona_receptor=persona))
     #print(listado_conversaciones.count())
     fM = MensajesFilter(request.GET, queryset=listado_conversaciones)
 
     args = {
-            "usuario": usuario,
+            "usuario": persona,
             "idP": idP,
             "filter": fM
             }
@@ -1156,15 +1156,16 @@ def v_mis_mensajes(request, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_conversacion(request, idPc, usuario):
+def v_conversacion(request, idPc, persona):
 
-    idP = usuario.id
+    idP = persona.id
 
     usuario_receptor = Personas.objects.get(id=idPc)
-    listado_mensajes = Mensajes.objects.filter(Q(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor) | Q(id_persona_publicador=usuario_receptor, id_persona_receptor=usuario)).order_by('fec_created')
+    listado_mensajes = Mensajes.objects.filter(Q(id_persona_publicador=persona, id_persona_receptor=usuario_receptor) |
+                                               Q(id_persona_publicador=usuario_receptor, id_persona_receptor=persona)).order_by('fec_created')
 
     args = {
-            "usuario": usuario,
+            "usuario": persona,
             "idP": idP,
             "usuario_receptor": usuario_receptor,
             "listado_mensajes": listado_mensajes
@@ -1174,7 +1175,7 @@ def v_conversacion(request, idPc, usuario):
         # Codificamos el mensaje para evitar palabrotas
         mensaje_limpio = codificar_numeros(mensaje)
         # Insertamos el mensaje
-        nuevo_mensaje = Mensajes(id_persona_publicador=usuario, id_persona_receptor=usuario_receptor, flg_leido=False, mensaje=mensaje_limpio)
+        nuevo_mensaje = Mensajes(id_persona_publicador=persona, id_persona_receptor=usuario_receptor, flg_leido=False, mensaje=mensaje_limpio)
         nuevo_mensaje.save()
         return render(request, "conversacion.html", args)
     else:
@@ -1182,7 +1183,7 @@ def v_conversacion(request, idPc, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_opiniones_recibidas_main(request, idPr, usuario):
+def v_opiniones_recibidas_main(request, idPr, persona):
 
     usuario_receptor = Personas.objects.get(id=idPr)
 
@@ -1202,7 +1203,7 @@ def v_opiniones_recibidas_main(request, idPr, usuario):
         opiniones_cat_dict.update({categoria: count_opiniones})
 
     args = {
-        "usuario": usuario,
+        "usuario": persona,
         "avg_puntuacion": avg_puntuacion,
         "total_opiniones": total_opiniones,
         "opiniones_recibidas": opiniones_recibidas,
@@ -1213,12 +1214,12 @@ def v_opiniones_recibidas_main(request, idPr, usuario):
 
 @check_logued_usuario
 @get_persona_usuario
-def v_nueva_opinion (request, idV, idPr, idO, usuario):
+def v_nueva_opinion (request, idV, idPr, idO, persona):
 
     viaje = Viajes.objects.get(id=idV)
     persona_receptor = Personas.objects.get(id=idPr)
     datos = {
-        "usuario": usuario,
+        "usuario": persona,
         "persona_receptor": persona_receptor,
     }
     if request.method == "POST":
@@ -1231,7 +1232,7 @@ def v_nueva_opinion (request, idV, idPr, idO, usuario):
         rating = int(request.POST.get("rating"))
         opinion = request.POST.get("opinion")
         # Se inserta la opinión
-        nueva_opinion = Opiniones(id_persona_publicador=usuario,
+        nueva_opinion = Opiniones(id_persona_publicador=persona,
                                   id_persona_receptor=persona_receptor,
                                   id_viaje=viaje,
                                   puntuacion=rating,
@@ -1247,8 +1248,7 @@ def v_nueva_opinion (request, idV, idPr, idO, usuario):
     return render(request, "nueva_opinion.html", datos)
 
 @check_logued_usuario
-@get_persona_usuario
-def v_contacto(request, usuario):
+def v_contacto(request):
 
     if request.method == "POST":
         email = request.POST.get("email2")

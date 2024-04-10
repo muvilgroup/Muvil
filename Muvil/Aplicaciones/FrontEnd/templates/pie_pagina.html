@@ -10,41 +10,91 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 	<link rel="stylesheet" href='{% static "css/pie_pagina.css" %}'>
 
+	<style>
+	  .footer {
+		background-color: #333; /* Fondo oscuro */
+		color: #f8f9fa; /* Texto claro */
+		padding: 40px 0; /* Relleno superior e inferior */
+	  }
+
+	  .footer h3 {
+		margin-bottom: 20px;
+		font-weight: bold;
+	  }
+
+	  .footer a {
+		color: #f8f9fa; /* Enlaces claros */
+		margin-bottom: 10px;
+		display: block;
+	  }
+
+	  .footer a:hover {
+		color: #9ACD32; /* Color cuando se pasa el mouse por encima */
+		text-decoration: none;
+	  }
+
+	  .footer .social-icons a {
+		font-size: 1.5em; /* Tamaño de los iconos sociales */
+		margin-right: 20px;
+	  }
+
+	  .footer .copyright {
+		border-top: 1px solid #484848; /* Borde superior */
+		padding-top: 20px; /* Espacio sobre el texto de copyright */
+		margin-top: 20px; /* Espacio sobre el borde */
+		font-size: 0.9em;
+	  }
+
+	  @media (max-width: 768px) {
+		.footer .row > div {
+		  margin-bottom: 30px;
+		}
+	  }
+	</style>
+
+
+
   </head>
   <body>
 
-		<footer class="footer-07 mt-4">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-md-12 text-center">
-						<h2 class="footer-heading"><a href="#" class="logo">www.Muvil.com</a></h2>
-						<p class="menu">
-							<a href="#">Sobre Nosotros</a>
-							<a href="#">Empleo</a>
-							<a href="#">Noticias</a>
-							<a href="#">Legal</a>
-							<a href="#">Blog</a>
-							<a href="{% url 'n_contacto' %}">Contacto</a>
-						</p>
-						<ul class="ftco-footer-social p-0">
-              	<li><a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><img src='{% static "icon/twitter.svg" %}' alt="" width="35px"/></a></li>
-              	<li><a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><img src='{% static "icon/facebook.svg" %}' alt="" width="35px"/></a></li>
-              	<li><a href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><img src='{% static "icon/instagram.svg" %}' alt="" width="35px"/></a></li
-				<li><a href="#" data-toggle="tooltip" data-placement="top" title="TikTok"><img src='{% static "icon/tiktok.svg" %}' alt="" width="35px"/></a></li>
-              	<li><a href="#" data-toggle="tooltip" data-placement="top" title="Pinterest"><img src='{% static "icon/pinterest.svg" %}' alt="" width="35px"/></a></li>
-
-            </ul>
-					</div>
-				</div>
-				<div class="row mt-5">
-					<div class="col-md-12 text-center">
-						<p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="ion-ios-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
-					  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-					</div>
+	  <footer class="footer mt-5">
+		  <div class="container">
+			<div class="row">
+			  <div class="col-3">
+				<h3>Muvil</h3>
+			  </div>
+			  <div class="col-auto">
+				<a class="fs-5" href="#">Sobre Nosotros</a>
+			  </div>
+			 <div class="col-auto">
+				<a class="fs-5" href="#">Política de Privacidad</a>
+			  </div>
+			  <div class="col-auto">
+				<a class="fs-5" href="#">Términos y Condiciones</a>
+			  </div>
+			  <div class="col-auto">
+				<a class="fs-5" href="#">Contacta con Nosotros</a>
+			  </div>
+			</div>
+			<div class="row">
+				<div class="social-icons pb-3 d-flex justify-content-center align-self-center">
+				  <!-- Icons can be replaced with your own icons -->
+				  <a href="https://twitter.com"><i class="fab fa-twitter fa-xl"></i></a>
+				  <a href="https://facebook.com"><i class="fab fa-facebook-f fa-xl"></i></a>
+				  <a href="https://instagram.com"><i class="fab fa-instagram fa-xl"></i></a>
+				  <a href="https://youtube.com"><i class="fab fa-youtube fa-xl"></i></a>
+				  <a href="https://twitter.com"><i class="fab fa-twitter fa-xl"></i></a>
 				</div>
 			</div>
-		</footer>
+			<div class="row">
+			  <div class="col-md-12 text-center">
+				<div class="copyright">
+				  © Copyright MUVIL. All Rights Reserved
+				</div>
+			  </div>
+			</div>
+		  </div>
+  	</footer>
 
   </body>
 </html>

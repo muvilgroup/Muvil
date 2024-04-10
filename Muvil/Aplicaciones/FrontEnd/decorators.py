@@ -37,11 +37,11 @@ def get_persona_usuario (function=None):
 
             ###### BEGIN decorator body
             try:
-                usuario = Personas.objects.get(id_usuario=request.user.id)
+                persona = Personas.objects.get(id_usuario=request.user.id)
             except Personas.DoesNotExist:
-                usuario = None
+                persona = None
 
-            kwargs['usuario'] = usuario
+            kwargs['persona'] = persona
             ###### END decorator body
 
             return view_func(request, *args, **kwargs)

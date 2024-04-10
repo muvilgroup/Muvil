@@ -126,7 +126,7 @@ class AlertasPrincipal():
         opiniones_no_leidas = Opiniones.objects.filter(criterio_opiniones_no_leidas &
                                                        criterio_opiniones_para_user)
         if opiniones_no_leidas:
-            return f"¡Te han publicado una nueva opinión!<br>La puedes ver en la sección <a class='btn btn-warning \
+            return f"¡Te han publicado una nueva opinión!<br>La puedes ver y responder en la sección <a class='btn btn-warning \
                      fw-bold boton-3d' href='/menu_usuario/opiniones'>Mis Opiniones</a>"
         else:
             return None

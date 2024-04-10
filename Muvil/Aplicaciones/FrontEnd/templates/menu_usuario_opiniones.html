@@ -4,6 +4,7 @@
 
 {% block base_title %} Opiniones {% endblock %}
 
+
 {% block contenido_tab %}
 				<div class="tab-pane fade show active" id="v-pills-opiniones" role="tabpanel" aria-labelledby="v-pills-opiniones-tab">
 					<!-- INICIO Opiniones -->
@@ -65,7 +66,23 @@
 												</div>
 												<div class="row" id="opinion-rating">
 													<div class="col d-flex justify-content-center">
-														<img class="img-fluid" src='{% static "img/rating_stars.jpg" %}' height="20px" width="100px">
+														<div class="rating" style="color: #FFC700;">
+															<img class="star" {% if op.puntuacion > 0.75 %} src='{% static "icon/star-fill.svg" %}'
+																			{% elif op.puntuacion <= 0.75 and op.puntuacion >= 0.25 %} src='{% static "icon/star-half.svg" %}'
+																			{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+															<img class="star" {% if op.puntuacion > 1.75 %} src='{% static "icon/star-fill.svg" %}'
+																			{% elif op.puntuacion <= 1.75 and op.puntuacion >= 1.25 %} src='{% static "icon/star-half.svg" %}'
+																			{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+															<img class="star" {% if op.puntuacion > 2.75 %} src='{% static "icon/star-fill.svg" %}'
+																			{% elif op.puntuacion <= 2.75 and op.puntuacion >= 2.25 %} src='{% static "icon/star-half.svg" %}'
+																			{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+															<img class="star" {% if op.puntuacion > 3.75 %} src='{% static "icon/star-fill.svg" %}'
+																			{% elif op.puntuacion <= 3.75 and op.puntuacion >= 3.25 %} src='{% static "icon/star-half.svg" %}'
+																			{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+															<img class="star" {% if op.puntuacion > 4.75 %} src='{% static "icon/star-fill.svg" %}'
+																			{% elif op.puntuacion <= 4.75 and op.puntuacion >= 4.25 %} src='{% static "icon/star-half.svg" %}'
+																			{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+														</div>
 													</div>
 												</div>
 												<div class="row pt-2" id="opinion-answer">

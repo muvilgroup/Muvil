@@ -45,6 +45,87 @@
 		  max-height: 50px;
 		  overflow: hidden;
 		}
+
+		/* Inicio Style Como empezar en Muvil */
+		.feature-container {
+		  background-color: white;
+		}
+
+		.feature-icon {
+		  font-size: 3rem; /* Adjust the size of the icons */
+		  color: #01A082; /* Adjust the color of the icons */
+		  margin-bottom: 1rem;
+		}
+
+		.feature-box {
+		  border: 1px solid #e3e3e3;
+		  padding: 1rem;
+		  border-radius: 0.5rem;
+		  transition: transform 0.3s ease;
+		  background-color: #FFFFFF;
+		  margin-bottom: 2rem; /* Space between boxes */
+		}
+
+		.feature-box:hover {
+		  transform: translateY(-5px);
+		  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+		}
+
+		.feature-title {
+		  font-size: 1.25rem;
+		  color: #333;
+		  margin-top: 0.5rem;
+		  margin-bottom: 0.5rem;
+		}
+
+		.feature-text {
+		  color: #666;
+		  line-height: 1.6;
+		}
+		/* Fin Style Como empezar en Muvil */
+
+		/* Inicio Style Eres Conductor/Pasajero */
+		.background-pasajero {
+			background-color: #FFC244;
+		}
+		.background-conductor {
+			background-color: #01A082;
+		}
+		.info-section {
+			padding: 40px 0;
+		}
+		.info-section h1,
+		.info-section p {
+			color: white;
+		}
+		.profile-badge {
+			display: inline-block;
+			position: relative;
+		}
+		.profile-badge .profile-image {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+		}
+		.profile-badge .status-icon {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			font-size: 1.2rem;
+			color: white;
+		}
+		.btn-info-more {
+			font-weight: bold;
+		}
+		.btn-conductor {
+			background-color: #FFC244 !important;
+		}
+		.btn-pasajero {
+			background-color: #01A082 !important;
+		}
+		/* Fin Style Eres Conductor */
+
+
 	</style>
 {% endblock %}
 
@@ -57,30 +138,30 @@
 			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
 			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
 		</div>
-		<div class="carousel-inner">
+		<div class="carousel-inner overflow-hidden">
 			<div class="carousel-item active">
-				<img src='{% static "img/Portada3.jpg" %}' class="img-fluid d-block w-100 overflow-hidden" alt="Mallorca">
+				<img src='{% static "img/Portada3.jpg" %}' class="img-fluid d-block w-100 " alt="Mallorca">
 				<div class="carousel-caption">
-					<h2>VIAJARRRR...</h2>
+					<h2>VIAJA...</h2>
 					<p>a cualquier lugar!!!</p>
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src='{% static "img/paisaje3.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
+				<img src='{% static "img/paisaje3_2.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
 				<div class="carousel-caption">
 					<h2>AHORRA...</h2>
 					<p>aprovechando los viajes de los demás!!!</p>
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src='{% static "img/paisaje1.jpg" %}' class="img-fluid d-block w-100" alt="Barcelona">
+				<img src='{% static "img/paisaje1_2.jpg" %}' class="img-fluid d-block w-100" alt="Barcelona">
 				<div class="carousel-caption">
-					<h3>DISFRUTA...</h3>
+					<h2>DISFRUTA...</h2>
 					<p>conociendo otras personas con vidas interesantes!!!</p>
 				</div>
 			</div>
 			<div class="carousel-item">
-				<img src='{% static "img/paisaje2.jpg" %}' class="img-fluid d-block w-100" alt="Cantabria">
+				<img src='{% static "img/paisaje2_2.jpg" %}' class="img-fluid d-block w-100" alt="Cantabria">
 				<div class="carousel-caption">
 					<h2>DESCUBRE...</h2>
 					<p>una nueva forma de moverte por el mundo!!!</p>
@@ -357,6 +438,92 @@
 	</div>
 	-->
 	<!-- FIN Eventos -->
+
+	<!-- INICIO Como Empezar en Muvil -->
+	<div class="container-fluid py-2 my-5 px-5 feature-container">
+	  <div class="row text-center mb-4">
+		<div class="col">
+		  <h2 class="mb-3">Cómo empezar a viajar con Múvil...</h2>
+		  <p></p>
+		</div>
+	  </div>
+
+	  <div class="row text-center">
+		<div class="col-md-3 mb-4">
+		  <div class="feature-box">
+			<i class="feature-icon fas fa-user-plus"></i>
+			<h5 class="feature-title">Registra tu usuario Múvil</h5>
+			<p class="feature-text">Introduce los datos de tu cuenta de usuario y únete a la comunidad. Todo ello con un sistema de validación por email para evitar fraudes.</p>
+		  </div>
+		</div>
+		<div class="col-md-3 mb-4">
+		  <div class="feature-box">
+			<i class="feature-icon fas fa-life-ring"></i>
+			<h5 class="feature-title">Cumplimenta tu Caparazón</h5>
+			<p class="feature-text">Posiblemente uno de los puntos más importantes para potenciar la experiencia de tus viajes. Cúentanos que te apasiona, a que te dedicas,... y permite que el resto de usuarios puedan coincidir contigo.</p>
+		  </div>
+		</div>
+		<div class="col-md-3 mb-4">
+		  <div class="feature-box">
+			<i class="feature-icon fas fa-car-side"></i>
+			<h5 class="feature-title">¿Viajas con tu coche?</h5>
+			<p class="feature-text">Registra los datos de tus vehículos y empieza a publicar los viajes que vayas a compartir. Gracias por adelantado en nombre de tus futuros pasajeros!</p>
+		  </div>
+		</div>
+		<div class="col-md-3 mb-4">
+		  <div class="feature-box">
+			<i class="feature-icon fas fa-person-walking-luggage"></i>
+			<h5 class="feature-title">¿Prefieres que te lleven de viaje?</h5>
+			<p class="feature-text">Introduce en la barra de búsqueda de viajes tu origen y destino y la fecha que quieres viajar... y elije el viaje que más se adapte a tu horario y preferencias. No olvides echar un ojo a los perfiles de las personas con las que compartirás viaje, pueden tener un alto grado de afinidad contigo :)</p>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<!-- FIN Como Empezar en Muvil -->
+
+	<!-- INICIO Eres Conductor? -->
+	<div class="container-fluid info-section background-conductor">
+		<div class="row align-items-center">
+		  <!-- Columna de imagen -->
+		  <div class="col-md-6">
+			<img src='{% static "img/happy-car2.webp" %}' class="img-fluid" alt="Imagen representativa">
+		  </div>
+		  <!-- Columna de texto y botón -->
+		  <div class="col-md-6 text-center text-white">
+			<h1>¿Te gusta conducir?</h1>
+			<p>Únete a la comunidad Múvil y ahorra en combustible y mantenimiento mientras reduces el tráfico y la contaminación. ¡Maximiza ingresos y contribuye a un mundo mejor!</p>
+			<div class="mt-4">
+			  <a class="btn boton-3d text-white btn-conductor"
+			  	 {% if not user.is_authenticated %}
+				 href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+				 {% else %}
+				 href="{% url 'n_nuevo_viaje' %}"
+				 {% endif %} >Publica un viaje</a>
+			</div>
+		  </div>
+		</div>
+	</div>
+	<!-- FIN Eres Conductor? -->
+
+	<!-- INICIO Eres Pasajero? -->
+	<div class="container-fluid info-section mt-5 background-pasajero">
+		<div class="row align-items-center">
+		  <!-- Columna de texto y botón -->
+		  <div class="col-md-6 text-center text-white order-2 order-md-1">
+			<h1>¿... o te gusta que te lleven?</h1>
+			<p>
+			¡Súmate a la revolución del viaje compartido! Ahorra dinero, haz amigos y protege el planeta. Con nuestra app, cada viaje es una oportunidad para vivir mejor.</p>
+			<div class="mt-4">
+			  <a class="btn boton-3d text-white btn-pasajero" href="{% url 'n_buscar_viaje' %}">Busca tu siguiente viaje</a>
+			</div>
+		  </div>
+		  <!-- Columna de imagen -->
+		  <div class="col-md-6 order-1 order-md-2">
+			<img src='{% static "img/happy-car.webp" %}' class="img-fluid" alt="Imagen representativa">
+		  </div>
+		</div>
+	</div>
+	<!-- FIN Eres Pasajero? -->
 
 	<!-- INICIO Próximas Salidas -->
 	{% if viajesProximos %}
