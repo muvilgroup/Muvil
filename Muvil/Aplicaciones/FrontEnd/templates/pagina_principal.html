@@ -26,7 +26,8 @@
 		  border-bottom: 1px solid #dee2e6;
 		  margin-bottom: 10px;
 		  text-align: center;
-		  background-color: #C3FCF2;
+		  background-color: #01A082;
+		  color: white;
 		}
 		.precio {
 		  font-size: 2.5rem;
@@ -124,59 +125,443 @@
 			background-color: #01A082 !important;
 		}
 		/* Fin Style Eres Conductor */
+	</style>
 
+	<style>
+	  /*-----------------------------------*\
+	  #style.css
+	\*-----------------------------------*/
+
+	/**
+	 * copyright 2024 muvil
+	 */
+
+	/*-----------------------------------*\
+	  #CUSTOM PROPERTY
+	\*-----------------------------------*/
+
+	:root {
+	  /**
+	   * colors
+	   */
+
+	  --pale-purple-pantone: hsl(262, 63%, 92%);
+	  --medium-sea-green: hsl(152, 63%, 43%);
+	  --lavender-blush: hsl(336, 35%, 92%);
+	  --carolina-blue: #ffc700;
+	  --columbia-blue: hsl(204, 92%, 90%);
+	  --alice-blue-1: hsl(216, 38%, 95%);
+	  --alice-blue-2: hsl(216, 75%, 97%);
+	  --alice-blue-3: hsl(216, 38%, 95%);
+	  --alice-blue-4: hsl(217, 33%, 92%);
+	  --independence: hsl(219, 21%, 39%);
+	  --deep-cerise: hsl(329, 63%, 52%);
+	  --eerie-black: hsl(210, 11%, 15%);
+	  --space-cadet: hsl(240, 22%, 25%);
+	  --blue-jeans: #ffc700;
+	  --slate-blue: hsl(262, 60%, 57%);
+	  --beau-blue: #a8a6a2;
+	  --honey-dew: hsl(152, 48%, 89%);
+	  --mimi-pink: hsl(329, 63%, 90%);
+	  --red-salsa: hsl(0, 79%, 63%);
+	  --sapphire: hsl(211, 100%, 35%);
+	  --manatee: hsl(219, 14%, 60%);
+	  --white: hsl(0, 0%, 100%);
+
+	  --gradient: linear-gradient(to top, var(--alice-blue-2), var(--alice-blue-3));
+
+	  /**
+	   * typography
+	   */
+
+	  --ff-nunito: "Nunito", sans-serif;
+	  --ff-open-sans: "Open Sans", sans-serif;
+
+	  --fs-1: 2.125rem;
+	  --fs-2: 1.875rem;
+	  --fs-3: 1.5rem;
+	  --fs-4: 1.375rem;
+	  --fs-5: 1.125rem;
+	  --fs-6: 0.875rem;
+	  --fs-7: 0.625rem;
+
+	  --fw-400: 400;
+	  --fw-600: 600;
+
+	  /**
+	   * transition
+	   */
+
+	  --transition: 0.5s ease;
+
+	  /**
+	   * spacing
+	   */
+
+	  --section-padding: 50px;
+
+	  /**
+	   * radius
+	   */
+
+	  --radius-10: 10px;
+	  --radius-14: 14px;
+	  --radius-18: 18px;
+
+	  /**
+	   * shadow
+	   */
+
+	  --shadow-1: 3px 3px 9px hsla(240, 14%, 69%, 0.2);
+	  --shadow-2: 3px 3px 9px hsla(204, 92%, 59%, 0.3);
+	}
+
+	/*-----------------------------------*\
+	  #RESET
+	\*-----------------------------------*/
+
+	button,
+	input,
+	select {
+	  background: none;
+	  border: none;
+	  font: inherit;
+	}
+
+	button {
+	  cursor: pointer;
+	}
+
+	input, select {
+	  width: 100%;
+	}
+
+	ion-icon {
+	  pointer-events: none;
+	}
+
+
+
+	/*-----------------------------------*\
+	  #REUSED STYLE
+	\*-----------------------------------*/
+
+	.btn-buscar {
+	  position: relative;
+	  background: var(--background, var(--carolina-blue));
+	  color: var(--color, var(--white));
+	  min-width: var(--width, 40px);
+	  min-height: var(--height, 40px);
+	  padding: 5px;
+	  display: grid;
+	  place-items: center;
+	  border-radius: var(--radius-14);
+	  font-family: var(--ff-nunito);
+	  font-size: var(--fs-6);
+	  font-weight: var(--fw-600);
+	  overflow: hidden;
+	}
+
+	.btn-buscar ion-icon {
+	  font-size: 22px;
+	  --ionicon-stroke-width: 40px;
+	}
+
+	.btn-buscar::before {
+	  content: "";
+	  position: absolute;
+	  inset: 0;
+	  background: linear-gradient(to right, hsla(0, 0%, 100%, 0.4), transparent);
+	  opacity: 0;
+	  pointer-events: none;
+	  transition: var(--transition);
+	}
+
+	.btn-buscar:is(:hover, :focus) {
+	  box-shadow: var(--shadow-2);
+	}
+
+	.btn-buscar:is(:hover, :focus)::before {
+	  opacity: 1;
+	}
+
+	.section {
+	  padding-block: var(--section-padding);
+	}
+
+	/*-----------------------------------*\
+	  #HERO
+	\*-----------------------------------*/
+
+	.hero {
+	  padding-top: 200px;
+	}
+
+	.hero-title {
+	  max-width: 25ch;
+	  margin-bottom: 15px;
+	}
+
+	.hero-text {
+	  color: var(--independence);
+	  line-height: 1.8;
+	  margin-bottom: 30px;
+	}
+
+	.hero-banner {
+	  display: none;
+	}
+
+	.hero-form {
+	  background: var(--white);
+	  border: 1px solid var(--white);
+	  box-shadow: var(--shadow-1);
+	  border-radius: var(--radius-18);
+	  font-family: var(--ff-nunito);
+	}
+
+	.input-wrapper {
+	  padding: 15px 20px;
+	}
+
+	.input-wrapper:not(:last-of-type) {
+	  border-bottom: 1px solid hsla(0, 0%, 0%, 0.08);
+	}
+
+	.input-label {
+	  color: var(--manatee);
+	  font-size: var(--fs-6);
+	  margin-bottom: 10px;
+	}
+
+	.input-field {
+	  color: var(--space-cadet);
+	  outline: 2px solid transparent;
+	  outline-offset: 5px;
+	  border-radius: 4px;
+	  transition: var(--transition);
+	}
+
+	.input-field:focus {
+	  outline-color: var(--carolina-blue);
+	}
+
+	.input-field::placeholder {
+	  color: var(--independence);
+	}
+
+	.hero-form .btn-buscar {
+	  --width: calc(100% - 40px);
+	  --height: 50px;
+	  margin: 20px;
+	  text-transform: uppercase;
+	}
+
+
+	/*-----------------------------------*\
+	  #MEDIA QUERIES
+	\*-----------------------------------*/
+
+	/**
+	 * responsive for large than 350px screen
+	 */
+
+
+	/**
+	 * responsive for large than 580px screen
+	 */
+
+
+	/**
+	 * responsive for large than 768px screen
+	 */
+
+	@media (min-width: 768px) {
+	  /**
+	   * CUSTOM PROPERTY
+	   */
+
+	  /**
+	   * HERO
+	   */
+
+	  .hero {
+		position: relative;
+		min-height: 85vh;
+		display: flex;
+		align-items: center;
+		z-index: 1;
+	  }
+
+	  .hero-form {
+		display: grid;
+		grid-template-columns: 1.1fr 1.1fr 0.8fr 0.8fr 0.8fr;
+	  }
+
+	  .input-wrapper:not(:last-of-type) {
+		border-bottom: none;
+		border-right: 1px solid hsla(0, 0%, 0%, 0.08);
+	  }
+
+	  .input-label {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	  }
+
+	  .hero-banner {
+		display: block;
+		background: url(../static/img/hero-banner2.png) no-repeat;
+		background-size: cover;
+		background-position: left;
+		position: absolute;
+		top: 10px;
+		bottom:50px;
+		left: 65%;
+		width: 500px;
+		border-radius: 30px;
+		z-index: -1;
+	  }
+	}
+
+	/**
+	 * responsive for large than 992px screen
+	 */
+
+	@media (min-width: 992px) {
+	  /**
+	   * HERO
+	   */
+
+	  .hero .container {
+		width: 100%;
+	  }
+	}
+
+	/**
+	 * responsive for large than 1200px screen
+	 */
+
+	@media (min-width: 1200px) {
+	  /**
+	   * HERO
+	   */
+
+	  .hero {
+		min-height: 80vh;
+	  }
+
+	  .hero-banner {
+		left: auto;
+		right: 50px;
+		width: 650px;
+	  }
+
+	  .hero-form {
+		max-width: 1000px;
+	  }
+
+	  .hero-form .btn-buscar {
+		--width: calc(100% - 40px);
+		--height: 50px;
+		margin: 20px;
+		text-transform: uppercase;
+	  }
+	}
 
 	</style>
+
 {% endblock %}
 
 {% block base_content %}
-	<!-- INICIO Carrusel-->
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-		<div class="carousel-indicators">
-        	<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        	<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-		</div>
-		<div class="carousel-inner overflow-hidden">
-			<div class="carousel-item active">
-				<img src='{% static "img/Portada3.jpg" %}' class="img-fluid d-block w-100 " alt="Mallorca">
-				<div class="carousel-caption">
-					<h2>VIAJA...</h2>
-					<p>a cualquier lugar!!!</p>
-				</div>
-			</div>
-			<div class="carousel-item">
-				<img src='{% static "img/paisaje3_2.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
-				<div class="carousel-caption">
-					<h2>AHORRA...</h2>
-					<p>aprovechando los viajes de los demás!!!</p>
-				</div>
-			</div>
-			<div class="carousel-item">
-				<img src='{% static "img/paisaje1_2.jpg" %}' class="img-fluid d-block w-100" alt="Barcelona">
-				<div class="carousel-caption">
-					<h2>DISFRUTA...</h2>
-					<p>conociendo otras personas con vidas interesantes!!!</p>
-				</div>
-			</div>
-			<div class="carousel-item">
-				<img src='{% static "img/paisaje2_2.jpg" %}' class="img-fluid d-block w-100" alt="Cantabria">
-				<div class="carousel-caption">
-					<h2>DESCUBRE...</h2>
-					<p>una nueva forma de moverte por el mundo!!!</p>
-				</div>
-			</div>
-		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-		</button>
-	</div>
-	<!-- FIN Carrusel-->
 
+
+	<!-- INICIO nuevo buscador -->
+	<div class="hero-section">
+	  <div class="container-fluid">
+		<section class="section hero" id="home">
+			  <div class="container">
+				<div class="hero-content">
+				  <h2 class="h1 hero-title">JUNTOS RODAMOS, JUNTOS AHORRAMOS</h2>
+
+				  <p class="hero-text">
+					¿A donde te apetece viajar hoy?
+				  </p>
+				</div>
+
+				<div class="hero-banner"></div>
+
+				<form class="hero-form border" id="barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
+				  <div class="input-wrapper" id="origen">
+					<label for="inputOrigen" class="input-label">Salida</label>
+					<input
+					  type="text"
+					  name="inputOrigen"
+					  id="inputOrigen"
+					  class="input-field"
+					  list="localizaciones"
+					  {% if ciudad_origen %}
+					   	value="{{ciudad_origen}}"
+					   {% else %}
+					   	placeholder="De donde quieres salir?"
+					   {% endif %} required/>
+					<datalist id="localizaciones">
+						{% for loc in localizaciones %}
+						<option value="{{ loc.direccion }}"></option>
+						{% endfor %}
+					</datalist>
+				  </div>
+
+				  <div class="input-wrapper" id="destino">
+					<label for="inputDestino" class="input-label">Llegada</label>
+					<input
+					  type="text"
+					  name="inputDestino" id="inputDestino"
+					  list="localizaciones"
+					  {% if ciudad_destino %}
+					  value="{{ciudad_destino}}"
+					  {% else %}
+					  placeholder="¿A donde quieres ir?"
+					  {% endif %}
+					  class="input-field"
+					  placeholder="A donde quieres viajar?"
+					  required
+					/>
+				  </div>
+
+				  <div class="input-wrapper" id="fecha">
+					<label for="inputFecha" class="input-label">Día y Hora</label>
+					<input
+					  type="date"
+					  name="inputFecha" id="inputFecha"
+				       {% if fecha_viaje %}
+						value="{{fecha_viaje}}"
+					   {% else %}
+					   	value="{% now 'Y-m-d' %}"
+					   {% endif %} required
+					  class="input-field"
+					  placeholder="Cuando viajas?"
+					/>
+				  </div>
+
+
+				  <div class="input-wrapper" id="plazas">
+					<label for="inputPlazas" class="input-label">Plazas</label>
+					<select data-trigger="" class="inputPlazas input-field">
+						<option placeholder="" {% if nro_plazas == "1 plaza" %}selected{% endif %}>1 plaza</option>
+						<option {% if nro_plazas == "2 plazas" %}selected{% endif %}>2 plazas</option>
+						<option {% if nro_plazas == "3 plazas" %}selected{% endif %}>3 plazas</option>
+						<option {% if nro_plazas == "4 plazas" %}selected{% endif %}>4 plazas</option>
+					</select>
+				  </div>
+
+				  <button type="submit" class="btn-buscar">Buscar Viajes</button>
+				</form>
+			  </div>
+			</section>
+	  </div>
+	</div>
+	<!-- FIN nuevo buscador -->
 
 	<!--
 	<div class="text-center btn-warning">
@@ -290,7 +675,57 @@
 	</div>
 	-->
 
+	<!-- INICIO Carrusel-->
+    <!--
+	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+		<div class="carousel-indicators">
+        	<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        	<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+		</div>
+		<div class="carousel-inner overflow-hidden">
+			<div class="carousel-item active">
+				<img src='{% static "img/Portada3.jpg" %}' class="img-fluid d-block w-100 " alt="Mallorca">
+				<div class="carousel-caption">
+					<h2>VIAJA...</h2>
+					<p>a cualquier lugar!!!</p>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src='{% static "img/paisaje3_2.jpg" %}' class="img-fluid d-block w-100" alt="Mallorca">
+				<div class="carousel-caption">
+					<h2>AHORRA...</h2>
+					<p>aprovechando los viajes de los demás!!!</p>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src='{% static "img/paisaje1_2.jpg" %}' class="img-fluid d-block w-100" alt="Barcelona">
+				<div class="carousel-caption">
+					<h2>DISFRUTA...</h2>
+					<p>conociendo otras personas con vidas interesantes!!!</p>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src='{% static "img/paisaje2_2.jpg" %}' class="img-fluid d-block w-100" alt="Cantabria">
+				<div class="carousel-caption">
+					<h2>DESCUBRE...</h2>
+					<p>una nueva forma de moverte por el mundo!!!</p>
+				</div>
+			</div>
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		</button>
+	</div>
+	-->
+	<!-- FIN Carrusel-->
+
 	<!-- INICIO Barra Busqueda -->
+	<!--
 	<div class="container-md mt-5 d-flex justify-content-center" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
 			<div class="col-12 col-md-3 form-floating p-0 m-0" id="origen">
@@ -346,6 +781,7 @@
 			</div>
 		</form>
 	</div>
+	-->
 	<!-- FIN Barra Busqueda -->
 
 	<!-- INICIO Eventos -->
@@ -440,7 +876,7 @@
 	<!-- FIN Eventos -->
 
 	<!-- INICIO Como Empezar en Muvil -->
-	<div class="container-fluid py-2 my-5 px-5 feature-container">
+	<div class="container-fluid px-5 feature-container">
 	  <div class="row text-center mb-4">
 		<div class="col">
 		  <h2 class="mb-3">Cómo empezar a viajar con Múvil...</h2>
@@ -481,53 +917,9 @@
 	</div>
 	<!-- FIN Como Empezar en Muvil -->
 
-	<!-- INICIO Eres Conductor? -->
-	<div class="container-fluid info-section background-conductor">
-		<div class="row align-items-center">
-		  <!-- Columna de imagen -->
-		  <div class="col-md-6">
-			<img src='{% static "img/happy-car2.webp" %}' class="img-fluid" alt="Imagen representativa">
-		  </div>
-		  <!-- Columna de texto y botón -->
-		  <div class="col-md-6 text-center text-white">
-			<h1>¿Te gusta conducir?</h1>
-			<p>Únete a la comunidad Múvil y ahorra en combustible y mantenimiento mientras reduces el tráfico y la contaminación. ¡Maximiza ingresos y contribuye a un mundo mejor!</p>
-			<div class="mt-4">
-			  <a class="btn boton-3d text-white btn-conductor"
-			  	 {% if not user.is_authenticated %}
-				 href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
-				 {% else %}
-				 href="{% url 'n_nuevo_viaje' %}"
-				 {% endif %} >Publica un viaje</a>
-			</div>
-		  </div>
-		</div>
-	</div>
-	<!-- FIN Eres Conductor? -->
-
-	<!-- INICIO Eres Pasajero? -->
-	<div class="container-fluid info-section mt-5 background-pasajero">
-		<div class="row align-items-center">
-		  <!-- Columna de texto y botón -->
-		  <div class="col-md-6 text-center text-white order-2 order-md-1">
-			<h1>¿... o te gusta que te lleven?</h1>
-			<p>
-			¡Súmate a la revolución del viaje compartido! Ahorra dinero, haz amigos y protege el planeta. Con nuestra app, cada viaje es una oportunidad para vivir mejor.</p>
-			<div class="mt-4">
-			  <a class="btn boton-3d text-white btn-pasajero" href="{% url 'n_buscar_viaje' %}">Busca tu siguiente viaje</a>
-			</div>
-		  </div>
-		  <!-- Columna de imagen -->
-		  <div class="col-md-6 order-1 order-md-2">
-			<img src='{% static "img/happy-car.webp" %}' class="img-fluid" alt="Imagen representativa">
-		  </div>
-		</div>
-	</div>
-	<!-- FIN Eres Pasajero? -->
-
 	<!-- INICIO Próximas Salidas -->
 	{% if viajesProximos %}
-	<div class="container-md mt-4">
+	<div class="container-md mb-4">
 		<div class="row contenedor-tarjetas-viajes mx-1">
 			<div class="col-12 d-flex justify-content-center">
 				<p class="w-50 text-center fw-bold fs-3 border-bottom border-warning border-5">
@@ -594,7 +986,7 @@
 				  {% endif %}
 				</div>
 				<div class="col-12 col-md-4 col-centered row-centered">
-				  <a class="btn btn-warning boton-3d" href="{% url 'n_detalles_viaje' idV=uvo.id %}">
+				  <a class="btn btn-warning boton-3d rounded" href="{% url 'n_detalles_viaje' idV=uvo.id %}">
 				  {% if uvo.flg_confirmacion_auto %}
 				  <i class="fas fa-wand-sparkles fa-lg"></i>
 				  {% else %}
@@ -610,6 +1002,53 @@
 	</div>
 	{% endif %}
 	<!-- FIN Próximas Salidas -->
+
+	<!-- INICIO Eres Conductor? -->
+	<div class="container-fluid info-section background-conductor">
+		<div class="row align-items-center">
+		  <!-- Columna de imagen -->
+		  <div class="col-md-6">
+			<img src='{% static "img/happy-car.webp" %}' class="img-fluid" alt="Imagen representativa">
+		  </div>
+		  <!-- Columna de texto y botón -->
+		  <div class="col-md-6 text-center text-white">
+			<h1 class="my-2 my-md-5">¿Te gusta conducir?</h1>
+			  <p class="fs-4">¡Maximiza ingresos y contribuye a un mundo mejor! </p>
+			  <p class="fs-5">Únete a la comunidad Múvil y ahorra en combustible y mantenimiento mientras reduces el tráfico y la contaminación.</p>
+			<div class="mt-4">
+			  <a class="btn boton-3d text-white btn-conductor fw-bold fs-5"
+			  	 {% if not user.is_authenticated %}
+				 href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+				 {% else %}
+				 href="{% url 'n_nuevo_viaje' %}"
+				 {% endif %} >Publica un viaje</a>
+			</div>
+		  </div>
+		</div>
+	</div>
+	<!-- FIN Eres Conductor? -->
+
+	<!-- INICIO Eres Pasajero? -->
+	<div class="container-fluid info-section mt-5 background-pasajero">
+		<div class="row align-items-center">
+		  <!-- Columna de texto y botón -->
+		  <div class="col-md-6 text-center text-white order-2 order-md-1">
+			<h1 class="my-2 my-md-5">¿... o te gusta que te lleven?</h1>
+			  <p class="fs-4">¡Súmate a la revolución del viaje compartido!</p>
+			  <p class="fs-5">Ahorra dinero, haz amigos y protege el planeta. Con nuestra app, cada viaje es una oportunidad para vivir mejor.</p>
+			<div class="mt-4">
+			  <a class="btn boton-3d text-white btn-pasajero fw-bold fs-5" href="{% url 'n_buscar_viaje' %}">Busca tu siguiente viaje</a>
+			</div>
+		  </div>
+		  <!-- Columna de imagen -->
+		  <div class="col-md-6 order-1 order-md-2">
+			<img src='{% static "img/happy-car2.webp" %}' class="img-fluid" alt="Imagen representativa">
+		  </div>
+		</div>
+	</div>
+	<!-- FIN Eres Pasajero? -->
+
+
 {% endblock %}
 
 {% block base_script %}
