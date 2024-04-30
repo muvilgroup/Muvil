@@ -176,7 +176,9 @@
 
 	  --ff-nunito: "Nunito", sans-serif;
 	  --ff-open-sans: "Open Sans", sans-serif;
+	  --ff-roboto: "Roboto", sans-serif;
 
+	  --fs-0: 2.4rem;
 	  --fs-1: 2.125rem;
 	  --fs-2: 1.875rem;
 	  --fs-3: 1.5rem;
@@ -256,7 +258,7 @@
 	  display: grid;
 	  place-items: center;
 	  border-radius: var(--radius-14);
-	  font-family: var(--ff-nunito);
+	  font-family: var(--ff-roboto) !important;
 	  font-size: var(--fs-6);
 	  font-weight: var(--fw-600);
 	  overflow: hidden;
@@ -300,12 +302,15 @@
 	.hero-title {
 	  max-width: 25ch;
 	  margin-bottom: 15px;
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-0);
 	}
 
 	.hero-text {
 	  color: var(--independence);
 	  line-height: 1.8;
 	  margin-bottom: 30px;
+	  font-family: var(--ff-roboto);
 	}
 
 	.hero-banner {
@@ -317,7 +322,46 @@
 	  border: 1px solid var(--white);
 	  box-shadow: var(--shadow-1);
 	  border-radius: var(--radius-18);
-	  font-family: var(--ff-nunito);
+	}
+
+	.empezar-title {
+	  font-family: var(--ff-roboto);
+	}
+	.empezar-subtitle {
+	  font-family: var(--ff-roboto);
+	}
+	.empezar-text {
+	  font-family: var(--ff-roboto);
+	}
+
+	.conductor-title {
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-1);
+	}
+	.conductor-subtitle {
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-2);
+	}
+	.conductor-text {
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-5);
+	}
+
+	.pasajero-title {
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-1);
+	}
+	.pasajero-subtitle {
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-2);
+	}
+	.pasajero-text {
+	  font-family: var(--ff-roboto);
+	  font-size: var(--fs-5);
+	}
+
+	.roboto-text {
+		font-family: var(--ff-roboto) !important;
 	}
 
 	.input-wrapper {
@@ -329,17 +373,19 @@
 	}
 
 	.input-label {
-	  color: var(--manatee);
+	  color: var(--space-cadet);
+	  font-family: var(--ff-roboto);
 	  font-size: var(--fs-6);
 	  margin-bottom: 10px;
 	}
 
 	.input-field {
-	  color: var(--space-cadet);
+	  color: var(--manatee);
 	  outline: 2px solid transparent;
 	  outline-offset: 5px;
 	  border-radius: 4px;
 	  transition: var(--transition);
+	  font-family: var(--ff-roboto);
 	}
 
 	.input-field:focus {
@@ -347,7 +393,7 @@
 	}
 
 	.input-field::placeholder {
-	  color: var(--independence);
+	  color: var(--manatee);
 	}
 
 	.hero-form .btn-buscar {
@@ -482,7 +528,7 @@
 		<section class="section hero" id="home">
 			  <div class="container">
 				<div class="hero-content">
-				  <h2 class="h1 hero-title">JUNTOS RODAMOS, JUNTOS AHORRAMOS</h2>
+				  <h2 class="hero-title">JUNTOS RODAMOS, JUNTOS AHORRAMOS</h2>
 
 				  <p class="hero-text">
 					¿A donde te apetece viajar hoy?
@@ -879,7 +925,7 @@
 	<div class="container-fluid px-5 feature-container">
 	  <div class="row text-center mb-4">
 		<div class="col">
-		  <h2 class="mb-3">Cómo empezar a viajar con Múvil...</h2>
+		  <h2 class="mb-3 empezar-title">Cómo empezar a viajar con Múvil...</h2>
 		  <p></p>
 		</div>
 	  </div>
@@ -888,29 +934,29 @@
 		<div class="col-md-3 mb-4">
 		  <div class="feature-box">
 			<i class="feature-icon fas fa-user-plus"></i>
-			<h5 class="feature-title">Registra tu usuario Múvil</h5>
-			<p class="feature-text">Introduce los datos de tu cuenta de usuario y únete a la comunidad. Todo ello con un sistema de validación por email para evitar fraudes.</p>
+			<h5 class="empezar-subtitle">Registra tu usuario Múvil</h5>
+			<p class="empezar-text">Introduce los datos de tu cuenta de usuario y únete a la comunidad. Todo ello con un sistema de validación por email para evitar fraudes.</p>
 		  </div>
 		</div>
 		<div class="col-md-3 mb-4">
 		  <div class="feature-box">
 			<i class="feature-icon fas fa-life-ring"></i>
-			<h5 class="feature-title">Cumplimenta tu Caparazón</h5>
-			<p class="feature-text">Posiblemente uno de los puntos más importantes para potenciar la experiencia de tus viajes. Cúentanos que te apasiona, a que te dedicas,... y permite que el resto de usuarios puedan coincidir contigo.</p>
+			<h5 class="empezar-subtitle">Cumplimenta tu Caparazón</h5>
+			<p class="empezar-text">Posiblemente uno de los puntos más importantes para potenciar la experiencia de tus viajes. Cúentanos que te apasiona, a que te dedicas,... y permite que el resto de usuarios puedan coincidir contigo.</p>
 		  </div>
 		</div>
 		<div class="col-md-3 mb-4">
 		  <div class="feature-box">
 			<i class="feature-icon fas fa-car-side"></i>
-			<h5 class="feature-title">¿Viajas con tu coche?</h5>
-			<p class="feature-text">Registra los datos de tus vehículos y empieza a publicar los viajes que vayas a compartir. Gracias por adelantado en nombre de tus futuros pasajeros!</p>
+			<h5 class="empezar-subtitle">¿Viajas con tu coche?</h5>
+			<p class="empezar-text">Registra los datos de tus vehículos y empieza a publicar los viajes que vayas a compartir. Gracias por adelantado en nombre de tus futuros pasajeros!</p>
 		  </div>
 		</div>
 		<div class="col-md-3 mb-4">
 		  <div class="feature-box">
 			<i class="feature-icon fas fa-person-walking-luggage"></i>
-			<h5 class="feature-title">¿Prefieres que te lleven de viaje?</h5>
-			<p class="feature-text">Introduce en la barra de búsqueda de viajes tu origen y destino y la fecha que quieres viajar... y elije el viaje que más se adapte a tu horario y preferencias. No olvides echar un ojo a los perfiles de las personas con las que compartirás viaje, pueden tener un alto grado de afinidad contigo :)</p>
+			<h5 class="empezar-subtitle">¿Prefieres que te lleven de viaje?</h5>
+			<p class="empezar-text">Introduce en la barra de búsqueda de viajes tu origen y destino y la fecha que quieres viajar... y elije el viaje que más se adapte a tu horario y preferencias. No olvides echar un ojo a los perfiles de las personas con las que compartirás viaje, pueden tener un alto grado de afinidad contigo :)</p>
 		  </div>
 		</div>
 	  </div>
@@ -920,9 +966,9 @@
 	<!-- INICIO Próximas Salidas -->
 	{% if viajesProximos %}
 	<div class="container-md mb-4">
-		<div class="row contenedor-tarjetas-viajes mx-1">
+		<div class="row contenedor-tarjetas-viajes">
 			<div class="col-12 d-flex justify-content-center">
-				<p class="w-50 text-center fw-bold fs-3 border-bottom border-warning border-5">
+				<p class="w-50 text-center fw-bold fs-3 border-bottom border-warning border-5 roboto-text">
 					Próximas Salidas
 				</p>
 			</div>
@@ -931,31 +977,31 @@
 			<div class="tarjeta-viaje container border col-12 col-md-6 rounded my-1">
 			  <div class="row titulo">
 				<div class="col">
-				  <h4><strong>{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> a las <strong>{{ uvo.fechor_ida|time:"H:i" }}</strong></h4>
+				  <h4 class="roboto-text fw-bold">{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}} a las {{ uvo.fechor_ida|time:"H:i" }}</h4>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-12 col-md-8">
 				  <div class="row">
-					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
+					<div class="col fs-5 roboto-text" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
 					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
 					  {{uvo.ciudad_origen}}
 					</div>
 				  </div>
 				  <div class="row duracion-km">
-					<div class="col ps-5">
+					<div class="col ps-5 roboto-text">
 					  {{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
 					</div>
 				  </div>
 				  <div class="row">
-					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
+					<div class="col fs-5 roboto-text" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
 					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
 					  {{uvo.ciudad_destino}}
 					</div>
 				  </div>
 				</div>
 				<div class="col-12 col-md-4 col-centered row-centered">
-				  <div class="fs-1 fw-bold">{{uvo.importe_total_asiento}}€</div>
+				  <div class="fs-1 fw-bold roboto-text">{{uvo.importe_total_asiento}}€</div>
 				</div>
 			  </div>
 			  <div class="row my-2">
@@ -973,13 +1019,13 @@
 				  	<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 				  </div>
 				  <div class="">
-				   	<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
+				   	<a class="link-primary fw-bold roboto-text" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
 				  		({{uvo.count_opiniones}} opiniones)
 				  	</a>
 				  </div>
 				  {% else %}
 				  <div class="">
-				  	<a class="link-secondary fw-bold">
+				  	<a class="link-secondary fw-bold roboto-text">
 				  		(Sin opiniones todavía)
 					</a>
 				  </div>
@@ -992,7 +1038,7 @@
 				  {% else %}
 				  <i class="fas fa-hand-point-up fa-lg"></i>
 				  {% endif %}
-				  <b>Reservar Plaza</b>
+				  <b class="roboto-text">Reservar Plaza</b>
 				</a>
 				</div>
 			  </div>
@@ -1012,11 +1058,11 @@
 		  </div>
 		  <!-- Columna de texto y botón -->
 		  <div class="col-md-6 text-center text-white">
-			<h1 class="my-2 my-md-5">¿Te gusta conducir?</h1>
-			  <p class="fs-4">¡Maximiza ingresos y contribuye a un mundo mejor! </p>
-			  <p class="fs-5">Únete a la comunidad Múvil y ahorra en combustible y mantenimiento mientras reduces el tráfico y la contaminación.</p>
+			<h1 class="my-2 my-md-5 conductor-title">¿Te gusta conducir?</h1>
+			  <p class="fs-4 conductor-subtitle">¡Maximiza ingresos y contribuye a un mundo mejor! </p>
+			  <p class="fs-5 conductor-title">Únete a la comunidad Múvil y ahorra en combustible y mantenimiento mientras reduces el tráfico y la contaminación.</p>
 			<div class="mt-4">
-			  <a class="btn boton-3d text-white btn-conductor fw-bold fs-5"
+			  <a class="btn boton-3d text-white btn-conductor fw-bold fs-5 roboto-text"
 			  	 {% if not user.is_authenticated %}
 				 href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
 				 {% else %}
@@ -1033,11 +1079,11 @@
 		<div class="row align-items-center">
 		  <!-- Columna de texto y botón -->
 		  <div class="col-md-6 text-center text-white order-2 order-md-1">
-			<h1 class="my-2 my-md-5">¿... o te gusta que te lleven?</h1>
-			  <p class="fs-4">¡Súmate a la revolución del viaje compartido!</p>
-			  <p class="fs-5">Ahorra dinero, haz amigos y protege el planeta. Con nuestra app, cada viaje es una oportunidad para vivir mejor.</p>
+			<h1 class="my-2 my-md-5 pasajero-title">¿... o te gusta que te lleven?</h1>
+			  <p class="pasajero-subtitle">¡Súmate a la revolución del viaje compartido!</p>
+			  <p class="pasajero-text">Ahorra dinero, haz amigos y protege el planeta. Con nuestra app, cada viaje es una oportunidad para vivir mejor.</p>
 			<div class="mt-4">
-			  <a class="btn boton-3d text-white btn-pasajero fw-bold fs-5" href="{% url 'n_buscar_viaje' %}">Busca tu siguiente viaje</a>
+			  <a class="btn boton-3d text-white btn-pasajero fw-bold fs-5 roboto-text" href="{% url 'n_buscar_viaje' %}">Busca tu siguiente viaje</a>
 			</div>
 		  </div>
 		  <!-- Columna de imagen -->

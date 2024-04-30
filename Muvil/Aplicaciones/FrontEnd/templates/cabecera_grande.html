@@ -9,6 +9,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bootstrap 5</title>
 	<style>
+		:root {
+		  /**
+		   * typography
+		   */
+
+		  --ff-nunito: "Nunito", sans-serif;
+		  --ff-open-sans: "Open Sans", sans-serif;
+		  --ff-roboto: "Roboto", sans-serif;
+	  }
+
+	  .roboto-text{
+	  	font-family: var(--ff-roboto);
+	  }
+
 		.modal-content  {
 			-webkit-border-radius: 20px !important;
 			-moz-border-radius: 20px !important;
@@ -28,113 +42,115 @@
 <body>
 
 		<header>
-			<nav class="navbar navbar-light navbar-expand-lg bg-white p-0 cabecera-grande shadow">
-  				<div class="container-fluid ">
-					<a class="navbar-brand order-2 order-md-1 col-7 d-none d-md-flex justify-content-end" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" width="220" alt="MÚVIL"></a>
-					<a class="navbar-brand order-2 order-md-1 col-7 d-block d-md-none d-flex justify-content-center" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" class="img-fluid" alt="MÚVIL" width="200" height="200"></a>
-					<button class="navbar-toggler order-1 border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      					<span class="navbar-toggler-icon"></span>
-    				</button>
-    				<div class="collapse navbar-collapse justify-content-end ms-4 order-md-2 " id="navbarNavDropdown">
-      					<ul class="navbar-nav">
-        					<li class="nav-item">
-          						<a class="nav-link d-flex justify-self-center" href="{% url 'n_buscar_viaje' %}">
-									<i class="fas fa-eye color-secundario" style="font-size: 1.8em;"></i>
-									<span class="fs-5 fw-bold mx-2 text-white">Buscar Viaje</span>
-								</a>
-        					</li>
-        					<li class="nav-item">
-								<a class="nav-link d-flex justify-self-center"
-									{% if not user.is_authenticated %}
-									   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
-									{% else %}
-									   href="{% url 'n_nuevo_viaje' %}"
-									{% endif %} >
-										<i class="fas fa-car color-secundario" style="font-size: 1.8em;"></i>
-										<span class="fs-5 fw-bold mx-2 text-white">Nuevo Viaje</span>
-								</a>
-        					</li>
-						</ul>
-					</div>
-					<div class="order-3 order-md-3">
-						<div class="nav-item">
-							{% if user.is_authenticated %}
-							<div class="menu-item-nav dropdown" href="#" role="button">
-								{% if usuario.imagen %}
-                                <div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="rounded-circle" src="{{ usuario.imagen.url }}">
-                                </div>
-								{% else %}
-								<div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-									<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
-								</div>
-                            	{% endif %}
-								<!-- INICIO DropdownMenu -->
-								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item position-relative" href="{% url 'n_nuevo_viaje' %}">
-											<!--
-											<span class="position-absolute top-40 start-10 translate-middle p-2 bg-warning border border-light rounded-circle">
-												<span class="visually-hidden">New alerts</span>
-											</span>
-											-->
-											<i class="fas fa-car fa-xl">
-											</i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Publicar Viaje</span>
-										</a>
-									</li>
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item position-relative" href="{% url 'n_mis_viajes' %}">
-											<i class="fas fa-signs-post fa-xl"></i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Viajes</span>
-										</a>
-									</li>
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item" href="{% url 'n_mis_mensajes' %}">
-											<i class="fas fa-envelope fa-xl"></i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Mensajes</span>
-										</a>
-									</li>
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item" href="{% url 'n_menu_usuario_opiniones' %}">
-											<i class="fas fa-comments fa-xl"></i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Opiniones</span>
-										</a>
-									</li>
-									<!--
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item" href="{% url 'n_menu_usuario_pagoscobros' %}">
-											<i class="fas fa-piggy-bank fa-xl"></i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Mis Pagos/Cobros</span>
-										</a>
-									</li>
-									-->
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item" href="{% url 'n_menu_usuario_perfil' %}">
-											<i class="fas fa-user-gear fa-xl"></i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Mi Perfil</span>
-										</a>
-									</li>
-									<li><hr class="dropdown-divider"></li>
-									<li class="d-flex align-items-center">
-										<a class="dropdown-item text-danger" href="{% url 'logout'%}">
-											<i class="fas fa-plug-circle-xmark fa-xl"></i>
-											<span class="fs-5 fw-bold font2-muvil mx-2">Desconectar</span>
-										</a>
-									</li>
-								</ul>
-								<!-- FIN DropdownMenu -->
-							</div>
-							{% else %}
-							<a class="menu-item-nav ms-3" href="#" role="button">
-								<svg class="far fa-circle-user fa-3x text-dark" data-bs-toggle="modal" data-bs-target="#userModal" width="40" height="40" fill="black" ></svg>
-							</a>
-							{% endif %}
+			<div class="w-100">
+				<nav class="navbar navbar-light navbar-expand-lg bg-white p-0 cabecera-grande shadow">
+					<div class="container-fluid ">
+						<a class="navbar-brand order-2 order-md-1 col-7 d-none d-md-flex justify-content-end" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" width="220" alt="MÚVIL"></a>
+						<a class="navbar-brand order-2 order-md-1 col-7 d-block d-md-none d-flex justify-content-center" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" class="img-fluid" alt="MÚVIL" width="200" height="200"></a>
+						<button class="navbar-toggler order-1 border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse justify-content-end ms-4 order-md-2 " id="navbarNavDropdown">
+							<ul class="navbar-nav">
+								<li class="nav-item">
+									<a class="nav-link d-flex justify-self-center" href="{% url 'n_buscar_viaje' %}">
+										<i class="fas fa-eye color-secundario" style="font-size: 1.8em;"></i>
+										<span class="fs-5 fw-bold mx-2 text-white roboto-text">Buscar Viaje</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link d-flex justify-self-center"
+										{% if not user.is_authenticated %}
+										   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+										{% else %}
+										   href="{% url 'n_nuevo_viaje' %}"
+										{% endif %} >
+											<i class="fas fa-car color-secundario" style="font-size: 1.8em;"></i>
+											<span class="fs-5 fw-bold mx-2 text-white roboto-text">Nuevo Viaje</span>
+									</a>
+								</li>
+							</ul>
 						</div>
-   					</div>
-					<input type="number" id="numAlert" name="numAlert" value="{{numAlert}}" default="1" hidden>
-  				</div>
-			</nav>
+						<div class="order-3 order-md-3">
+							<div class="nav-item">
+								{% if user.is_authenticated %}
+								<div class="menu-item-nav dropdown" href="#" role="button">
+									{% if usuario.imagen %}
+									<div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+										<img class="rounded-circle" src="{{ usuario.imagen.url }}">
+									</div>
+									{% else %}
+									<div class="img-container-user dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+										<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
+									</div>
+									{% endif %}
+									<!-- INICIO DropdownMenu -->
+									<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item position-relative" href="{% url 'n_nuevo_viaje' %}">
+												<!--
+												<span class="position-absolute top-40 start-10 translate-middle p-2 bg-warning border border-light rounded-circle">
+													<span class="visually-hidden">New alerts</span>
+												</span>
+												-->
+												<i class="fas fa-car fa-xl">
+												</i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Publicar Viaje</span>
+											</a>
+										</li>
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item position-relative" href="{% url 'n_mis_viajes' %}">
+												<i class="fas fa-signs-post fa-xl"></i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Viajes</span>
+											</a>
+										</li>
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item" href="{% url 'n_mis_mensajes' %}">
+												<i class="fas fa-envelope fa-xl"></i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Mensajes</span>
+											</a>
+										</li>
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item" href="{% url 'n_menu_usuario_opiniones' %}">
+												<i class="fas fa-comments fa-xl"></i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Opiniones</span>
+											</a>
+										</li>
+										<!--
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item" href="{% url 'n_menu_usuario_pagoscobros' %}">
+												<i class="fas fa-piggy-bank fa-xl"></i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Pagos/Cobros</span>
+											</a>
+										</li>
+										-->
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item" href="{% url 'n_menu_usuario_perfil' %}">
+												<i class="fas fa-user-gear fa-xl"></i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Mi Perfil</span>
+											</a>
+										</li>
+										<li><hr class="dropdown-divider"></li>
+										<li class="d-flex align-items-center">
+											<a class="dropdown-item text-danger" href="{% url 'logout'%}">
+												<i class="fas fa-plug-circle-xmark fa-xl"></i>
+												<span class="fs-5 fw-bold font2-muvil mx-2">Desconectar</span>
+											</a>
+										</li>
+									</ul>
+									<!-- FIN DropdownMenu -->
+								</div>
+								{% else %}
+								<a class="menu-item-nav mx-3" href="#" role="button">
+									<svg class="far fa-circle-user fa-3x text-dark" data-bs-toggle="modal" data-bs-target="#userModal" width="40" height="40" fill="black" ></svg>
+								</a>
+								{% endif %}
+							</div>
+						</div>
+						<input type="number" id="numAlert" name="numAlert" value="{{numAlert}}" default="1" hidden>
+					</div>
+				</nav>
+			</div>
 
 			<!-- INICIO Modal inicio sesión -->
 			<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
@@ -147,28 +163,28 @@
 					<div class="d-flex justify-content-center my-1">
 						<img src="{% static 'img/logo_Muvil_pagina_principal.png' %}" height="70px" alt="MÚVIL">
 					</div>
-					<a class="form-group row d-flex justify-content-center fw-bold fs-5" href="{% url 'n_registro_usuario' %}">¿Eres nuevo en Múvil? Crea tu cuenta</a>
+					<a class="form-group row d-flex justify-content-center fw-bold fs-5 roboto-text text-decoration-none" href="{% url 'n_registro_usuario' %}">¿Eres nuevo en Múvil? Crea tu cuenta</a>
 					<form method="POST" action="/"> {% csrf_token %}
 					  <input type="hidden" name="next" value="{{ request.path }}"> <!--Guarda la url para volver a ella tras el login-->
-					  <div class="form-group row d-flex justify-content-center p-3">
-						<label for="txtEmail" class="col-form-label col-3 fw-bold">Email:</label>
+					  <div class="form-group row d-flex justify-content-center p-3 mt-3">
+						<label for="txtEmail" class=" roboto-text col-3 fw-bold">Email:</label>
 						<input type="text" class="form-control col" id="txtEmail" name="txtEmail" required>
 					  </div>
 					  <div class="form-group row d-flex justify-content-center px-3">
-						<label for="txtPass" class="col-form-label col-3 fw-bold">Contraseña:</label>
-						<input type="password" class="form-control col-7" id="txtPass" name="txtPass" required>
+						<label for="txtPass" class="roboto-text col-3 fw-bold">Contraseña:</label>
+						<input type="password" class="form-control col" id="txtPass" name="txtPass" required>
 						<div class="form-switch form-switch-md col-2 d-flex justify-content-end align-self-center">
 							<input class="form-check-input" type="checkbox" id="passReveal" onclick ="reveal()">
 						</div>
 					  </div>
-					  <a class="row form-group pe-1 d-flex justify-content-end" href="{% url 'n_resetear_contrasenya' %}">¿Has olvidado tu contraseña?</a>
+					  <a class="row form-group me-1 mt-4 mb-3 d-flex justify-content-end roboto-text" href="{% url 'n_resetear_contrasenya' %}">¿Has olvidado tu contraseña?</a>
 					  <div class="pb-3 d-flex justify-content-center">
-						<input type="submit" class="btn btn-warning col-5 text-dark fw-bold" value="Iniciar Sesión"/>
+						<input type="submit" class="btn btn-warning col-5 text-dark fw-bold roboto-text" value="Iniciar Sesión"/>
 					  </div>
 					  <div class="d-flex justify-content-center btn btn-outline-info">
-						<a href="{% provider_login_url 'google'%}?next={{request.path}}">
+						<a href="{% provider_login_url 'google'%}?next={{request.path}}" class="text-decoration-none fw-bold roboto-text">
 							<i class="fab fa-google me-1"></i>
-							<strong>Inicia sesión con Google</strong>
+							Inicia sesión con Google
 						</a>
 					  </div>
 					</form>
@@ -186,10 +202,10 @@
 					<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 				  </div>
 				  <div class="modal-body">
-					<p class="fw-bold text-center">¡¡¡ Debes iniciar sesión para poder buscar/publicar Viajes !!!</p>
+					<p class="fw-bold text-center roboto-text">¡¡¡ Debes iniciar sesión para poder buscar/publicar Viajes !!!</p>
 				  </div>
 				  <div class="modal-footer justify-content-center">
-					  <button type="button" class="btn btn-warning fw-bold fs-5" data-bs-toggle="modal" data-bs-target="#userModal">
+					  <button type="button" class="btn btn-warning fw-bold fs-5 roboto-text" data-bs-toggle="modal" data-bs-target="#userModal">
 						  Iniciar Sesión/Registrarme
 					  </button>
 				  </div>

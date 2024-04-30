@@ -11,6 +11,20 @@
 	<link rel="stylesheet" href='{% static "css/pie_pagina.css" %}'>
 
 	<style>
+	  :root {
+		  /**
+		   * typography
+		   */
+
+		  --ff-nunito: "Nunito", sans-serif;
+		  --ff-open-sans: "Open Sans", sans-serif;
+		  --ff-roboto: "Roboto", sans-serif;
+	  }
+
+	  .roboto-text{
+	  	font-family: var(--ff-roboto);
+	  }
+
 	  .footer {
 		background-color: #333; /* Fondo oscuro */
 		color: #f8f9fa; /* Texto claro */
@@ -59,19 +73,19 @@
 		  <div class="container">
 			<div class="row">
 			  <div class="col-3">
-				<h3>Muvil</h3>
+				<h3 class="roboto-text fw-bold">Muvil</h3>
 			  </div>
 			  <div class="col-auto">
-				<a class="fs-5" href="#">Sobre Nosotros</a>
+				<a class="fs-5 roboto-text" href="#">Sobre Nosotros</a>
 			  </div>
 			 <div class="col-auto">
-				<a class="fs-5" href="#">Política de Privacidad</a>
+				<a class="fs-5 roboto-text" href="#">Política de Privacidad</a>
 			  </div>
 			  <div class="col-auto">
-				<a class="fs-5" href="#">Términos y Condiciones</a>
+				<a class="fs-5 roboto-text" href="#">Términos y Condiciones</a>
 			  </div>
 			  <div class="col-auto">
-				<a class="fs-5" href="#">Contacta con Nosotros</a>
+				<a class="fs-5 roboto-text" href="#">Contacta con Nosotros</a>
 			  </div>
 			</div>
 			<div class="row">
@@ -86,7 +100,7 @@
 			</div>
 			<div class="row">
 			  <div class="col-md-12 text-center">
-				<div class="copyright">
+				<div class="copyright roboto-text">
 				  © Copyright MUVIL. All Rights Reserved
 				</div>
 			  </div>
