@@ -9,19 +9,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bootstrap 5</title>
 	<style>
-		:root {
-		  /**
-		   * typography
-		   */
 
-		  --ff-nunito: "Nunito", sans-serif;
-		  --ff-open-sans: "Open Sans", sans-serif;
-		  --ff-roboto: "Roboto", sans-serif;
-	  }
 
-	  .roboto-text{
-	  	font-family: var(--ff-roboto);
-	  }
 
 		.modal-content  {
 			-webkit-border-radius: 20px !important;
@@ -95,25 +84,25 @@
 												-->
 												<i class="fas fa-car fa-xl">
 												</i>
-												<span class="fs-5 fw-bold font2-muvil mx-2">Publicar Viaje</span>
+												<span class="fs-5 fw-bold font2-muvil mx-2 roboto-text">Publicar Viaje</span>
 											</a>
 										</li>
 										<li class="d-flex align-items-center">
 											<a class="dropdown-item position-relative" href="{% url 'n_mis_viajes' %}">
 												<i class="fas fa-signs-post fa-xl"></i>
-												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Viajes</span>
+												<span class="fs-5 fw-bold font2-muvil mx-2 roboto-text">Mis Viajes</span>
 											</a>
 										</li>
 										<li class="d-flex align-items-center">
 											<a class="dropdown-item" href="{% url 'n_mis_mensajes' %}">
 												<i class="fas fa-envelope fa-xl"></i>
-												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Mensajes</span>
+												<span class="fs-5 fw-bold font2-muvil mx-2 roboto-text">Mis Mensajes</span>
 											</a>
 										</li>
 										<li class="d-flex align-items-center">
 											<a class="dropdown-item" href="{% url 'n_menu_usuario_opiniones' %}">
 												<i class="fas fa-comments fa-xl"></i>
-												<span class="fs-5 fw-bold font2-muvil mx-2">Mis Opiniones</span>
+												<span class="fs-5 fw-bold font2-muvil mx-2 roboto-text">Mis Opiniones</span>
 											</a>
 										</li>
 										<!--
@@ -127,14 +116,14 @@
 										<li class="d-flex align-items-center">
 											<a class="dropdown-item" href="{% url 'n_menu_usuario_perfil' %}">
 												<i class="fas fa-user-gear fa-xl"></i>
-												<span class="fs-5 fw-bold font2-muvil mx-2">Mi Perfil</span>
+												<span class="fs-5 fw-bold font2-muvil mx-2 roboto-text">Mi Perfil</span>
 											</a>
 										</li>
 										<li><hr class="dropdown-divider"></li>
 										<li class="d-flex align-items-center">
 											<a class="dropdown-item text-danger" href="{% url 'logout'%}">
 												<i class="fas fa-plug-circle-xmark fa-xl"></i>
-												<span class="fs-5 fw-bold font2-muvil mx-2">Desconectar</span>
+												<span class="fs-5 fw-bold font2-muvil mx-2 roboto-text">Desconectar</span>
 											</a>
 										</li>
 									</ul>

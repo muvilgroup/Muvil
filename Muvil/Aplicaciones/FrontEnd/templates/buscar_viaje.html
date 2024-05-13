@@ -56,53 +56,53 @@
 	<div class="container-md mt-5 d-flex justify-content-center" id="contenedor-barra-busqueda">
 		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
 			<div class="col-12 col-md-3 form-floating p-0 m-0" id="origen">
-				<input type="text" list="localizaciones" class="form-select rounded border border-warning" name="inputOrigen" id="inputOrigen"
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning roboto-text" name="inputOrigen" id="inputOrigen"
 					   {% if ciudad_origen %}
 					   	value="{{ciudad_origen}}"
 					   {% else %}
 					   	placeholder="¿Desde donde sales?"
 					   {% endif %} required>
-				<label for="inputOrigen" class="form-label">Origen</label>
-				<datalist id="localizaciones">
+				<label for="inputOrigen" class="form-label roboto-text">Origen</label>
+				<datalist id="localizaciones" class="roboto-text">
 					{% for loc in localizaciones %}
 						<option value="{{ loc.direccion }}"></option>
 					{% endfor %}
 				</datalist>
 			</div>
 			<div class="col-12 col-md-3 form-floating p-0 m-0" id="destino">
-				<input type="text" list="localizaciones" class="form-select rounded border border-warning" name="inputDestino" id="inputDestino"
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning roboto-text" name="inputDestino" id="inputDestino"
 					   {% if ciudad_destino %}
 					   	value="{{ciudad_destino}}"
 					   {% else %}
 					   	placeholder="¿A donde quieres ir?"
 					   {% endif %} required>
-				<label for="inputDestino" class="form-label">Destino</label>
-				<datalist id="localizaciones">
+				<label for="inputDestino" class="form-label roboto-text">Destino</label>
+				<datalist id="localizaciones" class="roboto-text">
 					{% for loc in localizaciones %}
 						<option value="{{ loc.direccion }}"></option>
 					{% endfor %}
 				</datalist>
 			</div>
 			<div class="col-12 col-md-2 form-floating p-0 m-0" id="fecha">
-				<input type="date" class="form-control rounded border border-warning" name="inputFecha" id="inputFecha"
+				<input type="date" class="form-control rounded border border-warning roboto-text" name="inputFecha" id="inputFecha"
 				       {% if fecha_viaje %}
 						value="{{fecha_viaje}}"
 					   {% else %}
 					   	value="{% now 'Y-m-d' %}"
 					   {% endif %} required>
-				<label for="inputFecha" class="form-label">¿Cuando?</label>
+				<label for="inputFecha" class="form-label roboto-text">¿Cuando?</label>
 			</div>
 			<div class="col-12 col-md-2 form-floating p-0 m-0 row-auto" name="inputPlazas" id="inputPlazas">
-				<select data-trigger="" class="form-select rounded border border-warning h-100">
+				<select data-trigger="" class="form-select rounded border border-warning h-100 roboto-text">
 				  	<option placeholder="" {% if nro_plazas == "1 plaza" %}selected{% endif %}>1 plaza</option>
 				  	<option {% if nro_plazas == "2 plazas" %}selected{% endif %}>2 plazas</option>
 				  	<option {% if nro_plazas == "3 plazas" %}selected{% endif %}>3 plazas</option>
 				  	<option {% if nro_plazas == "4 plazas" %}selected{% endif %}>4 plazas</option>
 				</select>
-				<label for="inputPlazas" class="form-label">¿Cuantos asientos?</label>
+				<label for="inputPlazas" class="form-label roboto-text">¿Cuantos asientos?</label>
 			</div>
 			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
-				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded border border-warning" type="submit">
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded border border-warning roboto-text" type="submit">
 					Buscar
 				</button>
 			</div>
@@ -114,7 +114,7 @@
 		<div class="row">
 
 			<div class="col-12 d-flex justify-content-center mb-2">
-				<button type="button" class="btn btn-warning col-10 fw-bold d-block d-md-none" data-bs-toggle="modal" data-bs-target="#ventana-filtros-viajes-modal">
+				<button type="button" class="btn btn-warning col-10 fw-bold d-block d-md-none roboto-text" data-bs-toggle="modal" data-bs-target="#ventana-filtros-viajes-modal">
 					Filtros
 				</button>
 			</div>
@@ -124,17 +124,17 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 					  <div class="modal-header">
-						<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtrar por...</h5>
+						<h5 class="modal-title fw-bold border-bottom border-3 border-warning roboto-text" id="exampleModalLabel">Filtrar por...</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					  </div>
 					  <div class="modal-body">
 						  <aside class="filtros-viajes" id="contenedor-filtros-viajes">
-								<h4 class="fw-bold border-bottom border-3 border-warning">
+								<h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
 									Filtrar por...
 								</h4>
 								<form method="POST"> {% csrf_token %}
 									{{ filter.form.as_p }}
-									<input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+									<input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
 									<input type="text" name="inputOrigen" id="inputOrigen" value="{{ciudad_origen}}" hidden>
 									<input type="text" name="inputDestino" id="inputDestino" value="{{ciudad_destino}}" hidden>
 									<input type="date" name="inputFecha" id="inputFecha" value="{{fecha_viaje}}" hidden>
@@ -148,12 +148,12 @@
 			<!-- FIN Modal Filtros (Responsivo) -->
 
 			<aside class="col-3 filtros-viajes d-none d-md-block" id="contenedor-filtros-viajes">
-				<h4 class="fw-bold border-bottom border-3 border-warning">
+				<h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
 					Filtrar por...
 				</h4>
 				<form method="POST"> {% csrf_token %}
 					{{ filter.form.as_p }}
-					<input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+					<input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
 					<input type="text" name="inputOrigen" id="inputOrigen" value="{{ciudad_origen}}" hidden>
 					<input type="text" name="inputDestino" id="inputDestino" value="{{ciudad_destino}}" hidden>
 					<input type="date" name="inputFecha" id="inputFecha" value="{{fecha_viaje}}" hidden>
@@ -166,31 +166,31 @@
 				<div class="tarjeta-viaje container border rounded my-1">
 			  <div class="row titulo">
 				<div class="col">
-				  <h4><strong>{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> a las <strong>{{ uvo.fechor_ida|time:"H:i" }}</strong></h4>
+				  <h4 class="roboto-text"><strong>{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> a las <strong>{{ uvo.fechor_ida|time:"H:i" }}</strong></h4>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-12 col-md-8">
 				  <div class="row">
-					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
-					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
+					<div class="col fs-5 roboto-text" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
+					  <i class="fas fa-location-dot fa-lg roboto-text" style="color:#A8A6A2"></i>
 					  {{uvo.ciudad_origen}}
 					</div>
 				  </div>
 				  <div class="row gris">
-					<div class="col ps-5 duracion-km">
+					<div class="col ps-5 duracion-km roboto-text">
 					  {{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
 					</div>
 				  </div>
 				  <div class="row">
-					<div class="col fs-5" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
+					<div class="col fs-5 roboto-text" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
 					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
 					  {{uvo.ciudad_destino}}
 					</div>
 				  </div>
 				</div>
 				<div class="col-12 col-md-4 col-centered row-centered">
-				  <div class="fs-1 fw-bold">{{uvo.importe_total_asiento}}€</div>
+				  <div class="fs-1 fw-bold roboto-text">{{uvo.importe_total_asiento}}€</div>
 				</div>
 			  </div>
 			  <div class="row my-2">
@@ -203,18 +203,18 @@
 					  {% endif %}
 				  </a>
 				  {% if uvo.avg_puntuacion %}
-				  <div class="fw-bold fs-3 d-flex">
+				  <div class="fw-bold fs-3 d-flex roboto-text">
 				  	{{uvo.avg_puntuacion|floatformat:2}}
 				  	<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
 				  </div>
 				  <div class="">
-				   	<a class="link-primary fw-bold" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
+				   	<a class="link-primary fw-bold roboto-text" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
 				  		({{uvo.count_opiniones}} opiniones)
 				  	</a>
 				  </div>
 				  {% else %}
 				  <div class="">
-				  	<a class="link-secondary fw-bold">
+				  	<a class="link-secondary fw-bold roboto-text">
 				  		(Sin opiniones todavía)
 					</a>
 				  </div>
@@ -232,7 +232,7 @@
 				  {% else %}
 				  <i class="fas fa-hand-point-up fa-lg"></i>
 				  {% endif %}
-				  <b>Reservar Plaza</b>
+				  <b class="roboto-text">Reservar Plaza</b>
 				</a>
 				</div>
 			  </div>
@@ -240,8 +240,8 @@
 				{% empty %}
 				<div class="row pb-3">
 					<div class="col-12 px-3 mt-5 text-center">
-						<h4 class="fw-bold font2-muvil">Vaya... ¡No encontramos viajes con esos datos!</h4>
-						<h4 class="fw-bold ">Prueba a cambiar los filtros de búsqueda...</h4>
+						<h4 class="fw-bold font2-muvil roboto-text">Vaya... ¡No encontramos viajes con esos datos!</h4>
+						<h4 class="fw-bold roboto-text">Prueba a cambiar los filtros de búsqueda...</h4>
 					</div>
 				</div>
 				{% endfor %}

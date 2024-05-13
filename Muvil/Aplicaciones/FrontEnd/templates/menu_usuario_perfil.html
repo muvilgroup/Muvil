@@ -9,12 +9,12 @@
 					<!-- INICIO Datos Personales -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
-							<h3 class="border-bottom border-5 border-warning">Datos Personales</h3>
+							<h3 class="border-bottom border-5 border-warning roboto-text">Datos Personales</h3>
 						</div>
 					</div>
 					<form method="POST" class="row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 						<div class="col-lg-8 col-6 d-flex justify-content-center align-items-center py-3">
-							<a class="btn btn-warning border-light border-3 fw-bold" href="{% url 'n_perfil_publico' idP=usuario.id %}"> Ver Perfil Público </a>
+							<a class="btn btn-warning border-light border-3 fw-bold roboto-text" href="{% url 'n_perfil_publico' idP=usuario.id %}"> Ver Perfil Público </a>
 						</div>
 						<div class="col-lg-3 col-6 mb-3 ps-5 button-container img-container-user">
 						{% if form.instance.imagen %}
@@ -38,43 +38,43 @@
 							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputNombre" class="form-label"><strong>Nombre</strong></label>
+							<label for="inputNombre" class="form-label"><strong class="roboto-text">Nombre</strong></label>
 							{{ form.nombre }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputPApellido" class="form-label"><strong>Primer Apellido</strong></label>
+							<label for="inputPApellido" class="form-label"><strong class="roboto-text">Primer Apellido</strong></label>
 							{{ form.apellido1 }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputSapellido" class="form-label">Segundo Apellido</label>
+							<label for="inputSapellido" class="form-label roboto-text">Segundo Apellido</label>
 							{{ form.apellido2 }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputTDocumento" class="form-label"><strong>Tipo Documento</strong></label>
+							<label for="inputTDocumento" class="form-label"><strong class=" roboto-text">Tipo Documento</strong></label>
 							{{ form.tipo_documento }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputDocumento" class="form-label"><strong>Número Documento</strong></label>
+							<label for="inputDocumento" class="form-label"><strong class=" roboto-text">Número Documento</strong></label>
 							{{ form.numero_documento }}
 						</div>
 						<div class="col-md-4 py-2">
-							<label for="inputNacimiento" class="form-label"><strong>Fecha de Nacimiento</strong></label>
+							<label for="inputNacimiento" class="form-label"><strong class=" roboto-text">Fecha de Nacimiento</strong></label>
 							{{ form.fec_nacimiento }}
 						</div>
 						<div class="col-md-7 py-2">
-							<label for="inputEmail" class="form-label"><strong>Email</strong></label>
-							<input class="form-control" type="text" value="{{ user.email }}" disabled />
+							<label for="inputEmail" class="form-label"><strong class="roboto-text">Email</strong></label>
+							<input class="form-control roboto-text" type="text" value="{{ user.email }}" disabled />
 						</div>
 						<div class="col-md-3 py-2">
-							<label for="inputTelefono" class="form-label"><strong>Teléfono</strong></label>
+							<label for="inputTelefono" class="form-label"><strong class="roboto-text">Teléfono</strong></label>
 							{{ form.num_telefono }}
 						</div>
 						<div class="col-12 py-2">
-							<label for="exampleFormControlTextarea1" class="form-label">Déjanos conocerte</label>
+							<label for="exampleFormControlTextarea1" class="form-label roboto-text">Déjanos conocerte</label>
 							{{ form.descripcion }}
 						</div>
 						<div class="col-12 d-flex justify-content-center py-3">
-							<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+							<button type="submit" class="btn btn-warning btn-guardar fw-bold col-4 roboto-text">Guardar</button>
 						</div>
 					</form>
 					<!-- FIN Datos Personales -->

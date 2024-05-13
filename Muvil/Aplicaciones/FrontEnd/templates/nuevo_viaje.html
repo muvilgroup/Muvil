@@ -8,28 +8,28 @@
 {% block base_content %}
 	<div class="container-md mt-5 d-flex justify-content-center">
 		<div class="row col-12 col-md-8">
-			<span class="font2-muvil fs-4 border-bottom border-4 border-warning">Introduce los datos de tu viaje...</span>
+			<span class="font2-muvil fs-4 border-bottom border-4 border-warning roboto-text">Introduce los datos de tu viaje...</span>
 			<form method="POST" class="row justify-content-center post-form px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 				<div class="col-md-12 py-2 mx-3 text-center bg-light">
 					{{ form.flg_confirmacion_auto }}
 					<i class="fas fa-wand-sparkles fa-lg"></i>
-					<label for="conf-manual" class="form-check-label fw-bold">Aceptación automatica de reservas</label>
+					<label for="conf-manual" class="form-check-label fw-bold roboto-text">Aceptación automatica de reservas</label>
 				</div>
 				<div class="col-12 col-md-6 py-2">
 					<i class="fas fa-map fa-lg"></i>
-					<label for="input" class="form-label">Ciudad Origen</label>
+					<label for="input" class="form-label roboto-text">Ciudad Origen</label>
 					{{ form.ciudad_origen }}
-					<datalist id="localizaciones">
+					<datalist id="localizaciones" class="roboto-text">
 					{% for loc in localizaciones %}
 						<option value="{{ loc.direccion }}"></option>
 					{% endfor %}
 					</datalist>
 				</div>
 				<div class="col-md-6 py-2">
-					<i class="fas fa-flag-checkered fa-lg"></i>
+					<i class="fas fa-flag-checkered fa-lg roboto-text"></i>
 					<label for="input" class="form-label">Ciudad Destino</label>
 					{{ form.ciudad_destino }}
-					<datalist id="localizaciones">
+					<datalist id="localizaciones" class="roboto-text">
 					{% for loc in localizaciones %}
 						<option value="{{ loc.direccion }}"></option>
 					{% endfor %}
@@ -37,75 +37,85 @@
 				</div>
 				<div class="col-md-6 py-2">
 					<i class="fas fa-calendar-day fa-lg"></i>
-					<label for="input" class="form-label">Fecha Viaje</label>
+					<label for="input" class="form-label roboto-text">Fecha Viaje</label>
 					{{ form.fecha_ida }}
 				</div>
 				<div class="col-md-6 py-2">
 					<i class="fas fa-clock fa-lg"></i>
-					<label for="input" class="form-label">Hora Salida</label>
+					<label for="input" class="form-label roboto-text">Hora Salida</label>
 					{{ form.hora_ida }}
 				</div>
 				<datalist id="lista_horas_viaje">
 				</datalist>
 				<div class="col-md-6 py-2">
 					<i class="fas fa-people-group fa-lg"></i>
-					<label for="input" class="form-label">Plazas</label>
+					<label for="input" class="form-label roboto-text">Plazas</label>
 					{{ form.numero_asientos_viaje }}
 				</div>
 				<div class="col-md-6 py-2">
 					<i class="fas fa-coins fa-lg"></i>
-					<label for="input" class="form-label">Precio por plaza (€)</label>
+					<label for="input" class="form-label roboto-text">Precio por plaza (€)</label>
 					{{ form.importe_conductor_asiento }}
 				</div>
 				<div class="col-md-6 py-2">
 					<i class="fas fa-car-side fa-lg"></i>
-					<label for="input" class="form-label">Vehiculo</label>
+					<label for="input" class="form-label roboto-text">Vehiculo</label>
 					{{ form.id_vehiculo }}
 				</div>
 				<div class="col-md-6 py-2">
 					<i class="fas fa-suitcase fa-lg"></i>
-					<label for="input" class="form-label">Equipaje</label>
+					<label for="input" class="form-label roboto-text">Equipaje</label>
 					{{ form.equipaje }}
+				</div>
+				<div class="col-md-12 py-2">
+					<i class="fas fa-compass fa-lg"></i>
+					<label for="input" class="form-label roboto-text">Detalles adicionales</label>
+					{{ form.detalles }}
 				</div>
 				<div class="col-md-12 py-2 mx-3 text-center bg-light">
 					{{ form.flg_ida_vuelta }}
-					<label for="input" class="form-check-label fw-bold">¿Publicar viaje de VUELTA?</label>
+					<label for="input" class="form-check-label fw-bold roboto-text">¿Publicar viaje de VUELTA?</label>
 					<i class="fas fa-right-left fa-lg"></i>
 				</div>
 				<!-- INICIO Campos Vuelta -->
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta1" style="display:none">
 					<i class="fas fa-map fa-lg"></i>
-					<label for="input" class="form-label">Ciudad Origen Vuelta</label>
+					<label for="input" class="form-label roboto-text">Ciudad Origen Vuelta</label>
 					{{ vueltaform.ciudad_origen_vuelta }}
 				</div>
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta2" style="display:none">
 					<i class="fas fa-flag-checkered fa-lg"></i>
-					<label for="input" class="form-label">Ciudad Destino Vuelta</label>
+					<label for="input" class="form-label roboto-text">Ciudad Destino Vuelta</label>
 					{{ vueltaform.ciudad_destino_vuelta }}
 				</div>
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta3" style="display:none">
 					<i class="fas fa-calendar-day fa-lg"></i>
-					<label for="input" class="form-label">Fecha Vuelta</label>
+					<label for="input" class="form-label roboto-text">Fecha Vuelta</label>
 					{{ vueltaform.fecha_vuelta }}
 				</div>
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta4" style="display:none">
 					<i class="fas fa-clock fa-lg"></i>
-					<label for="input" class="form-label">Hora Vuelta</label>
+					<label for="input" class="form-label roboto-text">Hora Vuelta</label>
 					{{ vueltaform.hora_vuelta }}
 				</div>
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta5" style="display:none">
 					<i class="fas fa-people-group fa-lg"></i>
-					<label for="input" class="form-label">Plazas Vuelta</label>
+					<label for="input" class="form-label roboto-text">Plazas Vuelta</label>
 					{{ vueltaform.numero_asientos_vuelta }}
 				</div>
 				<div class="col-md-6 py-2 bg-light" id="form_vuelta6" style="display:none">
 					<i class="fas fa-coins fa-lg"></i>
-					<label for="input" class="form-label">Precio por plaza (€) Vuelta</label>
+					<label for="input" class="form-label roboto-text">Precio por plaza (€) Vuelta</label>
 					{{ vueltaform.importe_conductor_asiento_vuelta }}
+				</div>
+				<div class="col-md-12 py-2 bg-light" id="form_vuelta7" style="display:none">
+					<i class="fas fa-compass fa-lg"></i>
+					<label for="input" class="form-label roboto-text">Detalles adicionales</label>
+					{{ vueltaform.detalles_vuelta }}
 				</div>
 				<!-- FIN Campos Vuelta -->
 				<div class="col-12 d-flex justify-content-center py-3">
-					<a class="btn btn-warning btn-guardar col-4 boton-3d fw-bold" href="" data-bs-toggle="modal"
+					<a class="btn btn-warning btn-guardar col-4 boton-3d fw-bold roboto-text" href="" data-bs-toggle="modal"
 					   data-bs-target="#publicarviajeModal">
 						<i class="fas fa-road fa-lg"></i>
 						Publicar Viaje
@@ -119,12 +129,12 @@
 							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 						  </div>
 						  <div class="modal-body">
-							<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres publicar el viaje ???</p>
-							<p class="fs-5 text-center">¡Una vez publicado, no será posible realizar cambios sobre ese viaje por el bien de los usuarios que lo estuvieran consultando!</p>
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Seguro que quieres publicar el viaje ???</p>
+							<p class="fs-5 text-center roboto-text">¡Una vez publicado, no será posible realizar cambios sobre ese viaje por el bien de los usuarios que lo estuvieran consultando!</p>
 						  </div>
 						  <div class="modal-footer justify-content-center">
-							  <button type="submit" class="col-2 btn btn-warning btn-guardar col-4"><b>Publicar Viaje</b></button>
-							  <button type="button" class="col-3 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+							  <button type="submit" class="col-2 btn btn-warning btn-guardar col-4 fw-bold roboto-text">Publicar Viaje</button>
+							  <button type="button" class="col-3 btn btn-danger fw-bold roboto-text" aria-label="Close" data-bs-dismiss="modal">
 								  No
 							  </button>
 						  </div>

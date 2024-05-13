@@ -37,14 +37,14 @@
 				<!-- INICIO Opciones de compartir -->
 					<button class="boton-3d boton-muvil fw-bold fs-4 rounded" id="shareButton">
 						<i class="fas fa-share-nodes fa-lg"></i>
-						<span>Envía el enlace de este viaje</span>
+						<span class="roboto-text">Envía el enlace de este viaje</span>
 					</button>
 					<input type="text" id="shareUrl" placeholder="URL" value="{{ request.path }}" hidden/>
 
 					<div id="fallbackShare" style="display: none;">
-					  <p>Compartir en:</p>
-					  <a href="https://wa.me/?text=muvil.es" target="_blank">WhatsApp</a>
-					  <a href="mailto:?subject=Mira%20esto&body=muvil.es" target="_blank">Correo electrónico</a>
+					  <p class="roboto-text">Compartir en:</p>
+					  <a href="https://wa.me/?text=muvil.es" target="_blank" class="roboto-text">WhatsApp</a>
+					  <a href="mailto:?subject=Mira%20esto&body=muvil.es" target="_blank" class="roboto-text">Correo electrónico</a>
 					  <!-- Agrega más opciones de compartir según necesites -->
 					</div>
 				</div>
@@ -52,18 +52,18 @@
 
 				<div class="row">
 					<div class="col-12 px-3 pt-2">
-						<h3 class="border-bottom border-5 border-warning">Detalles del Viaje</h3>
+						<h3 class="border-bottom border-5 border-warning roboto-text">Detalles del Viaje</h3>
 					</div>
 				</div>
 
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-circle-info fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Estado del Viaje:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Estado del Viaje:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
+					<div class="col-6 col-md-3 px-3">
 						<div class="row mt-2" id="estado-viaje">
-							<h4 class="text-white rounded-pill text-center" id="estado-viaje"
+							<h4 class="text-white rounded-pill text-center roboto-text" id="estado-viaje"
 								 style="background-color:
 								 	{% if viaje.estado == 1 %}
 										#8C8F8B
@@ -79,80 +79,92 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-calendar-day fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Fecha:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Fecha:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold" id="fecha">{{viaje.fechor_ida|date:"SHORT_DATE_FORMAT"}}</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="fecha">{{viaje.fechor_ida|date:"SHORT_DATE_FORMAT"}}</div>
 					</div>
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-clock fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Hora:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Hora:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold" id="hora">{{viaje.fechor_ida|time}}</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="hora">{{viaje.fechor_ida|time}}</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-12 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-map fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Desde:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Desde:</span>
 					</div>
-					<div class="col-12 col-sm-6 px-3">
-						<div class="fs-5 fw-bold" id="desde">{{viaje.ciudad_origen}}</div>
+					<div class="col-12 col-md-6 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="desde">{{viaje.ciudad_origen}}</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-12 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-flag-checkered fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Hasta:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Hasta:</span>
 					</div>
-					<div class="col-12 col-sm-6 px-3">
-						<div class="fs-5 fw-bold" id="hasta">{{viaje.ciudad_destino}}</div>
+					<div class="col-12 col-md-6 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="hasta">{{viaje.ciudad_destino}}</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-12 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-compass fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Detalles:</span>
+					</div>
+					<div class="col-12 col-md-6 px-3">
+						<div class="fs-5 {% if viaje.detalles %} fw-bold {% else %} font2-muvil {% endif %} roboto-text"
+							 id="hasta">
+							{% if viaje.detalles %} {{viaje.detalles}} {% else %} (Sin detalles) {% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-coins fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Precio persona:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Precio persona:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold" id="precio">{{viaje.importe_total_asiento}} €</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="precio">{{viaje.importe_total_asiento}} €</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-people-group fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Plazas:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Plazas:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
+					<div class="col-6 col-md-3 px-3">
 						{% if viaje.numero_asientos_libres == 0 %}
-						<div class="fs-5 fw-bold" id="plazas"> class="text-white rounded-pill text-center" style="background-color:#991C1C;">
+						<div class="fs-5 fw-bold roboto-text" id="plazas"> class="text-white rounded-pill text-center" style="background-color:#991C1C;">
 							¡VIAJE COMPLETO!
 						</div>
 						{% else %}
-						<div class="fs-5 fw-bold" id="plazas">{{viaje.numero_asientos_libres}}</div>
+						<div class="fs-5 fw-bold roboto-text" id="plazas">{{viaje.numero_asientos_libres}}</div>
 						{% endif %}
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-suitcase fa-lg"></i>
-						<span class="fs-4 fw-bold font2-muvil mx-2">Equipaje:</span>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Equipaje:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold" id="equipaje">{{viaje.get_equipaje_display}}</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="equipaje">{{viaje.get_equipaje_display}}</div>
 					</div>
 				</div>
 				{% if flg_reserva_confirmada %}
 				<div class="row">
-					<div class="col-12 col-sm-3 px-3 d-flex align-items-center">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
 						<i class="fas fa-phone fa-lg"></i>
-						<span class="fs-4 fw-bold mx-2">Número Contacto:</span>
+						<span class="fs-4 fw-bold mx-2 roboto-text">Número Contacto:</span>
 					</div>
-					<div class="col-12 col-sm-3 px-3">
-						<div class="fs-5 fw-bold">{{viaje.id_persona.num_telefono}}</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text">{{viaje.id_persona.num_telefono}}</div>
 					</div>
 				</div>
 				{% endif %}
@@ -160,7 +172,7 @@
 					<div class="col-12 col-sm-3 px-3 pt-2">
 						<div class="border-bottom border-warning border-3">
 							<i class="fas fa-car-side fa-xl"></i>
-							<span class="fs-4 fw-bold mx-2">Conductor</span>
+							<span class="fs-4 fw-bold mx-2 roboto-text">Conductor</span>
 						</div>
 					</div>
 				</div>
@@ -179,15 +191,15 @@
 							{% endif %}
 						</a>
 					</div>
-					<h4 class="col-12 col-sm-4 text-start align-self-center">
+					<h4 class="col-12 col-sm-4 text-start align-self-center roboto-text">
 						{% if viaje.id_persona.id == idP%}
-						<strong>(Usted)</strong>
+						<strong class="roboto-text">(Usted)</strong>
 						{% endif %}
 						 {{viaje.id_persona.nombre}} {{viaje.id_persona.apellido1}} {{viaje.id_persona.apellido2}}
 					</h4>
 					{% if usuario_conductor and viaje.estado == 1 %} <!-- Viaje Pendiente -->
 					<div class="col-12 col-md-5 px-3 pt-2 align-self-center">
-						<a class="col-auto col-md-4 btn btn-danger fw-bold fs-5 boton-3d mx-4" href=""
+						<a class="col-auto col-md-4 btn btn-danger fw-bold fs-5 boton-3d mx-4 roboto-text" href=""
 						   data-bs-toggle="modal" data-bs-target="#cancelarviajeModal">
 							Cancelar Viaje
 						</a>
@@ -195,12 +207,12 @@
 					{% elif viaje.estado == 2 %}
 						{% if not usuario_conductor %}
 							{% for oeac in opinion_escrita_a_cond %}
-								<h5 class="col text-start align-self-center">
-									Opinión publicada: <strong>{{oeac.fechor_opinion|date:"SHORT_DATETIME_FORMAT"}}</strong>
+								<h5 class="col text-start align-self-center roboto-text">
+									Opinión publicada: <strong class="roboto-text">{{oeac.fechor_opinion|date:"SHORT_DATETIME_FORMAT"}}</strong>
 								</h5>
 							{% empty %}
 								<div class="col-5 px-3 pt-2 align-self-center">
-									<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4"
+									<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
 									   href="{% url 'n_nueva_opinion' idV=viaje.id idPr=viaje.id_persona.id idO=0 %}">
 										Dejar Opinión al Conductor
 									</a>
@@ -212,9 +224,9 @@
 			{% if viaje.estado != 3 %} <!-- Viaje Cancelado -->
 				<div class="row">
 					<div class="col-12 px-3 pt-2">
-						<div class="border-bottom border-warning border-3">
+						<div class="border-bottom border-warning border-3 roboto-text">
 							<i class="fas fa-person-walking-luggage fa-xl"></i>
-							<span class="fs-4 fw-bold mx-2">Pasajeros</span>
+							<span class="fs-4 fw-bold mx-2 roboto-text">Pasajeros</span>
 							(
 							{% if viaje.flg_confirmacion_auto %}
 							<i class="fas fa-wand-sparkles fa-lg"></i>
@@ -243,46 +255,46 @@
 							{% endif %}
 						</a>
 					</div>
-					<h4 class="col-12 col-sm-4 text-start align-self-center">
+					<h4 class="col-12 col-sm-4 text-start align-self-center roboto-text">
 						{% if plaza.id_persona.id == idP%}
-						<strong>(Usted)</strong>
+						<strong class="roboto-text">(Usted)</strong>
 						{% endif %}
 						 {{plaza.id_persona.nombre}} {{plaza.id_persona.apellido1}} {{plaza.id_persona.apellido2}}
 					</h4>
 				{% if viaje.estado == 1 %}
 					{% if usuario_conductor and plaza.estado == 1 %} <!-- Viaje Pendiente / Plaza Pendiente -->
 					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
-						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4" data-bs-toggle="modal" data-bs-target="#aceptarpasajeroModal{{plaza.id}}">
+						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text" data-bs-toggle="modal" data-bs-target="#aceptarpasajeroModal{{plaza.id}}">
 							Aceptar
 						</a>
-						<a class="btn btn-danger fw-bold fs-5 boton-3d" data-bs-toggle="modal" data-bs-target="#rechazarpasajeroModal{{plaza.id}}">
+						<a class="btn btn-danger fw-bold fs-5 boton-3d roboto-text" data-bs-toggle="modal" data-bs-target="#rechazarpasajeroModal{{plaza.id}}">
 							Rechazar
 						</a>
 					</div>
 					{% elif not usuario_conductor and usuario == plaza.id_persona and plaza.estado == 1 %} <!-- Viaje Pendiente / Plaza Pendiente -->
 					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
-						<a class="btn btn-danger fw-bold fs-5 boton-3d mx-4" data-bs-toggle="modal" data-bs-target="#cancelarreservaModal{{plaza.id}}">
+						<a class="btn btn-danger fw-bold fs-5 boton-3d mx-4 roboto-text" data-bs-toggle="modal" data-bs-target="#cancelarreservaModal{{plaza.id}}">
 							Cancelar Reserva
 						</a>
 					</div>
-					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
+					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center roboto-text">
 						¡El conductor aún no te ha confirmado!
 					</div>
 					{% elif plaza.estado == 2 %}
-					<h5 class="col-12 col-sm-4 text-start align-self-center">
-						confirmación: <strong>{{plaza.fechor_confirmado|date:"SHORT_DATETIME_FORMAT"}}</strong>
+					<h5 class="col-12 col-sm-4 text-start align-self-center roboto-text">
+						confirmación: <strong class="roboto-text">{{plaza.fechor_confirmado|date:"SHORT_DATETIME_FORMAT"}}</strong>
 					</h5>
 					{% endif %}
 				{% elif viaje.estado == 2 %} <!-- Viaje Realizado-->
 					{% if usuario_conductor %}
 					{% for oexc in opiniones_escritas_x_cond %}
 						{% if plaza.id_persona == oexc.id_persona_receptor %}
-						<h5 class="col text-start align-self-center">
-							Opinión publicada: <strong>{{oexc.fechor_opinion|date:"SHORT_DATETIME_FORMAT"}}</strong>
+						<h5 class="col text-start align-self-center roboto-text">
+							Opinión publicada: <strong class="roboto-text">{{oexc.fechor_opinion|date:"SHORT_DATETIME_FORMAT"}}</strong>
 						</h5>
 						{% else %}
 						<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
-							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4"
+							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
 							href="{% url 'n_nueva_opinion' idV=viaje.id idPr=plaza.id_persona.id idO=0 %}">
 								Dejar Opinión
 							</a>
@@ -290,7 +302,7 @@
 						{% endif %}
 					{% empty %}
 						<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
-							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4"
+							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
 							href="{% url 'n_nueva_opinion' idV=viaje.id idPr=plaza.id_persona.id idO=0 %}">
 								Dejar Opinión
 							</a>
@@ -307,14 +319,14 @@
 							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 						  </div>
 						  <div class="modal-body">
-							<p class="fw-bold fs-4 text-center">¿¿¿ Aceptar esta reserva en tu viaje ???</p>
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Aceptar esta reserva en tu viaje ???</p>
 						  </div>
 						  <div class="modal-footer justify-content-center">
-							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5"
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text"
 								 href="{% url 'n_aceptar_pasajero' idV=viaje.id idPl=plaza.id %}">
 								  Si
 							  </a>
-							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
 								  Cerrar
 							  </a>
 						  </div>
@@ -329,14 +341,14 @@
 							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 						  </div>
 						  <div class="modal-body">
-							<p class="fw-bold fs-4 text-center">¿¿¿ Rechazar esta reserva ???</p>
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Rechazar esta reserva ???</p>
 						  </div>
 						  <div class="modal-footer justify-content-center">
-							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5"
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text"
 								 href="{% url 'n_rechazar_pasajero' idV=viaje.id idPl=plaza.id %}">
 								  Si
 							  </a>
-							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
 								  Cerrar
 							  </a>
 						  </div>
@@ -351,14 +363,14 @@
 							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 						  </div>
 						  <div class="modal-body">
-							<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres cancelar tu reserva en este viaje ???</p>
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Seguro que quieres cancelar tu reserva en este viaje ???</p>
 						  </div>
 						  <div class="modal-footer justify-content-center">
-							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5"
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text"
 								 href="{% url 'n_cancelar_reserva' idV=viaje.id idPl=plaza.id %}">
 								  Si
 							  </a>
-							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
 								  No
 							  </a>
 						  </div>
@@ -369,7 +381,7 @@
 				{% empty %}
 				<div class="row pb-3">
 					<div class="col-9 px-3 pt-2 text-center">
-						<h4 class="fw-bold">¡No hay pasajeros confirmados en este viaje!</h4>
+						<h4 class="fw-bold roboto-text">¡No hay pasajeros confirmados en este viaje!</h4>
 					</div>
 				</div>
 				{% endfor %}
@@ -389,12 +401,12 @@
 							{% endif %}
 						</div>
 					</div>
-					<h4 class="col-4 text-start align-self-center">
-						<strong>(Usted)</strong>
+					<h4 class="col-4 text-start align-self-center roboto-text">
+						<strong class="roboto-text">(Usted)</strong>
 						 {{usuario.nombre}} {{usuario.apellido1}} {{usuario.apellido2}}
 					</h4>
 					<div class="col-6 px-3 pt-2 align-self-center">
-						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4"
+						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
 							{% if not user.is_authenticated %}
 							   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
 							{% else %}
@@ -418,13 +430,13 @@
 					<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
 				  </div>
 				  <div class="modal-body">
-					<p class="fw-bold fs-4 text-center">¿¿¿ Seguro que quieres cancelar el viaje ???</p>
+					<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Seguro que quieres cancelar el viaje ???</p>
 				  </div>
 				  <div class="modal-footer justify-content-center">
-					  <a type="button" class="col-2 btn btn-danger fw-bold fs-5" href="{% url 'n_cancelar_viaje' idV=viaje.id %}">
+					  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text" href="{% url 'n_cancelar_viaje' idV=viaje.id %}">
 						  Si
 					  </a>
-					  <button type="button" class="col-3 btn btn-warning fw-bold fs-5" aria-label="Close" data-bs-dismiss="modal">
+					  <button type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
 						  No
 					  </button>
 				  </div>

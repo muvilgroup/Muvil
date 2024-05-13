@@ -10,13 +10,13 @@
 					<!-- INICIO Opiniones -->
 					<div class="row">
 						<div class="col-12 px-3 pt-2">
-							<h3 class="border-bottom border-5 border-warning">Opiniones</h3>
+							<h3 class="border-bottom border-5 border-warning roboto-text">Opiniones</h3>
 						</div>
 					</div>
 					<nav class="row">
 					  	<div class="nav nav-tabs justify-content-center col-12" id="opinion-nav-tab" role="tablist">
-							<button class="nav-link active fw-bold col-4" id="nav-received-tab" data-bs-toggle="tab" data-bs-target="#nav-received" type="button" role="tab" aria-controls="nav-received" aria-selected="true">Recibidas</button>
-							<button class="nav-link fw-bold col-4" id="nav-posted-tab" data-bs-toggle="tab" data-bs-target="#nav-posted" type="button" role="tab" aria-controls="nav-posted" aria-selected="false">Publicadas</button>
+							<button class="nav-link active fw-bold col-4 roboto-text" id="nav-received-tab" data-bs-toggle="tab" data-bs-target="#nav-received" type="button" role="tab" aria-controls="nav-received" aria-selected="true">Recibidas</button>
+							<button class="nav-link fw-bold col-4 roboto-text" id="nav-posted-tab" data-bs-toggle="tab" data-bs-target="#nav-posted" type="button" role="tab" aria-controls="nav-posted" aria-selected="false">Publicadas</button>
 					  	</div>
 					</nav>
 					<div class="row tab-content" id="opinion-nav-tabContent">
@@ -40,18 +40,18 @@
 														<img class="mx-auto d-block" src="{{ op.id_persona_publicador.imagen.url }}">
 													{% endif %}
 												</div>
-												<p class="fs-6 fw-bold mb-0 text-center opinion-photo">
+												<p class="fs-6 fw-bold mb-0 text-center opinion-photo roboto-text">
 													{{ op.id_persona_publicador.nombre }}
 												</p>
 											</div>
 											<div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
 												<div class="row card-title" id="opinion-header">
-													<div class="col fw-bold fs-6">
+													<div class="col fw-bold fs-6 roboto-text">
 														{{ op.id_viaje.fecha_ida|date:"d/m/Y" }} - de {{op.id_viaje.ciudad_origen}} a {{op.id_viaje.ciudad_destino}}
 													</div>
 												</div>
 												<div class="row" id="opinion-comment">
-													<div class="col fs-6">
+													<div class="col fs-6 roboto-text">
 														{{op.mensaje_opinion}}
 													</div>
 												</div>
@@ -59,7 +59,7 @@
 											<div class="col-6 col-lg-2 card-block order-2 order-lg-3" id="opinion-score">
 												<div class="row mt-2" id="opinion-score">
 													<div class="col d-flex justify-content-center">
-														<p class="fs-2 fw-bold mb-0">
+														<p class="fs-2 fw-bold mb-0 roboto-text">
 															{{op.puntuacion}}
 														</p>
 													</div>
@@ -89,7 +89,7 @@
 													<div class="col d-flex justify-content-center">
 														<button class="btn">
 															<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>
-															<b class="ps-1 fs-6">Editar</b>
+															<b class="ps-1 fs-6 roboto-text">Editar</b>
 														</button>
 													</div>
 												</div>
@@ -98,7 +98,7 @@
 									</div>
 									{% empty %}
 									<div class="mx-auto my-2">
-										<p class="fs-2 fw-bold text-center">¡¡ Aún no has publicado opiniones !!</p>
+										<p class="fs-2 fw-bold text-center roboto-text">¡¡ Aún no has publicado opiniones !!</p>
 									</div>
 									{% endfor %}
 								</div>

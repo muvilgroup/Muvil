@@ -15,27 +15,27 @@
 
 {% block base_content %}
 	{% if 'valido' in request.GET %}
-	<p class="fw-bold fs-5 text-center bg-warning"> Mensaje enviado correctamente!!! </p>
+	<p class="fw-bold fs-5 text-center bg-warning roboto-text"> Mensaje enviado correctamente!!! </p>
 	{% elif 'error' in request.GET%}
-	<p class="fw-bold fs-5 text-center bg-warning"> Error al enviar el mensaje!!! </p>
+	<p class="fw-bold fs-5 text-center bg-warning roboto-text"> Error al enviar el mensaje!!! </p>
 	{% endif %}
 
 	<div class="container mb-3">
-		<h1 class="mt-5">Formulario de Contacto</h1>
+		<h1 class="mt-5 roboto-text">Formulario de Contacto</h1>
 		<form action="#" method="POST"> {% csrf_token %}
 		  <div class="mb-3">
-			<label for="email2" class="form-label">Correo electrónico</label>
-			<input type="text" class="form-control bg-light" id="email2" name="email2" value="{% if user.is_authenticated %} {{ user.email }} {% endif %}" readonly>
+			<label for="email2" class="form-label roboto-text">Correo electrónico</label>
+			<input type="text" class="form-control bg-light roboto-text" id="email2" name="email2" value="{% if user.is_authenticated %} {{ user.email }} {% endif %}" readonly>
 		  </div>
 		  <div class="mb-3">
-			<label for="subject" class="form-label">Asunto</label>
-			<input type="text" class="form-control" id="subject" name="subject" required>
+			<label for="subject" class="form-label roboto-text">Asunto</label>
+			<input type="text" class="form-control roboto-text" id="subject" name="subject" required>
 		  </div>
 		  <div class="mb-3">
-			<label for="message" class="form-label">Mensaje</label>
-			<textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+			<label for="message" class="form-label roboto-text">Mensaje</label>
+			<textarea class="form-control roboto-text" id="message" name="message" rows="5" required></textarea>
 		  </div>
-		  <button type="submit" class="col-2 btn btn-warning fw-bold">Enviar</button>
+		  <button type="submit" class="col-2 btn btn-warning fw-bold roboto-text">Enviar</button>
 		</form>
 	</div>
 {% endblock %}

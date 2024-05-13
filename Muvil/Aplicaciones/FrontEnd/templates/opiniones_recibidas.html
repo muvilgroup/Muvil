@@ -11,7 +11,7 @@
         <div class="col-12 col-xl-6 align-self-center" id="opiniones-resumen">
             <div class="row" id="puntuacion">
                 <div class="col d-flex justify-content-center">
-                    <p class="display-3 fw-bold mb-0">
+                    <p class="display-3 fw-bold mb-0 roboto-text">
                         {{ avg_puntuacion.avg_punt|floatformat:2 }}
                     </p>
                 </div>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="row mb-1" id="numero_opiniones">
-                <div class="col d-flex justify-content-center fw-bold">
+                <div class="col d-flex justify-content-center fw-bold roboto-text">
                     {{ total_opiniones }} opiniones
                 </div>
             </div>
@@ -46,10 +46,10 @@
         <div class="col-12 col-xl-6" id="opiniones-categorias">
             <div class="row justify-content-center" id="opiniones_cat">
                 {% for key, values in opiniones_cat_dict.items %}
-                <div class="col-7 col-lg-3 font2-muvil">
+                <div class="col-7 col-lg-3 font2-muvil roboto-text ">
                     {{ key }}
                 </div>
-                <div class="col-4 font2-muvil d-none d-lg-block">
+                <div class="col-4 font2-muvil d-none d-lg-block roboto-text">
                     <div class="progress">
                         <div class="progress-bar bg-warning" role="progressbar"
                              style="width: {% widthratio values total_opiniones 100 %}%"
@@ -58,7 +58,7 @@
                              aria-valuemax="{{total_opiniones}}"></div>
                     </div>
                 </div>
-                <div class="col-3 fw-bold font2-muvil">
+                <div class="col-3 fw-bold font2-muvil roboto-text">
                     {{ values }}
                 </div>
                 {% endfor %}
@@ -75,18 +75,18 @@
                             <img class="mx-auto d-block" src="{{ or.id_persona_publicador.imagen.url }}">
                         {% endif %}
                     </div>
-                    <p class="fs-6 fw-bold mb-0 text-center opinion-photo">
+                    <p class="fs-6 fw-bold mb-0 text-center opinion-photo roboto-text">
                         {{or.id_persona_publicador.nombre}}
                     </p>
                 </div>
                 <div class="col-12 col-lg-8 card-block order-3 order-lg-2" id="opinion-body">
                     <div class="row card-title" id="opinion-header">
-                        <div class="col fw-bold fs-6">
+                        <div class="col fw-bold fs-6 roboto-text">
                             {{ or.id_viaje.fecha_ida|date:"d/m/Y" }} - de {{or.id_viaje.ciudad_origen}} a {{or.id_viaje.ciudad_destino}}
                         </div>
                     </div>
                     <div class="row" id="opinion-comment">
-                        <div class="col fs-6">
+                        <div class="col fs-6 roboto-text">
                             {{or.mensaje_opinion}}
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                 <div class="col-6 col-lg-2 card-block order-2 order-lg-3" id="opinion-score">
                     <div class="row mt-2" id="opinion-score">
                         <div class="col d-flex justify-content-center">
-                            <p class="fs-2 fw-bold mb-0">
+                            <p class="fs-2 fw-bold mb-0 roboto-text">
                                 {{or.puntuacion}}
                             </p>
                         </div>
@@ -126,13 +126,13 @@
                             {% if or.flg_opinion_respondida %}
                             <button class="btn d-flex">
                                 <a href="" alt="Respondido"><embed src='{% static "icon/tag.svg" %}' alt="Respondido"/></a>
-                                <b class="ps-1 fs-6">Respondido</b>
+                                <b class="ps-1 fs-6 roboto-text">Respondido</b>
                             </button>
                             {% else %}
                             <div class="btn d-flex">
                                 <a href="{% url 'n_nueva_opinion' idV=or.id_viaje_id idPr=or.id_persona_publicador_id idO=or.id %}">
                                     <embed src='{% static "icon/reply.svg" %}' alt="Responder"/>
-                                    <b class="ps-1 fs-6">Responder</b>
+                                    <b class="ps-1 fs-6 roboto-text">Responder</b>
                                 </a>
                             </div>
                             {% endif %}
@@ -144,7 +144,7 @@
         </div>
         {% empty %}
         <div class="mx-auto my-2">
-            <p class="fs-2 fw-bold text-center">¡¡ Aún no tienes opiniones recibidas !!</p>
+            <p class="fs-2 fw-bold text-center roboto-text">¡¡ Aún no tienes opiniones recibidas !!</p>
         </div>
         {% endfor %}
     </div>

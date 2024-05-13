@@ -67,6 +67,7 @@ class Viajes (models.Model):
     fecha_ida = models.DateField(blank=True, null=True)
     numero_asientos_viaje = models.PositiveSmallIntegerField()
     equipaje = models.CharField(max_length=2, choices=equipaje, default='EM')
+    detalles = models.CharField(max_length=3000, blank=True, null=True)
     flg_confirmacion_auto = models.BooleanField(default=True)
     estado = models.PositiveIntegerField(choices=estados_viajes, default=1)
     importe_total_asiento = models.DecimalField(max_digits = 5,decimal_places = 2)

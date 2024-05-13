@@ -28,7 +28,7 @@
 	<div class="container-md mt-5">
 		<div class="row">
 			<div class="col-12 d-flex justify-content-center my-2 d-block d-lg-none">
-				<button type="button" class="btn btn-warning col-10 fw-bold" data-bs-toggle="modal" data-bs-target="#ventana-opciones-menu-usuario">
+				<button type="button" class="btn btn-warning col-10 fw-bold roboto-text" data-bs-toggle="modal" data-bs-target="#ventana-opciones-menu-usuario">
 					Opciones
 				</button>
 			</div>
@@ -39,7 +39,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Elige una opción</h5>
+							<h5 class="modal-title fw-bold border-bottom border-3 border-warning roboto-text" id="exampleModalLabel">Elige una opción</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					  	</div>
 					  	<div class="modal-body">
@@ -47,31 +47,33 @@
 			  					<div class="nav nav-pills flex-column me-3 col-12 custom-nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 				  					<button class="nav-link col-12 align-self-end disabled text-center" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
 					  					<i class="fas fa-user-tag fa-xl"></i>
-										<span class="fs-5 fw-bold mx-2">Datos Personales</span>
+										<span class="fs-5 fw-bold mx-2 roboto-text">Datos Personales</span>
 				  					</button>
 									<a href="/menu_usuario/miperfil/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/miperfil/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-datos-tab" data-bs-target="#v-pills-datos" type="button" role="tab" aria-controls="v-pills-datos" aria-selected="false">
 										<i class="fas fa-address-card fa-xl"></i>
-										<span class="fw-bold mx-2">Mi Perfil</span>
+										<span class="fw-bold mx-2 roboto-text">Mi Perfil</span>
 									</a>
 									<a href="/menu_usuario/miscoches/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/miscoches/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-coches-tab" data-bs-target="#v-pills-coches" type="button" role="tab" aria-controls="v-pills-coches" aria-selected="false">
 										<i class="fas fa-car-on fa-xl"></i>
-										<span class="fw-bold mx-2">Mis Coches</span>
+										<span class="fw-bold mx-2 roboto-text">Mis Coches</span>
 									</a>
 									<a href="/menu_usuario/preferencias/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/preferencias/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-preferencias-tab" data-bs-target="#v-pills-preferencias" type="button" role="tab" aria-controls="v-pills-preferencias" aria-selected="false">
 										<i class="fas fa-palette fa-xl"></i>
-										<span class="fw-bold mx-2">Mis Preferencias</span>
+										<span class="fw-bold mx-2 roboto-text">Mis Preferencias</span>
 									</a>
 									<a href="/menu_usuario/micaparazon/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/micaparazon/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-caparazon-tab" data-bs-target="#v-pills-caparazon" type="button" role="tab" aria-controls="v-pills-caparazon" aria-selected="false">
-										<i class="fas fa-palette fa-xl"></i>
-										<span class="fw-bold mx-2">Mis Preferencias</span>
+										<i class="justify-content-center">
+										  <img src='{% static "icon/turtle3.svg" %}' width="30" height="30" alt="Mi caparazón">
+										</i>
+										<span class="fw-bold mx-2 roboto-text">Mi Caparazón</span>
 									</a>
 									<button class="nav-link col-12 align-self-end disabled text-center" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cuenta" type="button" role="tab" aria-controls="v-pills-cuenta" aria-selected="true">
 										<i class="fas fa-box-open fa-xl"></i>
-										<span class="fs-5 fw-bold mx-2">Cuenta</span>
+										<span class="fs-5 fw-bold mx-2 roboto-text">Cuenta</span>
 									</button>
 									<a href="/menu_usuario/opiniones/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/opiniones/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-opiniones-tab" data-bs-target="#v-pills-opiniones" type="button" role="tab" aria-controls="v-pills-opiniones" aria-selected="false">
 										<i class="fas fa-comments fa-xl"></i>
-										<span class="fw-bold mx-2">Opiniones</span>
+										<span class="fw-bold mx-2 roboto-text">Opiniones</span>
 									</a>
 									<!--
 									<a href="/menu_usuario/notificaciones/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/notificaciones/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-notificaciones-tab" data-bs-target="#v-pills-notificaciones" type="button" role="tab" aria-controls="v-pills-notificaciones" aria-selected="false">
@@ -87,13 +89,13 @@
 									-->
 									<a href="/menu_usuario/contraseña/" class="nav-link text-start col-12 align-self-end text-dark {% if 'menu_usuario/contraseña/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-contrasena-tab" data-bs-target="#v-pills-contrasena" type="button" role="tab" aria-controls="v-pills-contrasena" aria-selected="false">
 										<i class="fas fa-lock fa-xl"></i>
-										<span class="fw-bold mx-2">Contraseña</span>
+										<span class="fw-bold mx-2 roboto-text">Contraseña</span>
 									</a>
 								</div>
 							</div>
 					  	</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+							<button type="button" class="btn btn-secondary roboto-text" data-bs-dismiss="modal">Cancelar</button>
 					  	</div>
 					</div>
 				</div>
@@ -106,33 +108,33 @@
 			  	<div class="nav nav-pills flex-column me-3 col-2 custom-nav-pills d-none d-lg-block" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 				  	<button class="nav-link text-start col-12 align-self-end disabled text-dark" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-infopersonal" type="button" role="tab" aria-controls="v-pills-infopersonal" aria-selected="true">
 					  	<i class="fas fa-user-tag fa-xl"></i>
-						<span class="fw-bold mx-2">Datos Personales</span>
+						<span class="fw-bold mx-1 roboto-text">Datos Personales</span>
 				  	</button>
 					<a href="/menu_usuario/miperfil/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/miperfil/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-datos-tab" data-bs-target="#v-pills-datos" type="button" role="tab" aria-controls="v-pills-datos" aria-selected="false">
 					  	<i class="fas fa-address-card fa-xl"></i>
-						<span class="fw-bold mx-2">Mi Perfil</span>
+						<span class="fw-bold mx-2 roboto-text">Mi Perfil</span>
 				  	</a>
 				  	<a href="/menu_usuario/miscoches/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/miscoches/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-coches-tab" data-bs-target="#v-pills-coches" type="button" role="tab" aria-controls="v-pills-coches" aria-selected="false">
 					  	<i class="fas fa-car-on fa-xl"></i>
-						<span class="fw-bold mx-2">Mis Coches</span>
+						<span class="fw-bold mx-1 roboto-text">Mis Coches</span>
 				  	</a>
 				  	<a href="/menu_usuario/preferencias/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/preferencias/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-preferencias-tab" data-bs-target="#v-pills-preferencias" type="button" role="tab" aria-controls="v-pills-preferencias" aria-selected="false">
 					  	<i class="fas fa-palette fa-xl"></i>
-						<span class="fw-bold mx-2">Mis Preferencias</span>
+						<span class="fw-bold mx-1 roboto-text">Mis Preferencias</span>
 				  	</a>
 					<a href="/menu_usuario/micaparazon/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/micaparazon/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-caparazon-tab" data-bs-target="#v-pills-caparazon" type="button" role="tab" aria-controls="v-pills-caparazon" aria-selected="false">
 					  	<i class="justify-content-center">
 						  <img src='{% static "icon/turtle3.svg" %}' width="30" height="30" alt="Mi caparazón">
 						</i>
-						<span class="fw-bold mx-2">Mi Caparazón</span>
+						<span class="fw-bold mx-1 roboto-text">Mi Caparazón</span>
 				  	</a>
 				  	<button class="nav-link text-start col-12 align-self-end disabled text-dark" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cuenta" type="button" role="tab" aria-controls="v-pills-cuenta" aria-selected="true">
 					  	<i class="fas fa-box-open fa-xl"></i>
-						<span class="fw-bold mx-2">Cuenta</span>
+						<span class="fw-bold mx-1 roboto-text">Cuenta</span>
 				  	</button>
 				  	<a href="/menu_usuario/opiniones/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/opiniones/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-opiniones-tab" data-bs-target="#v-pills-opiniones" type="button" role="tab" aria-controls="v-pills-opiniones" aria-selected="false">
 					  	<i class="fas fa-comments fa-xl"></i>
-						<span class="fw-bold mx-2">Opiniones</span>
+						<span class="fw-bold mx-1 roboto-text">Opiniones</span>
 				  	</a>
 					<!--
 				  	<a href="/menu_usuario/notificaciones/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/notificaciones/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-notificaciones-tab" data-bs-target="#v-pills-notificaciones" type="button" role="tab" aria-controls="v-pills-notificaciones" aria-selected="false">
@@ -148,7 +150,7 @@
 				  	-->
 				  	<a href="/menu_usuario/contraseña/" class="nav-link text-start col-11 ms-3 text-dark {% if 'menu_usuario/contraseña/' in request.path %}active" style="background-color:#CACACA;{% endif %}" id="v-pills-contrasena-tab" data-bs-target="#v-pills-contrasena" type="button" role="tab" aria-controls="v-pills-contrasena" aria-selected="false">
 					  	<i class="fas fa-lock fa-xl"></i>
-						<span class="fw-bold mx-2">Contraseña</span>
+						<span class="fw-bold mx-1 roboto-text">Contraseña</span>
 				  	</a>
 			  	</div>
 

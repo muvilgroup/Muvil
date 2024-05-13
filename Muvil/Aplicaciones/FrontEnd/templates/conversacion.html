@@ -30,21 +30,21 @@
       <div class="row justify-content-center">
         <div class="col-12 col-md-8 mt-5">
           <ul class="list-group">
-            <li class="list-group-item fondo-prim">Conversacion con <strong>{{usuario_receptor.nombre}} {{usuario_receptor.apellido1}}</strong></li>
+            <li class="list-group-item fondo-prim roboto-text">Conversacion con <strong class="roboto-text">{{usuario_receptor.nombre}} {{usuario_receptor.apellido1}}</strong></li>
 
             <li class="list-group-item" style="background-image: url('{% static 'img/chat-background4.jpg' %}');">
               {% if not listado_mensajes %}
-                <div class="text-center fw-bold fs-4 text-dark">
+                <div class="text-center fw-bold fs-4 text-dark roboto-text">
                   Aún nos has hablado con este usuario. Escribe el primer mensaje!!!
                 </div>
               {% endif %}
               {% for m in listado_mensajes %}
               <div class="d-flex {% if m.id_persona_publicador_id == idP %} flex-row-reverse {% endif %} align-items-start">
-                <div class="p-2 {% if m.id_persona_publicador_id == idP %} bg-primary {% else %} bg-secondary {% endif %} text-white rounded-start">
+                <div class="p-2 {% if m.id_persona_publicador_id == idP %} bg-primary {% else %} bg-secondary {% endif %} text-white rounded-start roboto-text">
                   {% if m.id_persona_publicador_id == idP %} Tú {% else %} {{m.id_persona_publicador.nombre}} {% endif %}
                 </div>
-                <div class="p-2 bg-light rounded-end">{{m.mensaje}}</div>
-                <div class="ms-auto text-dark">{{m.fec_created|date:"SHORT_DATETIME_FORMAT"}}</div>
+                <div class="p-2 bg-light rounded-end roboto-text">{{m.mensaje}}</div>
+                <div class="ms-auto text-dark roboto-text">{{m.fec_created|date:"SHORT_DATETIME_FORMAT"}}</div>
               </div>
             {% endfor %}
             </li>

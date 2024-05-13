@@ -1,8 +1,3 @@
-/* para cambiar la fuente de letra del HTML completo */
-html * {
-   	font-family: Roboto;
-}
-
 
 
 /* clases para incrustar botones sobre una imagen */
@@ -43,8 +38,6 @@ html * {
     text-transform:uppercase;
     padding:1em 1em;
 }
-}
-
 }
 
 /* clases para color fuente segun colores muvil */

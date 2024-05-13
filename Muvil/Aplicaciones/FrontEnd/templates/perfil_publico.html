@@ -45,18 +45,18 @@
 				<div class="row">
 					<div class="row tarjeta-stats border border-2 order-2 order-lg-1 rounded shadow m-0 p-0">
 						<div class="col m-0 p-0">
-							<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center">RESUMEN ACTIVIDAD</p>
-							<p class="m-0 px-4 pt-2"> <strong>{{total_viajesConductor}}</strong> viajes publicados </p>
-							<p class="m-0 px-4"> <strong>{{total_viajesPasajero}}</strong> viajes realizados </p>
-							<p class="m-0 px-4"> <strong>{{total_viajesPasajero_Canc}}</strong> reservas canceladas como pasajero </p>
-							<p class="m-0 px-4 pb-2"> <strong>{{total_viajesConductor_Canc}}</strong> reservas canceladas como conductor </p>
-							<p class="m-0 text-center py-3"> Última conexión: <strong>{{request.user.last_login|date:"SHORT_DATE_FORMAT"}} {{request.user.last_login|time:"H:i"}} </strong> </p>
+							<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center roboto-text">RESUMEN ACTIVIDAD</p>
+							<p class="m-0 px-4 pt-2 roboto-text"> <strong class=" roboto-text">{{total_viajesConductor}}</strong> viajes publicados </p>
+							<p class="m-0 px-4 roboto-text"> <strong class=" roboto-text">{{total_viajesPasajero}}</strong> viajes realizados </p>
+							<p class="m-0 px-4 roboto-text"> <strong class=" roboto-text">{{total_viajesPasajero_Canc}}</strong> reservas canceladas como pasajero </p>
+							<p class="m-0 px-4 pb-2 roboto-text"> <strong class=" roboto-text">{{total_viajesConductor_Canc}}</strong> reservas canceladas como conductor </p>
+							<p class="m-0 text-center py-3 roboto-text"> Última conexión: <strong class=" roboto-text">{{request.user.last_login|date:"SHORT_DATE_FORMAT"}} {{request.user.last_login|time:"H:i"}} </strong> </p>
 						</div>
 					</div>
 					<div class="row tarjeta-coche border border-2 order-1 order-lg-2 mt-4 rounded shadow m-0 p-0">
 						<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center">COCHE</p>
 						<div class="row m-0 py-3">
-							<div class="col-12 fw-bold fs-3 m-0 " id="car-title">
+							<div class="col-12 fw-bold fs-3 m-0 roboto-text" id="car-title">
 								{{vehiculo.marca}} {{vehiculo.modelo}}
 							</div>
 							<div class="col-7">
@@ -65,7 +65,7 @@
 										<img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-auto" id="car-year-text">
-										<label for="car-year-icon">{{vehiculo.anyo_antiguedad}}</label>
+										<label for="car-year-icon " class=" roboto-text">{{vehiculo.anyo_antiguedad}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -73,7 +73,7 @@
 										<img src='{% static "icon/tag.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-auto" id="car-year-text">
-										<label for="car-year-icon">{{vehiculo.matricula}}</label>
+										<label for="car-year-icon" class=" roboto-text">{{vehiculo.matricula}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -81,7 +81,7 @@
 										<img src='{% static "icon/brush.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-auto" id="car-year-text">
-										<label for="car-year-icon">{{vehiculo.color}}</label>
+										<label for="car-year-icon" class=" roboto-text">{{vehiculo.color}}</label>
 									</div>
 								</div>
 								<div class="card-subtitle row pb-1 ps-3" id="car-year">
@@ -89,7 +89,7 @@
 										<img src='{% static "icon/vector.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
 									</div>
 									<div class="col-auto" id="car-year-text">
-										<label for="car-year-icon">{{vehiculo.numero_asientos}}</label>
+										<label for="car-year-icon" class=" roboto-text">{{vehiculo.numero_asientos}}</label>
 									</div>
 								</div>
 							</div>
@@ -109,7 +109,7 @@
 			<div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
 				<div class="row">
 					<div class="col-12 px-3 pt-2">
-						<h3 class="border-bottom border-5 border-warning">Perfil</h3>
+						<h3 class="border-bottom border-5 border-warning roboto-text">Perfil</h3>
 					</div>
 				</div>
 				{% if request.user.id != usuario_perfil.id %}
@@ -118,7 +118,7 @@
 						<a class="btn btn-warning rounded col-12 col-md-4 boton-3d"
 						   href="{% url 'n_conversacion' idPc=usuario_perfil.id %}">
 							<i class="fas fa-comment-dots fa-lg"></i>
-							<span class="fs-5 fw-bold">Envía un mensaje a {{usuario_perfil.nombre}}</span>
+							<span class="fs-5 fw-bold roboto-text">Envía un mensaje a {{usuario_perfil.nombre}}</span>
 						</a>
 					</div>
 				</div>
@@ -137,20 +137,25 @@
 							</div>
 						</div>
 						<div class="col-12 text-center fs-4">
-							<strong>{{usuario_perfil.nombre}} {{usuario_perfil.apellido1}}</strong>
+							<strong class="roboto-text">{{usuario_perfil.nombre}} {{usuario_perfil.apellido1}}</strong>
 						</div>
-						<div class="col-12 text-center">
+						<div class="col-12 text-center roboto-text">
 							Prestigio: {{usuario_perfil.get_prestigio_display}}
 						</div>
-						<div class="col-12 text-center">
-							Valoracion como conductor: {{avg_puntuacion_Conductor.avg_punt|floatformat:2}}
+						<div class="col-12 text-center roboto-text">
+							Valoracion como conductor:
+							{% if avg_puntuacion.avg_punt %}
+							{{avg_puntuacion_Conductor.avg_punt|floatformat:2}}
+							{% else %}
+							-,-
+							{% endif %}
 						</div>
 					</div>
 					<div class="col-6 px-3 pt-2 align-self-center">
 						<div class="col-12 align-self-center" id="opiniones-resumen">
 							<div class="row" id="puntuacion">
 								<div class="col d-flex justify-content-center">
-									<p class="display-3 fw-bold mb-0">
+									<p class="display-3 fw-bold mb-0 roboto-text roboto-text">
 										{% if avg_puntuacion.avg_punt %}
 										{{ avg_puntuacion.avg_punt|floatformat:2 }}
 										{% else %}
@@ -182,7 +187,7 @@
 							</div>
 							<div class="row mb-1" id="numero_opiniones">
 								<div class="col d-flex justify-content-center fw-bold">
-									<a href="{% url 'n_opiniones_recibidas_main' idPr=usuario_perfil.id %}">
+									<a href="{% url 'n_opiniones_recibidas_main' idPr=usuario_perfil.id %}" class="roboto-text">
 										{{ total_opiniones }} opiniones
 									</a>
 								</div>
@@ -214,7 +219,7 @@
 				<div class="row py-3" id="preferencias">
 					<div class="col-12 px-3 pt-2 d-flex">
 						<i class="fa-solid fa-palette fa-xl me-2"></i>
-						<h5 class="border-bottom border-3 border-warning">Preferencias</h5>
+						<h5 class="border-bottom border-3 border-warning roboto-text">Preferencias</h5>
 					</div>
 					<div class="col px-5 pt-2">
 						<label class="btn btn-white">
@@ -292,10 +297,10 @@
 				<div class="row py-3" id="massobremi">
 					<div class="col-12 px-3 pt-2 d-flex">
 						<i class="fa-solid fa-magnifying-glass-plus fa-xl me-2"></i>
-						<h5 class="border-bottom border-3 border-warning">Más sobre mi...</h5>
+						<h5 class="border-bottom border-3 border-warning roboto-text">Más sobre mi...</h5>
 					</div>
 					<div class="col-12 px-5 pt-2">
-						<textarea class="w-100" rows="3" placeholder="Aqui está mi introducción">{{usuario_perfil.descripcion}}
+						<textarea class="w-100 roboto-text" rows="3" placeholder="Aqui está mi introducción">{{usuario_perfil.descripcion}}
 						</textarea>
 					</div>
 				</div>
@@ -304,96 +309,96 @@
 						<i class="me-2">
 						  <img src='{% static "icon/turtle3.svg" %}' width="30" height="30" alt="Mi caparazón">
 						</i>
-						<h5 class="border-bottom border-3 border-warning">Mi Caparazón</h5>
+						<h5 class="border-bottom border-3 border-warning roboto-text">Mi Caparazón</h5>
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-globe fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Idiomas: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Idiomas: </label>
 						{% if caparazon.idiomas %}
 						 {{ caparazon.idiomas }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-user-doctor fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Profesión: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Profesión: </label>
 						{% if caparazon.profesion %}
 						 {{ caparazon.profesion }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-star fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Aficiones: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Aficiones: </label>
 						{% if caparazon.aficiones %}
 						 {{ caparazon.aficiones }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-headphones-simple fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Estilo Musical: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Estilo Musical: </label>
 						{% if caparazon.estilos_musica %}
 						 {{ caparazon.estilos_musica }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-guitar fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Grupos de Música: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Grupos de Música: </label>
 						{% if caparazon.grupos_musica %}
 						 {{ caparazon.grupos_musica }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-book-bookmark fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Libros: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Libros: </label>
 						{% if caparazon.libros %}
 						 {{ caparazon.libros }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-film fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Peliculas: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Peliculas: </label>
 						{% if caparazon.peliculas %}
 						 {{ caparazon.peliculas }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-table-tennis-paddle-ball fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Deportes: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Deportes: </label>
 						{% if caparazon.deportes %}
 						 {{ caparazon.deportes }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-wheat-awn fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Alimentación: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Alimentación: </label>
 						{% if caparazon.alimentacion %}
 						 {{ caparazon.alimentacion }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-6 ms-5 d-flex">
 						<i class="fa-solid fa-cat fa-xl me-2"></i>
-						<label for="inputIdiomas" class="form-label fw-bold col-5">Mascotas: </label>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Mascotas: </label>
 						{% if caparazon.animales %}
 						 {{ caparazon.animales }}
 						{% else %}
-						 <p class="text-info">Sin informar</p>
+						 <p class="text-info roboto-text">Sin informar</p>
 						{% endif %}
 					</div>
 				</div>

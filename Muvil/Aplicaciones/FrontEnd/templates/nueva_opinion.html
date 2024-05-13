@@ -64,8 +64,8 @@
 
 {% block base_content %}
     <div class="container mt-5">
-		<h1 class="text-center border-bottom border-warning mb-3 pb-1">¡Gracias por tu opinión!</h1>
-        <h1 class="text-center fs-5">¿Como ha ido el viaje con <strong>muvil.group@muvil.com?</strong></h1>
+		<h1 class="text-center border-bottom border-warning mb-3 pb-1 roboto-text">¡Gracias por tu opinión!</h1>
+        <h1 class="text-center fs-5 roboto-text">¿Como ha ido el viaje con <strong class="roboto-text">muvil.group@muvil.com?</strong></h1>
         <div class="row">
             <div class="col-md-12 my-4">
                 <form method="POST" action=""> {% csrf_token %}
@@ -79,14 +79,14 @@
                             <i class="far fa-star" data-rating="5"></i>
                             <input type="hidden" name="rating" id="rating">
                         </div>
-                        <div class="rating-word" id="rating-word"><i class="far fa-question-circle"></i> Selecciona una calificación</div>
+                        <div class="rating-word roboto-text" id="rating-word"><i class="far fa-question-circle"></i> Selecciona una calificación</div>
                     </div>
                     <div class="form-group">
-                        <label for="opinion"><i class="far fa-edit"></i> Descríbenos tu experiencia...</label>
-                        <textarea class="form-control" id="opinion" name="opinion" rows="5"></textarea>
+                        <label for="opinion" class="roboto-text"><i class="far fa-edit"></i> Descríbenos tu experiencia...</label>
+                        <textarea class="form-control roboto-text" id="opinion" name="opinion" rows="5"></textarea>
                     </div>
 					<div class="row d-flex justify-content-center">
-						<button type="submit" class="col-12 col-md-4 btn btn-warning btn-block"><i class="fas fa-check"></i> Enviar Reseña</button>
+						<button type="submit" class="col-12 col-md-4 btn btn-warning btn-block roboto-text"><i class="fas fa-check"></i> Enviar Reseña</button>
 					</div>
 				</form>
             </div>

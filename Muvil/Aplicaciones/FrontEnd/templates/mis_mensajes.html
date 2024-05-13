@@ -39,19 +39,19 @@
     <div class="container-lg mt-5">
         <div class="row justify-content-around">
           <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-mismensajes border d-none d-md-block">
-              <h4 class="fw-bold border-bottom border-3 border-warning">
+              <h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
                   Filtrar por...
               </h4>
               <form method="get">
                   {{ filter.form.as_p }}
-                  <input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+                  <input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
               </form>
           </aside>
             <div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
               <ul class="list-group">
-                <li class="list-group-item text-white fs-5 fw-bold" style="background-color: #A8A6A2;">Conversaciones con Usuarios</li>
+                <li class="list-group-item text-white fs-5 fw-bold roboto-text" style="background-color: #A8A6A2;">Conversaciones con Usuarios</li>
                 <div class="col-12 d-flex justify-content-end my-2">
-                    <button type="button" class="btn btn-warning col-4 fw-bold d-block d-md-none" data-bs-toggle="modal" data-bs-target="#ventana-filtros-mensajes-modal">
+                    <button type="button" class="btn btn-warning col-4 fw-bold d-block d-md-none roboto-text" data-bs-toggle="modal" data-bs-target="#ventana-filtros-mensajes-modal">
                         <i class="fas fa-filter fa-lg"></i> Filtros
                     </button>
                 </div>
@@ -60,17 +60,17 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title fw-bold border-bottom border-3 border-warning" id="exampleModalLabel">Filtrar por...</h5>
+                            <h5 class="modal-title fw-bold border-bottom border-3 border-warning roboto-text" id="exampleModalLabel">Filtrar por...</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
                               <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-mismensajes border">
-                                  <h4 class="fw-bold border-bottom border-3 border-warning">
+                                  <h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
                                       Filtrar por...
                                   </h4>
                                   <form method="get">
                                       {{ filter.form.as_p }}
-                                      <input type="submit" class="btn btn-warning fw-bold w-100" value="Aplicar Filtros"/>
+                                      <input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
                                   </form>
                               </aside>
                           </div>
@@ -89,7 +89,7 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 img-container-message-user"><img {% if idP == v.id_persona_publicador__id %} src="{{MEDIA_URL}}{{v.id_persona_receptor__imagen}}" {% else %} src="{{MEDIA_URL}}{{v.id_persona_publicador__imagen}}" {% endif %} alt="{{v.id_persona_publicador__nombre}} {{v.id_persona_publicador__apellido1}}"></div>
                       <div class="ms-3">
-                        <div class="fw-bold">
+                        <div class="fw-bold roboto-text">
                             {% if idP == v.id_persona_publicador__id %}
                             {{v.id_persona_receptor__nombre}} {{v.id_persona_receptor__apellido1}}
                             {% else %}
@@ -98,12 +98,12 @@
                         </div>
                         <div class="text-secondary"></div>
                       </div>
-                      <div class="ms-auto text-secondary">Último mensaje: <strong>{{v.max_fec_created}}</strong></div>
+                      <div class="ms-auto text-secondary roboto-text">Último mensaje: <strong class="roboto-text">{{v.max_fec_created}}</strong></div>
                     </div>
                   </a>
                 </li>
                 {% empty %}
-                  <p class="fs-5 fw-bold text-center py-3"> ¡ No hay conversaciones encontradas !</p>
+                  <p class="fs-5 fw-bold text-center py-3 roboto-text"> ¡ No hay conversaciones encontradas !</p>
                 {% endfor %}
               </ul>
             </div>

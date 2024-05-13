@@ -9,12 +9,12 @@
 					<!-- INICIO Mis Preferencias -->
 					<div class="row px-2 pt-2">
 						<div class="col-12">
-							<h3 class="border-bottom border-5 border-warning">Mis Preferencias</h3>
+							<h3 class="border-bottom border-5 border-warning roboto-text">Mis Preferencias</h3>
 						</div>
 						<form method="POST"> {% csrf_token %}
 							<div class="col-12 col-lg-7 mx-auto mt-4">
 								<hr>
-								<label class="col-5 fs-5 fw-bold text-center" for="btn-group-conversation">Conversación:</label>
+								<label class="col-5 fs-5 fw-bold text-center roboto-text" for="btn-group-conversation">Conversación:</label>
 								<div class="btn-group" id="btn-group-conversation">
 									<input type="radio" class="btn-check" name="pref_conversacion" id="option1_conv" autocomplete="off"
 										   value="1" {% if usuario.pref_conversacion == 1 %} checked {% endif %}/>
@@ -38,7 +38,7 @@
 								<hr>
 							</div>
 							<div class="col-12 col-lg-7 mx-auto">
-								<label class="col-5 fs-5 fw-bold text-center" for="btn-group-music">Música:</label>
+								<label class="col-5 fs-5 fw-bold text-center roboto-text" for="btn-group-music">Música:</label>
 								<div class="btn-group" id="btn-group-music">
 									<input type="radio" class="btn-check" name="pref_musica" id="option1_music" autocomplete="off"
 									value="1" {% if usuario.pref_musica == 1 %} checked {% endif %}/>
@@ -62,7 +62,7 @@
 								<hr>
 							</div>
 							<div class="col-12 col-lg-7 mx-auto">
-								<label class="col-5 fs-5 fw-bold text-center" for="btn-group-pet">Mascotas:</label>
+								<label class="col-5 fs-5 fw-bold text-center roboto-text" for="btn-group-pet">Mascotas:</label>
 								<div class="btn-group" id="btn-group-pet">
 									<input type="radio" class="btn-check" name="pref_mascota" id="option1_pet" autocomplete="off"
 									value="1" {% if usuario.pref_mascota == 1 %} checked {% endif %}/>
@@ -86,7 +86,7 @@
 								<hr>
 							</div>
 							<div class="col-12 col-lg-7 mx-auto">
-								<label class="col-5 fs-5 fw-bold text-center" for="btn-group-smoke">Fumar:</label>
+								<label class="col-5 fs-5 fw-bold text-center roboto-text" for="btn-group-smoke">Fumar:</label>
 								<div class="btn-group" id="btn-group-smoke">
 									<input type="radio" class="btn-check" name="pref_fumar" id="option1_smoke" autocomplete="off"
 									value="1" {% if usuario.pref_fumar == 1 %} checked {% endif %}/>
@@ -110,7 +110,7 @@
 								<hr>
 							</div>
 							<div class="col-12 col-lg-7 mx-auto">
-								<label class="col-5 fs-5 fw-bold text-center" for="btn-group-eat">Comer:</label>
+								<label class="col-5 fs-5 fw-bold text-center roboto-text" for="btn-group-eat">Comer:</label>
 								<div class="btn-group" id="btn-group-eat">
 									<input type="radio" class="btn-check" name="pref_comida" id="option1_eat" autocomplete="off"
 									value="1" {% if usuario.pref_comida == 1 %} checked {% endif %}/>
@@ -134,7 +134,7 @@
 								<hr>
 							</div>
 							<div class="col-12 d-flex justify-content-center py-1">
-								<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+								<button type="submit" class="btn btn-warning btn-guardar col-4 roboto-text fw-bold">Guardar</button>
 							</div>
 						</form>
 					</div>

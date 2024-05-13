@@ -20,39 +20,39 @@
 {% block base_content %}
 		<div class="container-md mt-5 d-flex justify-content-center">
 		<div class="row col-12 col-md-7">
-			<h2 class="border-bottom border-warning border-4">Modifica los datos del vehículo...</h2>
+			<h2 class="border-bottom border-warning border-4 roboto-text">Modifica los datos del vehículo...</h2>
 			<form method="POST" class="post-form row px-2 pt-2 d-flex justify-content-center" id="form-vehiculo" enctype="multipart/form-data">{% csrf_token %}
 				<div class="col-12 col-lg-6">
 					<div class="col-12 ">
-						<label for="inputTipo" class="form-label">Tipo</label>
+						<label for="inputTipo" class="form-label roboto-text">Tipo</label>
 						{{form.tipo_vehiculo}}
 					</div>
 					<div class="col-12 ">
-						<label for="inputTipo" class="form-label">Marca</label>
+						<label for="inputTipo" class="form-label roboto-text">Marca</label>
 						{{form.marca}}
 					</div>
 					<div class="col-12 ">
-						<label for="inputModelo" class="form-label">Modelo</label>
+						<label for="inputModelo" class="form-label roboto-text">Modelo</label>
 						{{form.modelo}}
 					</div>
 					<div class="col-12 ">
-						<label for="inputAnio" class="form-label">Año</label>
+						<label for="inputAnio" class="form-label roboto-text">Año</label>
 						{{form.anyo_antiguedad}}
 					</div>
 					<div class="col-12 ">
-						<label for="inputMatricula" class="form-label">Matrícula</label>
+						<label for="inputMatricula" class="form-label roboto-text">Matrícula</label>
 						{{form.matricula}}
 					</div>
 					<div class="col-12 ">
-						<label for="inputColor" class="form-label">Color</label>
+						<label for="inputColor" class="form-label roboto-text">Color</label>
 						{{form.color}}
 					</div>
 					<div class="col-12">
-						<label for="inputNumPlazas" class="form-label">Nº Plazas</label>
+						<label for="inputNumPlazas" class="form-label roboto-text">Nº Plazas</label>
 						{{form.numero_asientos}}
 					</div>
 				</div>
-				<div class="col col-auto img-container-car img-responsive pe-4 py-2 text-center">
+				<div class="col col-auto img-container-car img-responsive pe-4 py-2 text-center roboto-text">
 				{% if form.instance.imagen_vehiculo %}
 					<input type="file" id="id_image" name="imagen_vehiculo" hidden>
 					<label for="id_image">
@@ -73,7 +73,7 @@
 					(Pulsa sobre la imagen para cambiarla...)
 				</div>
 				<div class="col-12 d-flex justify-content-center py-1">
-					<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+					<button type="submit" class="btn btn-warning btn-guardar col-4 roboto-text fw-bold">Guardar</button>
 				</div>
 			</form>
 		</div>

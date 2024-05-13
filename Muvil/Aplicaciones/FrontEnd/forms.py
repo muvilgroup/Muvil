@@ -1,5 +1,6 @@
 from django import forms
-from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, DateInput, NumberInput, Textarea, TimeInput, Select, CheckboxInput
+from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, DateInput, NumberInput, Textarea, TimeInput, \
+    Select, CheckboxInput
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from ..users.admin import UserCreationForm as CustomUserCreationForm
@@ -125,47 +126,40 @@ class ViajesForm(ModelForm):
     class Meta:
         model = Viajes
         fields = ('ciudad_origen','ciudad_destino','fecha_ida','hora_ida', 'flg_ida_vuelta', 'flg_confirmacion_auto',
-                  'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo', 'equipaje')
+                  'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo', 'equipaje', 'detalles')
         widgets = {
             'ciudad_origen': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'list': "localizaciones",
                 'id': "ciudad_origen"
             }),
             'ciudad_destino': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'list': "localizaciones",
                 'id': "ciudad_destino"
             }),
             'fecha_ida': DateInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'type': 'date',
                 'value': datetime.now().strftime("%Y-%m-%d")
             }),
             'hora_ida': TimeInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'type': 'time',
                 'list': 'lista_horas_viaje'
             }),
             'numero_asientos_viaje': NumberInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'id': "numero_asientos_viaje"
             }),
             'importe_conductor_asiento': NumberInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'step': 0.5,
                 'id': "importe_conductor_asiento"
             }),
             'id_vehiculo': Select(attrs={
                 'class': "form-control",
                 'required': 'True',
-                'style': 'max-width: 300px;'
             }),
             'flg_ida_vuelta': CheckboxInput(attrs={
                 'class': "form-check-input",
@@ -182,7 +176,12 @@ class ViajesForm(ModelForm):
                     'class': "form-select",
                 },
                 choices=equipaje,
-            )
+            ),
+            'detalles': Textarea(attrs={
+                'class': "form-control",
+                'rows': '1',
+                'placeholder': 'Punto de recogida, punto de dejada y otros detalles...'
+            })
         }
 
     # Para mostrar solo los coches de ese usuario.
@@ -198,7 +197,6 @@ class VueltaViajesForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'class': "form-control",
-            'style': 'max-width: 300px;',
             'id': 'campo_vuelta1'
         }
         )
@@ -208,7 +206,6 @@ class VueltaViajesForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'class': "form-control",
-            'style': 'max-width: 300px;',
             'id': 'campo_vuelta2'
         }
         )
@@ -218,7 +215,6 @@ class VueltaViajesForm(forms.Form):
                     required=False,
                     widget=forms.DateInput(attrs={
                                                 'class': "form-control",
-                                                'style': 'max-width: 300px;',
                                                 'type': 'date',
                                                 'id': 'campo_vuelta3'
                                                 }
@@ -229,7 +225,6 @@ class VueltaViajesForm(forms.Form):
                     required=False,
                     widget=forms.TimeInput(attrs={
                                                 'class': "form-control",
-                                                'style': 'max-width: 300px;',
                                                 'type': 'time',
                                                 'list': 'lista_horas_viaje',
                                                 'id': 'campo_vuelta4'
@@ -241,7 +236,6 @@ class VueltaViajesForm(forms.Form):
                         required=False,
                         widget=forms.NumberInput(attrs={
                                                         'class': "form-control",
-                                                        'style': 'max-width: 300px;',
                                                         'id': 'campo_vuelta5'
                                                         }
                                                 )
@@ -251,12 +245,22 @@ class VueltaViajesForm(forms.Form):
                         required=False,
                         widget=forms.NumberInput(attrs={
                                                         'class': "form-control",
-                                                        'style': 'max-width: 300px;',
                                                         'step': 0.5,
                                                         'id': 'campo_vuelta6'
                                                         }
                                                 )
                     )
+    detalles_vuelta = forms.CharField(
+        label='Detalles adicionales',
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': "form-control",
+            'rows': '1',
+            'id': 'campo_vuelta7',
+            'placeholder': 'Punto de recogida, punto de dejada y otros detalles...'
+            }
+        )
+    )
 
 class VehiculosForm(ModelForm):
 
