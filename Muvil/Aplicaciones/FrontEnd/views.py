@@ -40,6 +40,8 @@ import requests
 import io
 import pytz
 #import pywhatkit
+from django.http import JsonResponse
+from geopy.geocoders import Nominatim
 
 
 

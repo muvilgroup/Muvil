@@ -110,7 +110,7 @@
 				</div>
 				<div class="col-md-12 py-2 bg-light" id="form_vuelta7" style="display:none">
 					<i class="fas fa-compass fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Detalles adicionales</label>
+					<label for="input" class="form-label roboto-text">Detalles adicionales Vuelta</label>
 					{{ vueltaform.detalles_vuelta }}
 				</div>
 				<!-- FIN Campos Vuelta -->
@@ -163,10 +163,29 @@
     </script>
 	<script>
         function mostrarVuelta() {
-            var checkBox = document.getElementById("vueltaCheck");
+			var checkBox = document.getElementById("vueltaCheck");
+
+			/* Copiamos los campos de la IDA en la VUELTA */
+			var ciudad_origen_vuelta = document.getElementById("campo_vuelta1");
+            var ciudad_destino_vuelta = document.getElementById("campo_vuelta2");
+            var num_asientos_vuelta = document.getElementById("campo_vuelta5");
+            var precio_plaza_vuelta = document.getElementById("campo_vuelta6");
+            var ciudad_origen_ida = document.getElementById("ciudad_origen");
+            var ciudad_destino_ida = document.getElementById("ciudad_destino");
+            var num_asientos_ida = document.getElementById("numero_asientos_viaje");
+            var precio_plaza_ida = document.getElementById("importe_conductor_asiento");
+            if (checkBox.checked == true) {
+            	ciudad_origen_vuelta.readOnly = true;
+            	ciudad_origen_vuelta.value = ciudad_destino_ida.value;
+            	ciudad_destino_vuelta.readOnly = true;
+            	ciudad_destino_vuelta.value = ciudad_origen_ida.value ;
+            	num_asientos_vuelta.value = num_asientos_ida.value;
+            	precio_plaza_vuelta.value = precio_plaza_ida.value;
+            }
+
+			/* Mostramos/Ocultamos los campos de la VUELTA */
             var form_blocks = document.querySelectorAll('div[id^="form_vuelta"]');
             var form_fields = document.querySelectorAll('input[id^="campo_vuelta"]');
-
             for (var i = 0; i < form_blocks.length; i++) {
                 if (checkBox.checked == true) {
                     form_blocks[i].style.display = "block";
@@ -177,23 +196,6 @@
                 }
             }
 
-            var ciudad_origen_vuelta = document.getElementById("campo_vuelta1");
-            var ciudad_destino_vuelta = document.getElementById("campo_vuelta2");
-            var num_asientos_vuelta = document.getElementById("campo_vuelta5");
-            var precio_plaza_vuelta = document.getElementById("campo_vuelta6");
-            var ciudad_origen_ida = document.getElementById("ciudad_origen");
-            var ciudad_destino_ida = document.getElementById("ciudad_destino");
-            var num_asientos_ida = document.getElementById("numero_asientos_viaje");
-            var precio_plaza_ida = document.getElementById("importe_conductor_asiento");
-
-            if (checkBox.checked == true) {
-            	ciudad_origen_vuelta.readOnly = true;
-            	ciudad_origen_vuelta.value = ciudad_destino_ida.value;
-            	ciudad_destino_vuelta.readOnly = true;
-            	ciudad_destino_vuelta.value = ciudad_origen_ida.value ;
-            	num_asientos_vuelta.value = num_asientos_ida.value;
-            	precio_plaza_vuelta.value = precio_plaza_ida.value;
-            }
         }
     </script>
 {% endblock %}

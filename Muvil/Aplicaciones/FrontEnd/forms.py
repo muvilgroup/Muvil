@@ -251,16 +251,16 @@ class VueltaViajesForm(forms.Form):
                                                 )
                     )
     detalles_vuelta = forms.CharField(
-        label='Detalles adicionales',
-        required=False,
-        widget=forms.Textarea(attrs={
-            'class': "form-control",
-            'rows': '1',
-            'id': 'campo_vuelta7',
-            'placeholder': 'Punto de recogida, punto de dejada y otros detalles...'
-            }
-        )
-    )
+                        label='Detalles adicionales',
+                        required=False,
+                        widget=forms.Textarea(attrs={
+                            'class': "form-control",
+                            'rows': '1',
+                            'id': 'campo_vuelta7',
+                            'placeholder': 'Punto de recogida, punto de dejada y otros detalles...'
+                            }
+                        )
+                    )
 
 class VehiculosForm(ModelForm):
 
