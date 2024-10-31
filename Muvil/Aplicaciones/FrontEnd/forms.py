@@ -318,7 +318,7 @@ class OpinionesForm(ModelForm):
             'mensaje_opinion': Textarea(attrs={
                 'class': "form-control",
                 'rows': '3',
-                'placeholder': 'Descríbete en pocas palabras y encuentra gente como tú...'
+                'placeholder': '¿Como ha sido tu experiencia?'
             })
         }
 

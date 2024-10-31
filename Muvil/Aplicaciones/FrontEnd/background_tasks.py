@@ -3,6 +3,7 @@ from ..users.models import Usuario
 from django.conf import settings
 import datetime
 from django.utils import timezone
+from .alertas_pagina_principal import AlertasPrincipal
 
 datetimeNow = timezone.now()
 

@@ -14,7 +14,7 @@ from .forms import PersonasForm, ViajesForm, VehiculosForm, ContactoForm, Cambia
 from .utils import codificar_numeros
 from .geolocalizacion import Geolocalizacion
 from django.contrib import messages
-from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef
+from django.db.models import Sum, Count, Avg, CharField, Value, F, Q, Max, Subquery, OuterRef, Func
 from .choices import categorias_puntuacion, estados_viajes
 from .templatetags.filters import MisViajesFilter, BuscarViajeFilter, MensajesFilter, UsuarioviajesopinionesFilter
 from django.views.generic import View
@@ -31,7 +31,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from .decorators import check_logued_usuario, get_persona_usuario, get_vehiculos_usuario
 from tablib import Dataset
 from .resources import LocalizacionesResource
@@ -409,8 +409,8 @@ def v_pagina_principal(request):
     localizaciones = Localizaciones.objects.all()
 
     # Se recuperan los 4 próximos viajes
-    ##viajesProximos = Viajes.objects.all().order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
-    #viajesProximos = Viajes.objects.all().filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
+    ##viajesProximos = Viajes.objects.order_by('-fecha_ida', '-hora_ida').filter(fecha_ida__gte=dateNow,hora_ida__gte=timeNow)[0:3]
+    #viajesProximos = Viajes.objects.filter(fechor_ida__gte=dateNow).order_by('fechor_ida')[0:4]
     crit1 = Q(id_persona_receptor=OuterRef('id_persona_id'))
     viajesProximos = Viajes.objects.values('id_persona_id', 'id_persona_id__nombre', 'ciudad_origen'
                                                      ,'id', 'ciudad_destino', 'fechor_ida'
@@ -466,21 +466,6 @@ def v_detalles_viaje(request, idV, persona):
         opiniones_escritas_x_cond = None
         opinion_escrita_a_cond = Opiniones.objects.filter(Q(id_viaje=idV, id_persona_publicador=idP, id_persona_receptor=viaje.id_persona.id))
 
-
-    '''
-    #Validacion 1: ¿Tiene ya ese usuario una reserva en ese viaje?
-    plaza_ya_reservada_pendiente = Plazas.objects.filter(Q(id_viaje=viaje, id_persona=usuario, estado=1)).count()
-
-    if plaza_ya_reservada_pendiente > 0:
-        messages.error(request, "¡¡ERROR!! Tienes ya una reserva pendiente para este viaje!! cuando el conductor la acepte o la rechace podrás hacer otra reserva")
-    else:
-        # 1.- Se inserta la plaza pero como Pendiente
-        plaza_reserva = Plazas(id_persona=usuario, id_viaje=viaje, flg_conductor=False, estado=1, fechor_pendiente=datetimeNow)
-        plaza_reserva.save()
-        messages.success(request, "¡¡¡Ya tienes tu viaje reservado!!! Sólo queda esperar que el conductor acepte!!!")
-
-    return redirect('n_pagina_principal')
-    '''
     args = {
         'usuario': persona,
         'idP': idP,
@@ -498,17 +483,50 @@ def v_detalles_viaje(request, idV, persona):
 @check_logued_usuario
 def v_cancelar_viaje(request, idV):
     dateNow = timezone.now()
-    viaje_cancelado = Viajes.objects.filter(id=idV).update(estado=3, fechor_cancelado=dateNow)
+    viaje_cancelado = Viajes.objects.filter(id=idV)
+    viaje_cancelado.update(estado=3, fechor_cancelado=dateNow)
     # Se cancelan las plazas del viaje
-    plazas_canceladas = Plazas.objects.filter(id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
+    plazas_canceladas = Plazas.objects.filter(id_viaje=idV)
+    plazas_canceladas.update(estado=4, fechor_cancelado=dateNow)
+
+    # Extraer de QerySet el valor de un campo
+    fechor_ida = (viaje_cancelado.values_list('fechor_ida', flat=True)[0]).date()
+    ciudad_origen = viaje_cancelado.values_list('ciudad_origen', flat=True)[0]
+    ciudad_destino = viaje_cancelado.values_list('ciudad_destino', flat=True)[0]
+    to_email_plazas_list = list(plazas_canceladas.values_list('id_persona__id_usuario__email', flat=True))
+    mail_asunto = "VIAJE CANCELADO!!!"
+    mail_mensaje = (f""
+               f"¡Lo sentimos!\n"
+               f"El conductor ha cancelado tu viaje que salía el día {fechor_ida} de {ciudad_origen} hasta {ciudad_destino}.\n"
+               f"Entra en tu portal y busca otro viaje similar.\n\nLa esperanza es lo último que se pierde :)"
+               )
+    alerta_mensaje = f"VIAJE CANCELADO! Hemos notificado a los pasajeros que estuvieran confirmados en el viaje."
+    if len(to_email_plazas_list) > 0:
+        enviarEmail_alertas(request, request.user, to_email_plazas_list, mail_asunto, mail_mensaje, alerta_mensaje)
 
     return redirect('n_detalles_viaje', idV=idV)
+
+def enviarEmail_alertas(request, user, to_email, asunto, mensaje, alerta):
+    """
+    to_email: debe ser una list para que se envíe a varios destinatarios
+    """
+    asunto = asunto
+    mensaje = render_to_string ("mail_template_alertas.html", {
+        'user': user.email,
+        'mensaje': mensaje,
+    })
+    email = EmailMessage(asunto, mensaje, to=to_email)
+    if email.send():
+        #print(nadaaaa)
+        if alerta:
+            messages.success(request, alerta)
+    else:
+        messages.error(request, f'El envío de mail ha fallado!')
 
 @check_logued_usuario
 @get_persona_usuario
 def v_reservar_plaza(request, idV, persona):
     dateNow = timezone.now()
-
     viaje = Viajes.objects.get(id=idV)
 
     # Devolver plazas en viajes pendientes o confirmados que esten en el mismo slot de tiempo
@@ -518,7 +536,6 @@ def v_reservar_plaza(request, idV, persona):
                            | Q(id_persona_id=persona.id, estado=2, id_viaje__fechor_llegada__range=(viaje.fechor_ida, viaje.fechor_llegada))
     plazas_coincidentes = Plazas.objects.filter(criterio_plazas_pend | criterio_plazas_conf)
 
-    #print(plazas_coincidentes)
     if plazas_coincidentes:
         messages.error(request, "¡¡¡ERROR!!! Ya tienes una plaza confirmada o pendiente en otro viaje en esta franja \
                                         horaria, no puedes hacer 2 viajes al mismo tiempo... al menos físicamente :)")
@@ -543,7 +560,19 @@ def v_reservar_plaza(request, idV, persona):
         plaza_pendiente.save()
         messages.success(request, "¡¡¡Tu solicitud de reserva se ha enviado al conductor!!! Tendrás tu plaza reservada en cuanto sea aceptada.")
 
-    # Enviamos mail al conductor
+        viaje_plaza_pendiente = Viajes.objects.filter(id=idV)
+        # Enviar Mail de aviso al conductor del viaje
+        fechor_ida = (viaje_plaza_pendiente.values_list('fechor_ida', flat=True)[0]).date()
+        ciudad_origen = viaje_plaza_pendiente.values_list('ciudad_origen', flat=True)[0]
+        ciudad_destino = viaje_plaza_pendiente.values_list('ciudad_destino', flat=True)[0]
+        to_email_plazas_list = viaje_plaza_pendiente.values_list('id_persona__id_usuario__email', flat=True)
+        mail_asunto = "RESERVAS PENDIENTES DE ACEPTAR!!!"
+        mail_mensaje = (f""
+                        f"Tienes reservas pendientes de gestionar en tu viaje del día {fechor_ida} de {ciudad_origen} hasta {ciudad_destino}.\n"
+                        f"Entra en tu portal y accede a MIS VIAJES para gestionar las reservas.\n "
+                        )
+        if len(to_email_plazas_list) > 0:
+            enviarEmail_alertas(request, request.user, to_email_plazas_list, mail_asunto, mail_mensaje, "")
 
     return redirect('n_detalles_viaje', idV=idV)
 
@@ -551,12 +580,47 @@ def v_reservar_plaza(request, idV, persona):
 def v_aceptar_pasajero(request, idV, idPl):
     dateNow = timezone.now()
     viaje = Viajes.objects.get(id=idV)
-    if viaje.numero_asientos_libres > 0:
+    asientos_libres = viaje.numero_asientos_libres
+    if asientos_libres > 0:
         viaje.numero_asientos_libres = F("numero_asientos_libres") - 1
         viaje.save()
-        plaza_aceptada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=2, fechor_confirmado=dateNow)
-        messages.success(request, "¡¡¡Reserva registrada correctamente!!!<br>\
-                                   ¡¡¡Avisaremos al usuario de que has aceptado su petición!!!")
+        asientos_libres = asientos_libres-1
+        plaza_aceptada = Plazas.objects.filter(id=idPl, id_viaje=idV)
+        plaza_aceptada.update(estado=2, fechor_confirmado=dateNow)
+        messages.success(request, "¡¡¡Reserva registrada correctamente!!!")
+
+        # Enviar Mail de aviso al pasajero aceptado
+        fechor_ida = (plaza_aceptada.values_list('id_viaje__fechor_ida', flat=True)[0]).date()
+        ciudad_origen = plaza_aceptada.values_list('id_viaje__ciudad_origen', flat=True)[0]
+        ciudad_destino = plaza_aceptada.values_list('id_viaje__ciudad_destino', flat=True)[0]
+        to_email_plazas_list = plaza_aceptada.values_list('id_persona__id_usuario__email', flat=True)
+        mail_asunto = "RESERVA ACEPTADA!!!"
+        mail_mensaje = (f""
+                        f"¡Felicidades!\n"
+                        f"El conductor ha aceptado tu plaza en el viaje el día {fechor_ida} de {ciudad_origen} hasta {ciudad_destino}.\n"
+                        f"Entra en tu portal y accede a los detalles del viaje y ponte en contacto con el conductor.\n "
+                        f"Disfruta del viaje!!!"
+                        )
+        alerta_mensaje = f"¡¡¡Avisaremos al usuario de que has aceptado su petición!!!"
+        if len(to_email_plazas_list) > 0:
+            enviarEmail_alertas(request, request.user, to_email_plazas_list, mail_asunto, mail_mensaje, alerta_mensaje)
+
+        # Si se han cubierto todas las plazas, cancelamos todas las reservas pendientes y avisamos por mail a los afectados
+        if asientos_libres == 0:
+            print(snanananass111)
+            plazas_rechazadas_viaje_lleno = Plazas.objects.filter(id_viaje=idV, estado=1)
+            to_email_plazas_list = plazas_rechazadas_viaje_lleno.values_list('id_persona__id_usuario__email', flat=True)
+            mail_asunto = "RESERVA RECHAZADA POR VIAJE COMPLETO!!!"
+            mail_mensaje = (f""
+                            f"¡Se ha llenado el viaje y no has conseguido plaza!\n"
+                            f"El conductor ha aceptado todas las plazas en el viaje el día {fechor_ida} de {ciudad_origen} hasta {ciudad_destino}.\n"
+                            f"Entra en tu portal encuentra otro viaje similar.\n "
+                            f"No pierdas la esperanza :) !!!"
+                            )
+            alerta_mensaje = f"¡¡¡El viaje está completo, avisaremos a los usuarios pendientes de que el viaje está completo!!!"
+            if len(to_email_plazas_list) > 0:
+                enviarEmail_alertas(request, request.user, to_email_plazas_list, mail_asunto, mail_mensaje,
+                                    alerta_mensaje)
     else:
         # se ha quedado sin plaza por reserva de otra de forma simultanea, por tanto se cancela ésta
         plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
@@ -569,7 +633,23 @@ def v_aceptar_pasajero(request, idV, idPl):
 @check_logued_usuario
 def v_rechazar_pasajero(request, idV, idPl):
     dateNow = timezone.now()
-    plaza_rechazada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=3, fechor_rechazado=dateNow)
+    plaza_rechazada = Plazas.objects.filter(id=idPl, id_viaje=idV)
+    plaza_rechazada.update(estado=3, fechor_rechazado=dateNow)
+
+    # Extraer de QerySet el valor de un campo
+    fechor_ida = (plaza_rechazada.values_list('id_viaje__fechor_ida', flat=True)[0]).date()
+    ciudad_origen = plaza_rechazada.values_list('id_viaje__ciudad_origen', flat=True)[0]
+    ciudad_destino = plaza_rechazada.values_list('id_viaje__ciudad_destino', flat=True)[0]
+    to_email_plazas_list = plaza_rechazada.values_list('id_persona__id_usuario__email', flat=True)
+    mail_asunto = "RESERVA RECHAZADA!!!"
+    mail_mensaje = (f""
+                    f"¡Lo sentimos!\n"
+                    f"El conductor ha rechazado tu reserva del viaje el día {fechor_ida} de {ciudad_origen} hasta {ciudad_destino}.\n"
+                    f"Entra en tu portal y busca otro viaje similar.\n\nLa esperanza es lo último que se pierde :)"
+                    )
+    alerta_mensaje = f"Hemos notificado al pasajero de la reserva rechazada."
+    if len(to_email_plazas_list) > 0:
+        enviarEmail_alertas(request, request.user, to_email_plazas_list, mail_asunto, mail_mensaje, alerta_mensaje)
 
     return redirect('n_detalles_viaje', idV=idV)
 
@@ -650,12 +730,6 @@ def v_nuevo_usuario(request):
             form = PersonasForm()
         return render(request, 'nuevo_usuario.html', {'form': form})
 
-def v_listado_usuarios(request):
-    usuariosListados = Personas.objects.all()
-
-    args = {"usuarios": usuariosListados}
-
-    return render(request, "listado_usuarios.html", args)
 
 @check_logued_usuario
 @get_persona_usuario
@@ -752,13 +826,6 @@ def v_nuevo_viaje(request, persona, vehiculos):
         args.update({'form': form, 'vueltaform': vueltaform})
         return render(request, 'nuevo_viaje.html', args)
 
-def v_listado_viajes(request):
-    viajesListados = Viajes.objects.all()
-
-    args = {"viajes": viajesListados}
-
-    return render(request, "listado_viajes.html", args)
-
 @check_logued_usuario
 @get_persona_usuario
 def v_menu_usuario_perfil(request, persona):
@@ -785,7 +852,7 @@ def v_menu_usuario_perfil(request, persona):
 @get_persona_usuario
 def v_menu_usuario_coches(request, persona):
     try:
-        vehiculos = Vehiculos.objects.all().filter(id_persona=persona)
+        vehiculos = Vehiculos.objects.filter(id_persona=persona)
     except Vehiculos.DoesNotExist:
         vehiculos = None
 
@@ -818,7 +885,7 @@ def v_menu_usuario_coches(request, persona):
 def v_menu_usuario_coches_eliminar(request, idVe):
     vehiculo=Vehiculos.objects.get(id=idVe)
     # INICIO validacion coche con viajes pendientes
-    viajes_pend_count = Viajes.objects.all().filter(Q(id_vehiculo=vehiculo, estado=1)).count()
+    viajes_pend_count = Viajes.objects.filter(Q(id_vehiculo=vehiculo, estado=1)).count()
     if viajes_pend_count > 0:
         messages.error(request, f"¡¡¡Error, <strong>este vehiculo tiene viajes {viajes_pend_count} pendientes</strong> y no se puede "
                                 f"eliminar hasta que no se completen esos viajes!!!")
@@ -911,9 +978,9 @@ def v_menu_usuario_opiniones(request, persona):
 
     # Se actualizan los mensajes como leidos
     Opiniones.objects.filter(id_persona_receptor=persona).update(flg_leido=True)
-    
-    opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=persona)
-    opiniones_publicadas = Opiniones.objects.all().filter(id_persona_publicador=persona)
+
+    opiniones_recibidas = Opiniones.objects.filter(id_persona_receptor=persona)
+    opiniones_publicadas = Opiniones.objects.filter(id_persona_publicador=persona)
 
 
     # Se crea un diccionario con las categorias de opiniones y su valor
@@ -1034,9 +1101,8 @@ def v_menu_usuario_contrasenya(request, persona):
 def v_perfil_publico(request, idP, persona):
 
     usuario_perfil = Personas.objects.get(id=idP)
-
     try:
-        caparazon = Caparazones.objects.get(id_persona=usuario_perfil)
+        caparazon = Caparazones.objects.filter(id_persona=usuario_perfil)
     except caparazon.DoesNotExist:
         caparazon = None
 
@@ -1046,17 +1112,17 @@ def v_perfil_publico(request, idP, persona):
         vehiculo = None
 
     try:
-        viajesConductor = Viajes.objects.all().filter(id_persona=usuario_perfil)
+        viajesConductor = Viajes.objects.filter(id_persona=usuario_perfil)
     except viajesConductor.DoesNotExist:
         viajesConductor = None
 
     try:
-        reservasPasajero = Plazas.objects.all().filter(id_persona=usuario_perfil)
+        reservasPasajero = Plazas.objects.filter(id_persona=usuario_perfil)
     except reservasPasajero.DoesNotExist:
         reservasPasajero = None
 
     try:
-        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario_perfil)
+        opiniones_recibidas = Opiniones.objects.filter(id_persona_receptor=usuario_perfil)
     except opiniones_recibidas.DoesNotExist:
         opiniones_recibidas = None
     total_viajesConductor = viajesConductor.count()
@@ -1098,19 +1164,23 @@ def v_mis_viajes(request, persona):
     idP = persona.id
 
     try:
-        #reservasPasajero = Plazas.objects.all().filter(id_persona=usuario)
-        #viajesPasajero = Viajes.objects.all().filter(id__in=reservasPasajero.values_list('id_viaje').distinct())
-        #viajesConductor = Viajes.objects.all().filter(id_persona=usuario)
-        #listado_viajes = viajesConductor | viajesPasajero
-        #listado_plazas_viajes = Plazas.objects.all().filter(id_viaje__in=listado_viajes)
+        crit1 = Q(
+            id_persona_publicador=idP,
+            id_viaje=OuterRef('id'),
+            id_viaje__estado=2  # Viaje Realizado
+        )
 
-        plazas = Plazas.objects.all().filter(Q(id_persona=persona) & (~Q(estado=3)) )  #excluye plazas rechazadas
-        listado_viajes = Viajes.objects.all().filter(id__in=plazas.values_list('id_viaje')).order_by('-fechor_ida')
+        plazas = Plazas.objects.filter(Q(id_persona=persona) & (~Q(estado=3))).values('id_viaje')  #excluye plazas rechazadas
+        listado_viajes = (Viajes.objects.annotate(count_opiniones=Subquery(
+                                    Opiniones.objects.filter(crit1).values('id').annotate(c=Count('*')).values('c')
+                                            ))
+                          .filter(id__in=plazas.values_list('id_viaje')).order_by('-fechor_ida'))
         listado_viajes_distinct = listado_viajes.distinct()
-        listado_plazas_viajes = Plazas.objects\
+        print(listado_viajes)
+
+        listado_plazas_viajes = (Plazas.objects\
             .values('id_viaje__id','id_persona__id','id_persona__imagen','id_persona__nombre','flg_conductor')\
-            .filter(id_viaje__in=listado_viajes_distinct).order_by('-flg_conductor').distinct()
-        #print(listado_plazas_viajes)
+            .filter(id_viaje__in=listado_viajes_distinct).order_by('-flg_conductor').distinct())
 
 
     except plazas.DoesNotExist:
@@ -1133,8 +1203,8 @@ def v_mis_mensajes(request, persona):
 
     idP = persona.id
 
-    #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
-    #listado_conversaciones = Mensajes.objects.all().filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
+    #listado_conversaciones = Mensajes.objects.filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario)).values_list('id_persona_publicador','id_persona_receptor').distinct()
+    #listado_conversaciones = Mensajes.objects.filter(Q(id_persona_publicador=usuario) | Q(id_persona_receptor=usuario))
 
     # Se actualizan los mensajes como leidos
     Mensajes.objects.filter(id_persona_receptor=persona).update(flg_leido=True)
@@ -1190,7 +1260,7 @@ def v_opiniones_recibidas_main(request, idPr, persona):
     usuario_receptor = Personas.objects.get(id=idPr)
 
     try:
-        opiniones_recibidas = Opiniones.objects.all().filter(id_persona_receptor=usuario_receptor)
+        opiniones_recibidas = Opiniones.objects.filter(id_persona_receptor=usuario_receptor)
     except opiniones_recibidas.DoesNotExist:
         opiniones_recibidas = None
 

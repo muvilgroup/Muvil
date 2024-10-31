@@ -33,10 +33,16 @@
 		<header>
 			<div class="w-100">
 				<nav class="navbar navbar-light navbar-expand-lg p-0 cabecera-grande shadow">
-					<div class="container-fluid ">
-						<a class="navbar-brand order-2 order-md-1 col-7 d-none d-md-flex justify-content-end" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" width="220" alt="MÚVIL"></a>
-						<a class="navbar-brand order-2 order-md-1 col-7 d-block d-md-none d-flex justify-content-center" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" class="img-fluid" alt="MÚVIL" width="200" height="200"></a>
-						<button class="navbar-toggler order-1 border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+					<div class="container-fluid">
+						<!-- INICIO Logo Grande Muvil -->
+						<a class="order-2 order-md-1 col-7 d-none d-md-flex justify-content-end" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" width="220" alt="MÚVIL"></a>
+						<!-- FIN Logo Grande Muvil -->
+						<!-- INICIO Logo Pequeño Muvil -->
+						<a class="order-2 order-md-1 col d-block d-md-none d-flex justify-content-end" href="{% url 'n_pagina_principal' %}"><img src="{% static 'img/LogoFinal.png' %}" class="img-fluid" alt="MÚVIL" width="200" height="200"></a>
+						<!-- FIN Logo Pequeño Muvil -->
+
+						<!-- INICIO Buscar Viaje / Publicar Viaje -->
+						<button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
 						<div class="collapse navbar-collapse justify-content-end ms-4 order-md-2 " id="navbarNavDropdown">
@@ -60,6 +66,9 @@
 								</li>
 							</ul>
 						</div>
+						<!-- FIN Buscar Viaje / Publicar Viaje -->
+
+						<!-- INICIO Imagen Usuario -->
 						<div class="order-3 order-md-3">
 							<div class="nav-item">
 								{% if user.is_authenticated %}
@@ -136,6 +145,8 @@
 								{% endif %}
 							</div>
 						</div>
+						<!-- FIN Imagen Usuario -->
+
 						<input type="number" id="numAlert" name="numAlert" value="{{numAlert}}" default="1" hidden>
 					</div>
 				</nav>

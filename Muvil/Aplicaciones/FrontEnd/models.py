@@ -101,7 +101,8 @@ class Opiniones (models.Model):
     fechor_opinion = models.DateTimeField(blank=True, null=True)
     flg_leido = models.BooleanField(default=False)
     flg_opinion_respondida = models.BooleanField(default=False)
-    id_opinion_respuesta = models.ForeignKey('self', to_field='id', on_delete=models.CASCADE, blank=True, null=True)
+    id_opinion_pregunta = models.ForeignKey('self', to_field='id', on_delete=models.CASCADE, blank=True, null=True, related_name='id_opinion_preg')
+    id_opinion_respuesta = models.ForeignKey('self', to_field='id', on_delete=models.CASCADE, blank=True, null=True, related_name='id_opinion_resp')
     fec_created = models.DateTimeField(auto_now_add=True)
     fec_updated = models.DateTimeField(auto_now=True)
 
@@ -139,6 +140,7 @@ class Transferencias (models.Model):
     class Meta:
         verbose_name = 'transferencias'
         verbose_name_plural = 'transferencias'
+
 
 class MetodosPago (models.Model):
     id_persona = models.ForeignKey(Personas,to_field='id', on_delete=models.CASCADE)
