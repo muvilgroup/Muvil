@@ -57,15 +57,26 @@ tipo_descuento = (
 
 estados_viajes = (
     (1, 'Pendiente'),
-    (2, 'Realizado'),
-    (3, 'Cancelado')
+    (2, 'Finalizado'), # Viaje terminado con éxito tras la aprobación de los pasajeros o tras 24 horas de la no notificacion de problemas
+    (3, 'Cancelado'),
+    (4, 'Realizado'), # Viaje que se acaba de realizar en teoria, momento en el que los pasajeros pueden indicar si han habido incidencias en el viaje
+    (5, 'Problemático')
 )
 
+# Estado relativo a la reserva de la plaza
 estados_plazas = (
     (1, 'Pendiente'),
     (2, 'Confirmado'),
     (3, 'Rechazado'),
-    (4, 'Cancelado')
+    (4, 'Cancelado'),
+)
+
+# Estado relativo a la conclusión del viaje de la plaza
+estados_plazas_viaje = (
+    (1, 'Sin Estado'),
+    (2, 'Realizado'),
+    (3, 'Finalizado'),
+    (4, 'Problemático')
 )
 
 modelos = (

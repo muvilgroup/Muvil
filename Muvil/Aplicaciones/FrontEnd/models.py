@@ -1,6 +1,6 @@
 from django.db import models
 from .choices import genero, tipo_vehiculo, prestigio, categorias_puntuacion, estado_transferencia, estados_viajes, \
-    estados_plazas, equipaje, tipo_transferencia, tipo_descuento
+    estados_plazas, estados_plazas_viaje, equipaje, tipo_transferencia, tipo_descuento
 from ..users.models import Usuario
 from django.core.validators import RegexValidator
 
@@ -79,6 +79,7 @@ class Viajes (models.Model):
     fechor_pendiente = models.DateTimeField(blank=True, null=True)
     fechor_realizado = models.DateTimeField(blank=True, null=True)
     fechor_cancelado = models.DateTimeField(blank=True, null=True)
+    fechor_finalizado = models.DateTimeField(blank=True, null=True)
     id_vehiculo = models.ForeignKey(Vehiculos, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     flg_ida_vuelta = models.BooleanField(default=False)
     distancia_kms = models.DecimalField(max_digits=6, decimal_places=1)
@@ -115,6 +116,7 @@ class Plazas (models.Model):
     id_viaje = models.ForeignKey(Viajes, to_field='id', null=True, blank=True, on_delete=models.CASCADE)
     flg_conductor = models.BooleanField(default=False)
     estado = models.PositiveIntegerField(choices=estados_plazas, default=1)
+    estado_plaza_viaje = models.PositiveIntegerField(choices=estados_plazas_viaje, default=1)
     fechor_pendiente = models.DateTimeField(blank=True, null=True)
     fechor_confirmado = models.DateTimeField(blank=True, null=True)
     fechor_rechazado = models.DateTimeField(blank=True, null=True)

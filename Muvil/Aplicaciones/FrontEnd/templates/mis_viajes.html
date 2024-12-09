@@ -114,6 +114,12 @@
 										#1CAB04
 									{% elif v.estado == 3 %}
 										#991C1C
+									{% elif v.estado == 4 %}
+										#FFC700
+									{% elif v.estado == 5 %}
+										#991C1C
+									{% else %}
+										#CACACA
 									{% endif %}
 									;">
 					<div class="col-7">
@@ -168,6 +174,12 @@
 										#1CAB04
 									{% elif v.estado == 3 %}
 										#991C1C
+									{% elif v.estado == 4 %}
+										#FFC700
+									{% elif v.estado == 5 %}
+										#991C1C
+									{% else %}
+										#CACACA
 									{% endif %}
 									;">
 								{{v.get_estado_display|upper}}
@@ -186,11 +198,22 @@
 								</a>
 							</div>
 							{% if v.id_persona_id != idP %}
-							{% if v.estado == 1 or v.estado == 3 %} <!-- Solo puedes enviar mensaje en viajes PENDIENTE o CANCELADO -->
+							{% if v.estado == 1 or v.estado == 3 %}
+							<!-- Solo puedes enviar mensaje en viajes PENDIENTE o CANCELADO -->
 							<div class="col text-center">
 								<a class="btn btn-warning roboto-text fw-bold" href="{% url 'n_conversacion' idPc=v.id_persona_id %}">
 									<img alt="Añadir" src='{% static "icon/send-plus.svg" %}'>
 									Enviar Mensaje al Conductor
+								</a>
+							</div>
+							{% endif %}
+							{% endif %}
+							{% if v.estado == 4 %}
+							<div class="col text-center">
+								<a class="btn btn-warning roboto-text fw-bold efecto-parpadea"
+									href="{% url 'n_detalles_viaje' idV=v.id %}">
+									<i class="fas fa-clipboard-check fa-lg"></i>
+									 ¿Ha ido bien el viaje?
 								</a>
 							</div>
 							{% elif not v.count_opiniones %}
@@ -201,7 +224,6 @@
 									 Déjanos tu opinion
 								</a>
 							</div>
-							{% endif %}
 							{% endif %}
 						</div>
 					</div>

@@ -462,9 +462,15 @@ def v_detalles_viaje(request, idV, persona):
     if usuario_conductor:
         opiniones_escritas_x_cond = Opiniones.objects.filter(Q(id_viaje=idV, id_persona_publicador=idP))
         opinion_escrita_a_cond = None
+        # Estos 2 flags son para saber si el conductor o pasajero ha confirmado el viaje como finalizado o problematico
+        flg_viaje_fin_prob_cond = Plazas.objects.filter(Q(id_viaje=idV, flg_conductor=True, estado_plaza_viaje__in=(3, 4))).exists()
+        flg_viaje_fin_prob = None
     else:
         opiniones_escritas_x_cond = None
         opinion_escrita_a_cond = Opiniones.objects.filter(Q(id_viaje=idV, id_persona_publicador=idP, id_persona_receptor=viaje.id_persona.id))
+        # Estos 2 flags son para saber si el conductor o pasajero ha confirmado el viaje como finalizado o problematico
+        flg_viaje_fin_prob_cond = None
+        flg_viaje_fin_prob = Plazas.objects.filter(Q(id_viaje=idV, flg_conductor=False, id_persona=idP, estado_plaza_viaje__in=(3, 4))).exists()
 
     args = {
         'usuario': persona,
@@ -473,9 +479,11 @@ def v_detalles_viaje(request, idV, persona):
         'plazas': plazas,
         'flg_reserva_pend_conf': flg_reserva_pend_conf,
         'flg_reserva_confirmada': flg_reserva_confirmada,
+        'flg_viaje_fin_prob': flg_viaje_fin_prob,
         'usuario_conductor': usuario_conductor,
         'opiniones_escritas_x_cond': opiniones_escritas_x_cond,
         'opinion_escrita_a_cond': opinion_escrita_a_cond,
+        'flg_viaje_fin_prob_cond': flg_viaje_fin_prob_cond
     }
 
     return render(request, "detalles_viaje.html", args)
@@ -659,6 +667,31 @@ def v_cancelar_reserva(request, idV, idPl):
     plaza_cancelada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado=4, fechor_cancelado=dateNow)
 
     messages.success(request, "¡¡¡Has cancelado tu reserva en este viaje!!!")
+
+    return redirect('n_detalles_viaje', idV=idV)
+
+@check_logued_usuario
+def v_plaza_finalizada(request, idV, idPl):
+    dateNow = timezone.now()
+    if idPl == 0: # Significa Conductor
+        plaza_finalizada = Plazas.objects.filter(flg_conductor=True, id_viaje=idV).update(estado_plaza_viaje=3)
+    else:
+        plaza_finalizada = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado_plaza_viaje=3)
+
+    messages.success(request, "¡¡¡Gracias por confirmar el viaje!!!")
+
+    return redirect('n_detalles_viaje', idV=idV)
+
+@check_logued_usuario
+def v_plaza_problematica(request, idV, idPl):
+    dateNow = timezone.now()
+    if idPl == 0: # Significa Conductor
+        plaza_problematica = Plazas.objects.filter(flg_conductor=True, id_viaje=idV).update(estado_plaza_viaje=4)
+    else:
+        plaza_problematica = Plazas.objects.filter(id=idPl, id_viaje=idV).update(estado_plaza_viaje=4)
+
+    messages.success(request, "¡¡¡Hemos registrado tu notificación de Viaje Problemático!!!")
+    messages.success(request, "¡¡¡Contacta con nosotros para darnos más detalles del problema!!!")
 
     return redirect('n_detalles_viaje', idV=idV)
 

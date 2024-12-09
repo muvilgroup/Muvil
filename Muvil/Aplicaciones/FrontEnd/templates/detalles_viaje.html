@@ -71,6 +71,12 @@
 										#1CAB04
 									{% elif viaje.estado == 3 %}
 										#991C1C
+									{% elif viaje.estado == 4 %}
+										#FFC700
+									{% elif viaje.estado == 5 %}
+										#991C1C
+									{% else %}
+										#CACACA
 									{% endif %}
 									;">
 								{{viaje.get_estado_display|upper}}
@@ -219,6 +225,26 @@
 								</div>
 							{% endfor %}
 						{% endif %}
+					{% elif viaje.estado == 4 and not flg_viaje_fin_prob_cond %} <!-- REALIZADO -->
+								<div class="col-auto px-3 pt-2 align-self-center">
+									¿Viaje Realizado?
+								</div>
+								<div class="col-auto px-3 pt-2 align-self-center">
+									<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
+									   href="{% url 'n_plaza_finalizada' idV=viaje.id idPl=0 %}"> <!-- idPl=0 es conductor-->
+										SI
+									</a>
+								</div>
+								<div class="col-auto px-3 pt-2 align-self-center">
+									<a class="btn btn-danger fw-bold fs-5 boton-3d mx-4 roboto-text"
+									   href="{% url 'n_plaza_problematica' idV=viaje.id idPl=0 %}"> <!-- idPl=0 es conductor-->
+										NO
+									</a>
+								</div>
+					{% elif viaje.estado == 4 and flg_viaje_fin_prob_cond %} <!-- REALIZADO -->
+								<div class="col-auto px-3 pt-2 align-self-center">
+									Gracias por confirmar el viaje
+								</div>
 					{% endif %}
 				</div>
 			{% if viaje.estado != 3 %} <!-- Viaje Cancelado -->
