@@ -1,9 +1,14 @@
 .img-container-user{
-  	width:55px;
-  	overflow:hidden;
+  width:55px;
+  overflow:hidden;
 }
 .img-container-user img{
-  	width:100%;
-  	height:auto
+  width:100%;
+  height:auto
 }
 
+.empty-header {
+  background-color: #FFC144;
+  text-align: center;
+  padding: 4px 0;
+}
