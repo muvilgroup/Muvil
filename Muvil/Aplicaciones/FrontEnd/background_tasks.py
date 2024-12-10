@@ -51,7 +51,6 @@ def actualizar_estado_finalizado():
 
     # Actualizamos a Problematico aquellos viajes con alguna plaza problematica
     viajes_con_problemas = viajes_count_problemas.filter(Q(estado=4, fechor_llegada__lt=datetimeNowMinus24h) & ~Q(count_problematicos=None))
-    print(viajes_con_problemas)
     viajes_con_problemas.update(estado=5, fechor_finalizado=datetimeNow)
 
 # Tarea para eliminar los usuarios a los que le haya caducado el enlace de activación (usuarios no activos)
