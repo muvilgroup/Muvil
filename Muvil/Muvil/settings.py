@@ -111,8 +111,8 @@ WSGI_APPLICATION = 'Muvil.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = SQLITE
-#DATABASES = POSTGRE_MUVIL
+#DATABASES = SQLITE
+DATABASES = POSTGRE_MUVIL
 
 
 # Password validation
@@ -252,13 +252,13 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        'src': '/static/img/logo_Muvil_150x150.png',
+        'src': '/static/img/Logo_Nuevo_150x150.png',
         'sizes': '150x150',
         'type': 'image/png',
         'purpose': 'any'
     },
     {
-        'src': '/static/img/logo_Muvil_512x512_2.png',
+        'src': '/static/img/Logo_Nuevo_512x512.png',
         'sizes': '512x512',
         'type': 'image/png',
         'purpose': 'any'
@@ -266,13 +266,13 @@ PWA_APP_ICONS = [
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': '/static/img/logo_Muvil_150x150.png',
+        'src': '/static/img/Logo_Nuevo_150x150.png',
         'sizes': '150x150',
         'type': 'image/png',
         'purpose': 'any'
     },
     {
-        'src': '/static/img/logo_Muvil_512x512_2.png',
+        'src': '/static/img/Logo_Nuevo_512x512.png',
         'sizes': '512x512',
         'type': 'image/png',
         'purpose': 'any'
@@ -280,13 +280,13 @@ PWA_APP_ICONS_APPLE = [
 ]
 PWA_APP_SPLASH_SCREEN = [
     {
-        'src': '/static/img/logo_Muvil_150x150.png',
+        'src': '/static/img/Logo_Nuevo_150x150.png',
         'sizes': '150x150',
         'type': 'image/png',
         'purpose': 'any'
     },
     {
-        'src': '/static/img/logo_Muvil_512x512_2.png',
+        'src': '/static/img/Logo_Nuevo_512x512.png',
         'sizes': '512x512',
         'type': 'image/png',
         'purpose': 'any'
