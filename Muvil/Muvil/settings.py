@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'Muvil.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = SQLITE
-#DATABASES = POSTGRE_MUVIL
+##DATABASES = POSTGRE_MUVIL
 
 
 # Password validation
