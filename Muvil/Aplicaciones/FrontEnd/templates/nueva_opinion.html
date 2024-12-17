@@ -68,7 +68,7 @@
         <h1 class="text-center fs-5 roboto-text">¿Como ha ido el viaje con <strong class="roboto-text">muvil.group@muvil.com?</strong></h1>
         <div class="row">
             <div class="col-md-12 my-4">
-                <form method="POST" action=""> {% csrf_token %}
+                <form method="POST" action="" id="opinion-form"> {% csrf_token %}
                     <div class="form-group">
                         <!--<label for="puntuacion"><i class="fas fa-star"></i> Puntuación:</label>-->
                         <div class="rating">
@@ -86,7 +86,7 @@
                         <textarea class="form-control roboto-text" id="opinion" name="opinion" rows="5"></textarea>
                     </div>
 					<div class="row d-flex justify-content-center">
-						<button type="submit" class="col-12 col-md-4 btn btn-warning btn-block roboto-text"><i class="fas fa-check"></i> Enviar Reseña</button>
+						<button type="submit" class="col-12 col-md-4 btn btn-warning btn-block roboto-text" disabled><i class="fas fa-check"></i> Enviar Reseña</button>
 					</div>
 				</form>
             </div>
@@ -105,6 +105,7 @@
                 $(this).prevAll().addClass('checked');
                 $(this).addClass('checked');
                 setRatingWord(rating);
+                $('#opinion-form button[type="submit"]').removeAttr('disabled');
             });
 
             function setRatingWord(rating) {
