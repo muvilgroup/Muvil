@@ -1,10 +1,11 @@
 .img-container-user{
-  width:55px;
-  overflow:hidden;
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
 }
 .img-container-user img{
-  width:100%;
-  height:auto
+  width: 55px;
+  height: 55px;
 }
 
 .empty-header {

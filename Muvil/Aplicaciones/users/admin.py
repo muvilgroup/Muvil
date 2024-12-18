@@ -22,11 +22,21 @@ class UserCreationForm(forms.ModelForm):
     }
     password1 = forms.CharField(label='Contraseña',
                                 strip=False,
-                                widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+                                widget=forms.PasswordInput(
+                                    attrs={
+                                        "autocomplete": "new-password",
+                                        'class': 'form-control mb-2'
+                                    },
+                                ),
                                 help_text=password_validation.password_validators_help_text_html())
     password2 = forms.CharField(label='Confirmación contraseña',
                                 strip=False,
-                                widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+                                widget=forms.PasswordInput(
+                                    attrs={
+                                        "autocomplete": "new-password",
+                                        'class': 'form-control mb-2'
+                                    },
+                                ),
                                 help_text=_("Por favor, repite la contraseña por motivos de seguridad."))
 
     class Meta:

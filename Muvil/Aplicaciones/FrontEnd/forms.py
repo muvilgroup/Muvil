@@ -30,37 +30,30 @@ class PersonasForm(ModelForm):
         widgets = {
             'fec_nacimiento': DateInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
             }),
             'nombre': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'minlength': 3,
             }),
             'apellido1': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'minlength': 3,
             }),
             'apellido2': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
             }),
             'tipo_documento': Select(
                 attrs={
                     'class': "form-select",
-                    'style': 'max-width: 300px;',
                 },
                 choices=documentos_identidad,
             ),
             'numero_documento': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;',
                 'pattern':".{9}", # 9 caracteres
             }),
             'num_telefono': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
             }),
             'descripcion': Textarea(attrs={
                 'class': "form-control",
@@ -69,7 +62,6 @@ class PersonasForm(ModelForm):
             }),
             'password': TextInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
             })
         }
 
@@ -343,7 +335,11 @@ class ResetearPassForm(PasswordResetForm):
     #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 class RegistrarUsuarioForm(CustomUserCreationForm):
-    email = forms.EmailField(help_text='A valid email address, please.', required=True)
+    email = forms.EmailField(
+        help_text='Una dirección de correo válida.',
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control mb-2'})
+    )
 
     class Meta:
         model = get_user_model()
