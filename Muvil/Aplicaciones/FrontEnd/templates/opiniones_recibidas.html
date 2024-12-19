@@ -128,7 +128,7 @@
                                 <a href="" alt="Respondido"><embed src='{% static "icon/tag.svg" %}' alt="Respondido"/></a>
                                 <b class="ps-1 fs-6 roboto-text">Respondido</b>
                             </button>
-                            {% else %}
+                            {% elif or.id_opinion_respuesta_id == None %}
                             <div class="btn d-flex">
                                 <a href="{% url 'n_nueva_opinion' idV=or.id_viaje_id idPr=or.id_persona_publicador_id idO=or.id %}">
                                     <embed src='{% static "icon/reply.svg" %}' alt="Responder"/>
