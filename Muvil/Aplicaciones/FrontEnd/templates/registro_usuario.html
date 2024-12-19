@@ -7,12 +7,12 @@
 
 {% block base_content %}
 	<div class="container mt-5 d-flex justify-content-center">
-		<div class="row col-6 justify-content-center">
+		<div class="row col-lg-6 justify-content-center">
 			<h2 class="border-bottom border-warning border-4 roboto-text">Introduce tus datos...</h2>
 			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales"> {% csrf_token %}
 				{{form}}
 				<div class="col-12 d-flex justify-content-center py-3">
-					<button type="submit" class="btn btn-warning btn-guardar col-4 roboto-text fw-bold">Guardar</button>
+					<button type="submit" class="btn btn-warning btn-guardar col-12 col-lg-4 roboto-text fw-bold">Guardar</button>
 				</div>
 			</form>
 		</div>

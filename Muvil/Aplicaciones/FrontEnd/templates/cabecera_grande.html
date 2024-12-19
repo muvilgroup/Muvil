@@ -9,9 +9,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bootstrap 5</title>
 	<style>
-
-
-
 		.modal-content  {
 			-webkit-border-radius: 20px !important;
 			-moz-border-radius: 20px !important;
@@ -22,6 +19,26 @@
 		}
 		.color-secundario {
 			color: #01A082;
+		}
+		.email__label,
+		.password__label {
+			display: inline-flex;
+			align-items: center;
+		}
+		.password .form-control {
+			background: white;
+		}
+		.password__toggle {
+			cursor: pointer;
+		}
+		.password__toggle .fa-eye {
+			width: 20px;
+		}
+		.password__toggle.hidden .fa-eye-slash  {
+			display: none;
+		}
+		.password__toggle:not(.hidden) .fa-eye {
+			display: none;
 		}
 	</style>
 	<link type='text/css' href='{% static "css/cabecera.css" %}' rel='stylesheet' />
@@ -166,16 +183,21 @@
 					<a class="form-group row d-flex justify-content-center fw-bold fs-5 roboto-text text-decoration-none" href="{% url 'n_registro_usuario' %}">¿Eres nuevo en Múvil? Crea tu cuenta</a>
 					<form method="POST" action="/"> {% csrf_token %}
 					  <input type="hidden" name="next" value="{{ request.path }}"> <!--Guarda la url para volver a ella tras el login-->
-					  <div class="form-group row d-flex justify-content-center p-3 mt-3">
-						<label for="txtEmail" class=" roboto-text col-3 fw-bold">Email:</label>
-						<input type="text" class="form-control col" id="txtEmail" name="txtEmail" required>
+					  <div class="email form-group row d-flex justify-content-center mt-3 flex-column flex-sm-row">
+							<label for="txtEmail" class="email__label roboto-text col-sm-3 fw-bold pb-1">Email:</label>
+							<div class="input-group col-sm">
+								<input type="text" class="form-control col-sm" id="txtEmail" name="txtEmail" required>
+							</div>
 					  </div>
-					  <div class="form-group row d-flex justify-content-center px-3">
-						<label for="txtPass" class="roboto-text col-3 fw-bold">Contraseña:</label>
-						<input type="password" class="form-control col" id="txtPass" name="txtPass" required>
-						<div class="form-switch form-switch-md col-2 d-flex justify-content-end align-self-center">
-							<input class="form-check-input" type="checkbox" id="passReveal" onclick ="reveal()">
-						</div>
+					  <div class="password form-group row d-flex justify-content-center pt-3 flex-column flex-sm-row">
+							<label for="txtPass" class="password__label roboto-text col-sm-3 fw-bold pb-1">Contraseña:</label>
+							<div class="input-group col-sm">
+								<input type="password" class="form-control" id="txtPass" name="txtPass" required>
+								<div class="password__toggle input-group-text hidden" onclick="reveal()">
+									<i class="fas fa-eye"></i>
+									<i class="fas fa-eye-slash"></i>
+								</div>
+							</div>
 					  </div>
 					  <a class="row form-group me-1 mt-4 mb-3 d-flex justify-content-end roboto-text" href="{% url 'n_resetear_contrasenya' %}">¿Has olvidado tu contraseña?</a>
 					  <div class="pb-3 d-flex justify-content-center">
@@ -217,17 +239,20 @@
 		</header>
 
 	{% if "n_nueva_opinion"  not in request.resolver_match.url_name %}
-	<!----- FontAwesome ----->
+	<!-- FontAwesome -->
 	<script src="{% static 'js/fontawesome_5.15.4/all.min.js' %}"></script>
 	{% endif %}
 
 	<script type="text/javascript">
-		function reveal()
-		{
-			if(document.getElementById('passReveal').checked)
-			   {document.getElementById("txtPass").type='text';}
-			else
-			document.getElementById("txtPass").type='password';
+		function reveal() {
+			const passwordToggle = document.querySelector('.password__toggle');
+			if(passwordToggle.classList.contains('hidden')) {
+				document.getElementById("txtPass").type='text';
+				passwordToggle.classList.remove('hidden');
+			} else {
+				document.getElementById("txtPass").type='password';
+				passwordToggle.classList.add('hidden');
+			}
 		}
 	</script>
 </body>

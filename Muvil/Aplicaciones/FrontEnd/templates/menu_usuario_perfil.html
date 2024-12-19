@@ -16,7 +16,7 @@
 						<div class="col-lg-8 col-6 d-flex justify-content-center align-items-center py-3">
 							<a class="btn btn-warning border-light border-3 fw-bold roboto-text" href="{% url 'n_perfil_publico' idP=usuario.id %}"> Ver Perfil Público </a>
 						</div>
-						<div class="col-lg-3 col-6 mb-3 ps-5 button-container img-container-user">
+						<div class="col-lg-3 col-6 mb-3 p-0 button-container img-container-user">
 						{% if form.instance.imagen %}
 							<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
 							<input type="file" id="id_image" name="imagen" hidden>
