@@ -7,15 +7,15 @@
 
 {% block base_content %}
 	<div class="container-md mt-5 d-flex justify-content-center">
-		<div class="row col-12 col-md-8">
+		<div class="row col-12 col-lg-8 justify-content-center">
 			<span class="font2-muvil fs-4 border-bottom border-4 border-warning roboto-text">Introduce los datos de tu viaje...</span>
-			<form method="POST" class="row justify-content-center post-form px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+			<form method="POST" class="row post-form px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
 				<div class="col-md-12 py-2 mx-3 text-center bg-light">
 					{{ form.flg_confirmacion_auto }}
 					<i class="fas fa-wand-sparkles fa-lg"></i>
 					<label for="conf-manual" class="form-check-label fw-bold roboto-text">Aceptación automatica de reservas</label>
 				</div>
-				<div class="col-12 col-md-6 py-2">
+				<div class="col-md-6 py-2">
 					<i class="fas fa-map fa-lg"></i>
 					<label for="input" class="form-label roboto-text">Ciudad Origen</label>
 					{{ form.ciudad_origen }}
@@ -149,55 +149,54 @@
 
 {% block base_script %}
 	<script>
-        var dataList = document.getElementById('lista_horas_viaje');
+		var dataList = document.getElementById('lista_horas_viaje');
 
-        for (var hora = 0; hora < 24; hora++) {
-            for (var minuto = 0; minuto < 60; minuto += 30) {
-                var horaString = hora.toString().padStart(2, '0');
-                var minutoString = minuto.toString().padStart(2, '0');
-                var option = document.createElement('option');
-                option.value = `${horaString}:${minutoString}`;
-                dataList.appendChild(option);
-            }
-        }
-    </script>
+		for (var hora = 0; hora < 24; hora++) {
+			for (var minuto = 0; minuto < 60; minuto += 30) {
+				var horaString = hora.toString().padStart(2, '0');
+				var minutoString = minuto.toString().padStart(2, '0');
+				var option = document.createElement('option');
+				option.value = `${horaString}:${minutoString}`;
+				dataList.appendChild(option);
+			}
+		}
+  </script>
 	<script>
-        function mostrarVuelta() {
+		function mostrarVuelta() {
 			var checkBox = document.getElementById("vueltaCheck");
 
 			/* Copiamos los campos de la IDA en la VUELTA */
 			var ciudad_origen_vuelta = document.getElementById("campo_vuelta1");
-            var ciudad_destino_vuelta = document.getElementById("campo_vuelta2");
-            var num_asientos_vuelta = document.getElementById("campo_vuelta5");
-            var precio_plaza_vuelta = document.getElementById("campo_vuelta6");
-            var ciudad_origen_ida = document.getElementById("ciudad_origen");
-            var ciudad_destino_ida = document.getElementById("ciudad_destino");
-            var num_asientos_ida = document.getElementById("numero_asientos_viaje");
-            var precio_plaza_ida = document.getElementById("importe_conductor_asiento");
-            if (checkBox.checked == true) {
-            	ciudad_origen_vuelta.readOnly = true;
-            	ciudad_origen_vuelta.value = ciudad_destino_ida.value;
-            	ciudad_destino_vuelta.readOnly = true;
-            	ciudad_destino_vuelta.value = ciudad_origen_ida.value ;
-            	num_asientos_vuelta.value = num_asientos_ida.value;
-            	precio_plaza_vuelta.value = precio_plaza_ida.value;
-            }
+			var ciudad_destino_vuelta = document.getElementById("campo_vuelta2");
+			var num_asientos_vuelta = document.getElementById("campo_vuelta5");
+			var precio_plaza_vuelta = document.getElementById("campo_vuelta6");
+			var ciudad_origen_ida = document.getElementById("ciudad_origen");
+			var ciudad_destino_ida = document.getElementById("ciudad_destino");
+			var num_asientos_ida = document.getElementById("numero_asientos_viaje");
+			var precio_plaza_ida = document.getElementById("importe_conductor_asiento");
+			if (checkBox.checked == true) {
+				ciudad_origen_vuelta.readOnly = true;
+				ciudad_origen_vuelta.value = ciudad_destino_ida.value;
+				ciudad_destino_vuelta.readOnly = true;
+				ciudad_destino_vuelta.value = ciudad_origen_ida.value ;
+				num_asientos_vuelta.value = num_asientos_ida.value;
+				precio_plaza_vuelta.value = precio_plaza_ida.value;
+			}
 
 			/* Mostramos/Ocultamos los campos de la VUELTA */
-            var form_blocks = document.querySelectorAll('div[id^="form_vuelta"]');
-            var form_fields = document.querySelectorAll('input[id^="campo_vuelta"]');
-            for (var i = 0; i < form_blocks.length; i++) {
-                if (checkBox.checked == true) {
-                    form_blocks[i].style.display = "block";
-                    form_fields[i].required = true;
-                } else {
-                    form_blocks[i].style.display = "none";
-                    form_fields[i].required = false;
-                }
-            }
-
-        }
-    </script>
+			var form_blocks = document.querySelectorAll('div[id^="form_vuelta"]');
+			var form_fields = document.querySelectorAll('input[id^="campo_vuelta"]');
+			for (var i = 0; i < form_blocks.length; i++) {
+				if (checkBox.checked == true) {
+					form_blocks[i].style.display = "block";
+					form_fields[i].required = true;
+				} else {
+					form_blocks[i].style.display = "none";
+					form_fields[i].required = false;
+				}
+			}
+		}
+	</script>
 {% endblock %}
 
 
