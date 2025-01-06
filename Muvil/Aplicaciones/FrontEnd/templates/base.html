@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% block base_head %} {% endblock %}
+	{% block base_head %} {% endblock %}
 
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block base_title %} {% endblock %}</title>
@@ -72,7 +72,11 @@
 
     {% block base_content %} {% endblock %}
 
-    {% include "pie_pagina.html" %}
+		{% if show_footer != False %}
+
+			{% include "pie_pagina.html" %}
+
+		{% endif %}
 
     {% block base_script %}
 		<!----- FontAwesome ----->

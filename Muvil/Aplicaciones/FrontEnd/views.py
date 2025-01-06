@@ -39,6 +39,7 @@ from PIL import Image
 import requests
 import io
 import pytz
+import json
 #import pywhatkit
 from django.http import JsonResponse
 from geopy.geocoders import Nominatim
@@ -772,11 +773,13 @@ def v_nuevo_viaje(request, persona, vehiculos):
         messages.error(request, "¡¡¡Por favor, registra 1 vehiculo antes de publicar viajes!!!.")
         return redirect('n_menu_usuario_coches')
 
-    localizaciones = Localizaciones.objects.all()
+    localizaciones = Localizaciones.objects.all().values('direccion', 'municipio')
+    localizaciones_json = json.dumps(list(localizaciones))
 
     args = {
+        'show_footer': False,
         "usuario": persona,
-        "localizaciones": localizaciones
+        "localizaciones": localizaciones_json
     }
 
     if request.method == "POST":
@@ -816,6 +819,8 @@ def v_nuevo_viaje(request, persona, vehiculos):
                 viaje_vuelta.numero_asientos_libres = vueltaform.cleaned_data['numero_asientos_vuelta']
                 viaje_vuelta.ciudad_origen = vueltaform.cleaned_data['ciudad_origen_vuelta']
                 viaje_vuelta.ciudad_destino = vueltaform.cleaned_data['ciudad_destino_vuelta']
+                viaje_vuelta.punto_recogida = vueltaform.cleaned_data['punto_recogida_vuelta']
+                viaje_vuelta.punto_destino = vueltaform.cleaned_data['punto_destino_vuelta']
                 viaje_vuelta.fecha_ida = vueltaform.cleaned_data['fecha_vuelta']
                 viaje_vuelta.hora_ida = vueltaform.cleaned_data['hora_vuelta']
                 viaje_vuelta.importe_conductor_asiento = vueltaform.cleaned_data['importe_conductor_asiento_vuelta']

@@ -117,18 +117,32 @@ class CaparazonesForm(ModelForm):
 class ViajesForm(ModelForm):
     class Meta:
         model = Viajes
-        fields = ('ciudad_origen','ciudad_destino','fecha_ida','hora_ida', 'flg_ida_vuelta', 'flg_confirmacion_auto',
+        fields = ('ciudad_origen','ciudad_destino', 'punto_recogida', 'punto_destino', 'fecha_ida','hora_ida', 'flg_ida_vuelta', 'flg_confirmacion_auto',
                   'numero_asientos_viaje', 'importe_conductor_asiento', 'id_vehiculo', 'equipaje', 'detalles')
+        FLG_IDA_VUELTA_CHOICES = [
+            (True, 'Sí'),
+            (False, 'No'),
+        ]
         widgets = {
             'ciudad_origen': TextInput(attrs={
                 'class': "form-control",
                 'list': "localizaciones",
-                'id': "ciudad_origen"
+                'id': "ciudad_origen",
+                'autocomplete': "off"
             }),
             'ciudad_destino': TextInput(attrs={
                 'class': "form-control",
                 'list': "localizaciones",
-                'id': "ciudad_destino"
+                'id': "ciudad_destino",
+                'autocomplete': "off"
+            }),
+            'punto_recogida': TextInput(attrs={
+                'class': "form-control",
+                'id': "punto_recogida"
+            }),
+            'punto_destino': TextInput(attrs={
+                'class': "form-control",
+                'id': "punto_destino"
             }),
             'fecha_ida': DateInput(attrs={
                 'class': "form-control",
@@ -150,14 +164,14 @@ class ViajesForm(ModelForm):
                 'id': "importe_conductor_asiento"
             }),
             'id_vehiculo': Select(attrs={
-                'class': "form-control",
+                'class': "form-select",
                 'required': 'True',
             }),
-            'flg_ida_vuelta': CheckboxInput(attrs={
-                'class': "form-check-input",
-                'type': "checkbox",
-                'onclick': "mostrarVuelta()",
-                'id': "vueltaCheck"
+            'flg_ida_vuelta': RadioSelect(choices=[
+                (True, 'Sí'),
+                (False, 'No')
+            ], attrs={
+                'id': "vuelta-radio"
             }),
             'flg_confirmacion_auto': CheckboxInput(attrs={
                 'class': "form-check-input",
@@ -172,7 +186,7 @@ class ViajesForm(ModelForm):
             'detalles': Textarea(attrs={
                 'class': "form-control",
                 'rows': '1',
-                'placeholder': 'Punto de recogida, punto de dejada y otros detalles...'
+                'placeholder': 'Otros detalles del viaje...'
             })
         }
 
@@ -189,70 +203,75 @@ class VueltaViajesForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'class': "form-control",
-            'id': 'campo_vuelta1'
-        }
-        )
+            'id': 'campo_vuelta1',
+            'autocomplete': 'off'
+        })
     )
     ciudad_destino_vuelta = forms.CharField(
         label='Ciudad Destino Vuelta',
         required=False,
         widget=forms.TextInput(attrs={
             'class': "form-control",
-            'id': 'campo_vuelta2'
-        }
-        )
+            'id': 'campo_vuelta2',
+            'autocomplete': 'off'
+        })
+    )
+    punto_recogida_vuelta = forms.CharField(
+        label='Punto Recogida Vuelta',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'id': "punto_recogida_vuelta"
+        })
+    )
+    punto_destino_vuelta = forms.CharField(
+        label='Punto Destino Vuelta',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'id': "punto_destino_vuelta"
+        }),
     )
     fecha_vuelta = forms.DateField(
-                    label='Fecha Vuelta',
-                    required=False,
-                    widget=forms.DateInput(attrs={
-                                                'class': "form-control",
-                                                'type': 'date',
-                                                'id': 'campo_vuelta3'
-                                                }
-                                            )
-                    )
+        label='Fecha Vuelta',
+        required=False,
+        widget=forms.DateInput(attrs={
+            'class': "form-control",
+            'type': 'date',
+            'id': 'campo_vuelta3'
+            }
+        )
+    )
     hora_vuelta = forms.TimeField(
-                    label='Hora Vuelta',
-                    required=False,
-                    widget=forms.TimeInput(attrs={
-                                                'class': "form-control",
-                                                'type': 'time',
-                                                'list': 'lista_horas_viaje',
-                                                'id': 'campo_vuelta4'
-                                                }
-                                            )
-                    )
+        label='Hora Vuelta',
+        required=False,
+        widget=forms.TimeInput(attrs={
+            'class': "form-control",
+            'type': 'time',
+            'list': 'lista_horas_viaje',
+            'id': 'campo_vuelta4'
+            }
+        )
+    )
     numero_asientos_vuelta = forms.IntegerField(
-                        label='Plazas Vuelta',
-                        required=False,
-                        widget=forms.NumberInput(attrs={
-                                                        'class': "form-control",
-                                                        'id': 'campo_vuelta5'
-                                                        }
-                                                )
-                    )
+        label='Plazas Vuelta',
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': "form-control",
+            'id': 'campo_vuelta5'
+            }
+        )
+    )
     importe_conductor_asiento_vuelta = forms.DecimalField(
-                        label='Precio Vuelta',
-                        required=False,
-                        widget=forms.NumberInput(attrs={
-                                                        'class': "form-control",
-                                                        'step': 0.5,
-                                                        'id': 'campo_vuelta6'
-                                                        }
-                                                )
-                    )
-    detalles_vuelta = forms.CharField(
-                        label='Detalles adicionales',
-                        required=False,
-                        widget=forms.Textarea(attrs={
-                            'class': "form-control",
-                            'rows': '1',
-                            'id': 'campo_vuelta7',
-                            'placeholder': 'Punto de recogida, punto de dejada y otros detalles...'
-                            }
-                        )
-                    )
+        label='Precio Vuelta',
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': "form-control",
+            'step': 0.5,
+            'id': 'campo_vuelta6'
+            }
+        )
+    )
 
 class VehiculosForm(ModelForm):
 
