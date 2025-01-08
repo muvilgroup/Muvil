@@ -44,7 +44,6 @@ if (btnNext && btnPrev) {
       btnPrev.classList.add("invisible");
     } else if (currentStepIndex == 4) {
       btnNext.classList.add("d-none");
-      btnPrev.classList.add("invisible");
     } else {
       btnNext.classList.remove("d-none");
     }
