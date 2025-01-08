@@ -2,7 +2,7 @@ import django_filters
 from django.forms import CheckboxInput, DateInput, DateTimeInput, MultipleChoiceField, Select, TextInput, NumberInput, RadioSelect
 from django.db import models
 from ..models import Viajes, Mensajes
-from ..choices import estados_viajes, categorias_puntuacion
+from ..choices import estados_viajes, categorias_puntuacion, estados_pref_mascotas, estados_pref_fumar, estados_pref_comida, estados_pref_musica
 
 
 class MisViajesFilter(django_filters.FilterSet):
@@ -62,7 +62,7 @@ class BuscarViajeFilter(django_filters.FilterSet):
         choices=categorias_puntuacion,
         label="Puntuación mínima:",
         empty_label="Todas las puntuaciones",
-        widget=Select(attrs={'class': 'form-control'}),
+        widget=Select(attrs={'class': 'form-select'}),
         lookup_expr='gte'
     )
 
@@ -71,12 +71,45 @@ class BuscarViajeFilter(django_filters.FilterSet):
         choices = estados_viajes,
         empty_label="Todos los estados",
         label="Estado",
-        widget=Select(attrs={'class': 'form-control'})
+        widget=Select(attrs={'class': 'form-select'})
         )
+
+    # Preferences
+    mascota = django_filters.ChoiceFilter(
+        field_name='id_persona__pref_mascota',
+        choices=estados_pref_mascotas,
+        label="Preferencia por mascotas:",
+        empty_label="Seleccionar...",
+        widget=Select(attrs={'class': 'form-select'})
+    )
+    fumar = django_filters.ChoiceFilter(
+        field_name='id_persona__pref_fumar',
+        choices=estados_pref_fumar,
+        label="Preferencia por fumar:",
+        empty_label="Seleccionar...",
+        widget=Select(attrs={'class': 'form-select'})
+    )
+    comida = django_filters.ChoiceFilter(
+        field_name='id_persona__pref_comida',
+        choices=estados_pref_comida,
+        label="Preferencia por comida:",
+        empty_label="Seleccionar...",
+        widget=Select(attrs={'class': 'form-select'})
+    )
+    musica = django_filters.ChoiceFilter(
+        field_name='id_persona__pref_musica',
+        choices=estados_pref_musica,
+        label="Preferencia por música:",
+        empty_label="Seleccionar...",
+        widget=Select(attrs={'class': 'form-select'})
+    )
 
     class Meta:
         model = Viajes
-        fields = ['fecha_desde', 'fecha_hasta', 'precio_desde', 'precio_hasta','categoria_minima']
+        fields = [
+            'fecha_desde', 'fecha_hasta', 'precio_desde', 'precio_hasta', 'categoria_minima',
+            'estado', 'mascota', 'fumar', 'comida', 'musica'
+        ]
 
 
 class UsuarioviajesopinionesFilter(django_filters.FilterSet):
