@@ -832,6 +832,7 @@ def v_nuevo_viaje(request, persona, vehiculos):
                 viaje_vuelta.duracion_min = minutos_viaje
                 viaje_vuelta.fechor_llegada = v_fechor_vuelta + timedelta(minutes=minutos_viaje)
                 viaje_vuelta.flg_ida_vuelta = True
+                viaje_vuelta.detalles = viaje.detalles
                 # Pasamos validaciones sobre el viaje de Vuelta
                 val = ValidacionesViajes(persona_input=persona, viaje_input=viaje_vuelta)
                 lista_mensajes = val.val_mensajes_salida()
