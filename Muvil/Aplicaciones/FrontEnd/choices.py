@@ -96,7 +96,7 @@ estados_pref_fumar = (
 
 estados_pref_comida = (
     (1, 'Sin comida'),
-    (3, 'Comida incluida'),
+    (3, 'Se permite comida'),
 )
 
 estados_pref_musica = (
