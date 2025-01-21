@@ -83,3 +83,23 @@ modelos = (
     ('Localizaciones', 'Localizaciones'),
     ('<Pendiente añadir>', '<Pendiente añadir>')
 )
+
+estados_pref_mascotas = (
+    (1, 'Sin mascotas'),
+    (3, 'Adoro las mascotas'),
+)
+
+estados_pref_fumar = (
+    (1, 'No fumar'),
+    (3, 'Permitido'),
+)
+
+estados_pref_comida = (
+    (1, 'Sin comida'),
+    (3, 'Se permite comida'),
+)
+
+estados_pref_musica = (
+    (1, 'Sin música'),
+    (3, 'Con música'),
+)
