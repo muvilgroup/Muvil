@@ -14,9 +14,9 @@ if (btnNext && btnPrev) {
     currentStepIndex++;
     currentStep = document.querySelector(`.step-${currentStepIndex}`);
     currentStep.classList.remove("d-none");
-    if (currentStepIndex == 4) {
+    if (currentStepIndex == 5) {
       btnNext.classList.add("d-none");
-    } else if (currentStepIndex == 9) {
+    } else if (currentStepIndex == 10) {
       btnNext.classList.add("d-none");
       btnPublish.classList.remove("d-none");
     } else {
@@ -27,10 +27,10 @@ if (btnNext && btnPrev) {
     if (currentStepIndex == 0) return;
     currentStep = document.querySelector(`.step-${currentStepIndex}`);
     currentStep.classList.add("d-none");
-    if (currentStepIndex == 9) {
+    if (currentStepIndex == 10) {
       let selectedRadio = document.querySelector('input[name="flg_ida_vuelta"]:checked');
       if (selectedRadio.value == 'False') {
-        currentStepIndex = 4;
+        currentStepIndex = 5;
       } else {
         currentStepIndex--;
       }
@@ -42,7 +42,7 @@ if (btnNext && btnPrev) {
     btnPublish.classList.add("d-none");
     if (currentStepIndex == 0) {
       btnPrev.classList.add("invisible");
-    } else if (currentStepIndex == 4) {
+    } else if (currentStepIndex == 5) {
       btnNext.classList.add("d-none");
     } else {
       btnNext.classList.remove("d-none");
@@ -50,27 +50,21 @@ if (btnNext && btnPrev) {
   });
 }
 
-if (btnReturnYes && btnReturnNo) {
+if (btnReturnYes) {
   btnReturnYes.addEventListener("click", function() {
     currentStep = document.querySelector(`.step-${currentStepIndex}`);
     currentStep.classList.add("d-none");
-    currentStepIndex = 5;
+    currentStepIndex = 6;
     currentStep = document.querySelector(`.step-${currentStepIndex}`);
     currentStep.classList.remove("d-none");
     btnNext.classList.remove("d-none");
     btnPrev.classList.remove("invisible");
   });
-  btnReturnNo.addEventListener("click", function() {
-    event.stopPropagation();
-    currentStep = document.querySelector(`.step-${currentStepIndex}`);
-    currentStep.classList.add("d-none");
-    currentStepIndex = 9;
-    currentStep = document.querySelector(`.step-${currentStepIndex}`);
-    currentStep.classList.remove("d-none");
-    btnNext.classList.add("d-none");
-    btnPublish.classList.remove("d-none");
-    btnPrev.classList.remove("invisible");
-  });
+}
+
+if (btnReturnNo) {
+  btnReturnNo.setAttribute('data-bs-toggle', 'modal');
+  btnReturnNo.setAttribute('data-bs-target', '#publicarviajeModal');
 }
 
 function validateFields() {
@@ -85,14 +79,20 @@ function validateFields() {
   return true;
 }
 
-const inputs = [
-  { id: "ciudad_origen", addressListSelector: "#ciudad_origen + .address-search-list" },
-  { id: "ciudad_destino", addressListSelector: "#ciudad_destino + .address-search-list" },
-  { id: "campo_vuelta1", addressListSelector: "#campo_vuelta1 + .address-search-list" },
-  { id: "campo_vuelta2", addressListSelector: "#campo_vuelta2 + .address-search-list" }
+const inputReturnMapping = [
+  { 
+    input: { id: "ciudad_origen", addressListSelector: "#ciudad_origen + .address-search-list" },
+    return: { id: "campo_vuelta2", addressListSelector: "#campo_vuelta2 + .address-search-list" },
+  },
+  { 
+    input: { id: "ciudad_destino", addressListSelector: "#ciudad_destino + .address-search-list" },
+    return: { id: "campo_vuelta1", addressListSelector: "#campo_vuelta1 + .address-search-list" },
+  },
 ];
 
-function setupInputHandlers(inputConfig) {
+inputReturnMapping.forEach(mapping => setupInputHandlers(mapping.input, mapping.return));
+
+function setupInputHandlers(inputConfig, returnConfig = null) {
   const inputElement = document.getElementById(inputConfig.id);
   const addressList = document.querySelector(inputConfig.addressListSelector);
   let isValidInput = false; 
@@ -125,6 +125,13 @@ function setupInputHandlers(inputConfig) {
           inputElement.value = selectedLocation;
           isValidInput = true;
           addressList.classList.add("d-none");
+
+          if (returnConfig) {
+            const returnElement = document.getElementById(returnConfig.id);
+            if (returnElement) {
+              returnElement.value = selectedLocation;
+            }
+          }
         });
       });
     }
@@ -157,6 +164,13 @@ function setupInputHandlers(inputConfig) {
           inputElement.value = selectedLocation;
           isValidInput = true;
           addressList.classList.add("d-none");
+
+          if (returnConfig) {
+            const returnElement = document.getElementById(returnConfig.id);
+            if (returnElement) {
+              returnElement.value = selectedLocation;
+            }
+          }
         });
       });
     } else {
@@ -174,5 +188,3 @@ function setupInputHandlers(inputConfig) {
     }
   });
 }
-
-inputs.forEach(setupInputHandlers);

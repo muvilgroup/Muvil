@@ -817,8 +817,8 @@ def v_nuevo_viaje(request, persona, vehiculos):
                 viaje_vuelta.id_vehiculo = viaje.id_vehiculo
                 viaje_vuelta.numero_asientos_viaje = vueltaform.cleaned_data['numero_asientos_vuelta']
                 viaje_vuelta.numero_asientos_libres = vueltaform.cleaned_data['numero_asientos_vuelta']
-                viaje_vuelta.ciudad_origen = vueltaform.cleaned_data['ciudad_origen_vuelta']
-                viaje_vuelta.ciudad_destino = vueltaform.cleaned_data['ciudad_destino_vuelta']
+                viaje_vuelta.ciudad_origen = viaje.ciudad_destino
+                viaje_vuelta.ciudad_destino = viaje.ciudad_origen
                 viaje_vuelta.punto_recogida = vueltaform.cleaned_data['punto_recogida_vuelta']
                 viaje_vuelta.punto_destino = vueltaform.cleaned_data['punto_destino_vuelta']
                 viaje_vuelta.fecha_ida = vueltaform.cleaned_data['fecha_vuelta']
@@ -832,7 +832,7 @@ def v_nuevo_viaje(request, persona, vehiculos):
                 viaje_vuelta.duracion_min = minutos_viaje
                 viaje_vuelta.fechor_llegada = v_fechor_vuelta + timedelta(minutes=minutos_viaje)
                 viaje_vuelta.flg_ida_vuelta = True
-                viaje_vuelta.detalles = viaje.detalles
+                viaje_vuelta.detalles = vueltaform.cleaned_data['detalles_vuelta']
                 # Pasamos validaciones sobre el viaje de Vuelta
                 val = ValidacionesViajes(persona_input=persona, viaje_input=viaje_vuelta)
                 lista_mensajes = val.val_mensajes_salida()

@@ -204,7 +204,8 @@ class VueltaViajesForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': "form-control",
             'id': 'campo_vuelta1',
-            'autocomplete': 'off'
+            'autocomplete': 'off',
+            'readonly': 'readonly'
         })
     )
     ciudad_destino_vuelta = forms.CharField(
@@ -213,7 +214,8 @@ class VueltaViajesForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': "form-control",
             'id': 'campo_vuelta2',
-            'autocomplete': 'off'
+            'autocomplete': 'off',
+            'readonly': 'readonly'
         })
     )
     punto_recogida_vuelta = forms.CharField(
@@ -269,6 +271,27 @@ class VueltaViajesForm(forms.Form):
             'class': "form-control",
             'step': 0.5,
             'id': 'campo_vuelta6'
+            }
+        )
+    )
+    equipaje_vuelta= forms.ChoiceField(
+        label='Equipaje Vuelta',
+        required=False,
+        choices=equipaje,
+        widget=forms.Select(attrs={
+            'class': "form-select",
+            'id': 'campo_vuelta7',
+            }
+        ),
+    )
+    detalles_vuelta = forms.CharField(
+        label='Detalles adicionales vuelta',
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': "form-control",
+            'rows': '1',
+            'id': 'campo_vuelta8',
+            'placeholder': 'Otros detalles del viaje de vuelta...'
             }
         )
     )
