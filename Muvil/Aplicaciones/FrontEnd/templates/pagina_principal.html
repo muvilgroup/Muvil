@@ -4,7 +4,7 @@
 {% load templatetags %}
 {% load pwa_webpush %}
 
-{% block base_title %} Pagina Principal {% endblock %}
+{% block base_title %} Página Principal {% endblock %}
 
 {% block base_head %} {% progressive_web_app_meta %} {% endblock %}
 
@@ -534,7 +534,7 @@
 				  <p class="hero-title fw-bold">JUNTOS RODAMOS, JUNTOS AHORRAMOS</p>
 
 				  <p class="hero-text">
-					¿A donde te apetece viajar hoy?
+					¿A dónde te apetece viajar hoy?
 				  </p>
 				</div>
 
@@ -552,7 +552,7 @@
 					  {% if ciudad_origen %}
 					   	value="{{ciudad_origen}}"
 					   {% else %}
-					   	placeholder="De donde quieres salir?"
+					   	placeholder="¿De dónde quieres salir?"
 					   {% endif %} required/>
 					<datalist id="localizaciones">
 						{% for loc in localizaciones %}
@@ -570,10 +570,10 @@
 					  {% if ciudad_destino %}
 					  value="{{ciudad_destino}}"
 					  {% else %}
-					  placeholder="¿A donde quieres ir?"
+					  placeholder="¿A dónde quieres ir?"
 					  {% endif %}
 					  class="input-field"
-					  placeholder="A donde quieres viajar?"
+					  placeholder="¿A dónde quieres viajar?"
 					  required
 					/>
 				  </div>
@@ -782,7 +782,7 @@
 					   {% if ciudad_origen %}
 					   	value="{{ciudad_origen}}"
 					   {% else %}
-					   	placeholder="¿Desde donde sales?"
+					   	placeholder="¿Desde dónde sales?"
 					   {% endif %} required>
 				<label for="inputOrigen" class="form-label">Origen</label>
 				<datalist id="localizaciones">
@@ -796,7 +796,7 @@
 					   {% if ciudad_destino %}
 					   	value="{{ciudad_destino}}"
 					   {% else %}
-					   	placeholder="¿A donde quieres ir?"
+					   	placeholder="¿A dónde quieres ir?"
 					   {% endif %} required>
 				<label for="inputDestino" class="form-label">Destino</label>
 				<datalist id="localizaciones">
