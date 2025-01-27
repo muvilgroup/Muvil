@@ -1374,3 +1374,12 @@ def v_contacto(request):
     }
     return render(request, "contacto.html", datos)
 
+def custom_redirect_after_login(request):
+    next_url = request.GET.get('next')
+
+    if request.META.get('HTTP_X_FROM_APP') == 'true':
+        user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+        if "iphone" in user_agent or "ios" in user_agent:
+            return redirect("muvil://")
+
+    return redirect(next_url if next_url else "/")

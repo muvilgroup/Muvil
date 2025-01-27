@@ -103,7 +103,7 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/custom-redirect-after-login"
 LOGOUT_REDIRECT_URL = "/"
 
 WSGI_APPLICATION = 'Muvil.wsgi.application'
