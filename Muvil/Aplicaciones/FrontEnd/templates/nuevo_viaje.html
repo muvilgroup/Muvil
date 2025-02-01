@@ -4,123 +4,278 @@
 
 {% block base_title %} Nuevo Viaje {% endblock %}
 
+{% block base_style %}
+<style>
+	input.form-control,
+	select.form-select {
+		line-height: 2;
+	}
+
+	textarea.form-control {
+		height: 6.7rem;
+		line-height: 2;
+	}
+
+	.step-navigation .btn {
+		width: 160px;
+	}
+
+	@media (min-width: 410px) {
+		.step-navigation .btn {
+			width: 180px;
+		}
+	}
+
+	btn-publish {
+		margin-left: 16px;
+		width: -webkit-fill-available;
+		width: fill-available;
+	}
+
+	div.fill-available {
+		width: -webkit-fill-available;
+		width: fill-available;
+	}
+
+	.cursor-pointer {
+    cursor: pointer;
+	}
+
+	#vuelta-radio input[type="radio"] {
+    visibility:hidden;
+		width: 0;
+	}
+
+	#vuelta-radio label {
+		width: 100%;
+		font-weight: bold;
+    line-height: 3;
+		border-radius: 8px;
+		cursor: pointer;
+	}
+
+	#vuelta-radio label[for="vuelta-radio_0"] {
+		margin-bottom: 10px;
+		color: white;
+		background-color: #FFC244;
+	}
+
+	#vuelta-radio label[for="vuelta-radio_1"] {
+		background-color: #EFEFEF;
+	}
+
+	#ciudad_origen:focus {
+		box-shadow: none;
+		border-color: #D0D4DD;
+	}
+
+	.address-search-list {
+		width: calc(100% - 1rem);
+		padding: 6px;
+		box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+	}
+
+	.address-search-list-item:hover {
+		background-color: #EDEDED;
+	}
+
+	.input-wrapper {
+		position: relative;
+	}
+</style>
+{% endblock %}
 
 {% block base_content %}
-	<div class="container-md mt-5 d-flex justify-content-center">
-		<div class="row col-12 col-md-8">
-			<span class="font2-muvil fs-4 border-bottom border-4 border-warning roboto-text">Introduce los datos de tu viaje...</span>
-			<form method="POST" class="row justify-content-center post-form px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
-				<div class="col-md-12 py-2 mx-3 text-center bg-light">
-					{{ form.flg_confirmacion_auto }}
-					<i class="fas fa-wand-sparkles fa-lg"></i>
-					<label for="conf-manual" class="form-check-label fw-bold roboto-text">Aceptación automatica de reservas</label>
+	<div class="container-md mt-5">
+		<div class="row justify-content-center">
+			<form method="POST" class="col-lg-6 post-form px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+				<div class="step step-0">
+					<div class="fs-2 roboto-text text-center mb-3">
+						<span>¿De qué lugar partes?</span>
+					</div>
+					<div class="p-2 input-wrapper">
+						<i class="fas fa-map fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Municipio de origen</label>
+						{{ form.ciudad_origen }}
+						<div class="address-search-list mt-2 rounded d-none border position-absolute bg-white"></div>
+					</div>
+					<div class="p-2">
+						<i class="fa-solid fa-location-dot fa-lg roboto-text"></i>
+						<label for="input" class="form-label">Punto de recogida (dirección exacta del lugar de recogida)</label>
+						{{ form.punto_recogida }}
+					</div>
 				</div>
-				<div class="col-12 col-md-6 py-2">
-					<i class="fas fa-map fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Ciudad Origen</label>
-					{{ form.ciudad_origen }}
-					<datalist id="localizaciones" class="roboto-text">
-					{% for loc in localizaciones %}
-						<option value="{{ loc.direccion }}"></option>
-					{% endfor %}
+				<div class="step step-1 d-none">
+					<div class="fs-2 roboto-text text-center mb-3">
+						<span>¿A dónde te diriges?</span>
+					</div>
+					<div class="p-2 input-wrapper">
+						<i class="fas fa-flag-checkered fa-lg roboto-text"></i>
+						<label for="input" class="form-label">Municipio Destino</label>
+						{{ form.ciudad_destino }}
+						<div class="address-search-list mt-2 rounded d-none border position-absolute bg-white"></div>
+					</div>
+					<div class="p-2">
+						<i class="fa-solid fa-location-dot fa-lg roboto-text"></i>
+						<label for="input" class="form-label">Punto de destino (dirección a en la cual finaliza el viaje)</label>
+						{{ form.punto_destino }}
+					</div>
+				</div>
+				<div class="step step-2 d-none">
+					<div class="fs-2 roboto-text text-center mb-3">
+						<span>¿Cuándo recogerás a tus pasajeros?</span>
+					</div>
+					<div class="p-2">
+						<i class="fas fa-calendar-day fa-lg"></i>
+						<label for="input" class="form-label roboto-text text-center">Fecha Viaje</label>
+						{{ form.fecha_ida }}
+					</div>
+					<div class="p-2">
+						<i class="fas fa-clock fa-lg"></i>
+						<label for="input" class="form-label roboto-text text-center">Hora Salida</label>
+						{{ form.hora_ida }}
+					</div>
+					<datalist id="lista_horas_viaje">
 					</datalist>
 				</div>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-flag-checkered fa-lg roboto-text"></i>
-					<label for="input" class="form-label">Ciudad Destino</label>
-					{{ form.ciudad_destino }}
-					<datalist id="localizaciones" class="roboto-text">
-					{% for loc in localizaciones %}
-						<option value="{{ loc.direccion }}"></option>
-					{% endfor %}
-					</datalist>
+				<div class="step step-3 d-flex flex-wrap d-none">
+					<div class="fs-2 roboto-text text-center w-100 mb-3">
+						<span>Introduce los detalles del vehículo</span>
+					</div>
+					<div class="col-12 col-lg-6 p-2">
+						<i class="fas fa-people-group fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Plazas</label>
+						{{ form.numero_asientos_viaje }}
+					</div>
+					<div class="col-12 col-lg-6 p-2">
+						<i class="fas fa-coins fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Precio por plaza (€)</label>
+						{{ form.importe_conductor_asiento }}
+					</div>
+					<div class="col-12 col-lg-6 p-2">
+						<i class="fas fa-car-side fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Vehiculo</label>
+						{{ form.id_vehiculo }}
+					</div>
+					<div class="col-12 col-lg-6 p-2">
+						<i class="fas fa-suitcase fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Equipaje</label>
+						{{ form.equipaje }}
+					</div>
+					<div class="col-md-12 py-3 mx-2 mt-2 text-center bg-light fill-available">
+						{{ form.flg_confirmacion_auto }}
+						<i class="fas fa-wand-sparkles fa-lg"></i>
+						<label for="conf-manual" class="form-check-label fw-bold roboto-text">Aceptación automatica de reservas</label>
+					</div>
 				</div>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-calendar-day fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Fecha Viaje</label>
-					{{ form.fecha_ida }}
+				<div class="step step-4 d-none">
+					<div class="fs-2 roboto-text text-center w-100 mb-3">
+						<span>¿Tienes algo más que añadir sobre tu viaje?</span>
+					</div>
+					<div class="p-2">
+						<i class="fas fa-compass fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Detalles adicionales</label>
+						{{ form.detalles }}
+					</div>
 				</div>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-clock fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Hora Salida</label>
-					{{ form.hora_ida }}
-				</div>
-				<datalist id="lista_horas_viaje">
-				</datalist>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-people-group fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Plazas</label>
-					{{ form.numero_asientos_viaje }}
-				</div>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-coins fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Precio por plaza (€)</label>
-					{{ form.importe_conductor_asiento }}
-				</div>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-car-side fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Vehiculo</label>
-					{{ form.id_vehiculo }}
-				</div>
-				<div class="col-md-6 py-2">
-					<i class="fas fa-suitcase fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Equipaje</label>
-					{{ form.equipaje }}
-				</div>
-				<div class="col-md-12 py-2">
-					<i class="fas fa-compass fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Detalles adicionales</label>
-					{{ form.detalles }}
-				</div>
-				<div class="col-md-12 py-2 mx-3 text-center bg-light">
-					{{ form.flg_ida_vuelta }}
-					<label for="input" class="form-check-label fw-bold roboto-text">¿Publicar viaje de VUELTA?</label>
-					<i class="fas fa-right-left fa-lg"></i>
+				<div class="step step-5 d-none">
+					<div class="fs-2 roboto-text text-center w-100 mb-3">
+						<span>¿Publicar viaje de VUELTA?</span>
+					</div>
+					<div class="col-md-12 py-2 mx-3 text-center">
+						{{ form.flg_ida_vuelta }}
+					</div>
 				</div>
 				<!-- INICIO Campos Vuelta -->
-				<div class="col-md-6 py-2 bg-light" id="form_vuelta1" style="display:none">
-					<i class="fas fa-map fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Ciudad Origen Vuelta</label>
-					{{ vueltaform.ciudad_origen_vuelta }}
+				<div class="step step-6 d-none">
+					<div class="fs-2 roboto-text text-center mb-3">
+						<span>¿De qué lugar partes? (Vuelta)</span>
+					</div>
+					<div class="p-2 input-wrapper" id="form_vuelta1">
+						<i class="fas fa-map fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Municipio Origen Vuelta</label>
+						{{ vueltaform.ciudad_origen_vuelta }}
+						<div class="address-search-list mt-2 rounded d-none border position-absolute bg-white"></div>
+					</div>
+					<div class="p-2">
+						<i class="fa-solid fa-location-dot fa-lg roboto-text"></i>
+						<label for="input" class="form-label">Punto de recogida Vuelta</label>
+						{{ vueltaform.punto_recogida_vuelta }}
+					</div>
 				</div>
-				<div class="col-md-6 py-2 bg-light" id="form_vuelta2" style="display:none">
-					<i class="fas fa-flag-checkered fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Ciudad Destino Vuelta</label>
-					{{ vueltaform.ciudad_destino_vuelta }}
+				<div class="step step-7 d-none">
+					<div class="fs-2 roboto-text text-center mb-3">
+						<span>¿A dónde te diriges en la vuelta?</span>
+					</div>
+					<div class="p-2 input-wrapper" id="form_vuelta2">
+						<i class="fas fa-flag-checkered fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Municipio Destino Vuelta</label>
+						{{ vueltaform.ciudad_destino_vuelta }}
+						<div class="address-search-list mt-2 rounded d-none border position-absolute bg-white"></div>
+					</div>
+					<div class="p-2">
+						<i class="fa-solid fa-location-dot fa-lg roboto-text"></i>
+						<label for="input" class="form-label">Punto de destino Vuelta</label>
+						{{ vueltaform.punto_destino_vuelta }}
+					</div>
 				</div>
-				<div class="col-md-6 py-2 bg-light" id="form_vuelta3" style="display:none">
-					<i class="fas fa-calendar-day fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Fecha Vuelta</label>
-					{{ vueltaform.fecha_vuelta }}
+				<div class="step step-8 d-none">
+					<div class="fs-2 roboto-text text-center mb-3">
+						<span>¿Cuándo recogerás a tus pasajeros en la vuelta?</span>
+					</div>
+					<div class="p-2" id="form_vuelta3">
+						<i class="fas fa-calendar-day fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Fecha Vuelta</label>
+						{{ vueltaform.fecha_vuelta }}
+					</div>
+					<div class="p-2" id="form_vuelta4">
+						<i class="fas fa-clock fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Hora Vuelta</label>
+						{{ vueltaform.hora_vuelta }}
+					</div>
 				</div>
-				<div class="col-md-6 py-2 bg-light" id="form_vuelta4" style="display:none">
-					<i class="fas fa-clock fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Hora Vuelta</label>
-					{{ vueltaform.hora_vuelta }}
+				<div class="step step-9 d-flex flex-wrap d-none">
+					<div class="fs-2 roboto-text text-center w-100 mb-3">
+						<span>Introduce los detalles del viaje de vuelta</span>
+					</div>
+					<div class="col-12 col-lg-6 p-2" id="form_vuelta5">
+						<i class="fas fa-people-group fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Plazas Vuelta</label>
+						{{ vueltaform.numero_asientos_vuelta }}
+					</div>
+					<div class="col-12 col-lg-6 p-2" id="form_vuelta6">
+						<i class="fas fa-coins fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Precio por plaza (€) Vuelta</label>
+						{{ vueltaform.importe_conductor_asiento_vuelta }}
+					</div>
+					<div class="col-12 col-lg-6 p-2">
+						<i class="fas fa-suitcase fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Equipaje Vuelta</label>
+						{{ vueltaform.equipaje_vuelta }}
+					</div>
 				</div>
-				<div class="col-md-6 py-2 bg-light" id="form_vuelta5" style="display:none">
-					<i class="fas fa-people-group fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Plazas Vuelta</label>
-					{{ vueltaform.numero_asientos_vuelta }}
+				<div class="step step-10 d-none">
+					<div class="fs-2 roboto-text text-center w-100 mb-3">
+						<span>¿Tienes algo más que añadir sobre tu viaje de vuelta?</span>
+					</div>
+					<div class="p-2">
+						<i class="fas fa-compass fa-lg"></i>
+						<label for="input" class="form-label roboto-text">Detalles adicionales</label>
+						{{ vueltaform.detalles_vuelta }}
+					</div>
 				</div>
-				<div class="col-md-6 py-2 bg-light" id="form_vuelta6" style="display:none">
-					<i class="fas fa-coins fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Precio por plaza (€) Vuelta</label>
-					{{ vueltaform.importe_conductor_asiento_vuelta }}
-				</div>
-				<div class="col-md-12 py-2 bg-light" id="form_vuelta7" style="display:none">
-					<i class="fas fa-compass fa-lg"></i>
-					<label for="input" class="form-label roboto-text">Detalles adicionales Vuelta</label>
-					{{ vueltaform.detalles_vuelta }}
+				<div class="step-navigation text-center mt-5 d-flex justify-content-between px-2">
+					<button type="button" class="btn btn-outline-warning btn-next fs-5 font-weight-bold invisible" id="btn-prev">
+						<i class="fa-solid fa-angles-left"></i>&nbsp; Volver
+					</button>
+					<button type="button" class="btn btn-warning btn-next fs-5 font-weight-bold" id="btn-next">
+						Continuar &nbsp;<i class="fa-solid fa-angles-right"></i>
+					</button>
+					<button type="button" class="btn btn-warning btn-publish fs-5 font-weight-bold d-none boton-3d" id="btn-publish" data-bs-toggle="modal" data-bs-target="#publicarviajeModal">
+						Publicar Viaje &nbsp;<i class="fa-solid fa-road"></i>
+					</button>
 				</div>
 				<!-- FIN Campos Vuelta -->
-				<div class="col-12 d-flex justify-content-center py-3">
-					<a class="btn btn-warning btn-guardar col-4 boton-3d fw-bold roboto-text" href="" data-bs-toggle="modal"
-					   data-bs-target="#publicarviajeModal">
-						<i class="fas fa-road fa-lg"></i>
-						Publicar Viaje
-					</a>
-				</div>
 				<!-- INICIO Modal Cancelar Viaje -->
 				<div class="modal fade" id="publicarviajeModal" tabindex="-1" role="dialog" aria-labelledby="publicarviajeModal" aria-hidden="true">
 					<div class="modal-dialog">
@@ -149,55 +304,20 @@
 
 {% block base_script %}
 	<script>
-        var dataList = document.getElementById('lista_horas_viaje');
-
-        for (var hora = 0; hora < 24; hora++) {
-            for (var minuto = 0; minuto < 60; minuto += 30) {
-                var horaString = hora.toString().padStart(2, '0');
-                var minutoString = minuto.toString().padStart(2, '0');
-                var option = document.createElement('option');
-                option.value = `${horaString}:${minutoString}`;
-                dataList.appendChild(option);
-            }
-        }
-    </script>
+		const localizaciones = JSON.parse('{{ localizaciones|safe }}');
+	</script>
 	<script>
-        function mostrarVuelta() {
-			var checkBox = document.getElementById("vueltaCheck");
+		var dataList = document.getElementById('lista_horas_viaje');
 
-			/* Copiamos los campos de la IDA en la VUELTA */
-			var ciudad_origen_vuelta = document.getElementById("campo_vuelta1");
-            var ciudad_destino_vuelta = document.getElementById("campo_vuelta2");
-            var num_asientos_vuelta = document.getElementById("campo_vuelta5");
-            var precio_plaza_vuelta = document.getElementById("campo_vuelta6");
-            var ciudad_origen_ida = document.getElementById("ciudad_origen");
-            var ciudad_destino_ida = document.getElementById("ciudad_destino");
-            var num_asientos_ida = document.getElementById("numero_asientos_viaje");
-            var precio_plaza_ida = document.getElementById("importe_conductor_asiento");
-            if (checkBox.checked == true) {
-            	ciudad_origen_vuelta.readOnly = true;
-            	ciudad_origen_vuelta.value = ciudad_destino_ida.value;
-            	ciudad_destino_vuelta.readOnly = true;
-            	ciudad_destino_vuelta.value = ciudad_origen_ida.value ;
-            	num_asientos_vuelta.value = num_asientos_ida.value;
-            	precio_plaza_vuelta.value = precio_plaza_ida.value;
-            }
-
-			/* Mostramos/Ocultamos los campos de la VUELTA */
-            var form_blocks = document.querySelectorAll('div[id^="form_vuelta"]');
-            var form_fields = document.querySelectorAll('input[id^="campo_vuelta"]');
-            for (var i = 0; i < form_blocks.length; i++) {
-                if (checkBox.checked == true) {
-                    form_blocks[i].style.display = "block";
-                    form_fields[i].required = true;
-                } else {
-                    form_blocks[i].style.display = "none";
-                    form_fields[i].required = false;
-                }
-            }
-
-        }
-    </script>
+		for (var hora = 0; hora < 24; hora++) {
+			for (var minuto = 0; minuto < 60; minuto += 30) {
+				var horaString = hora.toString().padStart(2, '0');
+				var minutoString = minuto.toString().padStart(2, '0');
+				var option = document.createElement('option');
+				option.value = `${horaString}:${minutoString}`;
+				dataList.appendChild(option);
+			}
+		}
+  </script>
+	<script src="{% static 'js/nuevo_viaje.js' %}"></script>
 {% endblock %}
-
-

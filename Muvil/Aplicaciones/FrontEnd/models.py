@@ -64,6 +64,8 @@ class Viajes (models.Model):
     id_persona = models.ForeignKey(Personas, to_field='id', on_delete=models.CASCADE)
     ciudad_origen = models.CharField(max_length=64)
     ciudad_destino = models.CharField(max_length=64)
+    punto_recogida = models.CharField(max_length=255, default='')
+    punto_destino = models.CharField(max_length=255, default='')
     fecha_ida = models.DateField(blank=True, null=True)
     numero_asientos_viaje = models.PositiveSmallIntegerField()
     equipaje = models.CharField(max_length=2, choices=equipaje, default='EM')

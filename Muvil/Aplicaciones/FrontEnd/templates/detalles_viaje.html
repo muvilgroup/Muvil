@@ -101,21 +101,27 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-md-3 px-3 d-flex align-items-center">
+					<div class="col-12 col-md-3 px-3">
 						<i class="fas fa-map fa-lg"></i>
 						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Desde:</span>
 					</div>
 					<div class="col-12 col-md-6 px-3">
-						<div class="fs-5 fw-bold roboto-text" id="desde">{{viaje.ciudad_origen}}</div>
+						<div class="fs-5 fw-bold roboto-text" id="desde">
+							<div>{{viaje.ciudad_origen}}</div>
+							<div>{{viaje.punto_recogida}}</div>
+						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-md-3 px-3 d-flex align-items-center">
+					<div class="col-12 col-md-3 px-3">
 						<i class="fas fa-flag-checkered fa-lg"></i>
 						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Hasta:</span>
 					</div>
 					<div class="col-12 col-md-6 px-3">
-						<div class="fs-5 fw-bold roboto-text" id="hasta">{{viaje.ciudad_destino}}</div>
+						<div class="fs-5 fw-bold roboto-text" id="hasta">
+							<div>{{viaje.ciudad_destino}}</div>
+							<div>{{viaje.punto_destino}}</div>
+						</div>
 					</div>
 				</div>
 				<div class="row">
