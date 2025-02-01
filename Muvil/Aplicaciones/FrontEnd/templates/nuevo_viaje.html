@@ -304,7 +304,7 @@
 
 {% block base_script %}
 	<script>
-		const localizaciones = JSON.parse('{{ localizaciones|safe }}');
+		const localizaciones = {{ localizaciones|safe }} || [];
 	</script>
 	<script>
 		var dataList = document.getElementById('lista_horas_viaje');
