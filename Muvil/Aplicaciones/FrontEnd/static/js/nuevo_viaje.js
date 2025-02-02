@@ -145,9 +145,16 @@ function setupInputHandlers(inputConfig, returnConfig = null) {
       return;
     }
 
-    const filteredLocations = localizaciones.filter(loc =>
-      loc.municipio.toLowerCase().includes(query)
-    );
+    const filteredLocations = [];
+    let count = 0;
+
+    for (const loc of localizaciones) {
+      if (loc.municipio.toLowerCase().includes(query)) {
+        filteredLocations.push(loc);
+        count++;
+        if (count >= 15) break;
+      }
+    }
 
     addressList.innerHTML = "";
 
