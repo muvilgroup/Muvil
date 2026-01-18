@@ -6,7 +6,15 @@ class AlertasPrincipal():
     def __init__(self, usuario_input=None):
         self.__usuario = usuario_input
 
+    def _has_last_login(self):
+        return bool(self.usuario and getattr(self.usuario, 'last_login', None))
+
     def alert_mensajes_salida(self):
+        if not self.usuario or not self.usuario.is_authenticated:
+            return []
+
+        if not self._has_last_login():
+            return []
         lista_mensajes = []
         lista_mensajes += [self.alert_plazas_pendiente_aceptar()] if self.alert_plazas_pendiente_aceptar() is not None else []
         lista_mensajes += [self.alert_plaza_aceptada()] if self.alert_plaza_aceptada() is not None else []
@@ -21,6 +29,9 @@ class AlertasPrincipal():
         '''
             1.- Notificar si hay plazas pendientes de aceptar no vistas
         '''
+        if not self._has_last_login():
+            return None
+
 
         criterio_viajes_user = Q(id_viaje__id_persona_id__id_usuario_id=self.usuario.id)
         criterio_plazas_pend = Q(estado=1)
@@ -38,6 +49,9 @@ class AlertasPrincipal():
         '''
             2.- Notificar si se ha aceptado mi reserva de plaza
         '''
+
+        if not self._has_last_login():
+            return None
 
         criterio_plazas_user = Q(id_persona_id__id_usuario_id=self.usuario.id)
         criterio_plazas_conf = Q(estado=2)

@@ -9,6 +9,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
 from .forms import PersonasForm, ViajesForm, VehiculosForm, ContactoForm, CambiarPassForm, ResetearPassForm,\
     RegistrarUsuarioForm, ImportExportForm, LoginnForm, VueltaViajesForm, CaparazonesForm
 from .utils import codificar_numeros
@@ -362,6 +363,10 @@ def v_pagina_principal(request):
         email_input = request.POST.get('txtEmail', False)
         pass_input = request.POST.get('txtPass', False)
 
+        if not email_input or not pass_input:
+            messages.error(request, "Por favor introduce email y contraseña.")
+            return redirect('n_pagina_principal')
+
         if not request.user.is_authenticated:
             user = authenticate(username=email_input, password=pass_input)
             if user is not None:
@@ -389,18 +394,24 @@ def v_pagina_principal(request):
         if lista_alertas:
             for mensaje in lista_alertas:
                 messages.success(request, mensaje)
-        try:
-            usuario = Personas.objects.get(id_usuario=user.id)
-        except Personas.DoesNotExist:
-            # Aqui entra cuando volvemos del login por Google pero no hay persona creada aún
-            extra_data = SocialAccount.objects.get(user=user).extra_data
-            initial_values = {
-                "nombre": extra_data.get('given_name'),
-                "apellido1": extra_data.get('family_name'),
-                "imagen": extra_data.get('picture')
-            }
-            request.session['google_initial_values'] = initial_values
-            return redirect('n_nuevo_usuario')
+        
+        usuario = Personas.objects.filter(id_usuario=user.id).first()
+        if not usuario:
+            social = SocialAccount.objects.filter(user=user).first()
+
+            if social:
+                extra_data = social.extra_data
+                initial_values = {
+                    "nombre": extra_data.get('given_name'),
+                    "apellido1": extra_data.get('family_name'),
+                    "imagen": extra_data.get('picture')
+                }
+                request.session['google_initial_values'] = initial_values
+                return redirect('n_nuevo_usuario')
+            else:
+                # No Personas and no SocialAccount -> redirect to register
+                return redirect('n_nuevo_usuario')
+        
 
     else:
         usuario = None
