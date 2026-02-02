@@ -11,14 +11,18 @@ POSTGRE_LOCAL = {
 
 POSTGRE_MUVIL = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'muvil_db',
-        'USER': 'muvil_postgre',
-        'PASSWORD': 'Cavives8_$',
-        'HOST': 'localhost',
-        'DATABASE_PORT': '5432'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgresdb_lf3j',
+        'USER': 'postgresdb_lf3j_user',
+        'PASSWORD': '7b6M5O8fxumGpo6qvvVc8sennoRHzhhT',
+        'HOST': 'dpg-d5vvi83uibrs73d3uc7g-a.oregon-postgres.render.com',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+
 
 SQLITE = {
     'default': {
