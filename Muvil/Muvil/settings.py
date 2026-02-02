@@ -28,9 +28,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SECRET_KEY = 'django-insecure-_u7d(jjmsy0n79)@v0d)n#w^odr@_*eenkj4agmn8nq5=ewt2%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','muvil.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','muvil.onrender.com',".onrender.com"]
 
 # Application definition
 
