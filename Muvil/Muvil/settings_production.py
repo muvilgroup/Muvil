@@ -4,7 +4,7 @@ DATABASES = POSTGRE_MUVIL
 
 ALLOWED_HOSTS = ["muvil.es", "www.muvil.es","muvil.onrender.com"]
 CSRF_TRUSTED_ORIGINS = ['https://www.muvil.es', 'https://muvil.es','https://muvil.onrender.com']
-cion porque asi funcionan los arhivos MEDIA que suben los usuarios
+# cion porque asi funcionan los arhivos MEDIA que suben los usuarios
 
 DEBUG = True #se deja en True aunque sea produc
 USE_X_FORWARDED_HOST = True
