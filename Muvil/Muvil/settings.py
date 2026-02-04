@@ -169,6 +169,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/Aplicaciones/FrontEnd/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+
 
 AUTHENTICATION_BACKENDS = [
     'Aplicaciones.users.backends.CustomEmailAuthBackend',

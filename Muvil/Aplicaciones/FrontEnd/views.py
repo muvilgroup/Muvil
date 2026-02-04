@@ -20,7 +20,7 @@ from .choices import categorias_puntuacion, estados_viajes
 from .templatetags.filters import MisViajesFilter, BuscarViajeFilter, MensajesFilter, UsuarioviajesopinionesFilter
 from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate, get_user_model
-from django.core.mail import send_mail
+from .mail import send_email
 from .validaciones import ValidacionesViajes
 from .alertas_pagina_principal import AlertasPrincipal
 from .token import token_activacion_usuario
@@ -1377,11 +1377,12 @@ def v_contacto(request):
         asunto = "Contacto: " + request.POST.get("subject")
         mensaje = f"Mensaje de {email}: \n\n" + request.POST.get("message")
         try:
-            send_mail(asunto,
-                      mensaje,
-                      email,
-                      ["muvil.group@gmail.com"] #Destinatario puede ser distinto al mail configurado en settings.py
-                      )
+            send_email(
+                email,
+                "muvil.group@gmail.com",  # to_email
+                asunto,                   # subject
+                mensaje                   # html_content (or text)
+            )
             return redirect("/contacto/?valido")
         except:
             return redirect("/contacto/?error")
