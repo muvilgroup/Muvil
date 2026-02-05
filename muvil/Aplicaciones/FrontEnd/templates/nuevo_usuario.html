@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuevo Usuario</title>
+
+</head>
+
+<body>
+
+	{% include "index.html" %}
+
+	{% include "header/empty_header.html" %}
+
+	{% include 'including/messages.html' %}
+
+	<style>
+		@media (min-width: 768px) {
+			input.form-control,
+			select.form-select {
+				max-width: 300px;
+			}
+		}
+	</style>
+
+	<div class="container mt-3">
+		<div class="row justify-content-center">
+			<form method="POST" class="post-form row px-2 pt-2" id="form-datospersonales" enctype="multipart/form-data"> {% csrf_token %}
+				<h3 class="col-md-12 py-4 fw-bold fs-4 text-center roboto-text">
+					Bienvenid@ al equipo!!! {% if form.nombre.value %} {{ form.nombre.value }} {% else %} {{ user.email }} {% endif %}
+				</h3>
+				<h2 class="border-bottom border-warning border-4 roboto-text">Introduce tus datos personales...</h2>
+				<div class="col-md-4 py-2">
+					<label for="inputNombre" class="form-label roboto-text"><strong class="roboto-text">Nombre</strong></label>
+					{{ form.nombre }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputPApellido" class="form-label roboto-text"><strong class="roboto-text">Primer Apellido</strong></label>
+					{{ form.apellido1 }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputSapellido" class="form-label roboto-text">Segundo Apellido</label>
+					{{ form.apellido2 }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="numeroDoc" class="form-label roboto-text"><strong class="roboto-text">Tipo documento</strong></label>
+					{{ form.tipo_documento }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="numeroDoc" class="form-label roboto-text"><strong class="roboto-text">Número documento</strong></label>
+					{{ form.numero_documento }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputNacimiento" class="form-label roboto-text"><strong class="roboto-text">Fecha de Nacimiento (DD/MM/YYYY)</strong></label>
+					{{ form.fec_nacimiento }}
+				</div>
+				<!--<div class="col-md-2 py-2">
+					<label for="inputState" class="form-label">Prefijo</label>
+					<select id="inputState" class="form-select" disabled>
+						<option selected>+34 España</option>
+						<option>+95 Inglaterra</option>
+						<option>+21 USA</option>
+					</select>
+				</div>-->
+				<div class="col-md-4 py-2">
+					<label for="inputTelefono" class="form-label roboto-text"><strong class="roboto-text">Teléfono</strong></label>
+					{{ form.num_telefono }}
+				</div>
+				<div class="col-md-4 py-2">
+					<label for="inputImagen" class="form-label roboto-text">Sube tu foto de perfil</label>
+					{{ form.imagen }}
+				</div>
+				<div class="col-12 py-2">
+					<label for="exampleFormControlTextarea1" class="form-label roboto-text">Déjanos conocerte</label>
+					{{ form.descripcion }}
+				</div>
+				<div class="col-12 d-flex justify-content-center py-3">
+					<button type="submit" class="btn btn-warning btn-guardar col-4 roboto-text fw-bold">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>

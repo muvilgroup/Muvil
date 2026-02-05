@@ -1,0 +1,486 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block base_title %} Detalles Viaje {% endblock %}
+
+{% block base_style %}
+	<style>
+		.img-container-viajes{
+            width:80px;
+            height:80px;
+            overflow:hidden;
+        }
+        .img-container-viajes img{
+            width:100%;
+            height:auto;
+        }
+        .boton-3d:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px 0 0 #A8A6A2;
+		}
+		.boton-3d:is(:hover, :focus) {
+		  outline-offset: 3px;
+		}
+		.boton-muvil{
+			border: 2px solid #A8A6A2;
+			background-color: #FFC700;
+		}
+    </style>
+{% endblock %}
+
+{% block base_content %}
+	<div class="container-lg mt-5">
+		<div class="row justify-content-around">
+			<div class="col-12 shadow">
+				<div class="col-12 d-flex justify-content-center py-3">
+				<!-- INICIO Opciones de compartir -->
+					<button class="boton-3d boton-muvil fw-bold fs-4 rounded" id="shareButton">
+						<i class="fas fa-share-nodes fa-lg"></i>
+						<span class="roboto-text">Envía el enlace de este viaje</span>
+					</button>
+					<input type="text" id="shareUrl" placeholder="URL" value="{{ request.path }}" hidden/>
+
+					<div id="fallbackShare" style="display: none;">
+					  <p class="roboto-text">Compartir en:</p>
+					  <a href="https://wa.me/?text=muvil.es" target="_blank" class="roboto-text">WhatsApp</a>
+					  <a href="mailto:?subject=Mira%20esto&body=muvil.es" target="_blank" class="roboto-text">Correo electrónico</a>
+					  <!-- Agrega más opciones de compartir según necesites -->
+					</div>
+				</div>
+				<!-- FIN Opciones de compartir -->
+
+				<div class="row">
+					<div class="col-12 px-3 pt-2">
+						<h3 class="border-bottom border-5 border-warning roboto-text">Detalles del Viaje</h3>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-circle-info fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Estado del Viaje:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="row mt-2" id="estado-viaje">
+							<h4 class="text-white rounded-pill text-center roboto-text" id="estado-viaje"
+								 style="background-color:
+								 	{% if viaje.estado == 1 %}
+										#8C8F8B
+									{% elif viaje.estado == 2 %}
+										#1CAB04
+									{% elif viaje.estado == 3 %}
+										#991C1C
+									{% elif viaje.estado == 4 %}
+										#FFC700
+									{% elif viaje.estado == 5 %}
+										#991C1C
+									{% else %}
+										#CACACA
+									{% endif %}
+									;">
+								{{viaje.get_estado_display|upper}}
+							</h4>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-calendar-day fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Fecha:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="fecha">{{viaje.fechor_ida|date:"SHORT_DATE_FORMAT"}}</div>
+					</div>
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-clock fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Hora:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="hora">{{viaje.fechor_ida|time}}</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-3 px-3">
+						<i class="fas fa-map fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Desde:</span>
+					</div>
+					<div class="col-12 col-md-6 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="desde">
+							<div>{{viaje.ciudad_origen}}</div>
+							<div>{{viaje.punto_recogida}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-3 px-3">
+						<i class="fas fa-flag-checkered fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Hasta:</span>
+					</div>
+					<div class="col-12 col-md-6 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="hasta">
+							<div>{{viaje.ciudad_destino}}</div>
+							<div>{{viaje.punto_destino}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-compass fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Detalles:</span>
+					</div>
+					<div class="col-12 col-md-6 px-3">
+						<div class="fs-5 {% if viaje.detalles %} fw-bold {% else %} font2-muvil {% endif %} roboto-text"
+							 id="hasta">
+							{% if viaje.detalles %} {{viaje.detalles}} {% else %} (Sin detalles) {% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-coins fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Precio persona:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="precio">{{viaje.importe_total_asiento}} €</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-people-group fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Plazas:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						{% if viaje.numero_asientos_libres == 0 %}
+						<div class="fs-5 fw-bold roboto-text" id="plazas" class="rounded-pill text-center" >
+							¡¡¡ VIAJE COMPLETO !!!
+						</div>
+						{% else %}
+						<div class="fs-5 fw-bold roboto-text" id="plazas">{{viaje.numero_asientos_libres}}</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-suitcase fa-lg"></i>
+						<span class="fs-4 fw-bold font2-muvil mx-2 roboto-text">Equipaje:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text" id="equipaje">{{viaje.get_equipaje_display}}</div>
+					</div>
+				</div>
+				{% if flg_reserva_confirmada %}
+				<div class="row">
+					<div class="col-6 col-md-3 px-3 d-flex align-items-center">
+						<i class="fas fa-phone fa-lg"></i>
+						<span class="fs-4 fw-bold mx-2 roboto-text">Número Contacto:</span>
+					</div>
+					<div class="col-6 col-md-3 px-3">
+						<div class="fs-5 fw-bold roboto-text">{{viaje.id_persona.num_telefono}}</div>
+					</div>
+				</div>
+				{% endif %}
+				<div class="row">
+					<div class="col-12 col-sm-3 px-3 pt-2">
+						<div class="border-bottom border-warning border-3">
+							<i class="fas fa-car-side fa-xl"></i>
+							<span class="fs-4 fw-bold mx-2 roboto-text">Conductor</span>
+						</div>
+					</div>
+				</div>
+				<div class="row my-2">
+					<div class="col-12 col-sm-2 d-flex justify-content-center">
+						<a class="img-responsive img-container-viajes align-self-center"
+							href="{% url 'n_perfil_publico' idP=viaje.id_persona.id %}">
+							{% if viaje.id_persona.imagen %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src="{{ viaje.id_persona.imagen.url }}">
+							{% else %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src='{% static "img/avatar-mujer.jpg" %}'>
+							{% endif %}
+						</a>
+					</div>
+					<h4 class="col-12 col-sm-4 text-start align-self-center roboto-text">
+						{% if viaje.id_persona.id == idP%}
+						<strong class="roboto-text">(Usted)</strong>
+						{% endif %}
+						 {{viaje.id_persona.nombre}} {{viaje.id_persona.apellido1}} {{viaje.id_persona.apellido2}}
+					</h4>
+					{% if usuario_conductor and viaje.estado == 1 %} <!-- Viaje Pendiente -->
+					<div class="col-12 col-md-5 px-3 pt-2 align-self-center">
+						<a class="col-auto col-md-4 btn btn-danger fw-bold fs-5 boton-3d mx-4 roboto-text" href=""
+						   data-bs-toggle="modal" data-bs-target="#cancelarviajeModal">
+							Cancelar Viaje
+						</a>
+					</div>
+					{% elif viaje.estado == 2 %}
+						{% if not usuario_conductor %}
+							{% for oeac in opinion_escrita_a_cond %}
+								<h5 class="col text-start align-self-center roboto-text">
+									Opinión publicada: <strong class="roboto-text">{{oeac.fechor_opinion|date:"SHORT_DATETIME_FORMAT"}}</strong>
+								</h5>
+							{% empty %}
+								<div class="col-5 px-3 pt-2 align-self-center">
+									<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
+									   href="{% url 'n_nueva_opinion' idV=viaje.id idPr=viaje.id_persona.id idO=0 %}">
+										Dejar Opinión al Conductor
+									</a>
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% elif viaje.estado == 4 and not flg_viaje_fin_prob_cond %} <!-- REALIZADO -->
+								<div class="col-auto px-3 pt-2 align-self-center">
+									¿Viaje Realizado?
+								</div>
+								<div class="col-auto px-3 pt-2 align-self-center">
+									<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
+									   href="{% url 'n_plaza_finalizada' idV=viaje.id idPl=0 %}"> <!-- idPl=0 es conductor-->
+										SI
+									</a>
+								</div>
+								<div class="col-auto px-3 pt-2 align-self-center">
+									<a class="btn btn-danger fw-bold fs-5 boton-3d mx-4 roboto-text"
+									   href="{% url 'n_plaza_problematica' idV=viaje.id idPl=0 %}"> <!-- idPl=0 es conductor-->
+										NO
+									</a>
+								</div>
+					{% elif viaje.estado == 4 and flg_viaje_fin_prob_cond %} <!-- REALIZADO -->
+								<div class="col-auto px-3 pt-2 align-self-center">
+									Gracias por confirmar el viaje
+								</div>
+					{% endif %}
+				</div>
+			{% if viaje.estado != 3 %} <!-- Viaje Cancelado -->
+				<div class="row">
+					<div class="col-12 px-3 pt-2">
+						<div class="border-bottom border-warning border-3 roboto-text">
+							<i class="fas fa-person-walking-luggage fa-xl"></i>
+							<span class="fs-4 fw-bold mx-2 roboto-text">Pasajeros</span>
+							(
+							{% if viaje.flg_confirmacion_auto %}
+							<i class="fas fa-wand-sparkles fa-lg"></i>
+							: confirmación automática
+							{% else %}
+							<i class="fas fa-hand-point-up fa-lg"></i>
+							: confirmación manual
+							{% endif %}
+							)
+						</div>
+					</div>
+				</div>
+				{% for plaza in plazas %}
+				<div class="row pb-3">
+					<div class="col-12 col-sm-2 pt-2 d-flex justify-content-center">
+						<a class="img-responsive img-container-viajes align-self-center"
+							href="{% url 'n_perfil_publico' idP=plaza.id_persona.id %}">
+							{% if plaza.id_persona.imagen %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src="{{ plaza.id_persona.imagen.url }}">
+							{% else %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src='{% static "img/avatar-mujer.jpg" %}'>
+							{% endif %}
+						</a>
+					</div>
+					<h4 class="col-12 col-sm-4 text-start align-self-center roboto-text">
+						{% if plaza.id_persona.id == idP%}
+						<strong class="roboto-text">(Usted)</strong>
+						{% endif %}
+						 {{plaza.id_persona.nombre}} {{plaza.id_persona.apellido1}} {{plaza.id_persona.apellido2}}
+					</h4>
+				{% if viaje.estado == 1 %}
+					{% if usuario_conductor and plaza.estado == 1 %} <!-- Viaje Pendiente / Plaza Pendiente -->
+					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
+						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text" data-bs-toggle="modal" data-bs-target="#aceptarpasajeroModal{{plaza.id}}">
+							Aceptar
+						</a>
+						<a class="btn btn-danger fw-bold fs-5 boton-3d roboto-text" data-bs-toggle="modal" data-bs-target="#rechazarpasajeroModal{{plaza.id}}">
+							Rechazar
+						</a>
+					</div>
+					{% elif not usuario_conductor and usuario == plaza.id_persona and plaza.estado == 1 %} <!-- Viaje Pendiente / Plaza Pendiente -->
+					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
+						<a class="btn btn-danger fw-bold fs-5 boton-3d mx-4 roboto-text" data-bs-toggle="modal" data-bs-target="#cancelarreservaModal{{plaza.id}}">
+							Cancelar Reserva
+						</a>
+					</div>
+					<div class="col-12 col-sm-5 px-3 pt-2 align-self-center roboto-text">
+						¡El conductor aún no te ha confirmado!
+					</div>
+					{% elif plaza.estado == 2 %}
+					<h5 class="col-12 col-sm-4 text-start align-self-center roboto-text">
+						confirmación: <strong class="roboto-text">{{plaza.fechor_confirmado|date:"SHORT_DATETIME_FORMAT"}}</strong>
+					</h5>
+					{% endif %}
+				{% elif viaje.estado == 2 %} <!-- Viaje Realizado-->
+					{% if usuario_conductor %}
+					{% for oexc in opiniones_escritas_x_cond %}
+						{% if plaza.id_persona == oexc.id_persona_receptor %}
+						<h5 class="col text-start align-self-center roboto-text">
+							Opinión publicada: <strong class="roboto-text">{{oexc.fechor_opinion|date:"SHORT_DATETIME_FORMAT"}}</strong>
+						</h5>
+						{% else %}
+						<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
+							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
+							href="{% url 'n_nueva_opinion' idV=viaje.id idPr=plaza.id_persona.id idO=0 %}">
+								Dejar Opinión
+							</a>
+						</div>
+						{% endif %}
+					{% empty %}
+						<div class="col-12 col-sm-5 px-3 pt-2 align-self-center">
+							<a class="btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
+							href="{% url 'n_nueva_opinion' idV=viaje.id idPr=plaza.id_persona.id idO=0 %}">
+								Dejar Opinión
+							</a>
+						</div>
+					{% endfor %}
+					{% endif %}
+				{% endif %}
+				</div>
+				<!-- INICIO Ventanas Modales -->
+				<div class="modal fade" id="aceptarpasajeroModal{{plaza.id}}" tabindex="-1" role="dialog" aria-labelledby="aceptarpasajeroModal{{plaza.id}}" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Aceptar esta reserva en tu viaje ???</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text"
+								 href="{% url 'n_aceptar_pasajero' idV=viaje.id idPl=plaza.id %}">
+								  Si
+							  </a>
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
+								  Cerrar
+							  </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+				<div class="modal fade" id="rechazarpasajeroModal{{plaza.id}}" tabindex="-1" role="dialog" aria-labelledby="rechazarpasajeroModal{{plaza.id}}" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Rechazar esta reserva ???</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text"
+								 href="{% url 'n_rechazar_pasajero' idV=viaje.id idPl=plaza.id %}">
+								  Si
+							  </a>
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
+								  Cerrar
+							  </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+					<div class="modal fade" id="cancelarreservaModal{{plaza.id}}" tabindex="-1" role="dialog" aria-labelledby="cancelarreservaModal{{plaza.id}}" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+						  </div>
+						  <div class="modal-body">
+							<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Seguro que quieres cancelar tu reserva en este viaje ???</p>
+						  </div>
+						  <div class="modal-footer justify-content-center">
+							  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text"
+								 href="{% url 'n_cancelar_reserva' idV=viaje.id idPl=plaza.id %}">
+								  Si
+							  </a>
+							  <a type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
+								  No
+							  </a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				<!-- FIN Ventanas Modales -->
+				{% empty %}
+				<div class="row pb-3">
+					<div class="col-9 px-3 pt-2 text-center">
+						<h4 class="fw-bold roboto-text">¡No hay pasajeros confirmados en este viaje!</h4>
+					</div>
+				</div>
+				{% endfor %}
+				{% if not usuario_conductor and viaje.numero_asientos_libres > 0 and viaje.estado == 1 %}
+					{% if not plazas or not flg_reserva_pend_conf %}
+				<div class="row pb-3">
+					<div class="col-2 d-flex justify-content-center">
+						<div class="img-responsive img-container-viajes align-self-center">
+							{% if usuario.imagen %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src="{{ usuario.imagen.url }}">
+							{% else %}
+							<img style="cursor: pointer;"
+								 class="rounded-circle"
+								 src='{% static "img/avatar-mujer.jpg" %}'>
+							{% endif %}
+						</div>
+					</div>
+					<h4 class="col-4 text-start align-self-center roboto-text">
+						<strong class="roboto-text">(Usted)</strong>
+						 {{usuario.nombre}} {{usuario.apellido1}} {{usuario.apellido2}}
+					</h4>
+					<div class="col-6 px-3 pt-2 align-self-center">
+						<a class="col-4 btn btn-warning fw-bold fs-5 boton-3d mx-4 roboto-text"
+							{% if not user.is_authenticated %}
+							   href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+							{% else %}
+							   href="{% url 'n_reservar_plaza' idV=viaje.id %}"
+							{% endif %} >
+							Reservar una plaza
+						</a>
+					</div>
+				</div>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			</div>
+		</div>
+
+		<!-- INICIO Modal Cancelar Viaje -->
+		<div class="modal fade" id="cancelarviajeModal" tabindex="-1" role="dialog" aria-labelledby="cancelarviajeModal" aria-hidden="true">
+				<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+				  </div>
+				  <div class="modal-body">
+					<p class="fw-bold fs-4 text-center roboto-text">¿¿¿ Seguro que quieres cancelar el viaje ???</p>
+				  </div>
+				  <div class="modal-footer justify-content-center">
+					  <a type="button" class="col-2 btn btn-danger fw-bold fs-5 roboto-text" href="{% url 'n_cancelar_viaje' idV=viaje.id %}">
+						  Si
+					  </a>
+					  <button type="button" class="col-3 btn btn-warning fw-bold fs-5 roboto-text" aria-label="Close" data-bs-dismiss="modal">
+						  No
+					  </button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		<!-- FIN Modal Cancelar Viaje -->
+	</div>
+{% endblock %}
+
+
+{% block base_script %}
+	<script src="{% static 'js/compartir.js' %}"></script>
+{% endblock %}
+

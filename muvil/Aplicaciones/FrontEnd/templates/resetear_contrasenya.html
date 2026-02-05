@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cambiar Contraseña</title>
+
+</head>
+
+<body>
+
+	{% include "index.html" %}
+
+	<div class="container-lg mt-2 content-section">
+  	 	<div class="col-12 px-3 pt-2">
+			<h3 class="border-bottom border-5 border-warning roboto-text">Restaurar Contraseña</h3>
+		</div>
+		<p class="px-2 roboto-text">¿Olvidaste tu contraseña? Ingrese su dirección de correo electrónico y le enviaremos instrucciones para configurar una nueva.</p>
+        <form method="POST" class="px-2">
+            {% csrf_token %}
+            {{ form }}
+            <div class="row justify-content-start my-2 px-2">
+				<button type="submit" id="btn-guardar" class="col-auto btn btn-warning border-light border-3 fw-bold roboto-text">
+					Enviar Mail
+				</button>
+			</div>
+        </form>
+  	</div>
+
+</body>
+
+</html>

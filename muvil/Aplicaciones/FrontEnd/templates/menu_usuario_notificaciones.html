@@ -1,0 +1,93 @@
+{% extends "menu_usuario_navbar.html" %}
+
+{% load static %}
+
+{% block base_title %} Notificaciones {% endblock %}
+
+{% block contenido_tab %}
+				<div class="tab-pane fade show active" id="v-pills-notificaciones" role="tabpanel" aria-labelledby="v-pills-notificaciones-tab">
+					<!-- INICIO Notificaciones -->
+					<div class="row px-2 pt-2">
+						<div class="col-12">
+							<h3 class="border-bottom border-5 border-warning">Notificaciones</h3>
+						</div>
+					</div>
+					<form method="POST"> {% csrf_token %}
+						<div class="row col-12 col-lg-7 mx-auto mt-3" id="notificaciones-header">
+							<div class="col-7 d-flex justify-content-center">
+							</div>
+							<div class="col-2 d-flex justify-content-center" id="header-email">
+								<p class="fs-5 fw-bold mb-0">
+									Email
+								</p>
+							</div>
+							<div class="col-2 d-flex justify-content-center"  id="header-sms">
+								<p class="fs-5 fw-bold mb-0">
+									SMS
+								</p>
+							</div>
+						</div>
+						<div class="row col-12 col-lg-7 mx-auto mt-3" id="notificaciones-news">
+							<div class="col-7 d-flex justify-content-center">
+								<p class="fs-6 fw-bold mb-0">
+									Noticias y Ofertas
+								</p>
+							</div>
+							<div class="col-2 d-flex justify-content-center" id="news-email">
+								<div class="form-check form-switch form-switch-md">
+								  <input class="form-check-input" type="checkbox" id="notificaciones-news-mail" name="notif_noticiasofertas_email"
+										 {% if usuario.notif_noticiasofertas == 1 or usuario.notif_noticiasofertas == 3 %} checked {% endif %}>
+								</div>
+							</div>
+							<div class="col-2 d-flex justify-content-center"  id="news-sms">
+								<div class="form-check form-switch form-switch-md">
+								  <input class="form-check-input" type="checkbox" id="notificaciones-news-sms" name="notif_noticiasofertas_sms"
+										 {% if usuario.notif_noticiasofertas == 2 or usuario.notif_noticiasofertas == 3 %} checked {% endif %}>
+								</div>
+							</div>
+						</div>
+						<div class="row col-12 col-lg-7 mx-auto mt-3" id="notificaciones-reviews">
+							<div class="col-7 d-flex justify-content-center">
+								<p class="fs-6 fw-bold mb-0">
+									Nuevas Opiniones
+								</p>
+							</div>
+							<div class="col-2 d-flex justify-content-center" id="reviews-email">
+								<div class="form-check form-switch form-switch-md">
+								  <input class="form-check-input" type="checkbox" id="notificaciones-reviews-mail" name="notif_opiniones_email"
+										 {% if usuario.notif_opiniones == 1 or usuario.notif_opiniones == 3 %} checked {% endif %}>
+								</div>
+							</div>
+							<div class="col-2 d-flex justify-content-center"  id="reviews-sms">
+								<div class="form-check form-switch form-switch-md">
+								  <input class="form-check-input" type="checkbox" id="notificaciones-reviews-sms" name="notif_opiniones_sms"
+										 {% if usuario.notif_opiniones == 2 or usuario.notif_opiniones == 3 %} checked {% endif %}>
+								</div>
+							</div>
+						</div>
+						<div class="row col-12 col-lg-7 mx-auto mt-3" id="notificaciones-books">
+							<div class="col-7 d-flex justify-content-center">
+								<p class="fs-6 fw-bold mb-0">
+									Cambios en Reservas
+								</p>
+							</div>
+							<div class="col-2 d-flex justify-content-center" id="books-email">
+								<div class="form-check form-switch form-switch-md">
+								  <input class="form-check-input" type="checkbox" id="notificaciones-books-mail" name="notif_reservas_email"
+										 {% if usuario.notif_reservas == 1 or usuario.notif_reservas == 3 %} checked {% endif %}>
+								</div>
+							</div>
+							<div class="col-2 d-flex justify-content-center"  id="books-sms">
+								<div class="form-check form-switch form-switch-md">
+								  <input class="form-check-input" type="checkbox" id="notificaciones-books-sms" name="notif_reservas_sms"
+										 {% if usuario.notif_reservas == 2 or usuario.notif_reservas == 3 %} checked {% endif %}>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 d-flex justify-content-center py-1">
+								<button type="submit" class="btn btn-warning btn-guardar col-4"><b>Guardar</b></button>
+						</div>
+					</form>
+					<!-- FIN Notificaciones -->
+				</div>
+{% endblock %}

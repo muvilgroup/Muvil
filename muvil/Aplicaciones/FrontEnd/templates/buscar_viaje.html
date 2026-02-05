@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load templatetags %}
+
+{% block base_title %} Buscar Viaje {% endblock %}
+
+{% block base_head %}
+{% endblock %}
+
+{% block base_link %}
+	<link type='text/css' href='{% static "css/buscar_viaje.css" %}' rel='stylesheet' />
+{% endblock %}
+
+{% block base_style %}
+	<style>
+		.star {
+			width: 20px;
+			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
+		}
+		.boton-3d:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px 0 0 black;
+		}
+		.boton-3d:is(:hover, :focus) {
+		  outline-offset: 3px;
+		}
+		.titulo {
+		  border-bottom: 1px solid #dee2e6;
+		  margin-bottom: 10px;
+		  text-align: center;
+		  background-color: #C3FCF2;
+		}
+		.precio {
+		  font-size: 2.5rem;
+		  font-weight: bold;
+		}
+		.col-centered {
+		  display: flex;
+		  align-items: center;
+		}
+		.row-centered {
+		  display: flex;
+		  justify-content: center;
+		}
+		.img-comment {
+		  max-width: 50px;
+		  max-height: 50px;
+		  overflow: hidden;
+		}
+	</style>
+{% endblock %}
+
+{% block base_content %}
+	<!-- INICIO Barra Busqueda -->
+	<div class="container-md mt-5 d-flex justify-content-center" id="contenedor-barra-busqueda">
+		<form class="row barra-busqueda" id = "barra-busqueda" method="POST" action="/buscar_viaje/"> {% csrf_token %}
+			<div class="col-12 col-md-3 form-floating p-0 m-0" id="origen">
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning roboto-text" name="inputOrigen" id="inputOrigen"
+					   {% if ciudad_origen %}
+					   	value="{{ciudad_origen}}"
+					   {% else %}
+					   	placeholder="¿Desde dónde sales?"
+					   {% endif %} required>
+				<label for="inputOrigen" class="form-label roboto-text">Origen</label>
+				<datalist id="localizaciones" class="roboto-text">
+					{% for loc in localizaciones %}
+						<option value="{{ loc.direccion }}"></option>
+					{% endfor %}
+				</datalist>
+			</div>
+			<div class="col-12 col-md-3 form-floating p-0 m-0" id="destino">
+				<input type="text" list="localizaciones" class="form-select rounded border border-warning roboto-text" name="inputDestino" id="inputDestino"
+					   {% if ciudad_destino %}
+					   	value="{{ciudad_destino}}"
+					   {% else %}
+					   	placeholder="¿A dónde quieres ir?"
+					   {% endif %} required>
+				<label for="inputDestino" class="form-label roboto-text">Destino</label>
+				<datalist id="localizaciones" class="roboto-text">
+					{% for loc in localizaciones %}
+						<option value="{{ loc.direccion }}"></option>
+					{% endfor %}
+				</datalist>
+			</div>
+			<div class="col-12 col-md-2 form-floating p-0 m-0" id="fecha">
+				<input type="date" class="form-control rounded border border-warning roboto-text" name="inputFecha" id="inputFecha"
+				       {% if fecha_viaje %}
+						value="{{fecha_viaje}}"
+					   {% else %}
+					   	value="{% now 'Y-m-d' %}"
+					   {% endif %} required>
+				<label for="inputFecha" class="form-label roboto-text">¿Cuando?</label>
+			</div>
+			<div class="col-12 col-md-2 form-floating p-0 m-0 row-auto" name="inputPlazas" id="inputPlazas">
+				<select data-trigger="" class="form-select rounded border border-warning h-100 roboto-text">
+				  	<option placeholder="" {% if nro_plazas == "1 plaza" %}selected{% endif %}>1 plaza</option>
+				  	<option {% if nro_plazas == "2 plazas" %}selected{% endif %}>2 plazas</option>
+				  	<option {% if nro_plazas == "3 plazas" %}selected{% endif %}>3 plazas</option>
+				  	<option {% if nro_plazas == "4 plazas" %}selected{% endif %}>4 plazas</option>
+				</select>
+				<label for="inputPlazas" class="form-label roboto-text">¿Cuantos asientos?</label>
+			</div>
+			<div class="col-12 col-md-2 p-0 m-0 row-auto" id="boton-buscar">
+				<button class="btn w-100 h-100 btn-warning fw-bold fs-4 rounded border border-warning roboto-text" type="submit">
+					Buscar
+				</button>
+			</div>
+		</form>
+	</div>
+	<!-- FIN Barra Busqueda -->
+
+	<div class="container-md contenedor busqueda-viajes mt-4">
+		<div class="row">
+
+			<div class="col-12 d-flex justify-content-center mb-2">
+				<button type="button" class="btn btn-warning col-10 fw-bold d-block d-md-none roboto-text" data-bs-toggle="modal" data-bs-target="#ventana-filtros-viajes-modal">
+					Filtros
+				</button>
+			</div>
+
+			<!-- INICIO Modal Filtros (Responsivo) -->
+			<div class="modal fade" id="ventana-filtros-viajes-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title fw-bold border-bottom border-3 border-warning roboto-text" id="exampleModalLabel">Filtrar por...</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						  <aside class="filtros-viajes" id="contenedor-filtros-viajes">
+								<h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
+									Filtrar por...
+								</h4>
+								<form method="POST"> {% csrf_token %}
+									{{ filter.form.as_p }}
+									<input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
+									<input type="text" name="inputOrigen" id="inputOrigen" value="{{ciudad_origen}}" hidden>
+									<input type="text" name="inputDestino" id="inputDestino" value="{{ciudad_destino}}" hidden>
+									<input type="date" name="inputFecha" id="inputFecha" value="{{fecha_viaje}}" hidden>
+									<input type="text" name="inputPlazas" id="inputPlazas" value="{{nro_plazas}}" hidden>
+								</form>
+						  </aside>
+					  </div>
+					</div>
+				  </div>
+			</div>
+			<!-- FIN Modal Filtros (Responsivo) -->
+
+			<aside class="col-3 filtros-viajes d-none d-md-block" id="contenedor-filtros-viajes">
+				<h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
+					Filtrar por...
+				</h4>
+				<form method="POST"> {% csrf_token %}
+					{{ filter.form.as_p }}
+					<input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
+					<input type="text" name="inputOrigen" id="inputOrigen" value="{{ciudad_origen}}" hidden>
+					<input type="text" name="inputDestino" id="inputDestino" value="{{ciudad_destino}}" hidden>
+					<input type="date" name="inputFecha" id="inputFecha" value="{{fecha_viaje}}" hidden>
+					<input type="text" name="inputPlazas" id="inputPlazas" value="{{nro_plazas}}" hidden>
+				</form>
+			</aside>
+
+			<div class="col-12 col-md-9 contenedor-tarjetas-viajes">
+				{% for uvo in filter.qs %}
+				<div class="tarjeta-viaje container border rounded my-1">
+			  <div class="row titulo">
+				<div class="col">
+				  <h4 class="roboto-text"><strong>{{uvo.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> a las <strong>{{ uvo.fechor_ida|time:"H:i" }}</strong></h4>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-12 col-md-8">
+				  <div class="row">
+					<div class="col fs-5 roboto-text" data-bs-toggle="tooltip" title="{{uvo.ciudad_origen}}">
+					  <i class="fas fa-location-dot fa-lg roboto-text" style="color:#A8A6A2"></i>
+					  {{uvo.ciudad_origen}}
+					</div>
+				  </div>
+				  <div class="row gris">
+					<div class="col ps-5 duracion-km roboto-text">
+					  {{uvo.duracion_min|formato_duracion}} ({{uvo.distancia_kms}} km)
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col fs-5 roboto-text" data-bs-toggle="tooltip" title="{{uvo.ciudad_destino}}">
+					  <i class="fas fa-location-dot fa-lg" style="color:#A8A6A2"></i>
+					  {{uvo.ciudad_destino}}
+					</div>
+				  </div>
+				</div>
+				<div class="col-12 col-md-4 col-centered row-centered">
+				  <div class="fs-1 fw-bold roboto-text">{{uvo.importe_total_asiento}}€</div>
+				</div>
+			  </div>
+			  <div class="row my-2">
+				<div class="col-12 col-md-8 col-centered text-center">
+				  <a href="{% url 'n_perfil_publico' idP=uvo.id_persona_id %}">
+					  {% if uvo.id_persona_id__imagen %}
+					  <img src="{{MEDIA_URL}}{{uvo.id_persona_id__imagen}}" class="img-comment">
+					  {% else %}
+					  <img src='{% static "img/avatar-mujer.jpg" %}'>
+					  {% endif %}
+				  </a>
+				  {% if uvo.avg_puntuacion %}
+				  <div class="fw-bold fs-3 d-flex roboto-text">
+				  	{{uvo.avg_puntuacion|floatformat:2}}
+				  	<img class="star ms-1" src='{% static "icon/star-fill.svg" %}'>
+				  </div>
+				  <div class="">
+				   	<a class="link-primary fw-bold roboto-text" href="{% url 'n_opiniones_recibidas_main' idPr=uvo.id_persona_id %}">
+				  		({{uvo.count_opiniones}} opiniones)
+				  	</a>
+				  </div>
+				  {% else %}
+				  <div class="">
+				  	<a class="link-secondary fw-bold roboto-text">
+				  		(Sin opiniones todavía)
+					</a>
+				  </div>
+				  {% endif %}
+				</div>
+				<div class="col-12 col-md-4 col-centered row-centered">
+				  <a class="btn btn-warning boton-3d"
+				  {% if not user.is_authenticated %}
+					href="" data-bs-toggle="modal" data-bs-target="#needLoginModal"
+				  {% else %}
+				    href="{% url 'n_detalles_viaje' idV=uvo.id %}"
+				  {% endif %} >
+				  {% if uvo.flg_confirmacion_auto %}
+				  <i class="fas fa-wand-sparkles fa-lg"></i>
+				  {% else %}
+				  <i class="fas fa-hand-point-up fa-lg"></i>
+				  {% endif %}
+				  <b class="roboto-text">Reservar Plaza</b>
+				</a>
+				</div>
+			  </div>
+			</div>
+				{% empty %}
+				<div class="row pb-3">
+					<div class="col-12 px-3 mt-5 text-center">
+						<h4 class="fw-bold font2-muvil roboto-text">Vaya... ¡No encontramos viajes con esos datos!</h4>
+						<h4 class="fw-bold roboto-text">Prueba a cambiar los filtros de búsqueda...</h4>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+

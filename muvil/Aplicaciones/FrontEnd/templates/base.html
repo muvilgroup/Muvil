@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% block base_head %} {% endblock %}
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block base_title %} {% endblock %}</title>
+
+	<link href="{% static 'css/fontawesome_5.15.4/all.min.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css">
+    {% block base_link %}
+	{% endblock %}
+
+
+    {% block base_style %} {% endblock %}
+
+    <style>
+        #welcome-loader {
+			background: #fff url({% static "gif/welcome.gif" %}) no-repeat center center;
+			background-size: 50%;
+			height: 100vh;
+			width: 100%;
+			position: fixed;
+			z-index: 100;
+		}
+		@keyframes circle-out-hesitate {
+		  0% {
+			clip-path: circle(125%);
+		  }
+		  40% {
+			clip-path: circle(40%);
+		  }
+		  100% {
+			clip-path: circle(0%);
+		  }
+		}
+		[transicion-precarga="out:circle:hesitate"] {
+		  	animation: 1.5s circle-out-hesitate cubic-bezier(.25, 1, .30, 1) both;
+		  	animation-delay: 1s;
+		}
+
+	</style>
+</head>
+<body>
+    {% include "index.html" %}
+
+
+    {% if first_time < 2 %}
+	<!-- INICIO WELCOME LOADER -->
+	<div id="welcome-loader" transicion-precarga="out:circle:hesitate">
+		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
+		<div hidden>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/YObj7Ma2A4k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>		<iframe width="560" height="315" src="https://www.youtube.com/embed/V_n8YGvOd80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		</div>
+		<!-- SOLO PARA QUE CARGUE MAS TIEMPO EL welcome-loader-->
+		<!-- FIN WELCOME LOADER -->
+	</div>
+	{% endif %}
+
+    {% include "cabecera_grande.html" %}
+
+	{% include 'including/messages.html' %}
+
+    {% block base_content %} {% endblock %}
+
+		{% if show_footer != False %}
+
+			{% include "pie_pagina.html" %}
+
+		{% endif %}
+
+    {% block base_script %}
+		<!----- FontAwesome ----->
+	{% if "n_nueva_opinion"  not in request.resolver_match.url_name %}
+	<!----- FontAwesome ----->
+	<script src="{% static 'js/fontawesome_5.15.4/all.min.js' %}"></script>
+	{% endif %}
+	{% endblock %}
+
+
+</body>
+</html>

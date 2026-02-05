@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block base_title %} Perfil Público {% endblock %}
+
+{% block base_link %}
+	<link type='text/css' href='{% static "css/perfil_publico.css" %}' rel='stylesheet' />
+{% endblock %}
+
+{% block base_style %}
+	<style>
+        .img-container-car{
+            width:110px;
+            overflow:hidden;
+        }
+        .img-container-car img{
+            width:100%;
+            height:auto;
+        }
+        .img-container-profile{
+            width:150px;
+            overflow:hidden;
+        }
+        .img-container-profile img{
+            width:100%;
+            height:auto;
+        }
+		.rating .star {
+			width: 20px;
+			filter: invert(70%) sepia(84%) saturate(706%) hue-rotate(356deg) brightness(101%) contrast(106%);
+		}
+		.tarjeta-header {
+			background-color: #A8A6A2;
+			color: white;
+			font-family: Roboto, Candara;
+		}
+		.filtro-verde {
+			filter: invert(47%) sepia(27%) saturate(5309%) hue-rotate(139deg) brightness(88%) contrast(99%);
+		}
+		.filtro-amarillo {
+			filter: invert(82%) sepia(24%) saturate(2290%) hue-rotate(325deg) brightness(112%) contrast(112%);
+		}
+		.filtro-rojo {
+			filter: invert(16%) sepia(100%) saturate(7052%) hue-rotate(355deg) brightness(102%) contrast(126%);
+		}
+
+    </style>
+{% endblock %}
+
+{% block base_content %}
+	<div class="container-lg mt-5">
+		<div class="row justify-content-around">
+			<aside class="col-12 col-lg-3 mt-3 order-2 order-lg-1">
+				<div class="row">
+					<div class="row tarjeta-stats border border-2 order-2 order-lg-1 rounded shadow m-0 p-0">
+						<div class="col m-0 p-0">
+							<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center roboto-text">RESUMEN ACTIVIDAD</p>
+							<p class="m-0 px-4 pt-2 roboto-text"> <strong class=" roboto-text">{{total_viajesConductor}}</strong> viajes publicados </p>
+							<p class="m-0 px-4 roboto-text"> <strong class=" roboto-text">{{total_viajesPasajero}}</strong> viajes realizados </p>
+							<p class="m-0 px-4 roboto-text"> <strong class=" roboto-text">{{total_viajesPasajero_Canc}}</strong> reservas canceladas como pasajero </p>
+							<p class="m-0 px-4 pb-2 roboto-text"> <strong class=" roboto-text">{{total_viajesConductor_Canc}}</strong> reservas canceladas como conductor </p>
+							<p class="m-0 text-center py-3 roboto-text"> Última conexión: <strong class=" roboto-text">{{request.user.last_login|date:"SHORT_DATE_FORMAT"}} {{request.user.last_login|time:"H:i"}} </strong> </p>
+						</div>
+					</div>
+					<div class="row tarjeta-coche border border-2 order-1 order-lg-2 mt-4 rounded shadow m-0 p-0">
+						<p class="fs-5 fw-bold tarjeta-header m-0 py-2 text-center">COCHE</p>
+						<div class="row m-0 py-3">
+							<div class="col-12 fw-bold fs-3 m-0 roboto-text" id="car-title">
+								{{vehiculo.marca}} {{vehiculo.modelo}}
+							</div>
+							<div class="col-7">
+								<div class="card-subtitle row pb-1 ps-3" id="car-year">
+									<div class="col-auto text-center" id="car-year-icon">
+										<img src='{% static "icon/pin.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
+									</div>
+									<div class="col-auto" id="car-year-text">
+										<label for="car-year-icon " class=" roboto-text">{{vehiculo.anyo_antiguedad}}</label>
+									</div>
+								</div>
+								<div class="card-subtitle row pb-1 ps-3" id="car-year">
+									<div class="col-auto text-center" id="car-year-icon">
+										<img src='{% static "icon/tag.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
+									</div>
+									<div class="col-auto" id="car-year-text">
+										<label for="car-year-icon" class=" roboto-text">{{vehiculo.matricula}}</label>
+									</div>
+								</div>
+								<div class="card-subtitle row pb-1 ps-3" id="car-year">
+									<div class="col-auto text-center" id="car-year-icon">
+										<img src='{% static "icon/brush.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
+									</div>
+									<div class="col-auto" id="car-year-text">
+										<label for="car-year-icon" class=" roboto-text">{{vehiculo.color}}</label>
+									</div>
+								</div>
+								<div class="card-subtitle row pb-1 ps-3" id="car-year">
+									<div class="col-auto text-center" id="car-year-icon">
+										<img src='{% static "icon/vector.svg" %}' alt="Año de Matriculación" height="20px" width="20px" id="car-year-icon"/>
+									</div>
+									<div class="col-auto" id="car-year-text">
+										<label for="car-year-icon" class=" roboto-text">{{vehiculo.numero_asientos}}</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-5 align-self-center">
+								<div class="img-container-car img-responsive">
+									{% if vehiculo.imagen_vehiculo %}
+									<img src="{{ vehiculo.imagen_vehiculo.url }}">
+									{% else %}
+									<img src='{% static "img/default-car.jpeg" %}'>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</aside>
+			<div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
+				<div class="row">
+					<div class="col-12 px-3 pt-2">
+						<h3 class="border-bottom border-5 border-warning roboto-text">Perfil</h3>
+					</div>
+				</div>
+				{% if request.user.id != usuario_perfil.id %}
+				<div class="row">
+					<div class="col-12 d-flex justify-content-center py-3">
+						<a class="btn btn-warning rounded col-12 col-md-4 boton-3d"
+						   href="{% url 'n_conversacion' idPc=usuario_perfil.id %}">
+							<i class="fas fa-comment-dots fa-lg"></i>
+							<span class="fs-5 fw-bold roboto-text">Envía un mensaje a {{usuario_perfil.nombre}}</span>
+						</a>
+					</div>
+				</div>
+				{% endif %}
+				<div class="row" id="foto-scoring">
+					<div class="col-6 px-3 pt-2" id="foto">
+						<div class="col-12 mb-3 d-flex justify-content-center">
+							<div class="img-container-profile">
+								{% if usuario_perfil.imagen %}
+								<!--<img class="rounded-circle" src="{{ form.instance.imagen.url }}">-->
+								<img class="rounded-circle" src="{{ usuario_perfil.imagen.url }}">
+								{% else %}
+								<img class="rounded-circle" src='{% static "img/avatar-mujer.jpg" %}'>
+								{% endif %}
+							<!--<a href="" alt="Editar"><embed src='{% static "icon/pencil-fill.svg" %}' alt="Editar"/></a>-->
+							</div>
+						</div>
+						<div class="col-12 text-center fs-4">
+							<strong class="roboto-text">{{usuario_perfil.nombre}} {{usuario_perfil.apellido1}}</strong>
+						</div>
+						<div class="col-12 text-center roboto-text">
+							Prestigio: {{usuario_perfil.get_prestigio_display}}
+						</div>
+						<div class="col-12 text-center roboto-text">
+							Valoracion como conductor:
+							{% if avg_puntuacion.avg_punt %}
+							{{avg_puntuacion_Conductor.avg_punt|floatformat:2}}
+							{% else %}
+							-,-
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-6 px-3 pt-2 align-self-center">
+						<div class="col-12 align-self-center" id="opiniones-resumen">
+							<div class="row" id="puntuacion">
+								<div class="col d-flex justify-content-center">
+									<p class="display-3 fw-bold mb-0 roboto-text roboto-text">
+										{% if avg_puntuacion.avg_punt %}
+										{{ avg_puntuacion.avg_punt|floatformat:2 }}
+										{% else %}
+										-,-
+										{% endif %}
+									</p>
+								</div>
+							</div>
+							<div class="row" id="estrellas">
+								<div class="col d-flex justify-content-center">
+									<div class="rating" style="color: #FFC700;">
+										<img class="star" {% if avg_puntuacion.avg_punt > 0.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 0.75 and avg_puntuacion.avg_punt >= 0.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 1.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 1.75 and avg_puntuacion.avg_punt >= 1.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 2.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 2.75 and avg_puntuacion.avg_punt >= 2.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 3.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 3.75 and avg_puntuacion.avg_punt >= 3.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+										<img class="star" {% if avg_puntuacion.avg_punt > 4.75 %} src='{% static "icon/star-fill.svg" %}'
+														{% elif avg_puntuacion.avg_punt <= 4.75 and avg_puntuacion.avg_punt >= 4.25 %} src='{% static "icon/star-half.svg" %}'
+														{% else %} src='{% static "icon/star.svg" %}' {%endif%}>
+									</div>
+								</div>
+							</div>
+							<div class="row mb-1" id="numero_opiniones">
+								<div class="col d-flex justify-content-center fw-bold">
+									<a href="{% url 'n_opiniones_recibidas_main' idPr=usuario_perfil.id %}" class="roboto-text">
+										{{ total_opiniones }} opiniones
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-12" id="opiniones-categoria">
+							<div class="row justify-content-center" id="opiniones_cat">
+								{% for key, values in opiniones_cat_dict.items %}
+								<div class="col-7 col-lg-3 font2-muvil">
+									{{ key }}
+								</div>
+								<div class="col-4 font2-muvil d-none d-lg-block">
+									<div class="progress">
+										<div class="progress-bar bg-warning" role="progressbar"
+											 style="width: {% widthratio values total_opiniones 100 %}%"
+											 aria-valuenow="{% widthratio values total_opiniones 100 %}"
+											 aria-valuemin="0"
+											 aria-valuemax="{{total_opiniones}}"></div>
+									</div>
+								</div>
+								<div class="col-3 fw-bold font2-muvil">
+									{{ values }}
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row py-3" id="preferencias">
+					<div class="col-12 px-3 pt-2 d-flex">
+						<i class="fa-solid fa-palette fa-xl me-2"></i>
+						<h5 class="border-bottom border-3 border-warning roboto-text">Preferencias</h5>
+					</div>
+					<div class="col px-5 pt-2">
+						<label class="btn btn-white">
+							<img src='{% static "icon/group.svg" %}'
+								 {% if usuario_perfil.pref_conversacion == 1 %}
+								 height="25px" width="25px" class="filtro-rojo" alt="Hablo lo justo" title="Hablo lo justo"
+								 {% elif usuario_perfil.pref_conversacion == 2 %}
+								 height="50px" width="30px" class="filtro-amarillo" alt="En alguna conversación intervengo" title="En alguna conversación intervengo"
+								 {% elif usuario_perfil.pref_conversacion == 3 %}
+								 height="35px" width="35px" class="filtro-verde" alt="Me gusta conversar durante el viaje" title="Me gusta conversar durante el viaje"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="group-icon"
+								 />
+						</label>
+						<label class="btn btn-white">
+							<img src='{% static "icon/music.svg" %}'
+								 {% if usuario_perfil.pref_musica == 1 %}
+								 height="25px" width="25px" class="filtro-rojo" alt="Prefiero un viaje sin música" title="Prefiero un viaje sin música"
+								 {% elif usuario_perfil.pref_musica == 2 %}
+								 height="30px" width="30px" class="filtro-amarillo" alt="No me importa escuchar música durante el viaje" title="No me importa escuchar música durante el viaje"
+								 {% elif usuario_perfil.pref_musica == 3 %}
+								 height="35px" width="35px" class="filtro-verde" alt="Me motiva la música de fondo durante el viaje" title="Me motiva la música de fondo durante el viaje"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="music-icon"
+								 />
+						</label>
+						<label class="btn btn-white">
+							<img src='{% static "icon/footprint.svg" %}'
+								 {% if usuario_perfil.pref_mascota == 1 %}
+								 height="25px" width="25px" class="filtro-rojo" alt="Prefiero un viaje sin mascotas" title="Prefiero un viaje sin mascotas"
+								 {% elif usuario_perfil.pref_mascota == 2 %}
+								 height="30px" width="30px" class="filtro-amarillo" alt="No me importa viajar con mascotas" title="No me importa viajar con mascotas"
+								 {% elif usuario_perfil.pref_mascota == 3 %}
+								 height="35px" width="35px" class="filtro-verde" alt="Adoro las mascotas y me encanta compartir viaje con ellas" title="Adoro las mascotas y me encanta compartir viaje con ellas"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="footprint-icon"
+								 />
+						</label>
+						<label class="btn btn-white">
+							<img src='{% static "icon/smoking.svg" %}'
+								 {% if usuario_perfil.pref_fumar == 1 %}
+								 height="25px" width="25px" class="filtro-rojo" alt="Me molesta el humo dentro del coche" title="Me molesta el humo dentro del coche"
+								 {% elif usuario_perfil.pref_fumar == 2 %}
+								 height="30px" width="30px" class="filtro-amarillo" alt="Podría soportar algo de humo dentro del coche" title="No me importa algo de humo dentro del coche"
+								 {% elif usuario_perfil.pref_fumar == 3 %}
+								 height="35px" width="35px" class="filtro-verde" alt="No me molesta si alguien fuma dentro del coche" title="No me molesta si alguien fuma dentro del coche"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="smoking-icon"
+								 />
+						</label>
+						<label class="btn btn-white">
+							<img src='{% static "icon/nutrition.svg" %}'
+								 {% if usuario_perfil.pref_comida == 1 %}
+								 height="25px" width="25px" class="filtro-rojo" alt="Prefiero que no se coma dentro del coche" title="Prefiero que no se coma dentro del coche"
+								 {% elif usuario_perfil.pref_comida == 2 %}
+								 height="30px" width="30px" class="filtro-amarillo" alt="No me importa que se coma dentro del coche" title="No me importa que se coma dentro del coche"
+								 {% elif usuario_perfil.pref_comida == 3 %}
+								 height="35px" width="35px" class="filtro-verde" alt="Me parece correcto comer dentro del coche" title="Me parece correcto comer dentro del coche"
+								 {% else %}
+								 height="0px" width="0px"
+								 {% endif %}
+								 id="nutrition-icon"
+								 />
+						</label>
+					</div>
+				</div>
+				<div class="row py-3" id="massobremi">
+					<div class="col-12 px-3 pt-2 d-flex">
+						<i class="fa-solid fa-magnifying-glass-plus fa-xl me-2"></i>
+						<h5 class="border-bottom border-3 border-warning roboto-text">Más sobre mi...</h5>
+					</div>
+					<div class="col-12 px-5 pt-2">
+						<textarea class="w-100 roboto-text" rows="3" placeholder="Aqui está mi introducción">{{usuario_perfil.descripcion}}
+						</textarea>
+					</div>
+				</div>
+				<div class="row py-3 border rounded" style="background-color:#C3FCF2;" id="caparazon">
+					<div class="col-12 px-3 pt-2 d-flex">
+						<i class="me-2">
+						  <img src='{% static "icon/turtle3.svg" %}' width="30" height="30" alt="Mi caparazón">
+						</i>
+						<h5 class="border-bottom border-3 border-warning roboto-text">Mi Caparazón</h5>
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-globe fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Idiomas: </label>
+						{% if caparazon.idiomas %}
+						 {{ caparazon.idiomas }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-user-doctor fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Profesión: </label>
+						{% if caparazon.profesion %}
+						 {{ caparazon.profesion }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-star fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Aficiones: </label>
+						{% if caparazon.aficiones %}
+						 {{ caparazon.aficiones }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-headphones-simple fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Estilo Musical: </label>
+						{% if caparazon.estilos_musica %}
+						 {{ caparazon.estilos_musica }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-guitar fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Grupos de Música: </label>
+						{% if caparazon.grupos_musica %}
+						 {{ caparazon.grupos_musica }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-book-bookmark fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Libros: </label>
+						{% if caparazon.libros %}
+						 {{ caparazon.libros }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-film fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Peliculas: </label>
+						{% if caparazon.peliculas %}
+						 {{ caparazon.peliculas }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-table-tennis-paddle-ball fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Deportes: </label>
+						{% if caparazon.deportes %}
+						 {{ caparazon.deportes }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-wheat-awn fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Alimentación: </label>
+						{% if caparazon.alimentacion %}
+						 {{ caparazon.alimentacion }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+					<div class="col-12 col-md-6 ms-5 d-flex">
+						<i class="fa-solid fa-cat fa-xl me-2"></i>
+						<label for="inputIdiomas" class="form-label fw-bold col-5 roboto-text">Mascotas: </label>
+						{% if caparazon.animales %}
+						 {{ caparazon.animales }}
+						{% else %}
+						 <p class="text-info roboto-text">Sin informar</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+

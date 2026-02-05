@@ -1,0 +1,96 @@
+
+
+/* clases para incrustar botones sobre una imagen */
+.button-container{
+    display:inline-block;
+    position:relative;
+}
+
+.button-container embed{
+    position: absolute;
+    bottom:0.7em;
+    right:0.7em;
+    background-color:#FFC700;
+    border-radius:1.2em;
+    color:white;
+    text-transform:uppercase;
+    padding:1em 1em;
+}
+
+.button-container embed:hover{
+    background-color:#CACACA;
+    cursor:pointer;
+    color:white;
+}
+
+@media only screen and (max-width:600px) {
+    .button-container{
+        display:inline-block;
+        position:relative;
+    }
+.button-container embed{
+    position: absolute;
+    bottom:0em;
+    right:0em;
+    background-color:#FFC700;
+    border-radius:1.2em;
+    color:white;
+    text-transform:uppercase;
+    padding:1em 1em;
+}
+}
+
+/* clases para color fuente segun colores muvil */
+.font1-muvil{
+    color:#FFC700;
+}
+.font2-muvil{
+    color:#CACACA;
+}
+
+/* form-switch de distintos tamaños (form-switch-sm, -md, -lg, -xl, -xl) */
+.form-check-input {
+  clear: left;
+}
+
+.form-switch.form-switch-sm {
+  margin-bottom: 0.5rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-sm .form-check-input {
+  height: 1rem;
+  width: calc(1rem + 0.75rem);
+  border-radius: 2rem;
+}
+
+.form-switch.form-switch-md {
+  margin-bottom: 1rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-md .form-check-input {
+  height: 1.5rem;
+  width: calc(2rem + 0.75rem);
+  border-radius: 3rem;
+}
+
+.form-switch.form-switch-lg {
+  margin-bottom: 1.5rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-lg .form-check-input {
+  height: 2rem;
+  width: calc(3rem + 0.75rem);
+  border-radius: 4rem;
+}
+
+.form-switch.form-switch-xl {
+  margin-bottom: 2rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-xl .form-check-input {
+  height: 2.5rem;
+  width: calc(4rem + 0.75rem);
+  border-radius: 5rem;
+}
+
+

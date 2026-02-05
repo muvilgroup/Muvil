@@ -1,0 +1,114 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Footer 07</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+	<link rel="stylesheet" href='{% static "css/pie_pagina.css" %}'>
+
+	<style>
+	  :root {
+		  /**
+		   * typography
+		   */
+
+		  --ff-nunito: "Nunito", sans-serif;
+		  --ff-open-sans: "Open Sans", sans-serif;
+		  --ff-roboto: "Roboto", sans-serif;
+	  }
+
+	  .roboto-text{
+	  	font-family: var(--ff-roboto);
+	  }
+
+	  .footer {
+		background-color: #333; /* Fondo oscuro */
+		color: #f8f9fa; /* Texto claro */
+		padding: 40px 0; /* Relleno superior e inferior */
+	  }
+
+	  .footer h3 {
+		margin-bottom: 20px;
+		font-weight: bold;
+	  }
+
+	  .footer a {
+		color: #f8f9fa; /* Enlaces claros */
+		margin-bottom: 10px;
+		display: block;
+	  }
+
+	  .footer a:hover {
+		color: #9ACD32; /* Color cuando se pasa el mouse por encima */
+		text-decoration: none;
+	  }
+
+	  .footer .social-icons a {
+		font-size: 1.5em; /* Tamaño de los iconos sociales */
+		margin-right: 20px;
+	  }
+
+	  .footer .copyright {
+		border-top: 1px solid #484848; /* Borde superior */
+		padding-top: 20px; /* Espacio sobre el texto de copyright */
+		margin-top: 20px; /* Espacio sobre el borde */
+		font-size: 0.9em;
+	  }
+
+	  @media (max-width: 768px) {
+		.footer .row > div {
+		  margin-bottom: 30px;
+		}
+	  }
+	</style>
+  </head>
+
+  <body>
+
+	  <footer class="footer mt-5">
+		  <div class="container">
+			<div class="row">
+			  <div class="col-3">
+				<h3 class="roboto-text fw-bold">Muvil</h3>
+			  </div>
+			  <div class="col-auto">
+				<a class="fs-5 roboto-text" href="#">Sobre Nosotros</a>
+			  </div>
+			 <div class="col-auto">
+				<a class="fs-5 roboto-text" href="#">Política de Privacidad</a>
+			  </div>
+			  <div class="col-auto">
+				<a class="fs-5 roboto-text" href="#">Términos y Condiciones</a>
+			  </div>
+			  <div class="col-auto">
+				<a class="fs-5 roboto-text" href="{% url 'n_contacto'%}">Contacta con Nosotros</a>
+			  </div>
+			</div>
+			<div class="row">
+				<div class="social-icons pb-3 d-flex justify-content-center align-self-center">
+				  <!-- Icons can be replaced with your own icons -->
+
+				  <a href="https://instagram.com"><i class="fab fa-instagram fa-xl"></i></a>
+				  <a href="https://tiktok.com"><i class="fab fa-tiktok fa-xl"></i></a>
+				  <a href="https://x.com"><i class="fab fa-x-twitter fa-xl"></i></a>
+				  <a href="https://facebook.com"><i class="fab fa-facebook-f fa-xl"></i></a>
+				  <a href="https://youtube.com"><i class="fab fa-youtube fa-xl"></i></a>
+
+				</div>
+			</div>
+			<div class="row">
+			  <div class="col-md-12 text-center">
+				<div class="copyright roboto-text">
+				  © Copyright MUVIL. All Rights Reserved
+				</div>
+			  </div>
+			</div>
+		  </div>
+  	</footer>
+
+  </body>
+</html>

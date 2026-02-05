@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block base_title %} Mis Viajes {% endblock %}
+
+{% block base_link %}
+	<link type='text/css' href='{% static "css/mis_viajes.css" %}' rel='stylesheet' />
+{% endblock %}
+
+{% block base_style %}
+	<style>
+		.img-container-driver{
+            width:60px;
+            height:75px;
+            overflow:hidden;
+        }
+        .img-container-driver img{
+            width:100%;
+            height:auto;
+        }
+        .border-card {
+        	border: solid 0.4em;
+        	border-style: none none none solid; /* top | right | bottom | left */
+		}
+		.efecto-parpadea {
+		  animation-name: parpadeo;
+		  animation-duration: 1s;
+		  animation-timing-function: linear;
+		  animation-iteration-count: infinite;
+
+		  -webkit-animation-name:parpadeo;
+		  -webkit-animation-duration: 1s;
+		  -webkit-animation-timing-function: linear;
+		  -webkit-animation-iteration-count: infinite;
+		}
+		@-moz-keyframes parpadeo{
+		  0% { opacity: 1.0; }
+		  50% { opacity: 0.0; }
+		  100% { opacity: 1.0; }
+		}
+		@-webkit-keyframes parpadeo {
+		  0% { opacity: 1.0; }
+		  50% { opacity: 0.0; }
+		   100% { opacity: 1.0; }
+		}
+		@keyframes parpadeo {
+		  0% { opacity: 1.0; }
+		   50% { opacity: 0.0; }
+		  100% { opacity: 1.0; }
+		}
+    </style>
+{% endblock %}
+
+{% block base_content %}
+	<div class="container-lg mt-5">
+		<div class="row justify-content-around">
+			<div class="col-12 d-flex justify-content-center py-3">
+				<a class="btn btn-warning rounded col-12 col-md-4 boton-3d" href="{% url 'n_nuevo_viaje' %}">
+					<i class="fas fa-square-plus fa-lg"></i>
+					<span class="fs-5 fw-bold roboto-text">Publicar nuevo viaje</span>
+				</a>
+			</div>
+
+			<!-- INICIO Modal Filtros (Responsivo) -->
+			<div class="modal fade" id="ventana-filtros-viajes-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title fw-bold border-bottom border-3 border-warning roboto-text" id="exampleModalLabel">Filtrar por...</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						  <aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-misviajes border">
+							  <h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
+							  Filtrar por...
+							  </h4>
+							  <form method="get">
+								  {{ filter.form.as_p }}
+								  <input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
+							  </form>
+						  </aside>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<!-- FIN Modal Filtros (Responsivo) -->
+			<aside class="col-12 col-lg-3 mt-5 order-2 order-lg-1 filtros-misviajes border d-none d-md-block">
+				<h4 class="fw-bold border-bottom border-3 border-warning roboto-text">
+					Filtrar por...
+				</h4>
+				<form method="get">
+					{{ filter.form.as_p }}
+					<input type="submit" class="btn btn-warning fw-bold w-100 roboto-text" value="Aplicar Filtros"/>
+				</form>
+			</aside>
+			<div class="col-12 col-lg-8 order-1 order-lg-2 shadow">
+				<div class="row">
+					<div class="col-12 px-3 pt-2">
+						<h3 class="border-bottom border-5 border-warning roboto-text">Mis viajes</h3>
+					</div>
+				</div>
+				<div class="col-12 d-flex justify-content-end mb-2">
+					<button type="button" class="btn btn-warning col-4 fw-bold d-block d-md-none roboto-text" data-bs-toggle="modal" data-bs-target="#ventana-filtros-viajes-modal">
+						<i class="fas fa-filter fa-lg"></i> Filtros
+					</button>
+				</div>
+				{% for v in filter.qs %}
+				<div class="row border-card my-3 py-2 mx-1 justify-content-between shadow roboto-text" id="card-viaje"
+					 style="border-left-color:
+					 				{% if v.estado == 1 %}
+										#8C8F8B
+									{% elif v.estado == 2 %}
+										#1CAB04
+									{% elif v.estado == 3 %}
+										#991C1C
+									{% elif v.estado == 4 %}
+										#FFC700
+									{% elif v.estado == 5 %}
+										#991C1C
+									{% else %}
+										#CACACA
+									{% endif %}
+									;">
+					<div class="col-7">
+						<div class="row" id="fecha-viaje">
+							<p class="fs-5">
+								<a href="{% url 'n_detalles_viaje' idV=v.id %}" class="text-decoration-none roboto-text">
+									<strong class="roboto-text">{{v.fechor_ida|date:"SHORT_DATE_FORMAT"}}</strong> de {{v.ciudad_origen}} a {{v.ciudad_destino}}
+								</a>
+							</p>
+						</div>
+						<div class="row" id="listado-pasajeros">
+							{% for p in listado_plazas_viajes %}
+							{% if p.id_viaje__id == v.id %}
+							<div class="col-auto" id="usuario-viaje">
+								<div class="col-12 align-self-center">
+									<div class="img-responsive img-container-driver">
+										<a href="{% url 'n_perfil_publico' idP=p.id_persona__id %}">
+											{% if p.id_persona__imagen %}
+											<img style="cursor: pointer;"
+												 class="rounded-circle"
+												 src="{{MEDIA_URL}}{{ p.id_persona__imagen }}">
+											{% else %}
+											<img style="cursor: pointer;"
+												 class="rounded-circle"
+												 src='{% static "img/avatar-mujer.jpg" %}'>
+											{% endif %}
+										</a>
+									</div>
+								</div>
+								<div class="col-12 fw-bold text-center roboto-text">
+									{{p.id_persona__nombre}}
+								</div>
+								<div class="col-12 text-center roboto-text">
+									{% if p.flg_conductor %}
+									<strong class="border border-3 roboto-text">Conductor</strong>
+									{% else %}
+									Pasajero
+									{% endif %}
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-4 me-3 align-self-center">
+						<div class="row mt-2" id="estado-viaje">
+							<div class="text-white rounded-pill text-center roboto-text"
+								 style="background-color:
+								 	{% if v.estado == 1 %}
+										#8C8F8B
+									{% elif v.estado == 2 %}
+										#1CAB04
+									{% elif v.estado == 3 %}
+										#991C1C
+									{% elif v.estado == 4 %}
+										#FFC700
+									{% elif v.estado == 5 %}
+										#991C1C
+									{% else %}
+										#CACACA
+									{% endif %}
+									;">
+								{{v.get_estado_display|upper}}
+							</div>
+						</div>
+						<div class="row" id="precio-viaje">
+							<div class="col-12 fw-bold fs-1 text-center roboto-text">
+								{{ v.importe_total_asiento }}€
+							</div>
+							<div class="col-12 pb-2 text-center roboto-text">
+								por pasajero
+							</div>
+							<div class="col-12 pb-2 text-center">
+								<a href="{% url 'n_opiniones_recibidas_main' idPr=v.id_persona_id %}" class="roboto-text">
+									Ver Opiniones
+								</a>
+							</div>
+							{% if v.id_persona_id != idP %}
+							{% if v.estado == 1 or v.estado == 3 %}
+							<!-- Solo puedes enviar mensaje en viajes PENDIENTE o CANCELADO -->
+							<div class="col text-center">
+								<a class="btn btn-warning roboto-text fw-bold" href="{% url 'n_conversacion' idPc=v.id_persona_id %}">
+									<img alt="Añadir" src='{% static "icon/send-plus.svg" %}'>
+									Enviar Mensaje al Conductor
+								</a>
+							</div>
+							{% endif %}
+							{% endif %}
+							{% if v.estado == 4 %}
+							<div class="col text-center">
+								<a class="btn btn-warning roboto-text fw-bold efecto-parpadea"
+									href="{% url 'n_detalles_viaje' idV=v.id %}">
+									<i class="fas fa-clipboard-check fa-lg"></i>
+									 ¿Ha ido bien el viaje?
+								</a>
+							</div>
+							{% elif not v.count_opiniones %}
+							<div class="col text-center">
+								<a class="btn btn-warning roboto-text fw-bold efecto-parpadea"
+									href="{% url 'n_detalles_viaje' idV=v.id %}">
+									<i class="fas fa-star fa-lg"></i>
+									 Déjanos tu opinion
+								</a>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{% empty %}
+				<div class="mx-auto my-2">
+					<p class="fs-2 fw-bold text-center roboto-text">No hay viajes que mostrar...</p>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

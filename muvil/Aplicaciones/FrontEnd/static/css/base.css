@@ -1,0 +1,7 @@
+.boton-3d:hover {
+  transform: translateY(-4px) translateX(-2px);
+  box-shadow: 2px 5px 0 0 black;
+}
+.boton-3d:is(:hover, :focus) {
+  outline-offset: 3px;
+}

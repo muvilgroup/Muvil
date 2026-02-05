@@ -1,0 +1,77 @@
+{% extends "menu_usuario_navbar.html" %}
+
+{% load static %}
+
+{% block base_title %} Mi Caparazón {% endblock %}
+
+{% block contenido_tab %}
+				<div class="tab-pane fade show active" id="v-pills-datos" role="tabpanel" aria-labelledby="v-pills-datos-tab">
+					<!-- INICIO Datos Personales -->
+					<div class="row">
+						<div class="col-12 px-3 pt-2">
+							<h3 class="border-bottom border-5 border-warning roboto-text">Mi Caparazón</h3>
+						</div>
+						<div class="roboto-text text-center">
+							<strong class="roboto-text">"Mi Caparazón"</strong> es tu espacio para conectar: donde compartes tus intereses y personalidad para transformar cada viaje en una experiencia única y afín.
+							<br>
+							Haz que cada viaje sea cómodo, seguro y ameno, simplemente siendo tú.
+						</div>
+					</div>
+					<form method="POST" class="row px-2 pt-2" id="form-caparazon"> {% csrf_token %}
+						<div class="col-12 col-md-6 py-2">
+							<i class="fa-solid fa-globe fa-xl me-2"></i>
+							<label for="inputIdiomas" class="form-label fw-bold roboto-text">Idiomas</label>
+							{{ form.idiomas }}
+						</div>
+						<div class="col-12 col-md-6 py-2">
+							<i class="fa-solid fa-user-doctor fa-xl me-2"></i>
+							<label for="inputProfesion" class="form-label fw-bold roboto-text">Profesión</label>
+							{{ form.profesion }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-star fa-xl me-2"></i>
+							<label for="inputAficiones" class="form-label fw-bold roboto-text">Aficiones</label>
+							{{ form.aficiones }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-headphones-simple fa-xl me-2"></i>
+							<label for="inputEMusica" class="form-label fw-bold roboto-text">Estilo musical</label>
+							{{ form.estilo_musica }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-guitar fa-xl me-2"></i>
+							<label for="inputGMusica" class="form-label fw-bold roboto-text">Grupos música</label>
+							{{ form.grupos_musica }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-book-bookmark fa-xl me-2"></i>
+							<label for="inputLibros" class="form-label fw-bold roboto-text">Libros</label>
+							{{ form.libros }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-film fa-xl me-2"></i>
+							<label for="inputPeliculas" class="form-label fw-bold roboto-text">Películas</label>
+							{{ form.peliculas }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-table-tennis-paddle-ball fa-xl me-2"></i>
+							<label for="inputDeportes" class="form-label fw-bold roboto-text">Deportes</label>
+							{{ form.deportes }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-wheat-awn fa-xl me-2"></i>
+							<label for="inputAlimentacion" class="form-label fw-bold roboto-text">Alimentación</label>
+							{{ form.alimentacion }}
+						</div>
+						<div class="col-12 py-2">
+							<i class="fa-solid fa-cat fa-xl me-2"></i>
+							<label for="inputAnimales" class="form-label fw-bold roboto-text">Animales</label>
+							{{ form.animales }}
+						</div>
+						<div class="col-12 d-flex justify-content-center py-3">
+							<button type="submit" class="btn btn-warning btn-guardar col-4 roboto-text fw-bold">Guardar</button>
+						</div>
+					</form>
+					<!-- FIN Datos Personales -->
+				</div>
+{% endblock %}

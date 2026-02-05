@@ -1,0 +1,14 @@
+from .settings import *
+
+DATABASES = POSTGRE_MUVIL
+
+ALLOWED_HOSTS = ["muvil.es", "www.muvil.es","muvil.onrender.com","muvil.pxxl.click"]
+CSRF_TRUSTED_ORIGINS = ['https://www.muvil.es', 'https://muvil.es','https://muvil.onrender.com',"https://muvil.pxxl.click"]
+# cion porque asi funcionan los arhivos MEDIA que suben los usuarios
+
+DEBUG = True #se deja en True aunque sea produc
+USE_X_FORWARDED_HOST = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
+PWA_APP_SCOPE = 'https://muvil.es/'
+PWA_APP_START_URL = 'https://muvil.es/'
